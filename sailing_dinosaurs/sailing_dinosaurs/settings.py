@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from sqlalchemy.testing.config import db_url
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -73,10 +75,24 @@ WSGI_APPLICATION = 'sailing_dinosaurs.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
+#db_url = os.environ.get('DATABASE_URL')
+#db_name = os.environ.get('DB_NAME')
+#db_user = os.environ.get('DB_USER')
+#db_pwd = os.environ.get('DB_PWD')
+
+db_url = "localhost"
+db_name = "Ranking"
+db_user = "admin"
+db_pwd = ""
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    "default": {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': db_name,
+        'USER': db_user,
+        'PASSWORD': db_pwd,
+        'HOST': db_url,
+        'PORT': '5432'
     }
 }
 
