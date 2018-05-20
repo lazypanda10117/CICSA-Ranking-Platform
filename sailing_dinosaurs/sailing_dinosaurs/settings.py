@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'ranking.apps.RankingConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -81,8 +82,8 @@ WSGI_APPLICATION = 'sailing_dinosaurs.wsgi.application'
 #db_pwd = os.environ.get('DB_PWD')
 
 db_url = "localhost"
-db_name = "Ranking"
-db_user = "admin"
+db_name = "ranking"
+db_user = "lazypanda"
 db_pwd = ""
 
 DATABASES = {
