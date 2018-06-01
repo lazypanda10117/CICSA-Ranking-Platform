@@ -58,7 +58,7 @@ class Summary(models.Model):
 class Log(models.Model):
     log_creator = models.IntegerField(); #if sql, then system (-1), else user id
     log_content = JSONField();
-    log_type = models.CharField(max_length=50); #i.e. user, sql
+    log_type = models.CharField(max_length=50); #admin, school, system
     log_create_time = models.DateTimeField(default=timezone.now(), blank=True);
     def __str__(self):
         return self;
@@ -97,5 +97,6 @@ class Account(models.Model):
     account_salt = models.CharField(max_length=200);
     account_password = models.CharField(max_length=200);
     account_status = models.CharField(max_length=50);
+    account_linked_id = models.IntegerField();
     def __str__(self):
         return self;
