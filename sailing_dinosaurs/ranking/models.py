@@ -31,6 +31,12 @@ class Season(models.Model):
     def __str__(self):
         return self;
 
+class ScoreMapping(models.Model):
+    score_name = models.CharField(max_length=200);
+    score_value = models.IntegerField(default=0);
+    def __str__(self):
+        return self;
+
 class EventType(models.Model):
     event_type_name = models.CharField(max_length=200);
     def __str__(self):
@@ -97,6 +103,6 @@ class Account(models.Model):
     account_salt = models.CharField(max_length=200);
     account_password = models.CharField(max_length=200);
     account_status = models.CharField(max_length=50);
-    account_linked_id = models.IntegerField();
+    account_linked_id = models.IntegerField(blank=True, null=True);
     def __str__(self):
         return self;

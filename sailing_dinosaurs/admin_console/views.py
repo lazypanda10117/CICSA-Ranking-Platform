@@ -1,19 +1,35 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Account, Event, Region, Season, EventActivity, EventType, Summary, Log, School, Team, MemberGroup, Member
+from .models import *
 from django.utils import timezone
 import numpy as np
+import math
 import hashlib, random, string, rsa, requests, datetime, json
-from django.views.decorators.csrf import csrf_protect, csrf_exempt
+from django.views.decorators.csrf import csrf_exempt
 from django.http import QueryDict
 
-
+@csrf_exempt
 def index(request):
-    return HttpResponse("This is the index page of a CICSA Ranking Platform.");
+    return kickRequest(request, True, render(request, 'console/index.html'));
 
+@csrf_exempt
 def loghelper(request, message):
     log = Log(log_creator=request.session['uid'], log_type="admin", log_content=message);
     log.save();
+
+@csrf_exempt
+def schoolView(request):
+    #write a dispatch table for reusability
+    if request.GET.get("action") == 'edit':
+        return kickRequest(request, True, render(request, 'console/school.html'));
+    elif request.GET.get("action") == 'register':
+        return kickRequest(request, True, render(request, 'console/school.html'));
+    elif request.GET.get("action") == 'delete':
+        return kickRequest(request, True, render(request, 'console/school.html'));
+    else:
+        return HttpResponse('{"Response": "Error: Invalid Action"}');
+
+
 
 @csrf_exempt
 def registerSchool(request):
@@ -44,16 +60,16 @@ def login(request):
             return HttpResponse('{"Response": "Error: No Such User"}');
         else:
             u = u.get();
-            u_pwd = u.user_pwd;
-            u_salt = u.user_hash_salt;
+            u_pwd = u.account_password;
+            u_salt = u.account_salt;
             verify_pwd = hashlib.sha224((upwd + u_salt).encode("utf-8")).hexdigest();
             if u_pwd == verify_pwd:
                 request.session['uid'] = u.id;
-                Log(log_creator=request.session['uid'], log_type="login", log_content="Login Account id: " + u.id).save();
+                Log(log_creator=str(request.session['uid']), log_type="login", log_content="Login Account id: " + str(u.id)).save();
                 if u.account_type == "admin":
-                    return redirect('../console/admin/');
+                    return redirect('../admin/');
                 else:
-                    return redirect('../console/school/');
+                    return redirect('../school/');
             else:
                 return HttpResponse('{"Response": "Error: Wrong Credentials"}');
     else:
@@ -64,12 +80,19 @@ def login(request):
 def logout(request):
     if request.session.has_key('uid'):
         request.session['uid'] = None;
-        return redirect('../home/');
+        return redirect('../admin/');
     else:
         return HttpResponse('{"Response": "Error: Not Logged In"}');
 
 
 @csrf_exempt
 def permission(request):
-    signed_in = True if (request.session.has_key('uid') and request.session['uid']!= None) else False;
-    return render(request, 'template/login.html', {'signedIn': signed_in});
+    return kickRequest(request, False, render(request, 'console/login.html'));
+
+@csrf_exempt
+def kickRequest(request, loggedin, rend):
+    return (lambda x: rend if math.ceil(x+0.5) else (lambda y: redirect('../admin/permission') if math.ceil(y+0.5) else redirect('../admin')) (loggedin*2-1))((loggedin*2-1)*(signed_in(request)*2-1))
+
+@csrf_exempt
+def signed_in(request):
+    return True if (request.session.has_key('uid') and request.session['uid']!= None) else False;

@@ -1,3 +1,4 @@
 from django.shortcuts import render
 
-# Create your views here.
+def index(request):
+    return HttpResponse("This is the index page of a CICSA Ranking Platform.");
