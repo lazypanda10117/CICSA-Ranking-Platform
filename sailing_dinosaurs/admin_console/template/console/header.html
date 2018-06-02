@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="CISCA Ranking Platform">
+    <meta name="author" content="Jeffrey Kam">
+    <title>CISCA Admin</title>
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}">
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/simple-sidebar.css' %}" rel="stylesheet">
+    <script>
+        function showDropdown(i){
+            var container = document.getElementsByClassName("dropdown-container-"+i)[0];
+            if (container.style.display === 'none'){
+                container.style.display = 'block';
+            }else{
+                container.style.display = 'none';
+            }
+        }
+    </script>
+</head>
+<body onload="">
+<div id="wrapper" class="toggled">
+    <div id="sidebar-wrapper">
+        <div class="sidebar-nav">
+            <li class="sidebar-brand">
+                <a href="#">Admin Dashboard</a>
+            </li>
+
+            <li><a href="">Search (TBD)</a></li>
+            <li><a href="">Ranking App</a></li>
+
+            <button class="dropdown-btn" onclick="showDropdown(1);">
+                <li>Event <i class="fa fa-caret-down"></i></li>
+            </button>
+            <div class="dropdown-container-1" style="display:none;">
+                <ul>
+                    <li><a href="#">Summary</a></li>
+                    <li><a href="#">Event Activity</a></li>
+                </ul>
+            </div>
+
+            <button class="dropdown-btn" onclick="showDropdown(2);">
+                <li>School <i class="fa fa-caret-down"></i></li>
+            </button>
+            <div class="dropdown-container-2" style="display:none;">
+                <ul>
+                    <li><a href="">Team</a></li>
+                    <li><a href="">Member</a></li>
+                    <li><a href="">Member Group</a></li>
+                </ul>
+            </div>
+
+            <button class="dropdown-btn" onclick="showDropdown(3);">
+                <li>Global Settings <i class="fa fa-caret-down"></i></li>
+            </button>
+            <div class="dropdown-container-3" style="display:none;">
+                <ul>
+                    <li><a href="#">Season</a></li>
+                    <li><a href="#">Region</a></li>
+                    <li><a href="#">Event Type</a></li>
+                    <li><a href="#">Score Map</a></li>
+                </ul>
+            </div>
+
+            <button class="dropdown-btn" onclick="showDropdown(4);">
+                <li>System Info<i class="fa fa-caret-down"></i></li>
+            </button>
+            <div class="dropdown-container-4" style="display:none;">
+                <ul>
+                    <li><a href="#">Account</a></li>
+                    <li><a href="#">Log</a></li>
+                </ul>
+            </div>
+
+            <li><a href="">Contact</a></li>
+            <li><a href="logout">Logout</a></li>
+        </div>
+    </div>
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+            {% block 'body' %}
+            {% endblock %}
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

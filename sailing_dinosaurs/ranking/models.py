@@ -5,7 +5,7 @@ from django.utils import timezone
 class Event(models.Model):
     event_name = models.CharField(max_length=200);
     event_description = models.CharField(max_length=1500);
-    event_status = models.CharField(max_length=50);
+    event_status = models.CharField(max_length=50); #pending, running, done
     event_type = models.IntegerField();
     event_host = models.CharField(max_length=50);
     event_location = models.CharField(max_length=50);
@@ -50,6 +50,7 @@ class EventActivity(models.Model):
     event_activity_result = JSONField(); #json
     event_activity_type = models.CharField(max_length=200); #i.e. races
     event_activity_note = models.CharField(max_length=500);
+    event_activity_status = models.CharField(max_length=50);
     def __str__(self):
         return self;
 
