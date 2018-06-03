@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import *
-from django.utils import timezone
-import numpy as np
-import math
-import hashlib, random, string, rsa, requests, datetime, json
 from django.views.decorators.csrf import csrf_exempt
 from django.http import QueryDict
+from django.utils import timezone
+import hashlib, random, string, math, rsa, requests, datetime, json, numpy
+
+from .models import *
+from .forms import SchoolForm
 
 @csrf_exempt
 def index(request):
@@ -21,7 +21,10 @@ def loghelper(request, message):
 def schoolView(request):
     #write a dispatch table for reusability
     if request.GET.get("action") == 'edit':
-        return kickRequest(request, True, render(request, 'console/school.html'));
+        type = dict(regularForm=True);
+        content = dict(destination='random',form=SchoolForm());
+        return kickRequest(request, True, render(request, 'console/generate.html',
+                                                 dict(page_title='School Register', type=type, context=content)));
     elif request.GET.get("action") == 'register':
         return kickRequest(request, True, render(request, 'console/school.html'));
     elif request.GET.get("action") == 'delete':

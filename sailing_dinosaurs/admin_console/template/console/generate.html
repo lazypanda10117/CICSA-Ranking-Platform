@@ -4,6 +4,7 @@
     <hr>
     {% if type.table %}
         {% for element in context %}
+            <h5> {{ element.title }} </h5>
             {% include "console/table.html" with tableHeader=element.tableHeader tableRow=element.tableRow only %}
         {% endfor %}
     {% endif %}
@@ -11,6 +12,6 @@
         {% include "console/regularForm.html" with action_destination=context.destination form=context.form only %}
     {% endif %}
     {% if type.customForm %}
-        {% include "console/regularForm.html" with action_destination=context.destination formList=context.formList only %}
+        {% include "console/customForm.html" with action_destination=context.destination formList=context.formList only %}
     {% endif %}
 {% endblock %}
