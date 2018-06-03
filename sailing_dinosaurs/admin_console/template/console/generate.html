@@ -1,4 +1,33 @@
 {% extends 'console/header.html' %}
+{% block 'head' %}
+    {% if type.regularForm %}
+        <script>
+            function onLoad(){
+                child = document.getElementById("{{context.form_id}}").children;
+                for(i=0; i<child.length; i++) {
+                    if(child[i].tagName.toLowerCase() == 'p'){
+                        child[i].className = "form-group";
+                        sub_child = child[i].children;
+                        for(j=0; j<sub_child.length; j++){
+                            if(sub_child[j].tagName.toLowerCase() == 'input'){
+                                sub_child[j].className = "form-control";
+                            }
+                        }
+                    }else if(child[i].tagName.toLowerCase() == 'input'){
+                        child[i].className = "btn btn-lg btn-block ";
+                        if(child[i].name.toLowerCase() == 'add'){
+                            child[i].className += "btn-outline-success";
+                        }else if(child[i].name.toLowerCase() == 'edit'){
+                            child[i].className += "btn-outline-info";
+                        }else if(child[i].name.toLowerCase() == 'delete'){
+                            child[i].className += "btn-outline-warning";
+                        }
+                    }
+                }
+            }
+        </script>
+    {% endif %}
+{% endblock %}
 {% block 'body' %}
     <h2>{{ page_title }}</h2>
     <hr>
@@ -9,7 +38,7 @@
         {% endfor %}
     {% endif %}
     {% if type.regularForm %}
-        {% include "console/regularForm.html" with action_destination=context.destination form=context.form only %}
+        {% include "console/regularForm.html" with action_destination=context.destination form_action=context.form_action form_id=context.form_id form=context.form only %}
     {% endif %}
     {% if type.customForm %}
         {% include "console/customForm.html" with action_destination=context.destination formList=context.formList only %}

@@ -1,7 +1,5 @@
-<form action="{{ action_destination }}" method="post">
+<form action="{{ action_destination }}" id="{{ form_id }}" method="post">
     {% csrf_token %}
-    <div class="form-group">
-        {{ form }}
-    </div>
-    <input type="submit" value="Submit" />
+    {{ form.as_p }}
+    <input type="submit" value="{{ form_action }}" name="{{ form_action }}"/>
 </form>

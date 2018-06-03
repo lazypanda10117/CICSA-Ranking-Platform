@@ -6,7 +6,7 @@ from django.utils import timezone
 import hashlib, random, string, math, rsa, requests, datetime, json, numpy
 
 from .models import *
-from .forms import SchoolForm
+from .forms import *
 
 @csrf_exempt
 def index(request):
@@ -22,7 +22,7 @@ def schoolView(request):
     #write a dispatch table for reusability
     if request.GET.get("action") == 'edit':
         type = dict(regularForm=True);
-        content = dict(destination='random',form=SchoolForm());
+        content = dict(form_id='school_register_form', destination='random',form=SchoolForm());
         return kickRequest(request, True, render(request, 'console/generate.html',
                                                  dict(page_title='School Register', type=type, context=content)));
     elif request.GET.get("action") == 'register':
@@ -32,6 +32,39 @@ def schoolView(request):
     else:
         return HttpResponse('{"Response": "Error: Invalid Action"}');
 
+def generalView(request,form_path):
+    generalFormDispatch = {
+        "season": SeasonForm(),
+        "region": RegionForm,
+        "event type": EventTypeForm(),
+        "score mapping": ScoreMappingForm()
+    };
+    action = request.GET.get("action");
+    element = request.GET.get("element_id");
+    page_title = (form_path + " " + action).title();
+    if action == 'view':
+        return kickRequest(request, True, render(request, 'console/school.html'));
+    elif action == 'add':
+        form_id = form_path+'_add_form';
+        type = dict(regularForm=True);
+        content = dict(form_id=form_id, form_action=action.title(), destination='process/', form=generalFormDispatch[form_path]);
+        return kickRequest(request, True, render(request, 'console/generate.html',
+                                                 dict(page_title=page_title, type=type, context=content)));
+    elif action == 'edit':
+        if element is None:
+            return HttpResponse('{"Response": "Error: No Element ID Provided"}');
+        else:
+
+            form_id = form_path + '_edit_form';
+            type = dict(regularForm=True);
+            content = dict(form_id=form_id, form_action=action.title(), destination='process/',
+                           form=generalFormDispatch[form_path]);
+            return kickRequest(request, True, render(request, 'console/generate.html',
+                                                     dict(page_title=page_title, type=type, context=content)));
+    elif action == 'delete':
+        return kickRequest(request, True, render(request, 'console/school.html'));
+    else:
+        return HttpResponse('{"Response": "Error: Invalid Action"}');
 
 
 @csrf_exempt
