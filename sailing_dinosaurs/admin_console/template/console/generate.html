@@ -1,0 +1,16 @@
+{% extends 'console/header.html' %}
+{% block 'body' %}
+    <h2>{{ page_title }}</h2>
+    <hr>
+    {% if type.table %}
+        {% for element in context %}
+            {% include "console/table.html" with tableHeader=element.tableHeader tableRow=element.tableRow only %}
+        {% endfor %}
+    {% endif %}
+    {% if type.regularForm %}
+        {% include "console/regularForm.html" with action_destination=context.destination form=context.form only %}
+    {% endif %}
+    {% if type.customForm %}
+        {% include "console/regularForm.html" with action_destination=context.destination formList=context.formList only %}
+    {% endif %}
+{% endblock %}

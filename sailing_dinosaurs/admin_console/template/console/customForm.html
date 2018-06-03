@@ -1,0 +1,7 @@
+<form action="{{ action_destination }}" method="post">
+    {% csrf_token %}
+    {% for item in formList %}
+
+    {% endfor %}
+    <input type="submit" value="Submit" />
+</form>
