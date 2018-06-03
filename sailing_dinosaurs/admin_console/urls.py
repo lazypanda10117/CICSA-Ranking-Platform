@@ -9,5 +9,6 @@ urlpatterns = [
     path('/logout', views.logout, name='logout'),
     path('/event', views.index, name='index'),
     path('/school', views.schoolView, name='schoolView'),
+    path('/<str:form_path>/general/<str: form_type>/<str: id>', views.generalView, name='generalView'),
     path('/<str:form_path>/general', views.generalView, name='generalView'),
 ]

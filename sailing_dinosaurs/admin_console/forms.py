@@ -4,24 +4,24 @@ from django import forms
 class SchoolForm(forms.ModelForm):
     class Meta:
         model = School
-        fields = ['school_name', 'school_region', 'school_status', 'school_season_score']
+        fields = '__all__'
 
 class SeasonForm(forms.ModelForm):
     class Meta:
         model = Season
-        exclude = []
+        fields = '__all__'
 
 class RegionForm(forms.ModelForm):
     class Meta:
         model = Region
-        exclude = []
+        fields = '__all__'
 
 class EventTypeForm(forms.ModelForm):
     class Meta:
         model = EventType
-        exclude = []
+        fields = '__all__'
 
 class ScoreMappingForm(forms.ModelForm):
     class Meta:
         model = ScoreMapping
-        exclude = []
+        fields = '__all__'

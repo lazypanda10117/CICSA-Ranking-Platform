@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import QueryDict
@@ -32,40 +32,65 @@ def schoolView(request):
     else:
         return HttpResponse('{"Response": "Error: Invalid Action"}');
 
-def generalView(request,form_path):
+def generalView(request, form_path):
     generalFormDispatch = {
-        "season": SeasonForm(),
-        "region": RegionForm,
-        "event type": EventTypeForm(),
-        "score mapping": ScoreMappingForm()
+        "season": {"class": Season,"form": SeasonForm},
+        "region": {"class": Region,"form": RegionForm},
+        "event type": {"class": EventType, "form": EventTypeForm},
+        "score mapping": {"class": ScoreMapping, "form": ScoreMappingForm}
     };
-    action = request.GET.get("action");
-    element = request.GET.get("element_id");
-    page_title = (form_path + " " + action).title();
-    if action == 'view':
-        return kickRequest(request, True, render(request, 'console/school.html'));
-    elif action == 'add':
-        form_id = form_path+'_add_form';
-        type = dict(regularForm=True);
-        content = dict(form_id=form_id, form_action=action.title(), destination='process/', form=generalFormDispatch[form_path]);
-        return kickRequest(request, True, render(request, 'console/generate.html',
-                                                 dict(page_title=page_title, type=type, context=content)));
-    elif action == 'edit':
-        if element is None:
-            return HttpResponse('{"Response": "Error: No Element ID Provided"}');
-        else:
 
-            form_id = form_path + '_edit_form';
+    def generalViewDisplay():
+        action = request.GET.get("action");
+        element_id = request.GET.get("element_id");
+        page_title = (form_path + " " + action).title();
+        if action == 'view':
+            return kickRequest(request, True, render(request, 'console/school.html'));
+        elif action == 'add':
+            destination = 'process/add';
+            form_id = form_path+'_add_form';
             type = dict(regularForm=True);
-            content = dict(form_id=form_id, form_action=action.title(), destination='process/',
-                           form=generalFormDispatch[form_path]);
+            content = dict(form_id=form_id, form_action=action.title(), destination=destination, form=generalFormDispatch[form_path]["form"]());
             return kickRequest(request, True, render(request, 'console/generate.html',
                                                      dict(page_title=page_title, type=type, context=content)));
-    elif action == 'delete':
-        return kickRequest(request, True, render(request, 'console/school.html'));
-    else:
+        elif action == 'edit':
+            if element_id is None:
+                return HttpResponse('{"Response": "Error: No Element ID Provided"}');
+            else:
+                element = generalFormDispatch[form_path]["class"].objects.get(pk=int(element_id));
+                destination = 'process/edit/'+element_id;
+                form_id = form_path + '_edit_form';
+                type = dict(regularForm=True);
+                content = dict(form_id=form_id, form_action=action.title(), destination=destination,
+                               form=generalFormDispatch[form_path]["form"](instance=element));
+                return kickRequest(request, True, render(request, 'console/generate.html',
+                                                         dict(page_title=page_title, type=type, context=content)));
+        elif action == 'delete':
+            if element_id is None:
+                return HttpResponse('{"Response": "Error: No Element ID Provided"}');
+            else:
+                element = generalFormDispatch[form_path]["class"].objects.get(pk=int(element_id));
+                destination = 'process/delete/'+element_id;
+                form_id = form_path + '_delete_form';
+                type = dict(regularForm=True);
+                content = dict(form_id=form_id, form_action=action.title(), destination=destination,
+                               form=generalFormDispatch[form_path]["form"](instance=element));
+                return kickRequest(request, True, render(request, 'console/generate.html',
+                                                         dict(page_title=page_title, type=type, context=content)));
+        else:
+            return HttpResponse('{"Response": "Error: Invalid Action"}');
+
+    def generalViewLogic(form_type, element_id):
+        element = get_object_or_404(generalFormDispatch[form_path]["class"], pk=element_id)
+        generalFormDispatch[form_path]["form"](request.POST, instance=element);
         return HttpResponse('{"Response": "Error: Invalid Action"}');
 
+    if request.method == 'POST':
+        action = request.GET.get("action");
+        element_id = request.GET.get("element_id");
+        return generalViewLogic(action, element_id);
+    else:
+        return generalViewDisplay();
 
 @csrf_exempt
 def registerSchool(request):
@@ -105,7 +130,7 @@ def login(request):
                 if u.account_type == "admin":
                     return redirect('../admin/');
                 else:
-                    return redirect('../school/');
+                    return HttpResponse('{"Response": "Error: Insufficient Permission"}');
             else:
                 return HttpResponse('{"Response": "Error: Wrong Credentials"}');
     else:
