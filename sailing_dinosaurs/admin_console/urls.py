@@ -11,4 +11,6 @@ urlpatterns = [
     path('/school', views.schoolView, name='schoolView'),
     path('/<str:form_path>/general/<str: form_type>/<str: id>', views.generalView, name='generalView'),
     path('/<str:form_path>/general', views.generalView, name='generalView'),
+    path('/<str:form_path>/process', views.generalView, name='generalView'),
+
 ]

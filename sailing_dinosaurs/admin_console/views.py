@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import QueryDict
@@ -32,6 +32,7 @@ def schoolView(request):
     else:
         return HttpResponse('{"Response": "Error: Invalid Action"}');
 
+@csrf_exempt
 def generalView(request, form_path):
     generalFormDispatch = {
         "season": {"class": Season,"form": SeasonForm},
@@ -41,56 +42,72 @@ def generalView(request, form_path):
     };
 
     def generalViewDisplay():
-        action = request.GET.get("action");
+        action = str(request.GET.get("action"));
         element_id = request.GET.get("element_id");
         page_title = (form_path + " " + action).title();
         if action == 'view':
-            return kickRequest(request, True, render(request, 'console/school.html'));
+            return HttpResponse('{"Response": "Success: here"}');
         elif action == 'add':
-            destination = 'process/add';
+            request.session['general_view'] = {"action": action, "id": None};
+            destination = 'process';
             form_id = form_path+'_add_form';
             type = dict(regularForm=True);
             content = dict(form_id=form_id, form_action=action.title(), destination=destination, form=generalFormDispatch[form_path]["form"]());
-            return kickRequest(request, True, render(request, 'console/generate.html',
-                                                     dict(page_title=page_title, type=type, context=content)));
+            return render(request, 'console/generate.html',
+                                                     dict(page_title=page_title, type=type, context=content));
         elif action == 'edit':
             if element_id is None:
                 return HttpResponse('{"Response": "Error: No Element ID Provided"}');
             else:
+                request.session['general_view'] = {"action": action, "id": element_id};
                 element = generalFormDispatch[form_path]["class"].objects.get(pk=int(element_id));
-                destination = 'process/edit/'+element_id;
+                destination = 'process';
                 form_id = form_path + '_edit_form';
                 type = dict(regularForm=True);
                 content = dict(form_id=form_id, form_action=action.title(), destination=destination,
                                form=generalFormDispatch[form_path]["form"](instance=element));
-                return kickRequest(request, True, render(request, 'console/generate.html',
-                                                         dict(page_title=page_title, type=type, context=content)));
+                return render(request, 'console/generate.html',
+                                                         dict(page_title=page_title, type=type, context=content));
         elif action == 'delete':
             if element_id is None:
                 return HttpResponse('{"Response": "Error: No Element ID Provided"}');
             else:
+                request.session['general_view'] = {"action": action, "id": element_id};
                 element = generalFormDispatch[form_path]["class"].objects.get(pk=int(element_id));
-                destination = 'process/delete/'+element_id;
+                destination = 'process';
                 form_id = form_path + '_delete_form';
                 type = dict(regularForm=True);
                 content = dict(form_id=form_id, form_action=action.title(), destination=destination,
                                form=generalFormDispatch[form_path]["form"](instance=element));
-                return kickRequest(request, True, render(request, 'console/generate.html',
-                                                         dict(page_title=page_title, type=type, context=content)));
+                return render(request, 'console/generate.html',
+                                                         dict(page_title=page_title, type=type, context=content));
         else:
             return HttpResponse('{"Response": "Error: Invalid Action"}');
 
-    def generalViewLogic(form_type, element_id):
-        element = get_object_or_404(generalFormDispatch[form_path]["class"], pk=element_id)
-        generalFormDispatch[form_path]["form"](request.POST, instance=element);
-        return HttpResponse('{"Response": "Error: Invalid Action"}');
+    def generalViewLogic():
+        request_variables = request.session['general_view'];
+        request.session['general_view'] = None;
+        action = request_variables["action"];
+        element_id = request_variables["id"];
+        if action == 'add':
+            form = generalFormDispatch[form_path]["form"](request.POST);
+            form.save();
+            return HttpResponseRedirect('general?action=view');
+        elif action == 'edit':
+            element = get_object_or_404(generalFormDispatch[form_path]["class"], pk=element_id);
+            form = generalFormDispatch[form_path]["form"](request.POST, instance=element);
+            form.save();
+            return HttpResponseRedirect('general?action=view');
+        elif action == 'delete':
+            element = get_object_or_404(generalFormDispatch[form_path]["class"], pk=element_id);
+            element.delete();
+            return HttpResponseRedirect('general?action=view');
+        else:
+            return HttpResponse('{"Response": "Error: Invalid Action"}');
 
-    if request.method == 'POST':
-        action = request.GET.get("action");
-        element_id = request.GET.get("element_id");
-        return generalViewLogic(action, element_id);
-    else:
-        return generalViewDisplay();
+    return kickRequest(request, True,
+                       (lambda x: generalViewLogic() if x else generalViewDisplay())
+                       (request.method == 'POST'));
 
 @csrf_exempt
 def registerSchool(request):
