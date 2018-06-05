@@ -62,7 +62,8 @@ class GeneralView:
         "season": {"class": Season, "form": SeasonForm},
         "region": {"class": Region, "form": RegionForm},
         "event type": {"class": EventType, "form": EventTypeForm},
-        "score mapping": {"class": ScoreMapping, "form": ScoreMappingForm}
+        "score mapping": {"class": ScoreMapping, "form": ScoreMappingForm},
+        "account": {"class": Account, "form": AccountForm},
     };
 
     def __init__(self, request):

@@ -1,4 +1,4 @@
-from .models import *
+from .models import School, Season, Region, EventType, ScoreMapping, Account
 from django import forms
 
 class SchoolForm(forms.ModelForm):
@@ -24,4 +24,9 @@ class EventTypeForm(forms.ModelForm):
 class ScoreMappingForm(forms.ModelForm):
     class Meta:
         model = ScoreMapping
+        fields = '__all__'
+
+class AccountForm(forms.ModelForm):
+    class Meta:
+        model = Account
         fields = '__all__'
