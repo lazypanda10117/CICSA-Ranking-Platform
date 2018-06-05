@@ -23,6 +23,11 @@
                 container.style.display = 'none';
             }
         }
+
+        function redirect(link){
+            window.location.href = link;
+        }
+
         function onLoad(){
         }
     </script>
@@ -68,10 +73,10 @@
             </button>
             <div class="dropdown-container-3" style="display:none;">
                 <ul>
-                    <li><a href="#">Season</a></li>
-                    <li><a href="#">Region</a></li>
-                    <li><a href="#">Event Type</a></li>
-                    <li><a href="#">Score Map</a></li>
+                    <li><a href="{% url 'generalView' 'season' %}?action=view">Season</a></li>
+                    <li><a href="{% url 'generalView' 'region' %}?action=view">Region</a></li>
+                    <li><a href="{% url 'generalView' 'event type' %}?action=view">Event Type</a></li>
+                    <li><a href="{% url 'generalView' 'score mapping' %}?action=view">Score Map</a></li>
                 </ul>
             </div>
 

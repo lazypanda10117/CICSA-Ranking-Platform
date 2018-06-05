@@ -1,6 +1,6 @@
 {% extends 'console/header.html' %}
 {% block 'head' %}
-    {% if type.regularForm %}
+    {% if type.form %}
         <script>
             function onLoad(){
                 child = document.getElementById("{{context.form_id}}").children;
@@ -33,14 +33,18 @@
     <hr>
     {% if type.table %}
         {% for element in context %}
-            <h5> {{ element.title }} </h5>
-            {% include "console/table.html" with tableHeader=element.tableHeader tableRow=element.tableRow only %}
+            <div class="d-inline">
+                <p>
+                    <pre>{{ element.title }}</pre>
+                    <button type="button" style="float:right; margin-top: -45px;" class="btn btn-outline-{{ element.tableElement.add_button.style }}" onclick="redirect('{{ element.tableElement.add_button.redirect }}');">
+                        {{ element.tableElement.add_button.title }}
+                    </button>
+                </p>
+            </div>
+            {% include "console/table.html" with tableHeader=element.tableHeader tableContent=element.tableContent only %}
         {% endfor %}
     {% endif %}
-    {% if type.regularForm %}
+    {% if type.form %}
         {% include "console/regularForm.html" with action_destination=context.destination form_action=context.form_action form_id=context.form_id form=context.form only %}
-    {% endif %}
-    {% if type.customForm %}
-        {% include "console/customForm.html" with action_destination=context.destination formList=context.formList only %}
     {% endif %}
 {% endblock %}
