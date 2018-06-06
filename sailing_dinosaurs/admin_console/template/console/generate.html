@@ -9,7 +9,8 @@
                         child[i].className = "form-group";
                         sub_child = child[i].children;
                         for(j=0; j<sub_child.length; j++){
-                            if(sub_child[j].tagName.toLowerCase() == 'input'){
+                            subchildTag = sub_child[j].tagName.toLowerCase();
+                            if(subchildTag == 'input' || subchildTag == 'textarea'){
                                 sub_child[j].className = "form-control";
                             }
                         }

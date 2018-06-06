@@ -22,9 +22,9 @@ class Authentication:
                 verify_pwd = hashlib.sha224((upwd + u_salt).encode("utf-8")).hexdigest();
                 if u_pwd == verify_pwd:
                     self.request.session['uid'] = u.id;
-                    loghelper(self.request, "Login Account id: " + str(u.id));
+                    loghelper(self.request, "login", "Login Account id: " + str(u.id));
                     if u.account_type == "admin":
-                        return redirect('../admin/');
+                        return redirect('adminIndex');
                     else:
                         return HttpResponse('{"Response": "Error: Insufficient Permission"}');
                 else:
@@ -37,6 +37,6 @@ class Authentication:
     def logout(self):
         if self.request.session.has_key('uid'):
             self.request.session['uid'] = None;
-            return redirect('../admin/');
+            return redirect('adminIndex');
         else:
             return HttpResponse('{"Response": "Error: Not Logged In"}');

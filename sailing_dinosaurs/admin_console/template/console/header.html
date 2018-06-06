@@ -73,10 +73,10 @@
             </button>
             <div class="dropdown-container-3" style="display:none;">
                 <ul>
-                    <li><a href="{% url 'generalView' 'season' %}?action=view">Season</a></li>
-                    <li><a href="{% url 'generalView' 'region' %}?action=view">Region</a></li>
-                    <li><a href="{% url 'generalView' 'event type' %}?action=view">Event Type</a></li>
-                    <li><a href="{% url 'generalView' 'score mapping' %}?action=view">Score Map</a></li>
+                    <li><a href="{% url 'adminGeneralView' 'season' %}?action=view">Season</a></li>
+                    <li><a href="{% url 'adminGeneralView' 'region' %}?action=view">Region</a></li>
+                    <li><a href="{% url 'adminGeneralView' 'event type' %}?action=view">Event Type</a></li>
+                    <li><a href="{% url 'adminGeneralView' 'score mapping' %}?action=view">Score Map</a></li>
                 </ul>
             </div>
 
@@ -85,13 +85,12 @@
             </button>
             <div class="dropdown-container-4" style="display:none;">
                 <ul>
-                    <li><a href="account">Account</a></li>
-                    <li><a href="#">Log</a></li>
+                    <li><a href="{% url 'adminGeneralView' 'account' %}?action=view">Account</a></li>
+                    <li><a href="{% url 'adminGeneralView' 'log' %}?action=view">Log</a></li>
                 </ul>
             </div>
 
-            <li><a href="">Contact</a></li>
-            <li><a href="logout">Logout</a></li>
+            <li><a href="{% url 'adminLogout' %}">Logout</a></li>
         </div>
     </div>
     <div id="page-content-wrapper">

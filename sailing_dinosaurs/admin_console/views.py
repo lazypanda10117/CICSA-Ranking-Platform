@@ -3,8 +3,10 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from .generalFunctions import *
-from .authentication import *
-from .generalView import *
+from .Authentication import *
+from .GeneralView import *
+from .CustomView import *
+
 
 from .models import *
 from .forms import *
@@ -12,6 +14,10 @@ from .forms import *
 @csrf_exempt
 def index(request):
     return kickRequest(request, True, render(request, 'console/index.html'));
+
+@csrf_exempt
+def permission(request):
+    return kickRequest(request, False, render(request, 'console/login.html'));
 
 @csrf_exempt
 def login(request):
@@ -26,5 +32,5 @@ def generalView(request, form_path):
     return GeneralView(request).dispatch(form_path);
 
 @csrf_exempt
-def permission(request):
-    return kickRequest(request, False, render(request, 'console/login.html'));
+def customView(request, form_path):
+    return CustomView(request).dispatch(form_path);
