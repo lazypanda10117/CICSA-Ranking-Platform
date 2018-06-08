@@ -26,5 +26,7 @@ def generateGETURL(path, argList):
 def getViewJSON(action, id):
     return {"action": action, "id": id};
 
+@csrf_exempt
 def getModelObject(name, field):
+    #TODO: general function to get model object
     pass;

@@ -9,7 +9,8 @@ from .forms import *
 class CustomView:
 
     def __init__(self, request):
-        self.customViewDispatcher = self.setDispatcher();
+        self.view_dispatcher = self.setDispatcher();
+        self.session_name = 'custom_view';
         self.request = request;
 
     def setDispatcher(self):
@@ -25,32 +26,32 @@ class CustomView:
                 return dict(page_title=page_title, type=type, context=tableData);
 
             def actionAdd(formData):
-                self.request.session['custom_view'] = getViewJSON(action, None);
+                self.request.session[self.session_name] = getViewJSON(action, None);
                 type = dict(form=True);
                 content = Form('_add_form', form_path, action, destination,
-                               self.customViewDispatcher.get(self.form_path)["form"]());
+                               self.view_dispatcher.get(self.form_path)["form"]());
                 return dict(page_title=page_title, type=type, context=content);
 
             def actionEdit(formData):
                 if element_id is None:
                     return HttpResponse('{"Response": "Error: No Element ID Provided"}');
                 else:
-                    self.request.session['custom_view'] = getViewJSON(action, element_id);
+                    self.request.session[self.session_name] = getViewJSON(action, element_id);
                     element = currentClass.objects.get(pk=int(element_id));
                     type = dict(form=True);
                     content = Form('_edit_form', form_path, action, destination,
-                                   self.customViewDispatcher.get(self.form_path)["form"](formData));
+                                   self.view_dispatcher.get(self.form_path)["form"](formData));
                     return dict(page_title=page_title, type=type, context=content);
 
             def actionDelete(formData):
                 if element_id is None:
                     return HttpResponse('{"Response": "Error: No Element ID Provided"}');
                 else:
-                    self.request.session['custom_view'] = getViewJSON(action, element_id);
+                    self.request.session[self.session_name] = getViewJSON(action, element_id);
                     element = currentClass.objects.get(pk=int(element_id));
                     type = dict(form=True);
                     content = Form('_delete_form', form_path, action, destination,
-                                   self.customViewDispatcher.get(self.form_path)["form"](formData));
+                                   self.view_dispatcher.get(self.form_path)["form"](formData));
                     return dict(page_title=page_title, type=type, context=content);
 
             def setFunctionDispatcher():
@@ -65,14 +66,14 @@ class CustomView:
             element_id = self.request.GET.get("element_id");
             page_title = (self.form_path + " " + action).title();
             destination = 'customProcess';
-            currentData = (lambda x: x if x else None)(self.customViewDispatcher.get(self.form_path));
+            currentData = (lambda x: x if x else None)(self.view_dispatcher.get(self.form_path));
             currentClass = currentData["class"];
 
             functionDispatch = setFunctionDispatcher();
 
-            return render(self.request, 'console/generate.html',
-                          functionDispatch.get(action)(currentClass(self.request).grabData(action, form_path))) \
-                if action in functionDispatch else HttpResponse('{"Response": "Error: Insufficient Parameters"}');
+            return (lambda x: render(self.request, 'console/generate.html',
+                                     x(currentClass(self.request).grabData(action, form_path))) if x else
+            HttpResponse('{"Response": "Error: Insufficient Parameters"}'))(functionDispatch.get(action));
 
         def CustomViewLogic():
             def actionAdd():
@@ -84,15 +85,23 @@ class CustomView:
             def actionDelete():
                 currentClass(self.request).delete(element_id);
 
-            currentData = (lambda x: x if x else None)(self.customViewDispatcher.get(self.form_path));
+            def setFunctionDispatcher():
+                dispatcher = Dispatcher();
+                dispatcher.add('add', actionAdd);
+                dispatcher.add('edit', actionEdit);
+                dispatcher.add('delete', actionDelete);
+                return dispatcher;
+
+            currentData = (lambda x: x if x else None)(self.view_dispatcher.get(self.form_path));
             currentClass = currentData["class"];
 
-            self.request_variables = self.request.session['custom_view'];
-            self.request.session['custom_view'] = None;
+            self.request_variables = self.request.session[self.session_name];
+            self.request.session[self.session_name] = None;
             action = self.request_variables["action"];
             element_id = self.request_variables["id"];
-            functionDispatch = {"add": actionAdd, "edit": actionEdit, "delete": actionDelete};
-            functionDispatch[action]();
+
+            functionDispatch = setFunctionDispatcher();
+            functionDispatch.get(action)();
             return HttpResponseRedirect('custom?action=view');
 
         return kickRequest(self.request, True,
