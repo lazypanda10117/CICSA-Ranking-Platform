@@ -54,9 +54,6 @@ class AbstractCustomClass(ABC):
 
     @abstractmethod
     def getTableRow(self,content):
-        rowContent = {};
-        rowContent["db_content"] = '';
-        rowContent["button"] = self.makeEditDeleteBtn('custom', str(content.id));
         pass;
 
     @abstractmethod
