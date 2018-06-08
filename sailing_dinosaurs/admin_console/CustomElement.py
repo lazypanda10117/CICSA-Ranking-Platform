@@ -15,16 +15,22 @@ class Table:
         self.tableContent = '';
 
     def makeTable(self):
-        self.tableElement = self.getTableElement();
+        self.tableElement = self.getTableElement('general');
         self.tableHeader = self.getTableHeader();
         self.tableContent = self.getTableContent();
         return self;
 
-    def getTableElement(self):
+    def makeCustomTables(self, tableHeader, tableContent):
+        self.tableElement = self.getTableElement('custom');
+        self.tableHeader = tableHeader;
+        self.tableContent = tableContent;
+        return self;
+
+    def getTableElement(self, process):
         def makeAddBtn(path):
             addBtn = Button('Add', 'success', generateGETURL(path, {"action": 'add'}));
             return dict(add_button=addBtn);
-        return makeAddBtn('general');
+        return makeAddBtn(process);
 
     def getTableHeader(self):
         fields = [field.name for field in self.currentClass._meta.get_fields()] + ["edit", "delete"];

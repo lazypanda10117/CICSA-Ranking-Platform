@@ -1,11 +1,6 @@
 from .models import School, Season, Region, EventType, ScoreMapping, Account, Log
 from django import forms
 
-class SchoolForm(forms.ModelForm):
-    class Meta:
-        model = School
-        fields = '__all__'
-
 class SeasonForm(forms.ModelForm):
     class Meta:
         model = Season
@@ -35,6 +30,7 @@ class LogForm(forms.ModelForm):
     class Meta:
         model = Log
         fields = '__all__'
+
 
 class SchoolForm(forms.Form):
     name = forms.CharField(max_length=200)

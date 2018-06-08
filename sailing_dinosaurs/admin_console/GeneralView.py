@@ -28,7 +28,7 @@ class GeneralView:
                 return dict(page_title=page_title, type=type, context=content);
 
             def actionAdd():
-                self.request.session['general_view'] = getGeneralViewJSON(action, None);
+                self.request.session['general_view'] = getViewJSON(action, None);
                 type = dict(form=True);
                 content = Form('_add_form', form_path, action, destination,
                                self.generalFormDispatch[self.form_path]["form"]());
@@ -39,7 +39,7 @@ class GeneralView:
                 if element_id is None:
                     return HttpResponse('{"Response": "Error: No Element ID Provided"}');
                 else:
-                    self.request.session['general_view'] = getGeneralViewJSON(action, element_id);
+                    self.request.session['general_view'] = getViewJSON(action, element_id);
                     element = currentClass.objects.get(pk=int(element_id));
                     type = dict(form=True);
                     content = Form(choiceDict[choice], form_path, action, destination,

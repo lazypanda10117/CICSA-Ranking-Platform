@@ -23,8 +23,8 @@ def generateGETURL(path, argList):
     return path + '?' + ''.join([arg[0] + '=' + arg[1] + '&' for arg in argList.items()])[:-1];
 
 @csrf_exempt
-def getGeneralViewJSON(action, id):
+def getViewJSON(action, id):
     return {"action": action, "id": id};
 
 def getModelObject(name, field):
-    return
+    pass;
