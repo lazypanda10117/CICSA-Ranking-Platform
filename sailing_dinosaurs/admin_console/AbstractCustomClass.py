@@ -9,10 +9,11 @@ from .forms import *
 
 class AbstractCustomClass(ABC):
 
-    def __init__(self, request, base_class):
+    def __init__(self, request, base_class, validation_table):
         self.dispatcher = self.setDispatcher();
         self.request = request;
         self.base_class = base_class;
+        self.validation_table = validation_table;
 
     def setDispatcher(self):
         dispatcher = Dispatcher();
@@ -38,7 +39,6 @@ class AbstractCustomClass(ABC):
 
 ### View Generating Functions
 
-    @abstractmethod
     def grabData(self, *args):
         #args[0] = action, args[1] = form_path, args[2] = element_id
         if args[0] == 'view':
@@ -67,7 +67,6 @@ class AbstractCustomClass(ABC):
     def getChoiceData(self):
         pass;
 
-    @abstractmethod
     def grabFormData(self, **kwargs):
         data = {
             "field_data": self.getFieldData(**kwargs),
@@ -80,21 +79,24 @@ class AbstractCustomClass(ABC):
     def getTableHeader(self):
         pass;
 
-    @abstractmethod
-    def getTableRow(self,content):
-        pass;
+    def getTableRow(self, content):
+        rowContent = {};
+        rowContent["db_content"] = self.getTableRowContent(content);
+        rowContent["button"] = self.makeEditDeleteBtn('custom', str(content.id));
+        return rowContent;
 
     @abstractmethod
+    def getTableRowContent(self, content):
+        pass;
+
     def makeEditDeleteBtn(self, path, id):
         editBtn = Button('Edit', 'info', generateGETURL(path, {"action": 'edit', "element_id": id}));
         deleteBtn = Button('Delete', 'danger', generateGETURL(path, {"action": 'delete', "element_id": id}))
         return [editBtn, deleteBtn];
 
-    @abstractmethod
     def getTableContent(self):
         return [self.getTableRow(content) for content in self.base_class.objects.all()];
 
-    @abstractmethod
     def grabTableData(self, form_path):
         tableHeader = self.getTableHeader();
         tableContent = self.getTableContent();

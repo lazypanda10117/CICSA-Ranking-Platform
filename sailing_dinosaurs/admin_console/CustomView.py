@@ -21,9 +21,9 @@ class CustomView:
     def dispatch(self, form_path):
         self.form_path = form_path;
         def CustomViewDisplay():
-            def actionView(tableData):
+            def actionView(data):
                 type = dict(table=True);
-                return dict(page_title=page_title, type=type, context=tableData);
+                return dict(page_title=page_title, type=type, context=data);
 
             def actionAdd(data):
                 self.request.session[self.session_name] = getViewJSON(action, None);
@@ -70,8 +70,8 @@ class CustomView:
             functionDispatch = setFunctionDispatcher();
 
             return (lambda x: render(self.request, 'console/generate.html',
-                                     x(currentClass(self.request).grabData(action, form_path, element_id))) if x else
-            HttpResponse('{"Response": "Error: Insufficient Parameters"}'))(functionDispatch.get(action));
+                                     x(currentClass(self.request).grabData(action, form_path, element_id)))
+            if x else HttpResponse('{"Response": "Error: Insufficient Parameters"}'))(functionDispatch.get(action));
 
         def CustomViewLogic():
             def actionAdd():

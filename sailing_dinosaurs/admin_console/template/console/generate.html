@@ -3,14 +3,15 @@
     {% if type.form %}
         <script>
             function onLoad(){
-                child = document.getElementById("{{context.form_id}}").children;
+                var childTagsTable = ['input', 'textarea', 'select'];
+                var child = document.getElementById("{{context.form_id}}").children;
                 for(i=0; i<child.length; i++) {
                     if(child[i].tagName.toLowerCase() == 'p'){
                         child[i].className = "form-group";
                         sub_child = child[i].children;
                         for(j=0; j<sub_child.length; j++){
                             subchildTag = sub_child[j].tagName.toLowerCase();
-                            if(subchildTag == 'input' || subchildTag == 'textarea'){
+                            if(childTagsTable.includes(subchildTag)){
                                 sub_child[j].className = "form-control";
                             }
                         }

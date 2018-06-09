@@ -14,16 +14,22 @@ class SchoolView(AbstractCustomClass):
 
     def __init__(self, request):
         self.base_class = School;
-        super().__init__(request, self.base_class);
+        self.validation_table = {
+            'base_table_invalid': {'_state'},
+            'base_form_invalid': {'_state', 'id'},
+            'account_invalid': {'_state', 'id', 'account_type', 'account_salt', 'account_status', 'account_linked_id'}
+        };
+        super().__init__(request, self.base_class, self.validation_table);
 
 ### View Process Functions
 
     def add(self):
         try:
-            school_name= self.request.POST.get("name");
-            school_email = self.request.POST.get("email");
-            school_pwd = self.request.POST.get("password");
-            school_region = self.request.POST.get("region"); #integer
+            print("hello");
+            school_name= self.request.POST.get("school_name");
+            school_email = self.request.POST.get("school_email");
+            school_pwd = self.request.POST.get("school_password");
+            school_region = self.request.POST.get("school_region");
             pwd_salt = ''.join(random.choices(string.ascii_uppercase + string.digits, k=15));
             hashpwd = hashlib.sha224((school_pwd + pwd_salt).encode("utf-8")).hexdigest();
             school = School(school_name=school_name, school_region=school_region, school_status="active", school_season_score=0);
@@ -34,7 +40,7 @@ class SchoolView(AbstractCustomClass):
             school_account.save();
             loghelper(self.request, "Add Account id: " + school_account.id + " and type: school and email: " + school_email);
         except:
-            return HttpResponse('{"Response": "Error: Cannot Create School."}');
+            return {"Error":  "Cannot Create School"};
 
     def edit(self, id):
         pass;
@@ -43,9 +49,6 @@ class SchoolView(AbstractCustomClass):
         pass;
 
 ### View Generating Functions
-
-    def grabData(self, *args):
-        return super().grabData(*args);
 
     ### Form Generating Functions
     def getFieldData(self, **kwargs):
@@ -60,41 +63,42 @@ class SchoolView(AbstractCustomClass):
         element_id = kwargs.pop('element_id');
         field_data_dispatcher = populateDispatcher();
 
+        #TODO: school_season_score default 0 for user
+        #TODO: auth wrapper of whole app
+        #TODO: does not exist catcher wrapper funciton
+
         if field_data_dispatcher.get(action):
-            base_data = self.base_class.objects.get(id=element_id).__dict__;
-            account_data = Account.objects.get(account_linked_id=element_id).__dict__;
-            field_data = {key: account_data[key] for key in account_data.keys() & {'account_email', 'account_password'}}
-            return {**base_data, **field_data};
+            base_data = filterDict(self.base_class.objects.get(id=element_id).__dict__.items(), self.validation_table['base_form_invalid']);
+            account_data = filterDict(Account.objects.get(account_linked_id=element_id).__dict__.items(), self.validation_table['account_invalid']);
+            field_data = {**base_data, **account_data};
+            return field_data;
 
         return None;
 
     def getChoiceData(self):
         choice_data = {};
-        choice_data["region"] = Choices.REGION_CHOICES;
-        choice_data["status"] = Choices.STATUS_CHOICES;
+        choice_data["school_region"] = Choices.REGION_CHOICES;
+        choice_data["school_status"] = Choices.STATUS_CHOICES;
         return choice_data;
-
-    def grabFormData(self, **kwargs):
-        return super().grabFormData(**kwargs);
 
     ### Table Generating Functions
     def getTableHeader(self):
         return [field.name for field in self.base_class._meta.get_fields()] + \
                ["account_email", "account_password", "edit", "delete"];
 
-    def getTableRow(self, content):
-        rowContent = {};
-        rowContent["db_content"] = '';
-        rowContent["button"] = self.makeEditDeleteBtn('custom', str(content.id));
-        pass;
+    def getTableRowContent(self, content):
+        base_data = grabValueAsList(filterDict(self.base_class.objects.get(id=content.id).__dict__.items(),
+                                   self.validation_table['base_table_invalid']));
+        try:
+            account_data = grabValueAsList(filterDict(Account.objects.get(account_linked_id=content.id).__dict__.items(),
+                                      self.validation_table['account_invalid']));
+        except:
+            account_data = grabValueAsList({'account_email': '', 'account_password': ''});
+
+        field_data = base_data + account_data;
+        return field_data;
 
     def makeEditDeleteBtn(self, path, id):
         editBtn = Button('Edit', 'info', generateGETURL(path, {"action": 'edit', "element_id": id}));
         deleteBtn = Button('Delete', 'danger', generateGETURL(path, {"action": 'delete', "element_id": id}))
         return [editBtn, deleteBtn];
-
-    def getTableContent(self):
-        return super().getTableContent();
-
-    def grabTableData(self, form_path):
-        return super().grabTableData(form_path);

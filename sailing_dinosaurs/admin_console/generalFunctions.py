@@ -31,7 +31,15 @@ def getViewJSON(action, id):
 def getModelObject(model_name, **kwargs):
     #TODO: general function to get model object
     result = model_name.objects.filter(**kwargs).all();
-    return result.__dict__;
+    return result;
+
+@csrf_exempt
+def filterDict(dict_items, invalid):
+    return {key: val for key, val in dict_items if key not in invalid};
+
+@csrf_exempt
+def grabValueAsList(dict):
+    return list(dict.values());
 
 @csrf_exempt
 def noneCatcher(key, data):

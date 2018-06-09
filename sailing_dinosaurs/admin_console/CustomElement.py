@@ -66,4 +66,4 @@ class Choices:
         ("dormant", "Dormant"),
         ("hidden", "Hidden")
     );
-    REGION_CHOICES = tuple([(value, value) for value in getModelObject(Region).values()])
+    REGION_CHOICES = tuple([(value.id, value.region_name) for value in getModelObject(Region)])
