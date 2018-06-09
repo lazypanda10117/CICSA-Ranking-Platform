@@ -22,10 +22,7 @@ class AbstractCustomClass(ABC):
         dispatcher.add('view', self.grabTableData);
         return dispatcher;
 
-
-    ###
-    ### View Process Functions
-    ###
+### View Process Functions
 
     @abstractmethod
     def add(self):
@@ -39,15 +36,46 @@ class AbstractCustomClass(ABC):
     def delete(self, id):
         pass;
 
-
-    ###
-    ### View Generating Functions
-    ###
+### View Generating Functions
 
     @abstractmethod
-    def grabFormData(self, action):
-            pass;
+    def grabData(self, *args):
+        #args[0] = action, args[1] = form_path, args[2] = element_id
+        if args[0] == 'view':
+            return self.dispatcher.get(args[0])(form_path = args[1]);
+        elif args[0] == 'add':
+            return self.dispatcher.get(args[0])(action=args[0], element_id=args[2]);
+        elif args[0] == 'edit':
+            if args[2]:
+                return self.dispatcher.get(args[0])(action=args[0], element_id=args[2]);
+            else:
+                return {"Error": "Insufficient Parameters"};
+        elif args[0] == 'delete':
+            if args[2]:
+                return self.dispatcher.get(args[0])(action=args[0], element_id=args[2]);
+            else:
+                return {"Error": "Insufficient Parameters"};
+        else:
+            return {"Error": "Unknown Error"};
 
+    ### Form Generating Functions
+    @abstractmethod
+    def getFieldData(self, **kwargs):
+        pass;
+
+    @abstractmethod
+    def getChoiceData(self):
+        pass;
+
+    @abstractmethod
+    def grabFormData(self, **kwargs):
+        data = {
+            "field_data": self.getFieldData(**kwargs),
+            "choice_data": self.getChoiceData()
+        }
+        return data;
+
+    ### Table Generating Functions
     @abstractmethod
     def getTableHeader(self):
         pass;
@@ -72,9 +100,3 @@ class AbstractCustomClass(ABC):
         tableContent = self.getTableContent();
         table = Table(self.base_class, form_path).makeCustomTables(tableHeader, tableContent);
         return [table];
-
-    @abstractmethod
-    def grabData(self, action, form_path):
-        return (lambda x: x(form_path if action == 'view' else action) if x else None)\
-            (self.dispatcher.get(action))
-

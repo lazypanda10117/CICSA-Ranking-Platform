@@ -1,5 +1,6 @@
 import hashlib, random, string
 
+from .Dispatcher import Dispatcher
 from .AbstractCustomClass import AbstractCustomClass
 from .generalFunctions import *
 from .CustomElement import *
@@ -9,18 +10,13 @@ from .forms import *
 
 class SchoolView(AbstractCustomClass):
 
-    ###
-    ### Constructor <-> AbstractCustomClass
-    ###
+### Constructor <-> AbstractCustomClass
 
     def __init__(self, request):
         self.base_class = School;
         super().__init__(request, self.base_class);
 
-
-    ###
-    ### View Process Functions
-    ###
+### View Process Functions
 
     def add(self):
         try:
@@ -46,22 +42,45 @@ class SchoolView(AbstractCustomClass):
     def delete(self, id):
         pass;
 
+### View Generating Functions
 
-    ###
-    ### View Generating Functions
-    ###
+    def grabData(self, *args):
+        return super().grabData(*args);
 
-    def grabFormData(self, action):
-        pass;
+    ### Form Generating Functions
+    def getFieldData(self, **kwargs):
+        def populateDispatcher():
+            dispatcher = Dispatcher();
+            dispatcher.add('add', False);
+            dispatcher.add('edit', True);
+            dispatcher.add('delete', True);
+            return dispatcher;
 
+        action = kwargs.pop('action');
+        element_id = kwargs.pop('element_id');
+        field_data_dispatcher = populateDispatcher();
+
+        if field_data_dispatcher.get(action):
+            base_data = self.base_class.objects.get(id=element_id).__dict__;
+            account_data = Account.objects.get(account_linked_id=element_id).__dict__;
+            field_data = {key: account_data[key] for key in account_data.keys() & {'account_email', 'account_password'}}
+            return {**base_data, **field_data};
+
+        return None;
+
+    def getChoiceData(self):
+        choice_data = {};
+        choice_data["region"] = Choices.REGION_CHOICES;
+        choice_data["status"] = Choices.STATUS_CHOICES;
+        return choice_data;
+
+    def grabFormData(self, **kwargs):
+        return super().grabFormData(**kwargs);
+
+    ### Table Generating Functions
     def getTableHeader(self):
         return [field.name for field in self.base_class._meta.get_fields()] + \
                ["account_email", "account_password", "edit", "delete"];
-
-    def makeEditDeleteBtn(self, path, id):
-        editBtn = Button('Edit', 'info', generateGETURL(path, {"action": 'edit', "element_id": id}));
-        deleteBtn = Button('Delete', 'danger', generateGETURL(path, {"action": 'delete', "element_id": id}))
-        return [editBtn, deleteBtn];
 
     def getTableRow(self, content):
         rowContent = {};
@@ -69,16 +88,13 @@ class SchoolView(AbstractCustomClass):
         rowContent["button"] = self.makeEditDeleteBtn('custom', str(content.id));
         pass;
 
-
-    ###
-    ### Full Reusable Functions
-    ###
+    def makeEditDeleteBtn(self, path, id):
+        editBtn = Button('Edit', 'info', generateGETURL(path, {"action": 'edit', "element_id": id}));
+        deleteBtn = Button('Delete', 'danger', generateGETURL(path, {"action": 'delete', "element_id": id}))
+        return [editBtn, deleteBtn];
 
     def getTableContent(self):
         return super().getTableContent();
 
     def grabTableData(self, form_path):
         return super().grabTableData(form_path);
-
-    def grabData(self, action, form_path):
-        return super().grabData(action, form_path);

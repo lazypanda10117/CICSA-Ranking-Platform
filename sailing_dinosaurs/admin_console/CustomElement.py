@@ -59,3 +59,11 @@ class Form:
 
     def getFormID(self, form_string):
         return self.form_path + form_string;
+
+class Choices:
+    STATUS_CHOICES = (
+        ("active", "Active"),
+        ("dormant", "Dormant"),
+        ("hidden", "Hidden")
+    );
+    REGION_CHOICES = tuple([(value, value) for value in getModelObject(Region).values()])

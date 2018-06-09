@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRe
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 import math
+import pdb
 
 from .models import *
 
@@ -27,6 +28,11 @@ def getViewJSON(action, id):
     return {"action": action, "id": id};
 
 @csrf_exempt
-def getModelObject(name, field):
+def getModelObject(model_name, **kwargs):
     #TODO: general function to get model object
-    pass;
+    result = model_name.objects.filter(**kwargs).all();
+    return result.__dict__;
+
+@csrf_exempt
+def noneCatcher(key, data):
+    return data[key] if key in data else None;

@@ -1,5 +1,6 @@
-from .models import School, Season, Region, EventType, ScoreMapping, Account, Log
 from django import forms
+from .generalFunctions import *
+from .models import School, Season, Region, EventType, ScoreMapping, Account, Log
 
 class SeasonForm(forms.ModelForm):
     class Meta:
@@ -33,9 +34,19 @@ class LogForm(forms.ModelForm):
 
 
 class SchoolForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super(SchoolForm, self).__init__(*args, **kwargs)
+        data = kwargs.pop('data', None);
+        self.field_data = (lambda x: x if x else [])(noneCatcher('field_data', data));
+        self.choice_data = (lambda x: x if x else [])(noneCatcher('choice_data', data));
+        for key, value in self.field_data:
+            self.fields[key] = forms.ChoiceField(choices=value);
+        for key, value in self.field_data:
+            self.fields[key].initials = value;
+
     name = forms.CharField(max_length=200)
     email = forms.EmailField()
     password = forms.CharField(max_length=200)
-    region = forms.IntegerField()
-    status = forms.CharField(max_length=50)
+    region = forms.ChoiceField(choices=[(1,"hi")]);
+    status = forms.ChoiceField(choices=[]);
     season_score = forms.FloatField()
