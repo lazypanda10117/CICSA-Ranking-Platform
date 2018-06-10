@@ -29,7 +29,7 @@ class CustomView:
                 self.request.session[self.session_name] = getViewJSON(action, None);
                 type = dict(form=True);
                 content = Form('_add_form', form_path, action, destination,
-                               self.view_dispatcher.get(self.form_path)["form"](data=data));
+                               self.view_dispatcher.get(self.form_path)(data=data));
                 return dict(page_title=page_title, type=type, context=content);
 
             def actionEdit(data):

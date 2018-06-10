@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRe
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 import math
-import pdb
 
 from .models import *
 
@@ -28,7 +27,7 @@ def logQueryMaker(model_name, type, **kwargs):
     item_dict = filterDict(getModelObject(model_name, **kwargs).__dict__.items(), invalid);
     for key in item_dict:
         log += str(key) + ': ' + str(item_dict[key]) + ', ';
-    return log[:-1];
+    return log[:-2];
 
 @csrf_exempt
 def generateGETURL(path, argList):

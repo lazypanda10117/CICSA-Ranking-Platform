@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 
 from .Dispatcher import Dispatcher
-from .generalFunctions import *
 from .CustomElement import *
+from .generalFunctions import *
 
 from .models import *
 from .forms import *
@@ -26,16 +26,17 @@ class AbstractCustomClass(ABC):
 ### View Process Functions
 
     @abstractmethod
+    def abstractFormProcess(self, action, **kwargs):
+        pass;
+
     def add(self):
-        pass;
+        return self.abstractFormProcess('add');
 
-    @abstractmethod
     def edit(self, id):
-        pass;
+        return self.abstractFormProcess('edit', id=id);
 
-    @abstractmethod
     def delete(self, id):
-        pass;
+        return self.abstractFormProcess('delete', id=id);
 
 ### View Generating Functions
 

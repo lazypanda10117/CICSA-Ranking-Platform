@@ -1,6 +1,6 @@
 from .Dispatcher import *
-from .generalFunctions import *
 from .CustomElement import *
+from .generalFunctions import *
 
 from .models import *
 from .forms import *

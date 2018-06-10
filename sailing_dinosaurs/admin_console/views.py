@@ -7,7 +7,6 @@ from .Authentication import *
 from .GeneralView import *
 from .CustomView import *
 
-
 from .models import *
 from .forms import *
 
