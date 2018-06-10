@@ -1,5 +1,4 @@
 <form action="{{ action_destination }}" id="{{ form_id }}" method="post">
-    {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="{{ form_action }}" name="{{ form_action }}"/>
 </form>

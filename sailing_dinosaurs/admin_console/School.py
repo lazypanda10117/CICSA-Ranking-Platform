@@ -1,3 +1,4 @@
+from django.db import transaction
 import hashlib, random, string
 
 from .Dispatcher import Dispatcher
@@ -14,6 +15,7 @@ class SchoolView(AbstractCustomClass):
 
     def __init__(self, request):
         self.base_class = School;
+        self.form_class = SchoolForm;
         self.validation_table = {
             'base_table_invalid': {'_state'},
             'base_form_invalid': {'_state', 'id'},
@@ -22,28 +24,90 @@ class SchoolView(AbstractCustomClass):
         super().__init__(request, self.base_class, self.validation_table);
 
 ### View Process Functions
+    def genericProcess(self, action):
+        try:
+            post_dict = dict(self.request.POST);
+            dispatcher = super().populateDispatcher();
+            if dispatcher.get(action):
+                school = School.objects.get(id=id);
+                school_account = Account.objects.get(account_linked_id=school.id);
+                pwd = getPostObj(post_dict, 'account_password');
+                pwd_salt = school_account.account_salt;
+                if not (pwd == school_account.account_password):
+                    hashpwd = hashlib.sha224((pwd + pwd_salt).encode("utf-8")).hexdigest();
+                    school_account.account_password = hashpwd;
+            else:
+                school = School();
+                school_account = Account();
+                pwd_salt = ''.join(random.choices(string.ascii_uppercase + string.digits, k=15));
+                hashpwd = hashlib.sha224(
+                    (getPostObj(post_dict, 'account_password') + pwd_salt).encode("utf-8")).hexdigest();
+                school_account.account_password = hashpwd;
+
+            school.school_name = getPostObj(post_dict, 'school_name');
+            school.school_region = getPostObj(post_dict, 'school_region');
+            school.school_status = getPostObj(post_dict, 'school_status');
+            school.school_season_score = getPostObj(post_dict, 'school_season_score');
+            school.save();
+            loghelper(self.request, 'admin', logQueryMaker(School, 'Edit', id=school.id));
+            school_account.account_email = getPostObj(post_dict, 'account_email');
+            school_account.account_status = getPostObj(post_dict, 'school_status');
+            school_account.account_linked_id = school.id;
+            school_account.save();
+            loghelper(self.request, 'admin', logQueryMaker(Account, action.title(), id=school_account.id));
+        except:
+            return {"Error": "Cannot Process " + action.title() + " Request." };
 
     def add(self):
         try:
-            print("hello");
-            school_name= self.request.POST.get("school_name");
-            school_email = self.request.POST.get("school_email");
-            school_pwd = self.request.POST.get("school_password");
-            school_region = self.request.POST.get("school_region");
+            post_dict = dict(self.request.POST);
             pwd_salt = ''.join(random.choices(string.ascii_uppercase + string.digits, k=15));
-            hashpwd = hashlib.sha224((school_pwd + pwd_salt).encode("utf-8")).hexdigest();
-            school = School(school_name=school_name, school_region=school_region, school_status="active", school_season_score=0);
+            hashpwd = hashlib.sha224((getPostObj(post_dict, 'account_password') + pwd_salt).encode("utf-8")).hexdigest();
+            school = School();
+            school.school_name = getPostObj(post_dict, 'school_name');
+            school.school_region = getPostObj(post_dict, 'school_region');
+            school.school_status = getPostObj(post_dict, 'school_status');
+            school.school_season_score = getPostObj(post_dict, 'school_season_score');
             school.save();
-            school_id = school.id;
-            loghelper(self.request, "Add School id: " + school_id + " and name: " + school_name);
-            school_account = Account(account_type="school", account_email=school_email, account_salt=pwd_salt, account_pwd=hashpwd, account_status="active", account_link_id=school_id);
+            school_id = str(school.id);
+            loghelper(self.request, 'admin',
+                      "Add School id: " + school_id + " and name: " + getPostObj(post_dict, 'school_name'));
+            school_account = Account();
+            school_account.account_type = "school";
+            school_account.account_email = getPostObj(post_dict, 'account_email');
+            school_account.account_salt = pwd_salt;
+            school_account.account_password = hashpwd;
+            school_account.account_status = getPostObj(post_dict, 'school_status');
+            school_account.account_linked_id = school_id;
             school_account.save();
-            loghelper(self.request, "Add Account id: " + school_account.id + " and type: school and email: " + school_email);
+            school_account_id = str(school_account.id);
+            loghelper(self.request, 'admin', "Edit Account id: " +
+                      school_account_id + " and type: school and email: " + getPostObj(post_dict, 'account_email'));
         except:
-            return {"Error":  "Cannot Create School"};
+            return {"Error":  "Cannot Process"};
 
     def edit(self, id):
-        pass;
+        try:
+            post_dict = dict(self.request.POST);
+            school = School.objects.get(id=id);
+            school.school_name = getPostObj(post_dict, 'school_name');
+            school.school_region = getPostObj(post_dict, 'school_region');
+            school.school_status = getPostObj(post_dict, 'school_status');
+            school.school_season_score = getPostObj(post_dict, 'school_season_score');
+            school.save();
+            loghelper(self.request, 'admin', logQueryMaker(School, 'Edit', id=school.id));
+            school_account = Account.objects.get(account_linked_id=school.id);
+            pwd = getPostObj(post_dict, 'account_password');
+            pwd_salt = school_account.account_salt;
+            if not (pwd == school_account.account_password):
+                hashpwd = hashlib.sha224((pwd + pwd_salt).encode("utf-8")).hexdigest();
+                school_account.account_password = hashpwd;
+            school_account.account_email = getPostObj(post_dict, 'account_email');
+            school_account.account_status = getPostObj(post_dict, 'school_status');
+            school_account.save();
+            loghelper(self.request, 'admin', logQueryMaker(Account, 'Edit', id=school_account.id));
+        except:
+            return {"Error":  "Cannot Process"};
 
     def delete(self, id):
         pass;
@@ -52,27 +116,14 @@ class SchoolView(AbstractCustomClass):
 
     ### Form Generating Functions
     def getFieldData(self, **kwargs):
-        def populateDispatcher():
-            dispatcher = Dispatcher();
-            dispatcher.add('add', False);
-            dispatcher.add('edit', True);
-            dispatcher.add('delete', True);
-            return dispatcher;
-
         action = kwargs.pop('action');
         element_id = kwargs.pop('element_id');
-        field_data_dispatcher = populateDispatcher();
-
-        #TODO: school_season_score default 0 for user
-        #TODO: auth wrapper of whole app
-        #TODO: does not exist catcher wrapper funciton
-
+        field_data_dispatcher = self.populateDispatcher();
         if field_data_dispatcher.get(action):
-            base_data = filterDict(self.base_class.objects.get(id=element_id).__dict__.items(), self.validation_table['base_form_invalid']);
-            account_data = filterDict(Account.objects.get(account_linked_id=element_id).__dict__.items(), self.validation_table['account_invalid']);
+            base_data = filterDict(getModelObject(self.base_class,id=element_id).__dict__.items(), self.validation_table['base_form_invalid']);
+            account_data = filterDict(getModelObject(Account, account_linked_id=element_id).__dict__.items(), self.validation_table['account_invalid']);
             field_data = {**base_data, **account_data};
             return field_data;
-
         return None;
 
     def getChoiceData(self):
@@ -87,18 +138,13 @@ class SchoolView(AbstractCustomClass):
                ["account_email", "account_password", "edit", "delete"];
 
     def getTableRowContent(self, content):
-        base_data = grabValueAsList(filterDict(self.base_class.objects.get(id=content.id).__dict__.items(),
-                                   self.validation_table['base_table_invalid']));
+        base_data = grabValueAsList(filterDict(getModelObject(self.base_class, id=content.id).
+                                               __dict__.items(), self.validation_table['base_table_invalid']));
         try:
-            account_data = grabValueAsList(filterDict(Account.objects.get(account_linked_id=content.id).__dict__.items(),
-                                      self.validation_table['account_invalid']));
+            account_data = grabValueAsList(filterDict(getModelObject(Account, account_linked_id=content.id).
+                                                      __dict__.items(), self.validation_table['account_invalid']));
         except:
             account_data = grabValueAsList({'account_email': '', 'account_password': ''});
 
         field_data = base_data + account_data;
         return field_data;
-
-    def makeEditDeleteBtn(self, path, id):
-        editBtn = Button('Edit', 'info', generateGETURL(path, {"action": 'edit', "element_id": id}));
-        deleteBtn = Button('Delete', 'danger', generateGETURL(path, {"action": 'delete', "element_id": id}))
-        return [editBtn, deleteBtn];

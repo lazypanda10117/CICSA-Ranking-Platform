@@ -29,6 +29,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SILENCED_SYSTEM_CHECKS = ["fields.W161"]
 
 # Application definition
 

@@ -45,12 +45,7 @@ class AbstractCustomClass(ABC):
             return self.dispatcher.get(args[0])(form_path = args[1]);
         elif args[0] == 'add':
             return self.dispatcher.get(args[0])(action=args[0], element_id=args[2]);
-        elif args[0] == 'edit':
-            if args[2]:
-                return self.dispatcher.get(args[0])(action=args[0], element_id=args[2]);
-            else:
-                return {"Error": "Insufficient Parameters"};
-        elif args[0] == 'delete':
+        if args[0] in {'edit', 'delete'}:
             if args[2]:
                 return self.dispatcher.get(args[0])(action=args[0], element_id=args[2]);
             else:
@@ -59,6 +54,13 @@ class AbstractCustomClass(ABC):
             return {"Error": "Unknown Error"};
 
     ### Form Generating Functions
+    def populateDispatcher(self):
+        dispatcher = Dispatcher();
+        dispatcher.add('add', False);
+        dispatcher.add('edit', True);
+        dispatcher.add('delete', True);
+        return dispatcher;
+
     @abstractmethod
     def getFieldData(self, **kwargs):
         pass;

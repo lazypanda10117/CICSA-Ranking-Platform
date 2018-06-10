@@ -12,18 +12,18 @@ class Authentication:
         if (self.request.POST.get("email") != None and self.request.POST.get("password") != None):
             uemail = self.request.POST.get("email");
             upwd = self.request.POST.get("password");
-            u = Account.objects.filter(account_email=uemail);
-            if len(u) == 0:
+            u = getModelObject(Account, account_email=uemail);
+            if u is None:
                 return HttpResponse('{"Response": "Error: No Such User"}');
             else:
-                u = u.get();
                 u_pwd = u.account_password;
                 u_salt = u.account_salt;
                 verify_pwd = hashlib.sha224((upwd + u_salt).encode("utf-8")).hexdigest();
                 if u_pwd == verify_pwd:
-                    self.request.session['uid'] = u.id;
-                    loghelper(self.request, "login", "Login Account id: " + str(u.id));
                     if u.account_type == "admin":
+                        self.request.session['uid'] = u.id;
+                        self.request.session['utype'] = u.account_type;
+                        loghelper(self.request, "login", "Login Account id: " + str(u.id));
                         return redirect('adminIndex');
                     else:
                         return HttpResponse('{"Response": "Error: Insufficient Permission"}');
@@ -35,8 +35,9 @@ class Authentication:
 
     @csrf_exempt
     def logout(self):
-        if self.request.session.has_key('uid'):
+        if sessionChecker(self.request, 'uid', 'utype'):
             self.request.session['uid'] = None;
+            self.request.session['utype'] = None;
             return redirect('adminIndex');
         else:
             return HttpResponse('{"Response": "Error: Not Logged In"}');
