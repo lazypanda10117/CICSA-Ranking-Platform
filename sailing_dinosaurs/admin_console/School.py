@@ -32,7 +32,7 @@ class SchoolView(AbstractCustomClass):
 
             if dispatcher.get(action):
                 school_id = kwargs.pop('id', None);
-                school = School.objects.get(id=school_id);
+                school = self.base_class.objects.get(id=school_id);
                 school_account = Account.objects.get(account_linked_id=school.id);
                 pwd = getPostObj(post_dict, 'account_password');
                 pwd_salt = school_account.account_salt;
@@ -40,7 +40,7 @@ class SchoolView(AbstractCustomClass):
                     hashpwd = hashlib.sha224((pwd + pwd_salt).encode("utf-8")).hexdigest();
                     school_account.account_password = hashpwd;
             else:
-                school = School();
+                school = self.base_class();
                 school_account = Account();
                 pwd_salt = ''.join(random.choices(string.ascii_uppercase + string.digits, k=15));
                 hashpwd = hashlib.sha224(
@@ -56,7 +56,7 @@ class SchoolView(AbstractCustomClass):
             if not action == 'delete':
                 school.save();
 
-            loghelper(self.request, 'admin', logQueryMaker(School, action.title(), id=school.id));
+            loghelper(self.request, 'admin', logQueryMaker(self.base_class, action.title(), id=school.id));
             school_account.account_email = getPostObj(post_dict, 'account_email');
             school_account.account_status = getPostObj(post_dict, 'school_status');
             school_account.account_linked_id = school.id;
@@ -92,13 +92,17 @@ class SchoolView(AbstractCustomClass):
         return choice_data;
 
     ### Table Generating Functions
-    def getTableHeader(self):
-        return [field.name for field in self.base_class._meta.get_fields()] + \
-               ["account_email", "account_password", "edit", "delete"];
+    def getTableSpecificHeader(self):
+        return [field.name for field in self.base_class._meta.get_fields()
+                if not field.name in self.validation_table['base_table_invalid']] + \
+               ["account_email", "account_password"];
 
     def getTableRowContent(self, content):
-        base_data = grabValueAsList(filterDict(getModelObject(self.base_class, id=content.id).
-                                               __dict__.items(), self.validation_table['base_table_invalid']));
+        base_data = filterDict(getModelObject(self.base_class, id=content.id).
+                                               __dict__.items(), self.validation_table['base_table_invalid']);
+        base_data['school_region'] = filterDict(getModelObject(Region, id=base_data['school_region']).
+                                                __dict__.items(), {})["region_name"];
+        base_data = grabValueAsList(base_data);
         try:
             account_data = grabValueAsList(filterDict(getModelObject(Account, account_linked_id=content.id).
                                                       __dict__.items(), self.validation_table['account_invalid']));

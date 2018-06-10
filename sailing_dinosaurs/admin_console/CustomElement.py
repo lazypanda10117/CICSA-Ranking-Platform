@@ -67,3 +67,8 @@ class Choices:
         ("hidden", "Hidden")
     );
     REGION_CHOICES = tuple([(value.id, value.region_name) for value in filterModelObject(Region)])
+    ACCOUNT_TYPE_CHOICES = (
+        ("admin", "Admin"),
+        ("school", "School")
+    );
+

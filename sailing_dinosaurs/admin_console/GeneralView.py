@@ -18,7 +18,6 @@ class GeneralView:
         dispatcher.add('region', {'class': Region, 'form': RegionForm});
         dispatcher.add('event type', {'class': EventType, 'form': EventTypeForm});
         dispatcher.add('score mapping', {'class': ScoreMapping, 'form': ScoreMappingForm});
-        dispatcher.add('account', {'class': Account, 'form': AccountForm});
         dispatcher.add('log', {'class': Log, 'form': LogForm});
         return dispatcher;
 

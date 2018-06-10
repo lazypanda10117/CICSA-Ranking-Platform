@@ -1,7 +1,9 @@
 from .Dispatcher import Dispatcher
 from .generalFunctions import *
 from .CustomElement import *
+
 from .School import *
+from .Account import *
 
 from .models import *
 from .forms import *
@@ -16,6 +18,7 @@ class CustomView:
     def setDispatcher(self):
         dispatcher = Dispatcher();
         dispatcher.add('school', {'class': SchoolView, 'form': SchoolForm});
+        dispatcher.add('account', {'class': AccountView, 'form': AccountForm});
         return dispatcher;
 
     def dispatch(self, form_path):

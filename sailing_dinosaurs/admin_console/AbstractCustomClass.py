@@ -78,8 +78,11 @@ class AbstractCustomClass(ABC):
         return data;
 
     ### Table Generating Functions
-    @abstractmethod
     def getTableHeader(self):
+        return self.getTableSpecificHeader() + ["edit", "delete"];
+
+    @abstractmethod
+    def getTableSpecificHeader(self):
         pass;
 
     def getTableRow(self, content):
