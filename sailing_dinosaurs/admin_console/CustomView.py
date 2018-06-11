@@ -1,7 +1,5 @@
-from .Dispatcher import Dispatcher
+from .HelperClass import *
 from .generalFunctions import *
-from .CustomElement import *
-
 from .CustomViewClass import *
 
 from .models import *
@@ -64,7 +62,7 @@ class CustomView:
                 dispatcher.add('delete', actionDelete);
                 return dispatcher;
 
-            action = str(self.request.GET.get("action"));
+            action = (lambda x: x if x else 'view')(self.request.GET.get("action"));
             element_id = self.request.GET.get("element_id");
             page_title = (self.form_path + " " + action).title();
             destination = 'customProcess';
@@ -104,7 +102,7 @@ class CustomView:
 
             functionDispatch = setFunctionDispatcher();
             functionDispatch.get(action)();
-            return HttpResponseRedirect('custom?action=view');
+            return HttpResponseRedirect('custom');
 
         return kickRequest(self.request, True,
                            (lambda x: CustomViewLogic() if x else CustomViewDisplay())

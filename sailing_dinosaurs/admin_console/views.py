@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from .generalFunctions import *
-from .CustomViewClass import Authentication
+from .HelperClass import *
 from .GeneralView import *
 from .CustomView import *
 

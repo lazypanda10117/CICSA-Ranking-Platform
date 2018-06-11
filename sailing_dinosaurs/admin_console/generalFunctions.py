@@ -1,4 +1,7 @@
-from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
+import urllib
+
+from django.shortcuts import render, reverse, redirect, get_object_or_404, HttpResponseRedirect
+from django.urls import resolve
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 import math
@@ -76,3 +79,14 @@ def grabLinkValueFromChoices(choices, key):
 @csrf_exempt
 def noneCatcher(key, data):
     return data[key] if key in data else None;
+
+@csrf_exempt
+def emptyActionRedirect(request, func):
+    #TODO: redirect to action=view
+    print(request.GET)
+    if request.GET.get('action') is None:
+        current_url = resolve(request.path_info).url_name;
+        params = 'action=view';
+        return HttpResponseRedirect(current_url + "?%s" % params);
+    else:
+        return func;

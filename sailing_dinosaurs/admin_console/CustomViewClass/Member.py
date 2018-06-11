@@ -1,10 +1,5 @@
-from django.db import transaction
-import hashlib, random, string
-
 from .AbstractCustomClass import AbstractCustomClass
-
-from ..Dispatcher import Dispatcher
-from ..CustomElement import *
+from ..HelperClass import *
 from ..generalFunctions import *
 
 from ..models import *
@@ -15,8 +10,8 @@ class MemberView(AbstractCustomClass):
 ### Constructor <-> AbstractCustomClass
 
     def __init__(self, request):
-        self.base_class = Team;
-        self.form_class = TeamForm;
+        self.base_class = Member;
+        self.form_class = MemberForm;
         self.validation_table = {
             'base_table_invalid': {'_state'},
             'base_form_invalid': {'_state', 'id'},
@@ -26,28 +21,29 @@ class MemberView(AbstractCustomClass):
 ### View Process Functions
 
     def abstractFormProcess(self, action, **kwargs):
-        try:
+        #try:
             post_dict = dict(self.request.POST);
             dispatcher = super().populateDispatcher();
 
             if dispatcher.get(action):
-                team_id = kwargs.pop('id', None);
-                team = self.base_class.objects.get(id=team_id);
+                member_id = kwargs.pop('id', None);
+                member = self.base_class.objects.get(id=member_id);
             else:
-                team = self.base_class();
+                member = self.base_class();
 
-            team.team_name = getPostObj(post_dict, 'team_name');
-            team.team_school = getPostObj(post_dict, 'team_school');
-            team.team_status = getPostObj(post_dict, 'team_status');
+            member.member_name = getPostObj(post_dict, 'member_name');
+            member.member_school = getPostObj(post_dict, 'member_school');
+            member.member_email = getPostObj(post_dict, 'member_email');
+            member.member_status = getPostObj(post_dict, 'member_status');
 
             if not action == 'delete':
-                team.save();
+                member.save();
 
-            loghelper(self.request, 'admin', logQueryMaker(self.base_class, action.title(), id=team.id));
+            loghelper(self.request, 'admin', logQueryMaker(self.base_class, action.title(), id=member.id));
 
             if action == 'delete':
-                team.delete();
-        except:
+                member.delete();
+        #except:
             print({"Error": "Cannot Process " + action.title() + " Request." });
 
 ### View Generating Functions
@@ -65,8 +61,8 @@ class MemberView(AbstractCustomClass):
 
     def getChoiceData(self):
         choice_data = {};
-        choice_data["team_status"] = Choices.TEAM_STATUS_CHOICES;
-        choice_data["team_school"] = Choices.SCHOOL_CHOICES;
+        choice_data["member_status"] = Choices.STATUS_CHOICES;
+        choice_data["member_school"] = Choices.SCHOOL_CHOICES;
         return choice_data;
 
     ### Table Generating Functions
@@ -77,7 +73,6 @@ class MemberView(AbstractCustomClass):
     def getTableRowContent(self, content):
         field_data = filterDict(getModelObject(self.base_class, id=content.id).__dict__.items(),
                                                 self.validation_table['base_table_invalid']);
-        field_data['team_school'] = grabLinkValueFromChoices(Choices.SCHOOL_CHOICES, field_data['team_school']);
-        field_data['team_status'] = grabLinkValueFromChoices(Choices.TEAM_STATUS_CHOICES, field_data['team_status']);
+        field_data = self.updateChoiceAsValue(field_data, self.getChoiceData());
         field_data = grabValueAsList(field_data);
         return field_data;

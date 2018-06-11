@@ -1,5 +1,4 @@
-from .Dispatcher import *
-from .CustomElement import *
+from .HelperClass import *
 from .generalFunctions import *
 
 from .models import *
@@ -58,7 +57,7 @@ class GeneralView:
                 dispatcher.add('delete', actionEditDelete('delete'));
                 return dispatcher;
 
-            action = str(self.request.GET.get("action"));
+            action = (lambda x: x if x else 'view')(self.request.GET.get("action"));
             element_id = self.request.GET.get("element_id");
 
             page_title = (self.form_path + " " + action).title();
@@ -103,7 +102,7 @@ class GeneralView:
             functionDispatch = setFunctionDispatcher();
             functionDispatch.get(action)();
 
-            return HttpResponseRedirect('general?action=view');
+            return HttpResponseRedirect('general');
 
         return kickRequest(self.request, True,
                            (lambda x: generalViewLogic() if x else generalViewDisplay())

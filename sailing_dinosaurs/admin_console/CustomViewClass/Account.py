@@ -1,10 +1,7 @@
-from django.db import transaction
 import hashlib, random, string
 
 from .AbstractCustomClass import AbstractCustomClass
-
-from ..Dispatcher import Dispatcher
-from ..CustomElement import *
+from ..HelperClass import *
 from ..generalFunctions import *
 
 from ..models import *
@@ -86,6 +83,8 @@ class AccountView(AbstractCustomClass):
                 if not field.name in self.validation_table['base_table_invalid']];
 
     def getTableRowContent(self, content):
-        field_data = grabValueAsList(filterDict(getModelObject(self.base_class, id=content.id).__dict__.items(),
-                                                self.validation_table['base_table_invalid']));
+        field_data = filterDict(getModelObject(self.base_class, id=content.id).__dict__.items(),
+                                                self.validation_table['base_table_invalid']);
+        field_data = self.updateChoiceAsValue(field_data, self.getChoiceData());
+        field_data = grabValueAsList(field_data);
         return field_data;

@@ -1,4 +1,4 @@
-from .generalFunctions import *
+from ..generalFunctions import *
 
 class Button:
     def __init__(self, title, style, redirect):

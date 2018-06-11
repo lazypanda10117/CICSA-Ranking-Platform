@@ -1,7 +1,5 @@
 from abc import ABC, abstractmethod
-
-from ..Dispatcher import Dispatcher
-from ..CustomElement import *
+from ..HelperClass import *
 from ..generalFunctions import *
 
 from ..models import *
@@ -94,6 +92,12 @@ class AbstractCustomClass(ABC):
     @abstractmethod
     def getTableRowContent(self, content):
         pass;
+
+    def updateChoiceAsValue(self, field_data, choice_data):
+        temp_data = field_data;
+        for key, value in choice_data.items():
+            temp_data[key] = grabLinkValueFromChoices(value, field_data[key]);
+        return temp_data;
 
     def makeEditDeleteBtn(self, path, id):
         editBtn = Button('Edit', 'info', generateGETURL(path, {"action": 'edit', "element_id": id}));
