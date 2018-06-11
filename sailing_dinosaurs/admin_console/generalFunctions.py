@@ -53,7 +53,7 @@ def getModelObject(model_name, **kwargs):
 @csrf_exempt
 def sessionChecker(request, *args):
     for arg in args:
-        if request.session[arg] is None or not (arg in request.session):
+        if  not (arg in request.session) or request.session[arg] is None:
             return False;
     return True;
 
@@ -68,6 +68,10 @@ def grabValueAsList(dict):
 @csrf_exempt
 def getPostObj(post_dict, name):
     return post_dict[name][0];
+
+@csrf_exempt
+def grabLinkValueFromChoices(choices, key):
+    return (lambda x: x if x else None)([value[1] for i, value in enumerate(choices) if value[0] == key][0]);
 
 @csrf_exempt
 def noneCatcher(key, data):

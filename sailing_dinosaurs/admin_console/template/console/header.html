@@ -16,7 +16,7 @@
     <link href="{% static 'css/simple-sidebar.css' %}" rel="stylesheet">
     <script>
         function showDropdown(i){
-            var container = document.getElementsByClassName("dropdown-container-"+i)[0];
+            var container = document.getElementById("dropdown-container-"+i);
             if (container.style.display === 'none'){
                 container.style.display = 'block';
             }else{
@@ -28,7 +28,15 @@
             window.location.href = link;
         }
 
+        function preDropdownClicks(){
+            dropdown_num = 4;
+            for(i = 1; i <= dropdown_num; i++){
+                showDropdown(i);
+            }
+        }
+
         function onLoad(){
+            preDropdownClicks();
         }
     </script>
     {% block 'head' %}
@@ -48,7 +56,7 @@
             <button class="dropdown-btn" onclick="showDropdown(1);">
                 <li>Event <i class="fa fa-caret-down"></i></li>
             </button>
-            <div class="dropdown-container-1" style="display:none;">
+            <div class="custom-dropdown-container" id="dropdown-container-1">
                 <ul>
                     <li><a href="#">Event</a></li>
                     <li><a href="#">Summary</a></li>
@@ -59,10 +67,10 @@
             <button class="dropdown-btn" onclick="showDropdown(2);">
                 <li>School <i class="fa fa-caret-down"></i></li>
             </button>
-            <div class="dropdown-container-2" style="display:none;">
+            <div class="custom-dropdown-container" id="dropdown-container-2">
                 <ul>
                     <li><a href="{% url 'adminCustomView' 'school' %}?action=view">School</a></li>
-                    <li><a href="">Team</a></li>
+                    <li><a href="{% url 'adminCustomView' 'team' %}?action=view">Team</a></li>
                     <li><a href="">Member</a></li>
                     <li><a href="">Member Group</a></li>
                 </ul>
@@ -71,7 +79,7 @@
             <button class="dropdown-btn" onclick="showDropdown(3);">
                 <li>Global Settings <i class="fa fa-caret-down"></i></li>
             </button>
-            <div class="dropdown-container-3" style="display:none;">
+            <div class="custom-dropdown-container" id="dropdown-container-3">
                 <ul>
                     <li><a href="{% url 'adminGeneralView' 'season' %}?action=view">Season</a></li>
                     <li><a href="{% url 'adminGeneralView' 'region' %}?action=view">Region</a></li>
@@ -83,7 +91,7 @@
             <button class="dropdown-btn" onclick="showDropdown(4);">
                 <li>System Info<i class="fa fa-caret-down"></i></li>
             </button>
-            <div class="dropdown-container-4" style="display:none;">
+            <div class="custom-dropdown-container" id="dropdown-container-4">
                 <ul>
                     <li><a href="{% url 'adminCustomView' 'account' %}?action=view">Account</a></li>
                     <li><a href="{% url 'adminGeneralView' 'log' %}?action=view">Log</a></li>

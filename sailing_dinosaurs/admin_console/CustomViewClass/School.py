@@ -2,12 +2,13 @@ from django.db import transaction
 import hashlib, random, string
 
 from .AbstractCustomClass import AbstractCustomClass
-from .Dispatcher import Dispatcher
-from .CustomElement import *
-from .generalFunctions import *
 
-from .models import *
-from .forms import *
+from ..Dispatcher import Dispatcher
+from ..CustomElement import *
+from ..generalFunctions import *
+
+from ..models import *
+from ..forms import *
 
 class SchoolView(AbstractCustomClass):
 
@@ -100,8 +101,8 @@ class SchoolView(AbstractCustomClass):
     def getTableRowContent(self, content):
         base_data = filterDict(getModelObject(self.base_class, id=content.id).
                                                __dict__.items(), self.validation_table['base_table_invalid']);
-        base_data['school_region'] = filterDict(getModelObject(Region, id=base_data['school_region']).
-                                                __dict__.items(), {})["region_name"];
+        base_data['school_region'] = grabLinkValueFromChoices(Choices.REGION_CHOICES, base_data['school_region']);
+        base_data['school_status'] = grabLinkValueFromChoices(Choices.STATUS_CHOICES, base_data['school_status']);
         base_data = grabValueAsList(base_data);
         try:
             account_data = grabValueAsList(filterDict(getModelObject(Account, account_linked_id=content.id).

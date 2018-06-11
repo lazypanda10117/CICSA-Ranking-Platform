@@ -1,9 +1,9 @@
 import hashlib
 
-from .generalFunctions import *
+from ..generalFunctions import *
 
-from .models import *
-from .forms import *
+from ..models import *
+from ..forms import *
 
 class Authentication:
     def __init__(self, request):

@@ -1,11 +1,11 @@
 from abc import ABC, abstractmethod
 
-from .Dispatcher import Dispatcher
-from .CustomElement import *
-from .generalFunctions import *
+from ..Dispatcher import Dispatcher
+from ..CustomElement import *
+from ..generalFunctions import *
 
-from .models import *
-from .forms import *
+from ..models import *
+from ..forms import *
 
 class AbstractCustomClass(ABC):
 

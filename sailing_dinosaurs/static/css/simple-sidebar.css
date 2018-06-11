@@ -4,6 +4,12 @@
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-simple-sidebar/blob/master/LICENSE)
  */
 
+/* custom code */
+.custom-dropdown-container {
+  display: block;
+  display: none;
+}
+
 body {
   overflow-x: hidden;
 }

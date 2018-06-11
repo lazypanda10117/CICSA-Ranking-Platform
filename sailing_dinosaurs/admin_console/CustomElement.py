@@ -66,7 +66,13 @@ class Choices:
         ("dormant", "Dormant"),
         ("hidden", "Hidden")
     );
-    REGION_CHOICES = tuple([(value.id, value.region_name) for value in filterModelObject(Region)])
+    TEAM_STATUS_CHOICES = (
+        ("active", "Active"),
+        ("dormant", "Dormant"),
+        ("hidden", "Hidden")
+    );
+    REGION_CHOICES = tuple([(value.id, value.region_name) for value in filterModelObject(Region)]);
+    SCHOOL_CHOICES = tuple([(value.id, value.school_name) for value in filterModelObject(School)]);
     ACCOUNT_TYPE_CHOICES = (
         ("admin", "Admin"),
         ("school", "School")

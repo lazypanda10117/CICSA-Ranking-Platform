@@ -2,12 +2,13 @@ from django.db import transaction
 import hashlib, random, string
 
 from .AbstractCustomClass import AbstractCustomClass
-from .Dispatcher import Dispatcher
-from .CustomElement import *
-from .generalFunctions import *
 
-from .models import *
-from .forms import *
+from ..Dispatcher import Dispatcher
+from ..CustomElement import *
+from ..generalFunctions import *
+
+from ..models import *
+from ..forms import *
 
 class AccountView(AbstractCustomClass):
 
