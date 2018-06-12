@@ -61,20 +61,33 @@ class Form:
         return self.form_path + form_string;
 
 class Choices:
-    STATUS_CHOICES = (
-        ("active", "Active"),
-        ("dormant", "Dormant"),
-        ("hidden", "Hidden")
-    );
-    TEAM_STATUS_CHOICES = (
-        ("active", "Active"),
-        ("dormant", "Dormant"),
-        ("hidden", "Hidden")
-    );
-    REGION_CHOICES = tuple([(value.id, value.region_name) for value in filterModelObject(Region)]);
-    SCHOOL_CHOICES = tuple([(value.id, value.school_name) for value in filterModelObject(School)]);
-    ACCOUNT_TYPE_CHOICES = (
-        ("admin", "Admin"),
-        ("school", "School")
-    );
+    def getRegionChoices(self):
+        REGION_CHOICES = tuple([(value.id, value.region_name) for value in filterModelObject(Region)]);
+        return REGION_CHOICES;
 
+    def getSchoolChoices(self):
+        SCHOOL_CHOICES = tuple([(value.id, value.school_name) for value in filterModelObject(School)]);
+        return SCHOOL_CHOICES;
+
+    def getTeamStatusChoices(self):
+        TEAM_STATUS_CHOICES = (
+            ("active", "Active"),
+            ("dormant", "Dormant"),
+            ("hidden", "Hidden")
+        );
+        return TEAM_STATUS_CHOICES;
+
+    def getStatusChoices(self):
+        STATUS_CHOICES = (
+            ("active", "Active"),
+            ("dormant", "Dormant"),
+            ("hidden", "Hidden")
+        );
+        return STATUS_CHOICES;
+
+    def getAccountTypeChocies(self):
+        ACCOUNT_TYPE_CHOICES = (
+            ("admin", "Admin"),
+            ("school", "School")
+        );
+        return ACCOUNT_TYPE_CHOICES;

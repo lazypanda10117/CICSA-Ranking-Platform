@@ -1,5 +1,3 @@
-import urllib
-
 from django.shortcuts import render, reverse, redirect, get_object_or_404, HttpResponseRedirect
 from django.urls import resolve
 from django.http import HttpResponse

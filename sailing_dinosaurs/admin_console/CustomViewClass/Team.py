@@ -60,8 +60,8 @@ class TeamView(AbstractCustomClass):
 
     def getChoiceData(self):
         choice_data = {};
-        choice_data["team_status"] = Choices.TEAM_STATUS_CHOICES;
-        choice_data["team_school"] = Choices.SCHOOL_CHOICES;
+        choice_data["team_status"] = Choices().getTeamStatusChoices();
+        choice_data["team_school"] = Choices().getSchoolChoices();
         return choice_data;
 
     ### Table Generating Functions

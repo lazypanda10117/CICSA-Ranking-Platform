@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
+from sqlalchemy.engine.url import make_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 from sqlalchemy.testing.config import db_url
@@ -90,10 +91,20 @@ WSGI_APPLICATION = 'sailing_dinosaurs.wsgi.application'
 #db_user = os.environ.get('DB_USER')
 #db_pwd = os.environ.get('DB_PWD')
 
-db_url = "localhost"
-db_name = "ranking"
-db_user = "lazypanda"
-db_pwd = ""
+db_remote_url = None;
+db_url = 'localhost'
+db_name = 'ranking'
+db_user = 'lazypanda'
+db_pwd = ''
+db_port = '5432'
+
+if os.environ.get('DATABASE_URL') is not None:
+    db_remote_url = make_url(os.environ.get('DATABASE_URL'));
+    db_url = db_remote_url.host;
+    db_name = db_remote_url.database;
+    db_user = db_remote_url.username;
+    db_pwd = db_remote_url.password;
+    db_port = db_remote_url.port;
 
 DATABASES = {
     "default": {
@@ -102,7 +113,7 @@ DATABASES = {
         'USER': db_user,
         'PASSWORD': db_pwd,
         'HOST': db_url,
-        'PORT': '5432'
+        'PORT': db_port
     }
 }
 

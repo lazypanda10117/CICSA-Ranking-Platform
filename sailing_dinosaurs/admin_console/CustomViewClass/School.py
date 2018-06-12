@@ -85,8 +85,8 @@ class SchoolView(AbstractCustomClass):
 
     def getChoiceData(self):
         choice_data = {};
-        choice_data["school_region"] = Choices.REGION_CHOICES;
-        choice_data["school_status"] = Choices.STATUS_CHOICES;
+        choice_data["school_region"] = Choices().getRegionChoices();
+        choice_data["school_status"] = Choices().getStatusChoices();
         return choice_data;
 
     ### Table Generating Functions

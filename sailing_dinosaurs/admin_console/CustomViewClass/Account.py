@@ -73,8 +73,8 @@ class AccountView(AbstractCustomClass):
 
     def getChoiceData(self):
         choice_data = {};
-        choice_data["account_status"] = Choices.STATUS_CHOICES;
-        choice_data["account_type"] = Choices.ACCOUNT_TYPE_CHOICES;
+        choice_data["account_status"] = Choices().getStatusChoices();
+        choice_data["account_type"] = Choices().getAccountTypeChocies();
         return choice_data;
 
     ### Table Generating Functions

@@ -61,8 +61,8 @@ class MemberView(AbstractCustomClass):
 
     def getChoiceData(self):
         choice_data = {};
-        choice_data["member_status"] = Choices.STATUS_CHOICES;
-        choice_data["member_school"] = Choices.SCHOOL_CHOICES;
+        choice_data["member_status"] = Choices().getStatusChoices();
+        choice_data["member_school"] = Choices().getSchoolChoices();
         return choice_data;
 
     ### Table Generating Functions

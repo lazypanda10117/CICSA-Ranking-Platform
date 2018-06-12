@@ -8,6 +8,9 @@ numpy = "*"
 requests = "*"
 rsa = "*"
 "psycopg2-binary" = "*"
+django = "*"
+request = "*"
+sqlalchemy = "*"
 
 [dev-packages]
 
