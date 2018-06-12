@@ -105,7 +105,7 @@ class AbstractCustomClass(ABC):
         return [editBtn, deleteBtn];
 
     def getTableContent(self):
-        return [self.getTableRow(content) for content in self.base_class.objects.all()];
+        return [self.getTableRow(content) for content in sorted(self.base_class.objects.all(), key=lambda q: q.id)];
 
     def grabTableData(self, form_path):
         tableHeader = self.getTableHeader();

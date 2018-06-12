@@ -23,7 +23,7 @@ class Authentication:
                     if u.account_type == "admin":
                         self.request.session['uid'] = u.id;
                         self.request.session['utype'] = u.account_type;
-                        loghelper(self.request, "login", "Login Account id: " + str(u.id));
+                        loghelper(self.request, "system", logQueryMaker(Account, 'Login', id=u.id));
                         return redirect('adminIndex');
                     else:
                         return HttpResponse('{"Response": "Error: Insufficient Permission"}');
@@ -36,6 +36,7 @@ class Authentication:
     @csrf_exempt
     def logout(self):
         if sessionChecker(self.request, 'uid', 'utype'):
+            loghelper(self.request, "system", logQueryMaker(Account, 'Logout', id=self.request.session['uid']));
             self.request.session['uid'] = None;
             self.request.session['utype'] = None;
             return redirect('adminIndex');

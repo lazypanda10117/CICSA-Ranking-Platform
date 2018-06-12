@@ -92,3 +92,17 @@ class MemberForm(forms.Form):
     member_school = forms.ChoiceField(choices=[]);
     member_email = forms.EmailField();
     member_status = forms.ChoiceField(choices=[]);
+
+class MemberGroupForm(models.Model):
+    def __init__(self, *args, **kwargs):
+        super().__init__()
+        self.data = kwargs.pop('data', None);
+        self.field_data = (lambda x: x if x else {})(noneCatcher('field_data', self.data));
+        self.choice_data = (lambda x: x if x else {})(noneCatcher('choice_data', self.data));
+        for key, value in self.choice_data.items():
+            self.fields[key] = forms.ChoiceField(choices=value);
+        for key, value in self.field_data.items():
+            self.fields[key].initial = value;
+    member_group_name = forms.CharField(max_length=200);
+    member_group_school = forms.ChoiceField(choices=[]);
+    member_group_member_ids = forms.ChoiceField(choices=[]);

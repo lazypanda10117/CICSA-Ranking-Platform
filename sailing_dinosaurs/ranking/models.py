@@ -14,10 +14,21 @@ class Event(models.Model):
     event_rotation_detail = JSONField(); #(team id: [rotation sequence], for each team)
     event_start_date = models.DateTimeField(default=timezone.now(), blank=True);
     event_end_date = models.DateTimeField(default=timezone.now(), blank=True);
-    event_teams = ArrayField(models.CharField(max_length=200), blank=True); #(team id, member group, tag) triple
-    event_tag = ArrayField(models.CharField(max_length=100), blank=True);
-    event_summary = models.CharField(max_length=50); #id to summary
+    event_summary = models.IntegerField(); #id to summary
     event_create_time = models.DateTimeField(default=timezone.now(), blank=True);
+    def __str__(self):
+        return self;
+
+class EventTeam(models.Model):
+    event_team_id = models.IntegerField();
+    event_team_member_group_id = models.IntegerField();
+    event_team_tag_id = models.IntegerField();
+    def __str__(self):
+        return self;
+
+class EventTag(models.Model):
+    event_tag_name = models.CharField(max_length=200);
+    event_tag_parent = models.IntegerField();
     def __str__(self):
         return self;
 
@@ -56,11 +67,13 @@ class EventActivity(models.Model):
 
 class Summary(models.Model):
     summary_event_parent = models.IntegerField();
-    summary_result = JSONField(); #json with team, autogen-ranking, override ranking
-    summary_score = JSONField(); #json of autogen score for each team/school
+    summary_event_tag = models.IntegerField();
+    summary_event_team = models.IntegerField();
+    summary_event_ranking = models.IntegerField();
+    summary_event_override_ranking = models.IntegerField();
+    summary_event_score = models.FloatField();
     def __str__(self):
         return self;
-
 
 class Log(models.Model):
     log_creator = models.IntegerField(); #if sql, then system (-1), else user id
@@ -86,7 +99,9 @@ class Team(models.Model):
         return self;
 
 class MemberGroup(models.Model):
-    membergroup_member_ids = ArrayField(models.IntegerField());
+    member_group_name = models.CharField(max_length=200);
+    member_group_school = models.IntegerField();
+    member_group_member_ids = ArrayField(models.IntegerField());
     def __str__(self):
         return self;
 

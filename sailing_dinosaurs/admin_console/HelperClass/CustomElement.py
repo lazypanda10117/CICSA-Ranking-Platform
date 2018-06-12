@@ -47,7 +47,7 @@ class Table:
                           "button": makeEditDeleteBtn('general', str(content.id))};
             return rowContent;
 
-        return [getTableRow(content) for content in self.currentClass.objects.all()];
+        return [getTableRow(content) for content in sorted(self.currentClass.objects.all(), key=lambda q: q.id)];
 
 class Form:
     def __init__(self, form_path, form_name, form_action, destination, form):

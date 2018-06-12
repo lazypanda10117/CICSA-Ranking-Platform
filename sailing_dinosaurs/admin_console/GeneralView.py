@@ -73,15 +73,18 @@ class GeneralView:
         def generalViewLogic():
             def actionAdd():
                 form = self.view_dispatcher.get(self.form_path)["form"](self.request.POST);
-                form.save();
+                temp = form.save();
+                loghelper(self.request, 'admin', logQueryMaker(currentClass, action.title(), id=temp.id));
 
             def actionEdit():
                 element = get_object_or_404(currentClass, pk=element_id);
                 form = self.view_dispatcher.get(self.form_path)["form"](self.request.POST, instance=element);
-                form.save();
+                temp = form.save();
+                loghelper(self.request, 'admin', logQueryMaker(currentClass, action.title(), id=temp.id));
 
             def actionDelete():
                 element = get_object_or_404(currentClass, pk=element_id);
+                loghelper(self.request, 'admin', logQueryMaker(currentClass, action.title(), id=element.id));
                 element.delete();
 
             def setFunctionDispatcher():
