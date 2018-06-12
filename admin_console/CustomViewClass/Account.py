@@ -23,7 +23,8 @@ class AccountView(AbstractCustomClass):
 ### View Process Functions
 
     def abstractFormProcess(self, action, **kwargs):
-        try:
+
+        #try:
             post_dict = dict(self.request.POST);
             dispatcher = super().populateDispatcher();
 
@@ -55,8 +56,8 @@ class AccountView(AbstractCustomClass):
 
             if action == 'delete':
                 account.delete();
-        except:
-            print({"Error": "Cannot Process " + action.title() + " Request." });
+        #except:
+            #print({"Error": "Cannot Process " + action.title() + " Request." });
 
 ### View Generating Functions
 

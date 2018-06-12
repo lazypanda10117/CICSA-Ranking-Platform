@@ -93,7 +93,7 @@ class MemberForm(forms.Form):
     member_email = forms.EmailField();
     member_status = forms.ChoiceField(choices=[]);
 
-class MemberGroupForm(models.Model):
+class MemberGroupForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__()
         self.data = kwargs.pop('data', None);
