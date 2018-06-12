@@ -20,6 +20,7 @@ class Event(models.Model):
         return self;
 
 class EventTeam(models.Model):
+    event_team_event_id = models.IntegerField();
     event_team_id = models.IntegerField();
     event_team_member_group_id = models.IntegerField();
     event_team_tag_id = models.IntegerField();
@@ -27,8 +28,8 @@ class EventTeam(models.Model):
         return self;
 
 class EventTag(models.Model):
+    event_tag_event_id = models.IntegerField();
     event_tag_name = models.CharField(max_length=200);
-    event_tag_parent = models.IntegerField();
     def __str__(self):
         return self;
 
