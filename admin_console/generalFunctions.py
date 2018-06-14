@@ -54,7 +54,7 @@ def getModelObject(model_name, **kwargs):
 @csrf_exempt
 def sessionChecker(request, *args):
     for arg in args:
-        if  not (arg in request.session) or request.session[arg] is None:
+        if not (arg in request.session) or request.session[arg] is None:
             return False;
     return True;
 
@@ -80,8 +80,6 @@ def noneCatcher(key, data):
 
 @csrf_exempt
 def emptyActionRedirect(request, func):
-    #TODO: redirect to action=view
-    print(request.GET)
     if request.GET.get('action') is None:
         current_url = resolve(request.path_info).url_name;
         params = 'action=view';

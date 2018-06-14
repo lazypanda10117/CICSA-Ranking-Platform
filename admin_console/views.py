@@ -4,6 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .generalFunctions import *
 from .HelperClass import *
+from .API import *
 from .GeneralView import *
 from .CustomView import *
 
@@ -25,6 +26,12 @@ def login(request):
 @csrf_exempt
 def logout(request):
     return Authentication(request).logout();
+
+def search(request):
+    item = request.GET.get("item");
+    key = request.GET.get("key");
+    term = request.GET.get("term");
+    return SearchAPI().search(item, key, term);
 
 @csrf_exempt
 def generalView(request, form_path):

@@ -23,29 +23,26 @@ class MemberGroupView(AbstractCustomClass):
 ### View Process Functions
 
     def abstractFormProcess(self, action, **kwargs):
-        #try:
+        try:
             post_dict = dict(self.request.POST);
             dispatcher = super().populateDispatcher();
 
             if dispatcher.get(action):
-                member_id = kwargs.pop('id', None);
-                member = self.base_class.objects.get(id=member_id);
+                member_group_id = kwargs.pop('id', None);
+                member_group = self.base_class.objects.get(id=member_group_id);
             else:
-                member = self.base_class();
+                member_group = self.base_class();
 
-            member.member_name = getPostObj(post_dict, 'member_name');
-            member.member_school = getPostObj(post_dict, 'member_school');
-            member.member_email = getPostObj(post_dict, 'member_email');
-            member.member_status = getPostObj(post_dict, 'member_status');
-
+            member_group.member_school = getPostObj(post_dict, 'member_school');
+            member_group.member_name = getPostObj(post_dict, 'member_name');
             if not action == 'delete':
-                member.save();
+                member_group.save();
 
-            loghelper(self.request, 'admin', logQueryMaker(self.base_class, action.title(), id=member.id));
+            loghelper(self.request, 'admin', logQueryMaker(self.base_class, action.title(), id=member_group.id));
 
             if action == 'delete':
-                member.delete();
-        #except:
+                member_group.delete();
+        except:
             print({"Error": "Cannot Process " + action.title() + " Request." });
 
 ### View Generating Functions

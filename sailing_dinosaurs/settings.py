@@ -86,11 +86,6 @@ WSGI_APPLICATION = 'sailing_dinosaurs.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-#db_url = os.environ.get('DATABASE_URL')
-#db_name = os.environ.get('DB_NAME')
-#db_user = os.environ.get('DB_USER')
-#db_pwd = os.environ.get('DB_PWD')
-
 db_remote_url = None;
 db_url = 'localhost'
 db_name = 'ranking'

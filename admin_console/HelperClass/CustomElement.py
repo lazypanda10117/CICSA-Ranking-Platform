@@ -6,6 +6,10 @@ class Button:
         self.style = style;
         self.redirect = redirect;
 
+class FieldExtendButton:
+    def __init__(self, title, ):
+        pass;
+
 class Table:
     def __init__(self, currentClass, title):
         self.currentClass = currentClass;
@@ -58,7 +62,7 @@ class Form:
         self.form = form;
 
     def getFormID(self, form_string):
-        return self.form_path + form_string;
+        return form_string+self.form_path;
 
 class Choices:
     def getRegionChoices(self):
