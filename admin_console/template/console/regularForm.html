@@ -1,6 +1,7 @@
 <form action="{{ action_destination }}" id="{{ form_id }}" method="post">
     {{ form.as_p }}
-    {% if testets %}
+    {% if form_search %}
+        {% include "console/searchField.html" with context=form_search only %}
     {% endif %}
     <input type="submit" value="{{ form_action }}" name="{{ form_action }}"/>
 </form>

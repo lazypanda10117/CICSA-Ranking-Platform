@@ -27,6 +27,7 @@ def login(request):
 def logout(request):
     return Authentication(request).logout();
 
+@csrf_exempt
 def search(request):
     item = request.GET.get("item");
     key = request.GET.get("key");

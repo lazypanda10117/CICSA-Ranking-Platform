@@ -1,8 +1,8 @@
 {% extends 'console/header.html' %}
 {% block 'head' %}
-    {% if type.form %}
-        <script>
-            function onLoad(){
+    function onLoad(){
+        {% if type.form %}
+            <script>
                 var childTagsTable = ['input', 'textarea', 'select'];
                 var child = document.getElementById("{{context.form_id}}").children;
                 for(i=0; i<child.length; i++) {
@@ -26,9 +26,9 @@
                         }
                     }
                 }
-            }
-        </script>
-    {% endif %}
+            </script>
+        {% endif %}
+    }
 {% endblock %}
 {% block 'body' %}
     <h2>{{ page_title }}</h2>
@@ -47,6 +47,6 @@
         {% endfor %}
     {% endif %}
     {% if type.form %}
-        {% include "console/regularForm.html" with action_destination=context.destination form_action=context.form_action form_id=context.form_id form=context.form only %}
+        {% include "console/regularForm.html" with action_destination=context.destination form_action=context.form_action form_id=context.form_id form=context.form form_search=context.form_search only %}
     {% endif %}
 {% endblock %}

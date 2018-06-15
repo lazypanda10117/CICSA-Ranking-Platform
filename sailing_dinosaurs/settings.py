@@ -32,6 +32,8 @@ ALLOWED_HOSTS = ['127.0.0.1','sailing-dinosaurs-system.herokuapp.com']
 
 SILENCED_SYSTEM_CHECKS = ["fields.W161"]
 
+CORS_ORIGIN_ALLOW_ALL = True
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -39,6 +41,7 @@ INSTALLED_APPS = [
     'admin_console.apps.AdminConsoleConfig',
     'team_console.apps.TeamConsoleConfig',
     'search.apps.SearchConfig',
+    'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -48,6 +51,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

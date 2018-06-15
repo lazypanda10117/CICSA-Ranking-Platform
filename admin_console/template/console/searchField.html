@@ -1,0 +1,11 @@
+ <p class="form-group row">
+    <label for="{{ element.name }}_result">{{ element.label }}:</label>
+    <div class="col-6">
+        <input type="text" class="form-control" name="{{ element.name }}_search" id="{{ element.name }}_search" onclick="searchSetup({{ element.name }}, {{ element.item }}, {{ element.key }}, {{ element.term }})" alue="">
+    </div>
+    <div class="col-6">
+        <select class="form-control" name="{{ element.name }}_result" id="{{ element.name }}_result">
+            <option value="{{ element.default_value }}"> {{ element.value }} </option>
+        </select>
+    </div>
+</p>

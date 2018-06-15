@@ -11,6 +11,7 @@ rsa = "*"
 django = "*"
 request = "*"
 sqlalchemy = "*"
+django-cors-middleware = "*"
 
 [dev-packages]
 
