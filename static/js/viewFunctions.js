@@ -2,7 +2,7 @@ function dynamicChoiceGenerator(choice_id, params){
     //dispatch id to the right function
 }
 
-function searchSetup(name, item, keyArgs, termArg){
+function searchSetup(name, item, keyArgs, termArg, helpArg){
     function getURL(base_url, item, key, term){
         var paramStr = '?item='+item;
         if(key != null){
@@ -13,27 +13,60 @@ function searchSetup(name, item, keyArgs, termArg){
         }
         return base_url+paramStr;
     }
+
+    function dynamicRemoveOption(optionFields){
+        for(var i = optionFields.options.length-1; i>=0; i--){
+            optionFields.remove(i);
+        }
+    }
+
+    function optionChanged(optionFields, data){
+        var i = 0;
+        for(obj in data){
+            var tempVal = (optionFields[i] ? optionFields[i].value : -1);
+            if(tempVal != obj){
+                return false;
+            }
+            i++;
+        }
+        return (i? true : false);
+    }
+
+    function generateHelperText(data, obj, helperArg){
+        return (helperArg? ' (' + data[obj][helperArg] + ')' : '');
+    }
+
+    var base_url = "http://127.0.0.1:8000/console/admin/search";
+    var initial = true;
+
     var $select = $('#'+name+"_result");
+    var htmlSelect = document.getElementById(name+"_result");
     var $search = $('#'+name+"_search");
+
     $($search).on("change paste keyup", function() {
-        $select.html('');
-        var base_url = "http://127.0.0.1:8000/console/admin/search";
+        if(initial){
+            dynamicRemoveOption(htmlSelect);
+            initial = false;
+        }
         var searchTerm = $(this).val();
         if (searchTerm.length > 2){
-            termQuery = {};
+            var termQuery = {};
             termQuery[termArg] = searchTerm;
-            var test = getURL(base_url, item, null, JSON.stringify(termQuery));
-            var queryOption = $.get(test, function( data ){
+            var raw_result = getURL(base_url, item, null, JSON.stringify(termQuery));
+            var queryOption = $.get(raw_result, function( data ){
                 json_data = JSON.parse(data);
-                console.log(searchTerm)
-                console.log(json_data);
-                for (var obj in json_data) {
-                    $select.append($('<option>', {
-                        value: obj,
-                        text: json_data[obj]["school_name"]
-                    }));
+                if(!optionChanged(htmlSelect, json_data)){
+                    dynamicRemoveOption(htmlSelect);
+                    for (var obj in json_data) {
+                        $select.append($('<option>', {
+                            value: obj,
+                            text: json_data[obj][termArg] + generateHelperText(json_data, obj, helpArg)
+                        }));
+                    }
                 }
             });
+        }else{
+            dynamicRemoveOption(htmlSelect);
         }
     });
 }

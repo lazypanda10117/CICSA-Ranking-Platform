@@ -7,7 +7,7 @@ class Button:
         self.redirect = redirect;
 
 class FieldExtendButton:
-    def __init__(self, title, ):
+    def __init__(self):
         pass;
 
 class Table:
@@ -63,6 +63,21 @@ class Form:
 
     def getFormID(self, form_string):
         return form_string+self.form_path;
+
+class SearchElement:
+    def __init__(self, name, label, item, key, term, help_term, value_tuple):
+        self.name = name;
+        self.label = label;
+        self.item = self.stringify(item);
+        self.key = self.stringify(key);
+        self.term = self.stringify(term);
+        self.help_term = self.stringify(help_term);
+        self.default_value = value_tuple[0];
+        self.value = value_tuple[1];
+
+    def stringify(self, text):
+        return "'" + text + "'";
+
 
 class Choices:
     def getRegionChoices(self):

@@ -33,8 +33,9 @@ class CustomView:
                 self.request.session[self.session_name] = getViewJSON(action, None);
                 type = dict(form=True);
                 content = Form('_add_form', form_path, action, destination,
-                               self.view_dispatcher.get(self.form_path)["form"](data=data));
-                return dict(page_title=page_title, type=type, context=content);
+                               self.view_dispatcher.get(self.form_path)["form"](data=data['data']));
+                specialContent = data['special_field'];
+                return dict(page_title=page_title, type=type, context=content, special_context=specialContent);
 
             def actionEdit(data):
                 if element_id is None:
@@ -43,8 +44,9 @@ class CustomView:
                     self.request.session[self.session_name] = getViewJSON(action, element_id);
                     type = dict(form=True);
                     content = Form('_edit_form', form_path, action, destination,
-                                   self.view_dispatcher.get(self.form_path)["form"](data=data));
-                    return dict(page_title=page_title, type=type, context=content);
+                                   self.view_dispatcher.get(self.form_path)["form"](data=data['data']));
+                    specialContent = data['special_field'];
+                    return dict(page_title=page_title, type=type, context=content, special_context=specialContent);
 
             def actionDelete(data):
                 if element_id is None:
@@ -53,8 +55,9 @@ class CustomView:
                     self.request.session[self.session_name] = getViewJSON(action, element_id);
                     type = dict(form=True);
                     content = Form('_delete_form', form_path, action, destination,
-                                   self.view_dispatcher.get(self.form_path)["form"](data=data));
-                    return dict(page_title=page_title, type=type, context=content);
+                                   self.view_dispatcher.get(self.form_path)["form"](data=data['data']));
+                    specialContent = data['special_field'];
+                    return dict(page_title=page_title, type=type, context=content, special_context=specialContent);
 
             def setFunctionDispatcher():
                 dispatcher = Dispatcher();

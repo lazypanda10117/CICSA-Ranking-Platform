@@ -105,4 +105,3 @@ class MemberGroupForm(forms.Form):
             self.fields[key].initial = value;
     member_group_name = forms.CharField(max_length=200);
     member_group_school = forms.ChoiceField(choices=[]);
-    member_group_member_ids = forms.ChoiceField(choices=[]);

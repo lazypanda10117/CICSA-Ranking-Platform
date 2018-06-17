@@ -68,7 +68,7 @@ def grabValueAsList(dict):
 
 @csrf_exempt
 def getPostObj(post_dict, name):
-    return post_dict[name][0];
+    return (lambda x: x[name][0] if name in x else None)(post_dict);
 
 @csrf_exempt
 def grabLinkValueFromChoices(choices, key):

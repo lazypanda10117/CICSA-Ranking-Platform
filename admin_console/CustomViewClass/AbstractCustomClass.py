@@ -68,12 +68,21 @@ class AbstractCustomClass(ABC):
     def getChoiceData(self):
         pass;
 
+    def getSearchElement(self):
+        pass;
+
+    def getSearchFieldName(self, name):
+        return name+'_result';
+
     def grabFormData(self, **kwargs):
         data = {
             "field_data": self.getFieldData(**kwargs),
             "choice_data": self.getChoiceData()
         }
-        return data;
+        special_field = {
+            "search": self.getSearchElement(**kwargs)
+        }
+        return {"data": data, "special_field": special_field};
 
     ### Table Generating Functions
     def getTableHeader(self):
