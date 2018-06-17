@@ -24,7 +24,7 @@ class MemberGroupView(AbstractCustomClass):
 ### View Process Functions
 
     def abstractFormProcess(self, action, **kwargs):
-        #try:
+        try:
             post_dict = dict(self.request.POST);
             dispatcher = super().populateDispatcher();
 
@@ -45,8 +45,8 @@ class MemberGroupView(AbstractCustomClass):
 
             if action == 'delete':
                 member_group.delete();
-        #except:
-        #    print({"Error": "Cannot Process " + action.title() + " Request." });
+        except:
+            print({"Error": "Cannot Process " + action.title() + " Request." });
 
 ### View Generating Functions
 
@@ -74,7 +74,7 @@ class MemberGroupView(AbstractCustomClass):
                 if member_group.member_group_member_ids is not None:
                     member = getModelObject(Member, id=member_group.member_group_member_ids[id]);
                     print(member.member_name)
-                    return member.id, member.member_name;
+                    return (member.id, member.member_name + ' (' + member.member_email + ')');
             return None, None;
         return [
                     SearchElement(self.search_name[i], 'Member '+ str(i), 'Member', '', 'member_name', 'member_email',
