@@ -36,7 +36,7 @@ function searchSetup(name, item, keyArgs, termArg, helpArg){
         return (helperArg? ' (' + data[obj][helperArg] + ')' : '');
     }
 
-    var base_url = "http://127.0.0.1:8000/console/admin/search";
+    var base_url = window.location.origin+"/console/admin/search";
     var initial = true;
 
     var $select = $('#'+name+"_result");
