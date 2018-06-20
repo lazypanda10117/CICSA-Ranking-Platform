@@ -1,7 +1,17 @@
 {% extends 'console/header.html' %}
-{% block 'head' %}
-{% endblock %}
 {% block 'body' %}
-
-
+    <div class="row" style="margin-top: 5%;">
+        <div class="col-md-6">
+            <button type="button" class="btn btn-block btn-success btn-lg"
+                    style="padding-top: 50%; padding-bottom: 50%;" onclick="redirect('fleet');">
+                Fleet Racing
+            </button>
+        </div>
+        <div class="col-md-6">
+            <button type="button" class="btn btn-danger btn-lg btn-block"
+                    style="padding-top: 50%; padding-bottom: 50%;" onclick="redirect('group');">
+                Group Racing
+            </button>
+        </div>
+    </div>
 {% endblock %}
