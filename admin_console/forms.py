@@ -105,3 +105,25 @@ class MemberGroupForm(forms.Form):
             self.fields[key].initial = value;
     member_group_name = forms.CharField(max_length=200);
     member_group_school = forms.ChoiceField(choices=[]);
+
+class EventCreationForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__()
+        self.data = kwargs.pop('data', None);
+        self.field_data = (lambda x: x if x else {})(noneCatcher('field_data', self.data));
+        self.choice_data = (lambda x: x if x else {})(noneCatcher('choice_data', self.data));
+        for key, value in self.choice_data.items():
+            self.fields[key] = forms.ChoiceField(choices=value);
+        for key, value in self.field_data.items():
+            self.fields[key].initial = value;
+    event_creation_event_type = forms.ChoiceField(choices=[]);
+    event_creation_event_name = forms.CharField(max_length=200);
+    event_creation_event_description = forms.CharField(max_length=1500);
+    event_creation_event_location = forms.CharField(max_length=1000);
+    event_creation_event_host = forms.ChoiceField(choices=[]);
+    event_creation_event_team = forms.ChoiceField(choices=[]);
+    event_creation_event_num_race = forms.IntegerField();
+    event_creation_event_num_boat = forms.IntegerField();
+    event_creation_event_start_date = forms.DateTimeField();
+    event_creation_event_end_date = forms.DateTimeField();
+

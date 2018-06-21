@@ -68,11 +68,9 @@ class AbstractCustomClass(ABC):
     def getChoiceData(self):
         pass;
 
+    @abstractmethod
     def getSearchElement(self, **kwargs):
         pass;
-
-    def getSearchFieldName(self, name):
-        return name+'_result';
 
     def grabFormData(self, **kwargs):
         data = {

@@ -10,4 +10,6 @@ admin.site.register(EventType);
 admin.site.register(Summary);
 admin.site.register(Log);
 admin.site.register(School);
+admin.site.register(MemberGroup);
+admin.site.register(EventTeam);
 admin.site.register(Team);

@@ -19,7 +19,8 @@ class CustomView:
         dispatcher.add('team', {'class': TeamView, 'form': TeamForm});
         dispatcher.add('member', {'class': MemberView, 'form': MemberForm});
         dispatcher.add('member group', {'class': MemberGroupView, 'form': MemberGroupForm});
-
+        dispatcher.add('fleet', {'class': EventCreationView, 'form': EventCreationForm});
+        dispatcher.add('group', {'class': EventCreationView, 'form': EventCreationForm});
         return dispatcher;
 
     def dispatch(self, form_path):

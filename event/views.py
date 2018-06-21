@@ -9,5 +9,5 @@ def index(request):
 def choice(request):
     return render(request, 'console/event.html');
 
-def eventFactory(request):
+def eventAppDispatch(request):
     return HttpResponse('in progress');

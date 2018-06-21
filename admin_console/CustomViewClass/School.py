@@ -89,6 +89,9 @@ class SchoolView(AbstractCustomClass):
         choice_data["school_status"] = Choices().getStatusChoices();
         return choice_data;
 
+    def getSearchElement(self, **kwargs):
+        return None;
+
     ### Table Generating Functions
     def getTableSpecificHeader(self):
         return [field.name for field in self.base_class._meta.get_fields()

@@ -65,6 +65,9 @@ class MemberView(AbstractCustomClass):
         choice_data["member_school"] = Choices().getSchoolChoices();
         return choice_data;
 
+    def getSearchElement(self, **kwargs):
+        return None;
+
     ### Table Generating Functions
     def getTableSpecificHeader(self):
         return [field.name for field in self.base_class._meta.get_fields()

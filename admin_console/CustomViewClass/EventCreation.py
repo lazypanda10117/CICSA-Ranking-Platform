@@ -3,22 +3,38 @@ import hashlib, random, string
 from .AbstractCustomClass import AbstractCustomClass
 from ..HelperClass import *
 from ..generalFunctions import *
+from .FleetLogic import *
+from .GroupLogic import *
 
 from ..models import *
 from ..forms import *
 
-class AccountView(AbstractCustomClass):
+class EventCreationView(AbstractCustomClass):
 
 ### Constructor <-> AbstractCustomClass
 
     def __init__(self, request):
-        self.base_class = Account;
-        self.form_class = AccountForm;
+        self.form_path = '';
+        self.base_class = Event;
+        self.form_class = EventCreationForm;
+        self.search_name = ['member0', 'member1'];
         self.validation_table = {
-            'base_table_invalid': {'_state', 'account_salt'},
-            'base_form_invalid': {'_state', 'id', 'account_salt'},
+            'base_table_invalid': {'_state'},
+            'base_form_invalid': {'_state', 'id', 'event_team_number'},
         };
         super().__init__(request, self.base_class, self.validation_table);
+
+### Class Custom Functions
+    def getLogicDispatcher(self):
+        dispatcher = Dispatcher();
+        dispatcher.add('fleet', FleetLogic);
+        dispatcher.add('group', GroupLogic);
+        return dispatcher;
+
+### Function Override
+    def grabData(self, *args):
+        super().grabData(self, *args);
+        self.form_path = args[1];
 
 ### View Process Functions
 
@@ -27,34 +43,19 @@ class AccountView(AbstractCustomClass):
             post_dict = dict(self.request.POST);
             dispatcher = super().populateDispatcher();
 
+            self.form_path = getPostObj(post_dict, 'event_creation_event_type');
+            logic = self.setLogicDispatcher().get(self.form_path)(post_dict);
+
             if dispatcher.get(action):
-                account_id = kwargs.pop('id', None);
-                account = self.base_class.objects.get(id=account_id);
-                pwd = getPostObj(post_dict, 'account_password');
-                pwd_salt = account.account_salt;
-                if not (pwd == account.account_password):
-                    hashpwd = hashlib.sha224((pwd + pwd_salt).encode("utf-8")).hexdigest();
-                    account.account_password = hashpwd;
+                event_creation_id = kwargs.pop('id', None);
+                if action == 'edit':
+                    logic.edit(event_creation_id);
+                elif action == 'delete':
+                    logic.delete(event_creation_id);
             else:
-                account = self.base_class();
-                pwd_salt = ''.join(random.choices(string.ascii_uppercase + string.digits, k=15));
-                hashpwd = hashlib.sha224(
-                    (getPostObj(post_dict, 'account_password') + pwd_salt).encode("utf-8")).hexdigest();
-                account.account_salt = pwd_salt;
-                account.account_password = hashpwd;
-
-            account.account_type = getPostObj(post_dict, 'account_type');
-            account.account_email = getPostObj(post_dict, 'account_email');
-            account.account_status = getPostObj(post_dict, 'account_status');
-            account.account_linked_id = getPostObj(post_dict, 'account_linked_id');
-
-            if not action == 'delete':
-                account.save();
-
-            loghelper(self.request, 'admin', logQueryMaker(self.base_class, action.title(), id=account.id));
-
-            if action == 'delete':
-                account.delete();
+                if action == 'add':
+                    logic.add();
+            #loghelper(self.request, 'admin', logQueryMaker(self.base_class, action.title(), id=member_group.id));
         except:
             print({"Error": "Cannot Process " + action.title() + " Request." });
 
@@ -73,8 +74,7 @@ class AccountView(AbstractCustomClass):
 
     def getChoiceData(self):
         choice_data = {};
-        choice_data["account_status"] = Choices().getStatusChoices();
-        choice_data["account_type"] = Choices().getAccountTypeChocies();
+        choice_data["member_group_school"] = Choices().getSchoolChoices();
         return choice_data;
 
     def getSearchElement(self, **kwargs):
