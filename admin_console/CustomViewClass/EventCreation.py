@@ -20,12 +20,12 @@ class EventCreationView(AbstractCustomClass):
         self.search_name = ['member0', 'member1'];
         self.validation_table = {
             'base_table_invalid': {'_state'},
-            'base_form_invalid': {'_state', 'id', 'event_team_number'},
+            'base_form_invalid': {'_state', 'id', 'event_team_number', 'event_rotation_detail', 'event_create_time'},
         };
         super().__init__(request, self.base_class, self.validation_table);
 
 ### Class Custom Functions
-    def getLogicDispatcher(self):
+    def __setLogicDispatcher(self):
         dispatcher = Dispatcher();
         dispatcher.add('fleet', FleetLogic);
         dispatcher.add('group', GroupLogic);
@@ -44,17 +44,17 @@ class EventCreationView(AbstractCustomClass):
             dispatcher = super().populateDispatcher();
 
             self.form_path = getPostObj(post_dict, 'event_creation_event_type');
-            logic = self.setLogicDispatcher().get(self.form_path)(post_dict);
+            logic = self.__setLogicDispatcher().get(self.form_path)(post_dict);
 
             if dispatcher.get(action):
                 event_creation_id = kwargs.pop('id', None);
                 if action == 'edit':
-                    logic.edit(event_creation_id);
+                    logic._edit(event_creation_id);
                 elif action == 'delete':
-                    logic.delete(event_creation_id);
+                    logic._delete(event_creation_id);
             else:
                 if action == 'add':
-                    logic.add();
+                    logic._add();
             #loghelper(self.request, 'admin', logQueryMaker(self.base_class, action.title(), id=member_group.id));
         except:
             print({"Error": "Cannot Process " + action.title() + " Request." });
@@ -82,8 +82,10 @@ class EventCreationView(AbstractCustomClass):
 
     ### Table Generating Functions
     def getTableSpecificHeader(self):
-        return [field.name for field in self.base_class._meta.get_fields()
+        base_header = [field.name for field in self.base_class._meta.get_fields()
                 if not field.name in self.validation_table['base_table_invalid']];
+        additional_header = [];
+        return base_header + additional_header;
 
     def getTableRowContent(self, content):
         field_data = filterDict(getModelObject(self.base_class, id=content.id).__dict__.items(),

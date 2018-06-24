@@ -121,7 +121,7 @@ class EventCreationForm(forms.Form):
     event_creation_event_description = forms.CharField(max_length=1500);
     event_creation_event_location = forms.CharField(max_length=1000);
     event_creation_event_host = forms.ChoiceField(choices=[]);
-    event_creation_event_team = forms.ChoiceField(choices=[]);
+    event_creation_event_team = forms.MultipleChoiceField(choices=[]);
     event_creation_event_num_race = forms.IntegerField();
     event_creation_event_num_boat = forms.IntegerField();
     event_creation_event_start_date = forms.DateTimeField();
