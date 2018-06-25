@@ -64,6 +64,9 @@ class TeamView(AbstractCustomClass):
         choice_data["team_school"] = Choices().getSchoolChoices();
         return choice_data;
 
+    def getMultiChoiceData(self):
+        return None;
+
     def getSearchElement(self, **kwargs):
         return None;
 

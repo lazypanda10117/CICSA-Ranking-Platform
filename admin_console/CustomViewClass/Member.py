@@ -65,6 +65,9 @@ class MemberView(AbstractCustomClass):
         choice_data["member_school"] = Choices().getSchoolChoices();
         return choice_data;
 
+    def getMultiChoiceData(self):
+        return None;
+
     def getSearchElement(self, **kwargs):
         return None;
 

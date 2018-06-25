@@ -66,6 +66,9 @@ class MemberGroupView(AbstractCustomClass):
         choice_data["member_group_school"] = Choices().getSchoolChoices();
         return choice_data;
 
+    def getMultiChoiceData(self):
+        return None;
+
     def getSearchElement(self, **kwargs):
         def getSearchDefault(id):
             element_id = kwargs['element_id'] if 'element_id' in kwargs else None;

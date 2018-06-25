@@ -89,6 +89,9 @@ class SchoolView(AbstractCustomClass):
         choice_data["school_status"] = Choices().getStatusChoices();
         return choice_data;
 
+    def getMultiChoiceData(self):
+        return None;
+
     def getSearchElement(self, **kwargs):
         return None;
 

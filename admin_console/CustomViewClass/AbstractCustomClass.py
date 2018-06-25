@@ -69,13 +69,18 @@ class AbstractCustomClass(ABC):
         pass;
 
     @abstractmethod
+    def getMultiChoiceData(self):
+        pass;
+
+    @abstractmethod
     def getSearchElement(self, **kwargs):
         pass;
 
     def grabFormData(self, **kwargs):
         data = {
             "field_data": self.getFieldData(**kwargs),
-            "choice_data": self.getChoiceData()
+            "choice_data": self.getChoiceData(),
+            "multi_choice_data": self.getMultiChoiceData()
         }
         special_field = {
             "search": self.getSearchElement(**kwargs)

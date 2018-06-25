@@ -77,6 +77,9 @@ class AccountView(AbstractCustomClass):
         choice_data["account_type"] = Choices().getAccountTypeChocies();
         return choice_data;
 
+    def getMultiChoiceData(self):
+        return {};
+
     def getSearchElement(self, **kwargs):
         return None;
 

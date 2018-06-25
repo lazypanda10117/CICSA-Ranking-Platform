@@ -34,7 +34,7 @@ class EventCreationView(AbstractCustomClass):
 ### Function Override
     def grabData(self, *args):
         self.form_path= args[1];
-        super().grabData(self, *args);
+        return super().grabData(*args);
 
 ### View Process Functions
 
@@ -49,12 +49,12 @@ class EventCreationView(AbstractCustomClass):
             if dispatcher.get(action):
                 event_creation_id = kwargs.pop('id', None);
                 if action == 'edit':
-                    logic._edit(event_creation_id);
+                    logic.edit(event_creation_id);
                 elif action == 'delete':
-                    logic._delete(event_creation_id);
+                    logic.delete(event_creation_id);
             else:
                 if action == 'add':
-                    logic._add();
+                    logic.add();
             #loghelper(self.request, 'admin', logQueryMaker(self.base_class, action.title(), id=member_group.id));
         except:
             print({"Error": "Cannot Process " + action.title() + " Request." });
@@ -70,26 +70,32 @@ class EventCreationView(AbstractCustomClass):
             field_data = filterDict(getModelObject(self.base_class,id=element_id).__dict__.items(),
                                     self.validation_table['base_form_invalid']);
             return field_data;
-        return None;
+        return {'event_creation_event_type': self.form_path};
 
     def getChoiceData(self):
         choice_data = {};
-        choice_data["member_group_school"] = Choices().getSchoolChoices();
+        choice_data['event_creation_event_type'] = Choices().getEventTypeChoices();
+        choice_data['event_creation_event_host'] = Choices().getSchoolChoices();
+        choice_data['event_creation_event_region'] = Choices().getRegionChoices();
         return choice_data;
+
+    def getMultiChoiceData(self):
+        multi_choice_data = {};
+        multi_choice_data['event_creation_event_team'] = Choices().getSchoolChoices();
+        return multi_choice_data;
 
     def getSearchElement(self, **kwargs):
         return None;
 
     ### Table Generating Functions
     def getTableSpecificHeader(self):
-        print ('hello world');
         base_header = [field.name for field in self.base_class._meta.get_fields()
                 if not field.name in self.validation_table['base_table_invalid']];
         additional_header = [];
         return base_header + additional_header;
 
     def getTableRowContent(self, content):
-        field_data = filterDict(getModelObject(self.base_class, id=content.id).__dict__.items(),
+        field_data = filterDict(getModelObject(self.base_class, id=content.id, event_type=self.form_path).__dict__.items(),
                                                 self.validation_table['base_table_invalid']);
         field_data = self.updateChoiceAsValue(field_data, self.getChoiceData());
         field_data = grabValueAsList(field_data);
