@@ -76,7 +76,6 @@ class CustomView:
             currentClass = currentData["class"];
 
             functionDispatch = setFunctionDispatcher();
-
             return (lambda x: render(self.request, 'console/generate.html',
                                      x(currentClass(self.request).grabData(action, form_path, element_id)))
             if x else HttpResponse('{"Response": "Error: Insufficient Parameters"}'))(functionDispatch.get(action));

@@ -41,7 +41,7 @@ class AbstractCustomClass(ABC):
     def grabData(self, *args):
         #args[0] = action, args[1] = form_path, args[2] = element_id
         if args[0] == 'view':
-            return self.dispatcher.get(args[0])(form_path = args[1]);
+            return self.dispatcher.get(args[0])(form_path=args[1]);
         elif args[0] == 'add':
             return self.dispatcher.get(args[0])(action=args[0], element_id=args[2]);
         if args[0] in {'edit', 'delete'}:

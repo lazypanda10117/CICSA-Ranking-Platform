@@ -33,8 +33,8 @@ class EventCreationView(AbstractCustomClass):
 
 ### Function Override
     def grabData(self, *args):
+        self.form_path= args[1];
         super().grabData(self, *args);
-        self.form_path = args[1];
 
 ### View Process Functions
 
@@ -82,6 +82,7 @@ class EventCreationView(AbstractCustomClass):
 
     ### Table Generating Functions
     def getTableSpecificHeader(self):
+        print ('hello world');
         base_header = [field.name for field in self.base_class._meta.get_fields()
                 if not field.name in self.validation_table['base_table_invalid']];
         additional_header = [];
