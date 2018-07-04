@@ -1,10 +1,9 @@
 import hashlib, random, string
+from abc import ABC, abstractmethod
 
 from .AbstractCustomClass import AbstractCustomClass
 from ..HelperClass import *
 from ..generalFunctions import *
-from .FleetLogic import *
-from .GroupLogic import *
 
 from ..models import *
 from ..forms import *
@@ -17,47 +16,16 @@ class EventCreationView(AbstractCustomClass):
         self.form_path = '';
         self.base_class = Event;
         self.form_class = EventCreationForm;
-        self.search_name = ['member0', 'member1'];
         self.validation_table = {
             'base_table_invalid': {'_state'},
             'base_form_invalid': {'_state', 'id', 'event_team_number', 'event_rotation_detail', 'event_create_time'},
         };
         super().__init__(request, self.base_class, self.validation_table);
 
-### Class Custom Functions
-    def __setLogicDispatcher(self):
-        dispatcher = Dispatcher();
-        dispatcher.add('fleet', FleetLogic);
-        dispatcher.add('group', GroupLogic);
-        return dispatcher;
-
-### Function Override
-    def grabData(self, *args):
-        self.form_path= args[1];
-        return super().grabData(*args);
-
 ### View Process Functions
-
+    @abstractmethod
     def abstractFormProcess(self, action, **kwargs):
-        try:
-            post_dict = dict(self.request.POST);
-            dispatcher = super().populateDispatcher();
-
-            self.form_path = getPostObj(post_dict, 'event_creation_event_type');
-            logic = self.__setLogicDispatcher().get(self.form_path)(post_dict);
-
-            if dispatcher.get(action):
-                event_creation_id = kwargs.pop('id', None);
-                if action == 'edit':
-                    logic.edit(event_creation_id);
-                elif action == 'delete':
-                    logic.delete(event_creation_id);
-            else:
-                if action == 'add':
-                    logic.add();
-            #loghelper(self.request, 'admin', logQueryMaker(self.base_class, action.title(), id=member_group.id));
-        except:
-            print({"Error": "Cannot Process " + action.title() + " Request." });
+        pass;
 
 ### View Generating Functions
 

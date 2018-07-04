@@ -5,6 +5,7 @@ from .CustomViewClass import *
 from .models import *
 from .forms import *
 
+
 class CustomView:
 
     def __init__(self, request):
@@ -19,8 +20,8 @@ class CustomView:
         dispatcher.add('team', {'class': TeamView, 'form': TeamForm});
         dispatcher.add('member', {'class': MemberView, 'form': MemberForm});
         dispatcher.add('member group', {'class': MemberGroupView, 'form': MemberGroupForm});
-        dispatcher.add('fleet', {'class': EventCreationView, 'form': EventCreationForm});
-        dispatcher.add('group', {'class': EventCreationView, 'form': EventCreationForm});
+        dispatcher.add('fleet', {'class': FleetCreationView, 'form': EventCreationForm});
+        dispatcher.add('group', {'class': GroupCreationView, 'form': EventCreationForm});
         return dispatcher;
 
     def dispatch(self, form_path):
