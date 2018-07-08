@@ -2,7 +2,7 @@ from django.shortcuts import render, reverse, redirect, get_object_or_404, HttpR
 from django.urls import resolve
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-import math
+import math, datetime
 
 from .models import *
 
@@ -86,3 +86,6 @@ def emptyActionRedirect(request, func):
         return HttpResponseRedirect(current_url + "?%s" % params);
     else:
         return func;
+
+def getTimeNow():
+    return datetime.datetime.now();

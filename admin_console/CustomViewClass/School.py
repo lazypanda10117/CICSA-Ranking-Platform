@@ -14,6 +14,7 @@ class SchoolView(AbstractCustomClass):
     def __init__(self, request):
         self.base_class = School;
         self.form_class = SchoolForm;
+        self.assoc_class_account = Account;
         self.validation_table = {
             'base_table_invalid': {'_state'},
             'base_form_invalid': {'_state', 'id'},
@@ -31,7 +32,7 @@ class SchoolView(AbstractCustomClass):
             if dispatcher.get(action):
                 school_id = kwargs.pop('id', None);
                 school = self.base_class.objects.get(id=school_id);
-                school_account = Account.objects.get(account_linked_id=school.id);
+                school_account = self.assoc_class_account.objects.get(account_linked_id=school.id);
                 pwd = getPostObj(post_dict, 'account_password');
                 pwd_salt = school_account.account_salt;
                 if not (pwd == school_account.account_password):
@@ -39,7 +40,7 @@ class SchoolView(AbstractCustomClass):
                     school_account.account_password = hashpwd;
             else:
                 school = self.base_class();
-                school_account = Account();
+                school_account = self.assoc_class_account();
                 pwd_salt = ''.join(random.choices(string.ascii_uppercase + string.digits, k=15));
                 hashpwd = hashlib.sha224(
                     (getPostObj(post_dict, 'account_password') + pwd_salt).encode("utf-8")).hexdigest();
