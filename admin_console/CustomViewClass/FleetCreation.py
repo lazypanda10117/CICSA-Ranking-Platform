@@ -33,6 +33,13 @@ class FleetCreationView(EventCreationView):
             event_creation.event_team_number = 0;
             event_creation.event_rotation_detail = {};
 
+            event_creation.save();
+
+            #summary
+            self.assoc_class_summary.summary_event_parent = event_creation.id;
+            self.assoc_class_summary.summary_event_team = 0#TODO: loop;
+            self.assoc_class_summary.save();
+
 
         def edit(key):
             event_creation = self.base_class.objects.get(id=key);

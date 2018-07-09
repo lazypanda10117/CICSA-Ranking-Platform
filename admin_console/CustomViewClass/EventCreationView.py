@@ -43,6 +43,7 @@ class EventCreationView(AbstractCustomClass):
     def getChoiceData(self):
         choice_data = {};
         choice_data['event_creation_event_type'] = Choices().getEventTypeChoices();
+        choice_data['event_creation_event_status'] = Choices().getEventStatusChoices();
         choice_data['event_creation_event_host'] = Choices().getSchoolChoices();
         choice_data['event_creation_event_region'] = Choices().getRegionChoices();
         return choice_data;

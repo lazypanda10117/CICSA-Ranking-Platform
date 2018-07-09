@@ -52,10 +52,10 @@ class EventActivity(models.Model):
 
 class Summary(models.Model):
     summary_event_parent = models.IntegerField();
-    summary_event_team = models.IntegerField();
-    summary_event_ranking = models.IntegerField();
-    summary_event_override_ranking = models.IntegerField();
-    summary_event_score = models.FloatField();
+    summary_event_team = models.IntegerField(default=0);
+    summary_event_ranking = models.IntegerField(default=0);
+    summary_event_override_ranking = models.IntegerField(default=0);
+    summary_event_score = models.FloatField(default=0);
 
 class Log(models.Model):
     log_creator = models.IntegerField(); #if sql, then system (-1), else user id
