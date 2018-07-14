@@ -33,7 +33,7 @@ class SchoolView(AbstractCustomClass):
                 school_id = kwargs.pop('id', None);
                 school = self.base_class.objects.get(id=school_id);
                 school_account = self.assoc_class_account.objects.get(account_linked_id=school.id);
-                pwd = getPostObj(post_dict, 'account_password');
+                pwd = getSinglePostObj(post_dict, 'account_password');
                 pwd_salt = school_account.account_salt;
                 if not (pwd == school_account.account_password):
                     hashpwd = hashlib.sha224((pwd + pwd_salt).encode("utf-8")).hexdigest();
@@ -43,21 +43,21 @@ class SchoolView(AbstractCustomClass):
                 school_account = self.assoc_class_account();
                 pwd_salt = ''.join(random.choices(string.ascii_uppercase + string.digits, k=15));
                 hashpwd = hashlib.sha224(
-                    (getPostObj(post_dict, 'account_password') + pwd_salt).encode("utf-8")).hexdigest();
+                    (getSinglePostObj(post_dict, 'account_password') + pwd_salt).encode("utf-8")).hexdigest();
                 school_account.account_type = "school";
                 school_account.account_salt = pwd_salt;
                 school_account.account_password = hashpwd;
 
-            school.school_name = getPostObj(post_dict, 'school_name');
-            school.school_region = getPostObj(post_dict, 'school_region');
-            school.school_status = getPostObj(post_dict, 'school_status');
-            school.school_season_score = getPostObj(post_dict, 'school_season_score');
+            school.school_name = getSinglePostObj(post_dict, 'school_name');
+            school.school_region = getSinglePostObj(post_dict, 'school_region');
+            school.school_status = getSinglePostObj(post_dict, 'school_status');
+            school.school_season_score = getSinglePostObj(post_dict, 'school_season_score');
             if not action == 'delete':
                 school.save();
 
             loghelper(self.request, 'admin', logQueryMaker(self.base_class, action.title(), id=school.id));
-            school_account.account_email = getPostObj(post_dict, 'account_email');
-            school_account.account_status = getPostObj(post_dict, 'school_status');
+            school_account.account_email = getSinglePostObj(post_dict, 'account_email');
+            school_account.account_status = getSinglePostObj(post_dict, 'school_status');
             school_account.account_linked_id = school.id;
             if not action == 'delete':
                 school_account.save();

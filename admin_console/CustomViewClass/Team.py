@@ -31,9 +31,9 @@ class TeamView(AbstractCustomClass):
             else:
                 team = self.base_class();
 
-            team.team_name = getPostObj(post_dict, 'team_name');
-            team.team_school = getPostObj(post_dict, 'team_school');
-            team.team_status = getPostObj(post_dict, 'team_status');
+            team.team_name = getSinglePostObj(post_dict, 'team_name');
+            team.team_school = getSinglePostObj(post_dict, 'team_school');
+            team.team_status = getSinglePostObj(post_dict, 'team_status');
 
             if not action == 'delete':
                 team.save();

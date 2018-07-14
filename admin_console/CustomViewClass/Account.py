@@ -30,7 +30,7 @@ class AccountView(AbstractCustomClass):
             if dispatcher.get(action):
                 account_id = kwargs.pop('id', None);
                 account = self.base_class.objects.get(id=account_id);
-                pwd = getPostObj(post_dict, 'account_password');
+                pwd = getSinglePostObj(post_dict, 'account_password');
                 pwd_salt = account.account_salt;
                 if not (pwd == account.account_password):
                     hashpwd = hashlib.sha224((pwd + pwd_salt).encode("utf-8")).hexdigest();
@@ -39,14 +39,14 @@ class AccountView(AbstractCustomClass):
                 account = self.base_class();
                 pwd_salt = ''.join(random.choices(string.ascii_uppercase + string.digits, k=15));
                 hashpwd = hashlib.sha224(
-                    (getPostObj(post_dict, 'account_password') + pwd_salt).encode("utf-8")).hexdigest();
+                    (getSinglePostObj(post_dict, 'account_password') + pwd_salt).encode("utf-8")).hexdigest();
                 account.account_salt = pwd_salt;
                 account.account_password = hashpwd;
 
-            account.account_type = getPostObj(post_dict, 'account_type');
-            account.account_email = getPostObj(post_dict, 'account_email');
-            account.account_status = getPostObj(post_dict, 'account_status');
-            account.account_linked_id = getPostObj(post_dict, 'account_linked_id');
+            account.account_type = getSinglePostObj(post_dict, 'account_type');
+            account.account_email = getSinglePostObj(post_dict, 'account_email');
+            account.account_status = getSinglePostObj(post_dict, 'account_status');
+            account.account_linked_id = getSinglePostObj(post_dict, 'account_linked_id');
 
             if not action == 'delete':
                 account.save();

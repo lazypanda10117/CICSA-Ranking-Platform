@@ -21,7 +21,7 @@ class Event(models.Model):
 class EventTeam(models.Model):
     event_team_event_activity_id = models.IntegerField();
     event_team_id = models.IntegerField();
-    event_team_member_group_id = models.IntegerField(blank=True);
+    event_team_member_group_id = models.IntegerField(null=True);
 
 class EventTag(models.Model):
     event_tag_event_id = models.IntegerField();

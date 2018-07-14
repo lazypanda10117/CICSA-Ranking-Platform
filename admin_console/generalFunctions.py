@@ -67,12 +67,17 @@ def grabValueAsList(dict):
     return list(dict.values());
 
 @csrf_exempt
-def getPostObj(post_dict, name):
+def getSinglePostObj(post_dict, name):
     return (lambda x: x[name][0] if name in x else None)(post_dict);
 
 @csrf_exempt
+def getMultiplePostObj(post_dict, name):
+    return (lambda x: x[name] if name in x else None)(post_dict);
+
+@csrf_exempt
 def grabLinkValueFromChoices(choices, key):
-    return (lambda x: x if x else None)([value[1] for i, value in enumerate(choices) if value[0] == key][0]);
+    choice_data = {choice_id: choice_val for choice_id, choice_val in choices};
+    return choice_data[key] if key in choice_data else None;
 
 @csrf_exempt
 def noneCatcher(key, data):

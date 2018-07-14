@@ -34,9 +34,9 @@ class MemberGroupView(AbstractCustomClass):
             else:
                 member_group = self.base_class();
 
-            member_group.member_group_name = getPostObj(post_dict, 'member_group_name');
-            member_group.member_group_school = getPostObj(post_dict, 'member_group_school');
-            member_group.member_group_member_ids = [getPostObj(post_dict, name+"_result") for name in self.search_name]
+            member_group.member_group_name = getSinglePostObj(post_dict, 'member_group_name');
+            member_group.member_group_school = getSinglePostObj(post_dict, 'member_group_school');
+            member_group.member_group_member_ids = [getSinglePostObj(post_dict, name + "_result") for name in self.search_name]
 
             if not action == 'delete':
                 member_group.save();

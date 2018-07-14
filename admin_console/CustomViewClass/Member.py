@@ -31,10 +31,10 @@ class MemberView(AbstractCustomClass):
             else:
                 member = self.base_class();
 
-            member.member_name = getPostObj(post_dict, 'member_name');
-            member.member_school = getPostObj(post_dict, 'member_school');
-            member.member_email = getPostObj(post_dict, 'member_email');
-            member.member_status = getPostObj(post_dict, 'member_status');
+            member.member_name = getSinglePostObj(post_dict, 'member_name');
+            member.member_school = getSinglePostObj(post_dict, 'member_school');
+            member.member_email = getSinglePostObj(post_dict, 'member_email');
+            member.member_status = getSinglePostObj(post_dict, 'member_status');
 
             if not action == 'delete':
                 member.save();
