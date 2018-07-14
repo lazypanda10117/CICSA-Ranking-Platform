@@ -1,1 +1,2 @@
-web: bash run.sh 
+web: bash tools.sh
+web: bash run.sh
