@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     'ranking.apps.RankingConfig',
     'admin_console.apps.AdminConsoleConfig',
     'team_console.apps.TeamConsoleConfig',
-    'search.apps.SearchConfig',
     'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',

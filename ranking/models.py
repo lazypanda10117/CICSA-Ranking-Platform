@@ -52,7 +52,7 @@ class EventActivity(models.Model):
 
 class Summary(models.Model):
     summary_event_parent = models.IntegerField();
-    summary_event_team = models.IntegerField(default=0);
+    summary_event_school = models.IntegerField(default=0);
     summary_event_ranking = models.IntegerField(default=0);
     summary_event_override_ranking = models.IntegerField(default=0);
     summary_event_score = models.FloatField(default=0);
@@ -68,6 +68,7 @@ class School(models.Model):
     school_region = models.IntegerField();
     school_status = models.CharField(max_length=50);
     school_season_score = models.FloatField();
+    school_default_team_name = models.CharField(max_length=200, default=school_name);
 
 class Team(models.Model):
     team_name = models.CharField(max_length=200);

@@ -88,6 +88,10 @@ class Choices:
         SCHOOL_CHOICES = tuple([(value.id, value.school_name) for value in filterModelObject(School)]);
         return SCHOOL_CHOICES;
 
+    def getEventTypeChoices(self):
+        EVENT_TYPE_CHOICES = tuple([(value.id, value.event_type_name) for value in filterModelObject(EventType)]);
+        return EVENT_TYPE_CHOICES;
+
     def getEventStatusChoices(self):
         EVENT_STATUS_CHOICES = (
             ("future", "Future"),
@@ -95,13 +99,6 @@ class Choices:
             ("running", "Running")
         );
         return EVENT_STATUS_CHOICES;
-
-    def getEventTypeChoices(self):
-        EVENT_TYPE_CHOICES = (
-            ("fleet", "Fleet"),
-            ("group", "Group")
-        );
-        return EVENT_TYPE_CHOICES;
 
     def getEventActivityTypeChoices(self):
         EVENT_ACTIVITY_TYPE_CHOICES = (

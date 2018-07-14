@@ -1,16 +1,17 @@
 from django.conf.urls import url
 from django.shortcuts import render, HttpResponse, redirect, reverse
-
+from admin_console import generalFunctions;
 from .models import *
 from .forms import *
+
 
 def index(request):
     return redirect(reverse('eventChoice'));
 
 def choice(request):
-    return render(request, 'console/event.html');
+    return render(request, 'console/event.html', {'types': [value.event_type_name for value in generalFunctions.filterModelObject(EventType)]});
 
 def eventAppDispatch(request, event_type):
-    dispatch = {'fleet', 'group'};
+    dispatch = [value.event_type_name for value in generalFunctions.filterModelObject(EventType)];
     return redirect('adminCustomView', event_type) if event_type in dispatch else \
         HttpResponse('Error: Event Type Does Not Exist.');
