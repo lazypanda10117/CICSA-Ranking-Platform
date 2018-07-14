@@ -90,18 +90,25 @@ class Choices:
 
     def getEventStatusChoices(self):
         EVENT_STATUS_CHOICES = (
-            ("done", "Done"),
             ("future", "Future"),
+            ("done", "Done"),
             ("running", "Running")
         );
-        return EVENT_STATUS_CHOICES
+        return EVENT_STATUS_CHOICES;
 
     def getEventTypeChoices(self):
         EVENT_TYPE_CHOICES = (
             ("fleet", "Fleet"),
             ("group", "Group")
         );
-        return EVENT_TYPE_CHOICES
+        return EVENT_TYPE_CHOICES;
+
+    def getEventActivityTypeChoices(self):
+        EVENT_ACTIVITY_TYPE_CHOICES = (
+            ("race", "Race"),
+            ("other", "Other")
+        );
+        return EVENT_ACTIVITY_TYPE_CHOICES;
 
     def getTeamStatusChoices(self):
         TEAM_STATUS_CHOICES = (
