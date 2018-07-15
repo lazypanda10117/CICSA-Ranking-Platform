@@ -10,7 +10,7 @@ def index(request):
 
 def choice(request):
     types = [value.event_type_name for value in generalFunctions.filterModelObject(EventType)];
-    type_style = {'width': int(12/len(types))}
+    type_style = {'width': int(12/len(types)) if len(types) else None}
     return render(request, 'console/event.html', {'types': types, 'type_style': type_style});
 
 def eventAppDispatch(request, event_type):
