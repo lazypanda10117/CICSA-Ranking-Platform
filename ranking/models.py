@@ -68,7 +68,7 @@ class School(models.Model):
     school_region = models.IntegerField();
     school_status = models.CharField(max_length=50);
     school_season_score = models.FloatField();
-    school_default_team_name = models.CharField(max_length=200, default=school_name);
+    school_default_team_name = models.CharField(max_length=200, default='');
 
 class Team(models.Model):
     team_name = models.CharField(max_length=200);

@@ -13,11 +13,12 @@ class SummaryView(AbstractCustomClass):
 
     def __init__(self, request):
         self.base_class = Summary;
+        self.assoc_class_event = Event;
         self.form_class = SummaryForm;
-        self.search_name = ['member0', 'member1'];
+        self.search_name = ['event_parent_name'];
         self.validation_table = {
             'base_table_invalid': {'_state'},
-            'base_form_invalid': {'_state', 'id'},
+            'base_form_invalid': {'_state', 'id','summary_event_parent'},
         };
         super().__init__(request, self.base_class, self.validation_table);
 
@@ -34,12 +35,11 @@ class SummaryView(AbstractCustomClass):
             else:
                 summary = self.base_class();
 
-            summary.summary_event_parent = getSinglePostObj(post_dict, 'member_group_name');
-            summary.summary_event_school = getSinglePostObj(post_dict, 'member_group_school');
-            summary.summary_event_ranking
-            summary.summary_event_override_ranking
-            summary.summary_event_score
-            #summary.member_group_member_ids = [getSinglePostObj(post_dict, name + "_result") for name in self.search_name]
+            summary.summary_event_parent = [getSinglePostObj(post_dict, name + "_result") for name in self.search_name][0];
+            summary.summary_event_school = getSinglePostObj(post_dict, 'summary_event_school');
+            summary.summary_event_ranking = getSinglePostObj(post_dict, 'summary_event_ranking');
+            summary.summary_event_override_ranking = getSinglePostObj(post_dict, 'summary_event_override_ranking');
+            summary.summary_event_score = getSinglePostObj(post_dict, 'summary_event_score');
 
             if not action == 'delete':
                 summary.save();
@@ -59,15 +59,21 @@ class SummaryView(AbstractCustomClass):
         element_id = kwargs.pop('element_id');
         field_data_dispatcher = self.populateDispatcher();
         if field_data_dispatcher.get(action):
-            field_data = filterDict(getModelObject(self.base_class,id=element_id).__dict__.items(),
+            field_data = filterDict(getModelObject(self.base_class, id=element_id).__dict__.items(),
                                     self.validation_table['base_form_invalid']);
             return field_data;
         return None;
 
     def getChoiceData(self):
-        choice_data = {};
-        choice_data["member_group_school"] = Choices().getSchoolChoices();
+        choice_data = dict();
+        choice_data['summary_event_school'] = Choices().getSchoolChoices();
         return choice_data;
+
+    def getDBMap(self, data):
+        db_map = dict();
+        db_map['summary_event_parent'] = DBMap().getMap(self.assoc_class_event,
+                                                        data['summary_event_parent'], 'event_name');
+        return db_map;
 
     def getMultiChoiceData(self):
         return None;
@@ -76,15 +82,14 @@ class SummaryView(AbstractCustomClass):
         def getSearchDefault(id):
             element_id = kwargs['element_id'] if 'element_id' in kwargs else None;
             if element_id:
-                member_group = getModelObject(self.base_class, id=element_id);
-                if member_group.member_group_member_ids is not None:
-                    member = getModelObject(Member, id=member_group.member_group_member_ids[id]);
-                    print(member.member_name)
-                    return (member.id, member.member_name + ' (' + member.member_email + ')');
+                summary = getModelObject(self.base_class, id=element_id);
+                if summary.summary_event_parent is not None:
+                    event_parent = getModelObject(Event, id=summary.summary_event_parent);
+                    return event_parent.id, event_parent.event_name + ' (' + event_parent.event_host + ')';
             return None, None;
         return [
-                    SearchElement(self.search_name[i], 'Member '+ str(i), 'Member', '', 'member_name', 'member_email',
-                                  getSearchDefault(i)) for i in range(0, len(self.search_name))
+                    SearchElement(self.search_name[i], 'Summary Event Parent', 'Event', '', 'event_name', 'event_host',
+                                  getSearchDefault(i)) for i in range(len(self.search_name))
                 ];
 
     ### Table Generating Functions
@@ -96,5 +101,6 @@ class SummaryView(AbstractCustomClass):
         field_data = filterDict(getModelObject(self.base_class, id=content.id).__dict__.items(),
                                                 self.validation_table['base_table_invalid']);
         field_data = self.updateChoiceAsValue(field_data, self.getChoiceData());
+        self.updateDBMapAsValue(field_data, self.getDBMap(field_data));
         field_data = grabValueAsList(field_data);
         return field_data;

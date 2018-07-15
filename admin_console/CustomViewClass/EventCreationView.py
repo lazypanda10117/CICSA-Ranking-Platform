@@ -8,6 +8,7 @@ from ..generalFunctions import *
 from ..models import *
 from ..forms import *
 
+
 class EventCreationView(AbstractCustomClass):
 
 ### Constructor <-> AbstractCustomClass

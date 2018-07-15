@@ -77,8 +77,11 @@ class AccountView(AbstractCustomClass):
         choice_data["account_type"] = Choices().getAccountTypeChocies();
         return choice_data;
 
+    def getDBMap(self, data):
+        return None;
+
     def getMultiChoiceData(self):
-        return {};
+        return None;
 
     def getSearchElement(self, **kwargs):
         return None;

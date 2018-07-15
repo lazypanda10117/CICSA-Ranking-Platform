@@ -69,6 +69,10 @@ class AbstractCustomClass(ABC):
         pass;
 
     @abstractmethod
+    def getDBMap(self, data):
+        pass;
+
+    @abstractmethod
     def getMultiChoiceData(self):
         pass;
 
@@ -109,6 +113,12 @@ class AbstractCustomClass(ABC):
         temp_data = field_data;
         for key, value in choice_data.items():
             temp_data[key] = grabLinkValueFromChoices(value, field_data[key]);
+        return temp_data;
+
+    def updateDBMapAsValue(self, field_data, db_map):
+        temp_data = field_data;
+        for key, value in db_map.items():
+            temp_data[key] = value;
         return temp_data;
 
     def makeEditDeleteBtn(self, path, id):

@@ -30,3 +30,6 @@ class GroupCreationView(EventCreationView):
                     self._add();
         except:
             print({"Error": "Cannot Process " + action.title() + " Request." });
+
+    def getDBMap(self, data):
+        return None;

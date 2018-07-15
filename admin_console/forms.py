@@ -141,12 +141,9 @@ class SummaryForm(forms.Form):
         self.choice_data = (lambda x: x if x else {})(noneCatcher('choice_data', self.data));
         for key, value in self.choice_data.items():
             self.fields[key] = forms.ChoiceField(choices=value);
-        for key, value in self.multi_choice_data.items():
-            self.fields[key] = forms.MultipleChoiceField(choices=value, widget=forms.CheckboxSelectMultiple);
         for key, value in self.field_data.items():
             self.fields[key].initial = value;
-    summary_event_parent = forms.ChoiceField(choices=[]);
     summary_event_school = forms.ChoiceField(choices=[]);
-    summary_event_ranking = forms.IntegerField();
-    summary_event_override_ranking = forms.IntegerField();
-    summary_event_score = forms.FloatField();
+    summary_event_ranking = forms.IntegerField(initial=0);
+    summary_event_override_ranking = forms.IntegerField(initial=0);
+    summary_event_score = forms.FloatField(initial=0.0);

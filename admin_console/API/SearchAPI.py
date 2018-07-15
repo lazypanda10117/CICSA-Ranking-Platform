@@ -1,4 +1,5 @@
 import json
+
 from django.apps import apps
 from ..generalFunctions import *
 from ..models import *
@@ -19,4 +20,4 @@ class SearchAPI():
             tempDict.pop('_state');
             id = tempDict.pop('id');
             resultList[id] = tempDict;
-        return HttpResponse(json.dumps(resultList));
+        return HttpResponse(json.dumps(resultList, default=str));

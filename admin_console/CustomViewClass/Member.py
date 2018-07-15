@@ -65,6 +65,9 @@ class MemberView(AbstractCustomClass):
         choice_data["member_school"] = Choices().getSchoolChoices();
         return choice_data;
 
+    def getDBMap(self, data):
+        return None;
+
     def getMultiChoiceData(self):
         return None;
 

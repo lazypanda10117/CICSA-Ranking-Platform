@@ -52,6 +52,7 @@ class SchoolView(AbstractCustomClass):
             school.school_region = getSinglePostObj(post_dict, 'school_region');
             school.school_status = getSinglePostObj(post_dict, 'school_status');
             school.school_season_score = getSinglePostObj(post_dict, 'school_season_score');
+            school.school_default_team_name = getSinglePostObj(post_dict, 'school_default_team_name');
             if not action == 'delete':
                 school.save();
 
@@ -89,6 +90,9 @@ class SchoolView(AbstractCustomClass):
         choice_data["school_region"] = Choices().getRegionChoices();
         choice_data["school_status"] = Choices().getStatusChoices();
         return choice_data;
+
+    def getDBMap(self, data):
+        return None;
 
     def getMultiChoiceData(self):
         return None;

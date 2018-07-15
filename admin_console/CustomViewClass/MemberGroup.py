@@ -62,9 +62,12 @@ class MemberGroupView(AbstractCustomClass):
         return None;
 
     def getChoiceData(self):
-        choice_data = {};
+        choice_data = dict();
         choice_data["member_group_school"] = Choices().getSchoolChoices();
         return choice_data;
+
+    def getDBMap(self, data):
+        pass;
 
     def getMultiChoiceData(self):
         return None;
@@ -76,12 +79,11 @@ class MemberGroupView(AbstractCustomClass):
                 member_group = getModelObject(self.base_class, id=element_id);
                 if member_group.member_group_member_ids is not None:
                     member = getModelObject(Member, id=member_group.member_group_member_ids[id]);
-                    print(member.member_name)
-                    return (member.id, member.member_name + ' (' + member.member_email + ')');
+                    return member.id, member.member_name + ' (' + member.member_email + ')';
             return None, None;
         return [
                     SearchElement(self.search_name[i], 'Member '+ str(i), 'Member', '', 'member_name', 'member_email',
-                                  getSearchDefault(i)) for i in range(0, len(self.search_name))
+                                  getSearchDefault(i)) for i in range(len(self.search_name))
                 ];
 
     ### Table Generating Functions

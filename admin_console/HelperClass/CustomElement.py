@@ -65,6 +65,13 @@ class Form:
         return form_string+self.form_path;
 
 class SearchElement:
+    #name = search base name
+    #label = the text to display for the search box
+    #item = the class to search for
+    #key = unknown
+    #term = the kwargs to search for
+    #help term = an extra to display in the search dropdown to help further distinguish between results
+
     def __init__(self, name, label, item, key, term, help_term, value_tuple):
         self.name = name;
         self.label = label;
@@ -129,3 +136,7 @@ class Choices:
             ("school", "School")
         );
         return ACCOUNT_TYPE_CHOICES;
+
+class DBMap():
+    def getMap(self, query_class, query_id, target_field):
+        return noneCatcher(target_field, getModelObject(query_class, id=query_id).__dict__);
