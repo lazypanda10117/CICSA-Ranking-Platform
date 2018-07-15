@@ -7,7 +7,7 @@ class Event(models.Model):
     event_description = models.CharField(max_length=1500);
     event_status = models.CharField(max_length=50); #pending, running, done
     event_type = models.IntegerField();
-    event_host = models.CharField(max_length=150);
+    event_host = models.IntegerField();
     event_location = models.CharField(max_length=1000);
     event_region = models.IntegerField();
     event_boat_number = models.IntegerField();

@@ -61,6 +61,9 @@ class EventCreationView(AbstractCustomClass):
         choice_data['event_region'] = Choices().getRegionChoices();
         return choice_data;
 
+    def getDBMap(self, data):
+        return None;
+
     def getMultiChoiceData(self):
         multi_choice_data = {};
         multi_choice_data['event_team'] = Choices().getSchoolChoices();

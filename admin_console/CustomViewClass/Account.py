@@ -13,6 +13,7 @@ class AccountView(AbstractCustomClass):
 
     def __init__(self, request):
         self.base_class = Account;
+        self.assoc_class_school = School;
         self.form_class = AccountForm;
         self.validation_table = {
             'base_table_invalid': {'_state', 'account_salt'},
@@ -78,7 +79,13 @@ class AccountView(AbstractCustomClass):
         return choice_data;
 
     def getDBMap(self, data):
-        return None;
+        db_map = dict();
+        db_map['account_linked_id'] = (
+            lambda x: 'Unlinked' if x == -1 else
+            DBMap().getMap(self.assoc_class_school, data['account_linked_id'], 'school_name'))\
+            (data['account_linked_id']);
+
+        return db_map;
 
     def getMultiChoiceData(self):
         return None;
@@ -95,5 +102,6 @@ class AccountView(AbstractCustomClass):
         field_data = filterDict(getModelObject(self.base_class, id=content.id).__dict__.items(),
                                                 self.validation_table['base_table_invalid']);
         field_data = self.updateChoiceAsValue(field_data, self.getChoiceData());
+        field_data = self.updateDBMapAsValue(field_data, self.getDBMap(field_data));
         field_data = grabValueAsList(field_data);
         return field_data;
