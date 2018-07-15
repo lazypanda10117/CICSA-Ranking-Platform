@@ -84,7 +84,6 @@ class AccountView(AbstractCustomClass):
             lambda x: 'Unlinked' if x == -1 else
             DBMap().getMap(self.assoc_class_school, data['account_linked_id'], 'school_name'))\
             (data['account_linked_id']);
-
         return db_map;
 
     def getMultiChoiceData(self):
