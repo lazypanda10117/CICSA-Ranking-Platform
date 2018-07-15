@@ -20,11 +20,12 @@ class FleetCreationView(EventCreationView):
         super().__init__(request);
 
     ### Class Specific Functions
+    def setFormPath(self):
+        return 'fleet';
+
     def __rotationGenerator(self, event_team_number, event_boat_number, event_race_number):
         return dict();
 
-    def setFormPath(self):
-        return 'fleet';
 
     def abstractFormProcess(self, action, **kwargs):
         def add():
@@ -127,16 +128,16 @@ class FleetCreationView(EventCreationView):
         def delete(key):
             pass;
 
-        #try:
-        dispatcher = super().populateDispatcher();
-        if dispatcher.get(action):
-            event_creation_id = kwargs.pop('id', None);
-            if action == 'edit':
-                edit(event_creation_id);
-            elif action == 'delete':
-                delete(event_creation_id);
-        else:
-            if action == 'add':
-                add();
-        #except:
-        #    print({"Error": "Cannot Process " + action.title() + " Request." });
+        try:
+            dispatcher = super().populateDispatcher();
+            if dispatcher.get(action):
+                event_creation_id = kwargs.pop('id', None);
+                if action == 'edit':
+                    edit(event_creation_id);
+                elif action == 'delete':
+                    delete(event_creation_id);
+            else:
+                if action == 'add':
+                    add();
+        except:
+            print({"Error": "Cannot Process " + action.title() + " Request." });

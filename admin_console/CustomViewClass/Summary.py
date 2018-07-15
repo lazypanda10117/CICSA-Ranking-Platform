@@ -1,5 +1,3 @@
-import hashlib, random, string
-
 from .AbstractCustomClass import AbstractCustomClass
 from ..HelperClass import *
 from ..generalFunctions import *
@@ -101,6 +99,6 @@ class SummaryView(AbstractCustomClass):
         field_data = filterDict(getModelObject(self.base_class, id=content.id).__dict__.items(),
                                                 self.validation_table['base_table_invalid']);
         field_data = self.updateChoiceAsValue(field_data, self.getChoiceData());
-        self.updateDBMapAsValue(field_data, self.getDBMap(field_data));
+        field_data = self.updateDBMapAsValue(field_data, self.getDBMap(field_data));
         field_data = grabValueAsList(field_data);
         return field_data;

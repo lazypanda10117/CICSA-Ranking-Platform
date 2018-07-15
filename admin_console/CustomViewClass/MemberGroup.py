@@ -14,6 +14,7 @@ class MemberGroupView(AbstractCustomClass):
     def __init__(self, request):
         self.base_class = MemberGroup;
         self.form_class = MemberGroupForm;
+        self.assoc_class_member = Member;
         self.search_name = ['member0', 'member1'];
         self.validation_table = {
             'base_table_invalid': {'_state'},
@@ -67,7 +68,12 @@ class MemberGroupView(AbstractCustomClass):
         return choice_data;
 
     def getDBMap(self, data):
-        pass;
+        db_map = dict();
+        db_map['member_group_member_ids'] = [
+            DBMap().getMap(self.assoc_class_member, data['member_group_member_ids'][i], 'member_name')
+            for i in range(len(data['member_group_member_ids']))
+        ];
+        return db_map;
 
     def getMultiChoiceData(self):
         return None;
@@ -78,7 +84,7 @@ class MemberGroupView(AbstractCustomClass):
             if element_id:
                 member_group = getModelObject(self.base_class, id=element_id);
                 if member_group.member_group_member_ids is not None:
-                    member = getModelObject(Member, id=member_group.member_group_member_ids[id]);
+                    member = getModelObject(self.assoc_class_member, id=member_group.member_group_member_ids[id]);
                     return member.id, member.member_name + ' (' + member.member_email + ')';
             return None, None;
         return [
@@ -95,5 +101,6 @@ class MemberGroupView(AbstractCustomClass):
         field_data = filterDict(getModelObject(self.base_class, id=content.id).__dict__.items(),
                                                 self.validation_table['base_table_invalid']);
         field_data = self.updateChoiceAsValue(field_data, self.getChoiceData());
+        field_data = self.updateDBMapAsValue(field_data, self.getDBMap(field_data));
         field_data = grabValueAsList(field_data);
         return field_data;
