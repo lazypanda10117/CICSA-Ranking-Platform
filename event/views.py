@@ -9,7 +9,9 @@ def index(request):
     return redirect(reverse('eventChoice'));
 
 def choice(request):
-    return render(request, 'console/event.html', {'types': [value.event_type_name for value in generalFunctions.filterModelObject(EventType)]});
+    types = [value.event_type_name for value in generalFunctions.filterModelObject(EventType)];
+    type_style = {'width': int(12/len(types))}
+    return render(request, 'console/event.html', {'types': types, 'type_style': type_style});
 
 def eventAppDispatch(request, event_type):
     dispatch = [value.event_type_name for value in generalFunctions.filterModelObject(EventType)];

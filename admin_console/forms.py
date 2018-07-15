@@ -133,3 +133,20 @@ class EventCreationForm(forms.Form):
     event_start_date = forms.DateField(initial=timezone.now(), widget=forms.DateInput(format='%Y-%m-%d'));
     event_end_date = forms.DateField(initial=timezone.now(), widget=forms.DateInput(format='%Y-%m-%d'));
 
+class SummaryForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__()
+        self.data = kwargs.pop('data', None);
+        self.field_data = (lambda x: x if x else {})(noneCatcher('field_data', self.data));
+        self.choice_data = (lambda x: x if x else {})(noneCatcher('choice_data', self.data));
+        for key, value in self.choice_data.items():
+            self.fields[key] = forms.ChoiceField(choices=value);
+        for key, value in self.multi_choice_data.items():
+            self.fields[key] = forms.MultipleChoiceField(choices=value, widget=forms.CheckboxSelectMultiple);
+        for key, value in self.field_data.items():
+            self.fields[key].initial = value;
+    summary_event_parent = forms.ChoiceField(choices=[]);
+    summary_event_school = forms.ChoiceField(choices=[]);
+    summary_event_ranking = forms.IntegerField();
+    summary_event_override_ranking = forms.IntegerField();
+    summary_event_score = forms.FloatField();

@@ -27,6 +27,13 @@ class EventCreationView(AbstractCustomClass):
     def setFormPath(self):
         pass;
 
+### Overriding Function
+    def setViewDispatcher(self):
+        dispatcher = super().setViewDispatcher();
+        dispatcher.update('edit', False);
+        dispatcher.update('delete', False);
+        return dispatcher;
+
 ### View Process Functions
     @abstractmethod
     def abstractFormProcess(self, action, **kwargs):
@@ -40,7 +47,7 @@ class EventCreationView(AbstractCustomClass):
         element_id = kwargs.pop('element_id');
         field_data_dispatcher = self.populateDispatcher();
         if field_data_dispatcher.get(action):
-            field_data = filterDict(getModelObject(self.base_class,id=element_id).__dict__.items(),
+            field_data = filterDict(getModelObject(self.base_class, id=element_id).__dict__.items(),
                                     self.validation_table['base_form_invalid']);
             return field_data;
         return {'event_type': self.form_path};
@@ -61,7 +68,15 @@ class EventCreationView(AbstractCustomClass):
     def getSearchElement(self, **kwargs):
         return None;
 
+    def getTableRow(self, content):
+        rowContent = {};
+        rowContent["db_content"] = self.getTableRowContent(content);
+        return rowContent;
+
     ### Table Generating Functions
+    def getTableHeader(self):
+        return self.getTableSpecificHeader();
+
     def getTableSpecificHeader(self):
         base_header = [field.name for field in self.base_class._meta.get_fields()
                 if not field.name in self.validation_table['base_table_invalid']];

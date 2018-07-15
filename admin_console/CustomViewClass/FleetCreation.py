@@ -28,6 +28,21 @@ class FleetCreationView(EventCreationView):
 
     def abstractFormProcess(self, action, **kwargs):
         def add():
+            post_dict = dict(self.request.POST);
+
+            event_type = getSinglePostObj(post_dict, 'event_type');
+            event_name = getSinglePostObj(post_dict, 'event_name');
+            event_status = getSinglePostObj(post_dict, 'event_status');
+            event_description = getSinglePostObj(post_dict, 'event_description');
+            event_location = getSinglePostObj(post_dict, 'event_location');
+            event_region = getSinglePostObj(post_dict, 'event_region');
+            event_host = getSinglePostObj(post_dict, 'event_host');
+            event_school = getMultiplePostObj(post_dict, 'event_team');
+            event_num_race = getSinglePostObj(post_dict, 'event_num_race');
+            event_num_boat = getSinglePostObj(post_dict, 'event_num_boat');
+            event_start_date = getSinglePostObj(post_dict, 'event_start_date');
+            event_end_date = getSinglePostObj(post_dict, 'event_end_date');
+
             race_tag_dict = dict();
             team_activity_dict = dict();
             #event generation
@@ -107,27 +122,10 @@ class FleetCreationView(EventCreationView):
                                   logQueryMaker(self.assoc_class_team_link, action.title(), id=event_team.id));
 
         def edit(key):
-            event_creation = self.base_class.objects.get(id=key);
             pass;
 
         def delete(key):
-            event_creation = self.base_class.objects.get(id=key);
             pass;
-
-        post_dict = dict(self.request.POST);
-
-        event_type = getSinglePostObj(post_dict, 'event_type');
-        event_name = getSinglePostObj(post_dict, 'event_name');
-        event_status = getSinglePostObj(post_dict, 'event_status');
-        event_description = getSinglePostObj(post_dict, 'event_description');
-        event_location = getSinglePostObj(post_dict, 'event_location');
-        event_region = getSinglePostObj(post_dict, 'event_region');
-        event_host = getSinglePostObj(post_dict, 'event_host');
-        event_school = getMultiplePostObj(post_dict, 'event_team');
-        event_num_race = getSinglePostObj(post_dict, 'event_num_race');
-        event_num_boat = getSinglePostObj(post_dict, 'event_num_boat');
-        event_start_date = getSinglePostObj(post_dict, 'event_start_date');
-        event_end_date = getSinglePostObj(post_dict, 'event_end_date');
 
         #try:
         dispatcher = super().populateDispatcher();

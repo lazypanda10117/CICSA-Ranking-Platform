@@ -8,17 +8,17 @@ from ..forms import *
 class AbstractCustomClass(ABC):
 
     def __init__(self, request, base_class, validation_table):
-        self.dispatcher = self.setDispatcher();
+        self.dispatcher = self.setViewDispatcher();
         self.request = request;
         self.base_class = base_class;
         self.validation_table = validation_table;
 
-    def setDispatcher(self):
+    def setViewDispatcher(self):
         dispatcher = Dispatcher();
-        dispatcher.add('add', self.grabFormData);
-        dispatcher.add('edit', self.grabFormData);
-        dispatcher.add('delete', self.grabFormData);
-        dispatcher.add('view', self.grabTableData);
+        dispatcher.add('add', True);
+        dispatcher.add('edit', True);
+        dispatcher.add('delete', True);
+        dispatcher.add('view', True);
         return dispatcher;
 
 ### View Process Functions
@@ -41,12 +41,12 @@ class AbstractCustomClass(ABC):
     def grabData(self, *args):
         #args[0] = action, args[1] = form_path, args[2] = element_id
         if args[0] == 'view':
-            return self.dispatcher.get(args[0])(form_path=args[1]);
+            return self.grabTableData(form_path=args[1]);
         elif args[0] == 'add':
-            return self.dispatcher.get(args[0])(action=args[0], element_id=args[2]);
+            return self.grabFormData(action=args[0], element_id=args[2]);
         if args[0] in {'edit', 'delete'}:
             if args[2]:
-                return self.dispatcher.get(args[0])(action=args[0], element_id=args[2]);
+                return self.grabFormData(action=args[0], element_id=args[2]);
             else:
                 return {"Error": "Insufficient Parameters"};
         else:

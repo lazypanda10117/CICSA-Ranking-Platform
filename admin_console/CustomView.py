@@ -15,18 +15,32 @@ class CustomView:
 
     def setDispatcher(self):
         dispatcher = Dispatcher();
+        dispatcher.add('fleet', {'class': FleetCreationView, 'form': EventCreationForm});
+        dispatcher.add('group', {'class': GroupCreationView, 'form': EventCreationForm});
+        dispatcher.add('event', {'class': GroupCreationView, 'form': EventCreationForm});
+        dispatcher.add('summary', {'class': SummaryView, 'form': SummaryForm});
+        dispatcher.add('event activity', {'class': GroupCreationView, 'form': EventCreationForm});
+        dispatcher.add('event team link', {'class': GroupCreationView, 'form': EventCreationForm});
         dispatcher.add('school', {'class': SchoolView, 'form': SchoolForm});
-        dispatcher.add('account', {'class': AccountView, 'form': AccountForm});
         dispatcher.add('team', {'class': TeamView, 'form': TeamForm});
         dispatcher.add('member', {'class': MemberView, 'form': MemberForm});
         dispatcher.add('member group', {'class': MemberGroupView, 'form': MemberGroupForm});
-        dispatcher.add('fleet', {'class': FleetCreationView, 'form': EventCreationForm});
-        dispatcher.add('group', {'class': GroupCreationView, 'form': EventCreationForm});
+        dispatcher.add('account', {'class': AccountView, 'form': AccountForm});
+
         return dispatcher;
 
     def dispatch(self, form_path):
         self.form_path = form_path;
         def CustomViewDisplay():
+            def loadView(actionClass):
+                return (lambda x: render(self.request, 'console/generate.html',
+                                         x(currentClass(self.request).grabData(action, form_path, element_id)))
+                if x else HttpResponse('{"Response": "Error: Insufficient Parameters"}'))(actionClass);
+
+            def loadViewChecker():
+                return loadView(functionDispatch.get(action)) if currentClass(self.request).dispatcher.get(
+                    action) else redirect('adminCustomView', form_path)
+
             def actionView(data):
                 type = dict(table=True);
                 return dict(page_title=page_title, type=type, context=data);
@@ -77,9 +91,9 @@ class CustomView:
             currentClass = currentData["class"];
 
             functionDispatch = setFunctionDispatcher();
-            return (lambda x: render(self.request, 'console/generate.html',
-                                     x(currentClass(self.request).grabData(action, form_path, element_id)))
-            if x else HttpResponse('{"Response": "Error: Insufficient Parameters"}'))(functionDispatch.get(action));
+
+            return loadViewChecker();
+
 
         def CustomViewLogic():
             def actionAdd():
