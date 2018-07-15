@@ -16,7 +16,7 @@ class Event(models.Model):
     event_rotation_detail = JSONField(); #(team id: [rotation sequence], for each team)
     event_start_date = models.DateField(blank=True);
     event_end_date = models.DateField(blank=True);
-    event_create_time = models.DateTimeField(default=timezone.now(), blank=True);
+    event_create_time = models.DateTimeField(auto_now_add=True, blank=True);
 
 class EventTeam(models.Model):
     event_team_event_activity_id = models.IntegerField();
@@ -61,7 +61,7 @@ class Log(models.Model):
     log_creator = models.IntegerField(); #if sql, then system (-1), else user id
     log_content = JSONField();
     log_type = models.CharField(max_length=50); #admin, school, system
-    log_create_time = models.DateTimeField(default=timezone.now(), blank=True);
+    log_create_time = models.DateTimeField(auto_now_add=True, blank=True);
 
 class School(models.Model):
     school_name = models.CharField(max_length=200);

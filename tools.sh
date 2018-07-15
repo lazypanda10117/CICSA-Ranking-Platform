@@ -9,6 +9,7 @@ done
 for n in ${narr[*]}
 do
     makePath=$n"migrations/"
+    rm -R $makePath
     mkdir $makePath
     initPath=$makePath"__init__.py"
     touch $initPath
@@ -19,4 +20,3 @@ do
     deletePath=$d"migrations/"
     rm -R $deletePath
 done
-python3 manage.py migrate
