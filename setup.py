@@ -10,6 +10,7 @@ def executeScriptsFromFile(filename, cursor):
     sql_commands = sql_file.split(';');
     for command in sql_commands:
         try:
+            print(command);
             cursor.execute(command);
         except psycopg2.OperationalError as msg:
             print("Command skipped: " + msg);
