@@ -16,7 +16,7 @@ class SummaryView(AbstractCustomClass):
         self.search_name = ['event_parent_name'];
         self.validation_table = {
             'base_table_invalid': {'_state'},
-            'base_form_invalid': {'_state', 'id','summary_event_parent'},
+            'base_form_invalid': {'_state', 'id', 'summary_event_parent'},
         };
         super().__init__(request, self.base_class, self.validation_table);
 

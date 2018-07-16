@@ -13,9 +13,10 @@ class MemberGroupView(AbstractCustomClass):
 
     def __init__(self, request):
         self.base_class = MemberGroup;
-        self.form_class = MemberGroupForm;
+        self.assoc_class_school = School;
         self.assoc_class_member = Member;
-        self.search_name = ['member0', 'member1'];
+        self.form_class = MemberGroupForm;
+        self.search_name = ['member_group_member_ids_0', 'member_group_member_ids_1'];
         self.validation_table = {
             'base_table_invalid': {'_state'},
             'base_form_invalid': {'_state', 'id', 'member_group_member_ids'},
@@ -25,7 +26,7 @@ class MemberGroupView(AbstractCustomClass):
 ### View Process Functions
 
     def abstractFormProcess(self, action, **kwargs):
-        try:
+        #try:
             post_dict = dict(self.request.POST);
             dispatcher = super().populateDispatcher();
 
@@ -35,9 +36,12 @@ class MemberGroupView(AbstractCustomClass):
             else:
                 member_group = self.base_class();
 
-            member_group.member_group_name = getSinglePostObj(post_dict, 'member_group_name');
             member_group.member_group_school = getSinglePostObj(post_dict, 'member_group_school');
-            member_group.member_group_member_ids = [getSinglePostObj(post_dict, name + "_result") for name in self.search_name]
+            member_group.member_group_member_ids = [getSinglePostObj(post_dict, name + "_result")
+                                                    for name in self.search_name]
+            member_group.member_group_name = getModelObject(
+                self.assoc_class_school, id=member_group.member_group_school).school_name + ' - ' + getSinglePostObj(
+                post_dict, 'member_group_name');
 
             if not action == 'delete':
                 member_group.save();
@@ -46,8 +50,8 @@ class MemberGroupView(AbstractCustomClass):
 
             if action == 'delete':
                 member_group.delete();
-        except:
-            print({"Error": "Cannot Process " + action.title() + " Request." });
+        #except:
+         #   print({"Error": "Cannot Process " + action.title() + " Request." });
 
 ### View Generating Functions
 
