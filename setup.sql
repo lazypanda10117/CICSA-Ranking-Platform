@@ -17,6 +17,3 @@ INSERT INTO ranking_region (region_name) VALUES ('Maritime Provinces');
 INSERT INTO ranking_scoremapping (score_name, score_value) VALUES ('OCF', -10);
 INSERT INTO ranking_scoremapping (score_name, score_value) VALUES ('DNF', -10);
 INSERT INTO ranking_scoremapping (score_name, score_value) VALUES ('DNS', -10);
-
-
-
