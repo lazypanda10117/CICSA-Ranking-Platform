@@ -88,7 +88,7 @@ class MemberGroupView(AbstractCustomClass):
                     return member.id, member.member_name + ' (' + member.member_email + ')';
             return None, None;
         return [
-                    SearchElement(self.search_name[i], 'Member '+ str(i), 'Member', '', 'member_name', 'member_email',
+                    SearchElement(self.search_name[i], 'Member ' + str(i), 'Member', '', 'member_name', 'member_email',
                                   getSearchDefault(i)) for i in range(len(self.search_name))
                 ];
 

@@ -1,6 +1,6 @@
 from ..HelperClass import *
 from ..generalFunctions import *
-from .EventCreationView import *
+from .EventCreation import *
 
 from ..models import *
 

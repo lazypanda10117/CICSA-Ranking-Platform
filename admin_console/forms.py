@@ -147,3 +147,16 @@ class SummaryForm(forms.Form):
     summary_event_ranking = forms.IntegerField(initial=0);
     summary_event_override_ranking = forms.IntegerField(initial=0);
     summary_event_score = forms.FloatField(initial=0.0);
+
+class EventTeamForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__()
+        self.data = kwargs.pop('data', None);
+        self.field_data = (lambda x: x if x else {})(noneCatcher('field_data', self.data));
+        self.choice_data = (lambda x: x if x else {})(noneCatcher('choice_data', self.data));
+        for key, value in self.choice_data.items():
+            self.fields[key] = forms.ChoiceField(choices=value);
+        for key, value in self.field_data.items():
+            self.fields[key].initial = value;
+    event_team_id = forms.IntegerField();
+    event_team_event_activity_id = forms.IntegerField();
