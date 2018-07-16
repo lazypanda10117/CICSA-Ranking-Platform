@@ -21,6 +21,7 @@ class EventCreationView(AbstractCustomClass):
             'base_table_invalid': {'_state'},
             'base_form_invalid': {'_state', 'id', 'event_team_number', 'event_rotation_detail', 'event_create_time'},
         };
+        self.with_logic = False;
         super().__init__(request, self.base_class, self.validation_table);
 
 ### Class Specific Function
@@ -90,9 +91,13 @@ class EventCreationView(AbstractCustomClass):
 
     def getTableRowContent(self, content):
         event_types = {type_name: type_id for type_id, type_name in Choices().getEventTypeChoices()}
-        field_data = filterDict(getModelObject(
-            self.base_class, id=content.id, event_type=event_types[self.form_path]).__dict__.items(),
-                                                self.validation_table['base_table_invalid']);
+        if self.with_logic:
+            field_data = filterDict(getModelObject(
+                self.base_class, id=content.id, event_type=event_types[self.form_path]).__dict__.items(),
+                                                    self.validation_table['base_table_invalid']);
+        else:
+            field_data = filterDict(getModelObject(
+                self.base_class, id=content.id).__dict__.items(), self.validation_table['base_table_invalid']);
         field_data = self.updateChoiceAsValue(field_data, self.getChoiceData());
         field_data = grabValueAsList(field_data);
         return field_data;

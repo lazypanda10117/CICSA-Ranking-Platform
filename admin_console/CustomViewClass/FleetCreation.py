@@ -6,6 +6,7 @@ from ..models import *
 
 class FleetCreationView(EventCreationView):
     def __init__(self, request):
+        super().__init__(request);
         self.assoc_class_activity = EventActivity;
         self.assoc_class_team = Team;
         self.assoc_class_school = School;
@@ -16,7 +17,8 @@ class FleetCreationView(EventCreationView):
         self.event_race_tag = ["Fleet A", "Fleet B"];
         self.event_team_name_suffix = ["Team A", "Team B"];
         self.event_activity_type = "race";
-        super().__init__(request);
+
+        self.with_logic = True;
 
     ### Class Specific Functions
     def setFormPath(self):
@@ -48,8 +50,8 @@ class FleetCreationView(EventCreationView):
             event_region = getSinglePostObj(post_dict, 'event_region');
             event_host = getSinglePostObj(post_dict, 'event_host');
             event_school = getMultiplePostObj(post_dict, 'event_team');
-            event_num_race = getSinglePostObj(post_dict, 'event_num_race');
-            event_num_boat = getSinglePostObj(post_dict, 'event_num_boat');
+            event_race_number = getSinglePostObj(post_dict, 'event_race_number');
+            event_boat_number = getSinglePostObj(post_dict, 'event_boat_number');
             event_start_date = getSinglePostObj(post_dict, 'event_start_date');
             event_end_date = getSinglePostObj(post_dict, 'event_end_date');
 
@@ -65,8 +67,8 @@ class FleetCreationView(EventCreationView):
             event_creation.event_season = event_season;
             event_creation.event_region = int(event_region);
             event_creation.event_host = int(event_host);
-            event_creation.event_boat_number = int(event_num_boat);
-            event_creation.event_race_number = int(event_num_race);
+            event_creation.event_boat_number = int(event_boat_number);
+            event_creation.event_race_number = int(event_race_number);
             event_creation.event_start_date = event_start_date;
             event_creation.event_end_date = event_end_date;
             event_creation.event_team_number = len(event_school);

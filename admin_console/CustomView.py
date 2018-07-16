@@ -17,9 +17,9 @@ class CustomView:
         dispatcher = Dispatcher();
         dispatcher.add('fleet', {'class': FleetCreationView, 'form': EventCreationForm});
         dispatcher.add('group', {'class': GroupCreationView, 'form': EventCreationForm});
-        dispatcher.add('event', {'class': GroupCreationView, 'form': EventCreationForm});
+        dispatcher.add('event', {'class': EventView, 'form': EventForm});
         dispatcher.add('summary', {'class': SummaryView, 'form': SummaryForm});
-        dispatcher.add('event activity', {'class': GroupCreationView, 'form': EventTeamForm});
+        dispatcher.add('event activity', {'class': EventActivity, 'form': EventActivityForm});
         dispatcher.add('event tag', {'class': EventTagView, 'form': EventTagForm});
         dispatcher.add('event team', {'class': EventTeamView, 'form': EventTeamForm});
         dispatcher.add('school', {'class': SchoolView, 'form': SchoolForm});
