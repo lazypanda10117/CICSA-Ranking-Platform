@@ -1,6 +1,7 @@
 from .FleetCreation import *
 from .GroupCreation import *
 from .Summary import *
+from .EventTag import *
 from .EventTeam import *
 from .School import *
 from .Team import *

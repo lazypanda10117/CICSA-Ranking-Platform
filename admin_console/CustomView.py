@@ -20,6 +20,7 @@ class CustomView:
         dispatcher.add('event', {'class': GroupCreationView, 'form': EventCreationForm});
         dispatcher.add('summary', {'class': SummaryView, 'form': SummaryForm});
         dispatcher.add('event activity', {'class': GroupCreationView, 'form': EventTeamForm});
+        dispatcher.add('event tag', {'class': EventTagView, 'form': EventTagForm});
         dispatcher.add('event team', {'class': EventTeamView, 'form': EventTeamForm});
         dispatcher.add('school', {'class': SchoolView, 'form': SchoolForm});
         dispatcher.add('team', {'class': TeamView, 'form': TeamForm});

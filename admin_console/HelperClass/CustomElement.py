@@ -87,6 +87,10 @@ class SearchElement:
 
 
 class Choices:
+    def getSeasonChoices(self):
+        SEASON_CHOICES = tuple([(value.id, value.season_name) for value in filterModelObject(Season)]);
+        return SEASON_CHOICES;
+
     def getRegionChoices(self):
         REGION_CHOICES = tuple([(value.id, value.region_name) for value in filterModelObject(Region)]);
         return REGION_CHOICES;

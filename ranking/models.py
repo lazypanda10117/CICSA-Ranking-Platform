@@ -9,6 +9,7 @@ class Event(models.Model):
     event_type = models.IntegerField();
     event_host = models.IntegerField();
     event_location = models.CharField(max_length=1000);
+    event_season = models.IntegerField();
     event_region = models.IntegerField();
     event_boat_number = models.IntegerField();
     event_race_number = models.IntegerField();

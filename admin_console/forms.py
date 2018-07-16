@@ -125,6 +125,7 @@ class EventCreationForm(forms.Form):
     event_status = forms.ChoiceField(choices=[]);
     event_description = forms.CharField(max_length=1500, widget=forms.Textarea);
     event_location = forms.CharField(max_length=1000);
+    event_season = forms.ChoiceField(choices=[]);
     event_region = forms.ChoiceField(choices=[]);
     event_host = forms.ChoiceField(choices=[]);
     event_team = forms.MultipleChoiceField(choices=[]);
@@ -160,3 +161,15 @@ class EventTeamForm(forms.Form):
             self.fields[key].initial = value;
     event_team_id = forms.IntegerField();
     event_team_event_activity_id = forms.IntegerField();
+
+class EventTagForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__()
+        self.data = kwargs.pop('data', None);
+        self.field_data = (lambda x: x if x else {})(noneCatcher('field_data', self.data));
+        self.choice_data = (lambda x: x if x else {})(noneCatcher('choice_data', self.data));
+        for key, value in self.choice_data.items():
+            self.fields[key] = forms.ChoiceField(choices=value);
+        for key, value in self.field_data.items():
+            self.fields[key].initial = value;
+    event_tag_name = forms.CharField(max_length=200);

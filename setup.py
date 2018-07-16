@@ -17,7 +17,7 @@ def executeScriptsFromFile(filename, cu):
             else:
                 continue;
         except psycopg2.OperationalError as msg:
-            print("Command skipped: " + msg);
+            print("Command skipped: " + str(msg));
     print('Finish Applying Setup SQL Queries');
 
 

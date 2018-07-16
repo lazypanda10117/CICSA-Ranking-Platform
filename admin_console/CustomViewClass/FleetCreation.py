@@ -44,6 +44,7 @@ class FleetCreationView(EventCreationView):
             event_status = getSinglePostObj(post_dict, 'event_status');
             event_description = getSinglePostObj(post_dict, 'event_description');
             event_location = getSinglePostObj(post_dict, 'event_location');
+            event_season = getSinglePostObj(post_dict, 'event_season');
             event_region = getSinglePostObj(post_dict, 'event_region');
             event_host = getSinglePostObj(post_dict, 'event_host');
             event_school = getMultiplePostObj(post_dict, 'event_team');
@@ -57,10 +58,11 @@ class FleetCreationView(EventCreationView):
             #event generation
             event_creation = self.base_class();
             event_creation.event_type = int(event_type);
-            event_creation.event_name = event_name;
+            event_creation.event_name = event_name + ' - ' + event_season;
             event_creation.event_status = event_status;
             event_creation.event_description = event_description;
             event_creation.event_location = event_location;
+            event_creation.event_season = event_season;
             event_creation.event_region = int(event_region);
             event_creation.event_host = int(event_host);
             event_creation.event_boat_number = int(event_num_boat);

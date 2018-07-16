@@ -58,6 +58,7 @@ class EventCreationView(AbstractCustomClass):
         choice_data['event_type'] = Choices().getEventTypeChoices();
         choice_data['event_status'] = Choices().getEventStatusChoices();
         choice_data['event_host'] = Choices().getSchoolChoices();
+        choice_data['event_season'] = Choices().getSeasonChoices();
         choice_data['event_region'] = Choices().getRegionChoices();
         return choice_data;
 
