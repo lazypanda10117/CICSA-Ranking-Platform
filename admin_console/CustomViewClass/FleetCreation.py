@@ -4,7 +4,6 @@ from .EventCreation import *
 
 from ..models import *
 
-
 class FleetCreationView(EventCreationView):
     def __init__(self, request):
         self.assoc_class_activity = EventActivity;
@@ -23,8 +22,17 @@ class FleetCreationView(EventCreationView):
     def setFormPath(self):
         return 'fleet';
 
-    def __rotationGenerator(self, event_team_number, event_boat_number, event_race_number):
-        return dict();
+    def __rotationGenerator(self, team_dict, event_race_number):
+        rand_array = random.sample(range(1, event_race_number + 1), event_race_number);
+        result_dict = dict();
+        for shift, tag in enumerate(team_dict):
+            team_sequence = dict();
+            for team_num, team_id in enumerate(team_dict[tag]):
+                team_sequence[team_id] = [modAdd(rand_array[team_num] + shift, (race - race % 2), event_race_number)
+                                          for race in range(event_race_number)];
+            result_dict[tag] = team_sequence;
+        print(result_dict);
+        return result_dict;
 
 
     def abstractFormProcess(self, action, **kwargs):
@@ -60,11 +68,8 @@ class FleetCreationView(EventCreationView):
             event_creation.event_start_date = event_start_date;
             event_creation.event_end_date = event_end_date;
             event_creation.event_team_number = len(event_school);
-            event_creation.event_rotation_detail = self.__rotationGenerator(
-                event_creation.event_team_number, event_creation.event_boat_number, event_creation.event_race_number);
+            event_creation.event_rotation_detail = {};
             event_creation.save();
-            loghelper(self.request, 'admin',
-                      logQueryMaker(self.base_class, action.title(), id=event_creation.id))
 
             #event tag generation
             for tag in self.event_race_tag:
@@ -105,7 +110,7 @@ class FleetCreationView(EventCreationView):
                     event_activity.event_activity_event_parent = event_creation.id;
                     event_activity.event_activity_event_tag = tag_id;
                     event_activity.event_activity_name = tag + ' Race ' + str(race+1);
-                    event_activity.event_activity_order = race+1;
+                    event_activity.event_activity_order = race + 1;
                     event_activity.event_activity_result = dict();
                     event_activity.event_activity_note = "";
                     event_activity.event_activity_type = self.event_activity_type;
@@ -121,6 +126,12 @@ class FleetCreationView(EventCreationView):
                         event_team.save();
                         loghelper(self.request, 'admin',
                                   logQueryMaker(self.assoc_class_team_link, action.title(), id=event_team.id));
+
+            event_creation.event_rotation_detail = self.__rotationGenerator(
+                team_activity_dict, event_creation.event_race_number);
+            event_creation.save();
+            loghelper(self.request, 'admin',
+                      logQueryMaker(self.base_class, action.title(), id=event_creation.id))
 
         def edit(key):
             pass;
@@ -139,5 +150,6 @@ class FleetCreationView(EventCreationView):
             else:
                 if action == 'add':
                     add();
-        except:
+        except Exception as e:
             print({"Error": "Cannot Process " + action.title() + " Request." });
+            print(e);

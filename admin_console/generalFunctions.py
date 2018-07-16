@@ -92,5 +92,10 @@ def emptyActionRedirect(request, func):
     else:
         return func;
 
+@csrf_exempt
 def getTimeNow():
     return datetime.datetime.now();
+
+@csrf_exempt
+def modAdd(base, add, mod):
+    return ((base + add) % mod) + 1;
