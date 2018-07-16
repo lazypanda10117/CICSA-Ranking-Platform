@@ -1,4 +1,4 @@
-INSERT INTO ranking_account (account_type, account_email, account_salt, account_password, account_status, account_linked_id) VALUES ('admin', 'test@sailing_dinosaurs.com', 'sljdbkvkakfsbdhvk', 'a25c78192f2a235a801b5cbbb4f4a40719c7644424b97b06808a39a0', 'active',  -1);
+INSERT INTO ranking_account (account_type, account_email, account_salt, account_password, account_status, account_linked_id) VALUES ('admin', 'test@sailingdinosaurs.com', 'sljdbkvkakfsbdhvk', 'a25c78192f2a235a801b5cbbb4f4a40719c7644424b97b06808a39a0', 'active',  -1);
 INSERT INTO ranking_eventtype (event_type_name) VALUES ('fleet');
 INSERT INTO ranking_eventtype (event_type_name) VALUES ('group');
 INSERT INTO ranking_season (season_name) VALUES ('Fall 2017');
