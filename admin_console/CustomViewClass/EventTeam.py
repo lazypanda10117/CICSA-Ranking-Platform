@@ -28,7 +28,7 @@ class EventTeamView(AbstractCustomClass):
 ### View Process Functions
 
     def abstractFormProcess(self, action, **kwargs):
-        #try:
+        try:
             post_dict = dict(self.request.POST);
             dispatcher = super().populateDispatcher();
 
@@ -50,8 +50,8 @@ class EventTeamView(AbstractCustomClass):
 
             if action == 'delete':
                 event_team.delete();
-        #except:
-         #   print({"Error": "Cannot Process " + action.title() + " Request."});
+        except:
+            print({"Error": "Cannot Process " + action.title() + " Request."});
 
 ### View Generating Functions
 
@@ -76,10 +76,8 @@ class EventTeamView(AbstractCustomClass):
         db_map['event_team_event_activity_id'] = event_parent.event_name + ' - ' + event_activity.event_activity_name;
         db_map['event_team_id'] = DBMap().getMap(self.assoc_class_team, data['event_team_id'], 'team_name');
         db_map['event_team_member_group_id'] = (
-            lambda x: 'Unlinked' if x == None else
-            (lambda y: y.member_group_name + ' (' + getModelObject(
-                self.assoc_class_school, id=y.member_group_school).school_name + ')')
-            (getModelObject(self.assoc_class_member_group, id=data['event_team_member_group_id']))
+            lambda x: 'Unlinked' if x is None else
+            (getModelObject(self.assoc_class_member_group, id=data['event_team_member_group_id'])).member_group_name
         )(data['event_team_member_group_id']);
         return db_map;
 

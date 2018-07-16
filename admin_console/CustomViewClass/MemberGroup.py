@@ -26,7 +26,7 @@ class MemberGroupView(AbstractCustomClass):
 ### View Process Functions
 
     def abstractFormProcess(self, action, **kwargs):
-        #try:
+        try:
             post_dict = dict(self.request.POST);
             dispatcher = super().populateDispatcher();
 
@@ -50,8 +50,8 @@ class MemberGroupView(AbstractCustomClass):
 
             if action == 'delete':
                 member_group.delete();
-        #except:
-         #   print({"Error": "Cannot Process " + action.title() + " Request." });
+        except:
+            print({"Error": "Cannot Process " + action.title() + " Request." });
 
 ### View Generating Functions
 
