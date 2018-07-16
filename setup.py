@@ -32,13 +32,8 @@ if os.environ.get('SETUP_STATE') == 'TRUE':
         db_pwd = db_remote_url.password;
         db_port = db_remote_url.port;
 
-    conn = psycopg2.connect({
-        'database': db_name,
-        'user': db_user,
-        'password': db_pwd,
-        'host': db_url,
-        'port': db_port
-    });
+    connection_string = "dbname=%s user=%s password=%s host=%s port=%s" % (db_name, db_user, db_pwd, db_url, db_port)
+    conn = psycopg2.connect(connection_string);
     cursor = conn.cursor();
     executeScriptsFromFile('setup.sql', cursor);
     conn.close();
