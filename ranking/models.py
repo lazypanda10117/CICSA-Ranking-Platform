@@ -13,7 +13,7 @@ class Event(models.Model):
     event_region = models.IntegerField();
     event_boat_number = models.IntegerField();
     event_race_number = models.IntegerField();
-    event_team_number = models.IntegerField();
+    event_team_number = models.IntegerField(); #school number
     event_rotation_detail = JSONField(blank=True); #(team id: [rotation sequence], for each team)
     event_start_date = models.DateField(blank=True);
     event_end_date = models.DateField(blank=True);

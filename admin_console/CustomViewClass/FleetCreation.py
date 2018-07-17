@@ -13,12 +13,12 @@ class FleetCreationView(EventCreationView):
         self.assoc_class_team_link = EventTeam;
         self.assoc_class_tag = EventTag;
         self.assoc_class_summary = Summary;
+        self.assoc_class_season = Season;
 
         self.event_race_tag = ["Fleet A", "Fleet B"];
         self.event_team_name_suffix = ["Team A", "Team B"];
         self.event_activity_type = "race";
 
-        self.with_logic = True;
 
     ### Class Specific Functions
     def setFormPath(self):
@@ -55,12 +55,14 @@ class FleetCreationView(EventCreationView):
             event_start_date = getSinglePostObj(post_dict, 'event_start_date');
             event_end_date = getSinglePostObj(post_dict, 'event_end_date');
 
+            event_season_name = getModelObject(self.assoc_class_season, id=event_season).season_name;
+
             race_tag_dict = dict();
             team_activity_dict = dict();
             #event generation
             event_creation = self.base_class();
             event_creation.event_type = int(event_type);
-            event_creation.event_name = event_name + ' - ' + event_season;
+            event_creation.event_name = event_name + ' - ' + event_season_name;
             event_creation.event_status = event_status;
             event_creation.event_description = event_description;
             event_creation.event_location = event_location;

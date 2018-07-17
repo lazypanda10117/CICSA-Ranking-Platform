@@ -1,4 +1,4 @@
-import hashlib, random, string
+import json, random
 from abc import ABC, abstractmethod
 
 from .AbstractCustomClass import AbstractCustomClass
@@ -18,10 +18,10 @@ class EventCreationView(AbstractCustomClass):
         self.base_class = Event;
         self.form_class = EventCreationForm;
         self.validation_table = {
-            'base_table_invalid': {'_state'},
-            'base_form_invalid': {'_state', 'id', 'event_team_number', 'event_rotation_detail', 'event_create_time'},
+            'base_table_invalid': {'_state', 'event_schools'},
+            'base_form_invalid': {'_state', 'id', 'event_team_number', 'event_schools', 'event_rotation_detail',
+                                  'event_create_time'},
         };
-        self.with_logic = False;
         super().__init__(request, self.base_class, self.validation_table);
 
 ### Class Specific Function
@@ -51,8 +51,16 @@ class EventCreationView(AbstractCustomClass):
         if field_data_dispatcher.get(action):
             field_data = filterDict(getModelObject(self.base_class, id=element_id).__dict__.items(),
                                     self.validation_table['base_form_invalid']);
+            field_data = self.serializeJSONData(field_data);
             return field_data;
         return {'event_type': self.form_path};
+
+    def serializeJSONData(self, data):
+        to_serialize = ['event_rotation_detail'];
+        for json_obj_ref in to_serialize:
+            if json_obj_ref in data:
+                data[json_obj_ref] = json.dumps(data[json_obj_ref]);
+        return data;
 
     def getChoiceData(self):
         choice_data = {};
@@ -91,13 +99,11 @@ class EventCreationView(AbstractCustomClass):
 
     def getTableRowContent(self, content):
         event_types = {type_name: type_id for type_id, type_name in Choices().getEventTypeChoices()}
-        if self.with_logic:
-            field_data = filterDict(getModelObject(
-                self.base_class, id=content.id, event_type=event_types[self.form_path]).__dict__.items(),
-                                                    self.validation_table['base_table_invalid']);
-        else:
-            field_data = filterDict(getModelObject(
-                self.base_class, id=content.id).__dict__.items(), self.validation_table['base_table_invalid']);
+        event_model = getModelObject(self.base_class, id=content.id) if self.form_path == 'all' else getModelObject(
+            self.base_class, id=content.id, event_type=event_types[self.form_path])
+        field_data = filterDict(event_model.__dict__.items(),
+                                self.validation_table['base_table_invalid']);
         field_data = self.updateChoiceAsValue(field_data, self.getChoiceData());
+        field_data = self.serializeJSONData(field_data);
         field_data = grabValueAsList(field_data);
         return field_data;

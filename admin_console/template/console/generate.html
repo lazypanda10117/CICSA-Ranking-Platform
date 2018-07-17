@@ -2,6 +2,12 @@
 {% block 'head' %}
     {% if type.form %}
         <script>
+            function json_prettify(blob) {
+                var json_obj = JSON.parse(blob.value);
+                var pretty_json_string = JSON.stringify(json_obj, undefined, 4);
+                return pretty_json_string;
+            }
+
             function onLoad(){
                 var childTagsTable = ['input', 'textarea', 'select'];
                 var child = document.getElementById("{{context.form_id}}").children;
@@ -24,6 +30,14 @@
                         }else if(child[i].name.toLowerCase() == 'delete'){
                             child[i].className += "btn-outline-danger";
                         }
+                    }
+                }
+                var text_areas = document.querySelectorAll("p.form-group > textarea");
+                for(var i = 0; i < text_areas.length; i++){
+                    try{
+                        text_areas[i].value = json_prettify(text_areas[i]);
+                    }catch(error){
+                        console.log(text_areas[i].name + ' does not contain JSON formatted data');
                     }
                 }
             }

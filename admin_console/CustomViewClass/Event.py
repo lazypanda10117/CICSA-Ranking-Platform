@@ -20,6 +20,8 @@ class EventView(EventCreationView):
         self.assoc_class_team_link = EventTeam;
         self.assoc_class_tag = EventTag;
         self.assoc_class_summary = Summary;
+        self.assoc_class_season = Season;
+
 
         self.event_race_tag = ["Fleet A", "Fleet B"];
         self.event_team_name_suffix = ["Team A", "Team B"];
@@ -28,11 +30,9 @@ class EventView(EventCreationView):
     def setFormPath(self):
         return 'all';
 
-    ### Overriding Function
     def setViewDispatcher(self):
         return AbstractCustomClass.setViewDispatcher(self);
 
-    ### Table Generating Functions
     def getTableHeader(self):
         return self.getTableSpecificHeader() + ["edit", "delete"];
 
@@ -61,9 +61,10 @@ class EventView(EventCreationView):
             event_start_date = getSinglePostObj(post_dict, 'event_start_date');
             event_end_date = getSinglePostObj(post_dict, 'event_end_date');
 
+            event_season_name = getModelObject(self.assoc_class_season, id=event_season).season_name;
             try:
-                event_json_rotation_detail = json.load(event_rotation_detail);
-            except ValueError:
+                event_json_rotation_detail = json.loads(event_rotation_detail);
+            except:
                 event_json_rotation_detail = {};
 
             dispatcher = super().populateDispatcher();
@@ -75,7 +76,7 @@ class EventView(EventCreationView):
 
             # event generation
             event_creation.event_type = int(event_type);
-            event_creation.event_name = event_name + ' - ' + event_season;
+            event_creation.event_name = event_name + ' - ' + event_season_name;
             event_creation.event_status = event_status;
             event_creation.event_description = event_description;
             event_creation.event_location = event_location;
@@ -86,7 +87,7 @@ class EventView(EventCreationView):
             event_creation.event_boat_number = int(event_boat_number);
             event_creation.event_start_date = event_start_date;
             event_creation.event_end_date = event_end_date;
-            event_creation.event_team_number = len(event_school);
+            event_creation.event_team_number = 0 if event_school is None else len(event_school);
             event_creation.event_rotation_detail = event_json_rotation_detail;
             event_creation.save();
             loghelper(self.request, 'admin',

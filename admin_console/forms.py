@@ -114,6 +114,7 @@ class MemberGroupForm(forms.Form):
             self.fields[key] = forms.ChoiceField(choices=value);
         for key, value in self.field_data.items():
             self.fields[key].initial = value;
+
     member_group_name = forms.CharField(max_length=200);
     member_group_school = forms.ChoiceField(choices=[]);
 
@@ -131,6 +132,7 @@ class EventCreationForm(forms.Form):
             self.fields[key] = forms.ChoiceField(choices=value);
         for key, value in self.field_data.items():
             self.fields[key].initial = value;
+
     event_type = forms.ChoiceField(choices=[]);
     event_name = forms.CharField(max_length=200);
     event_status = forms.ChoiceField(choices=[]);
@@ -144,6 +146,10 @@ class EventCreationForm(forms.Form):
     event_boat_number = forms.IntegerField();
     event_start_date = forms.DateField(initial=timezone.now(), widget=forms.DateInput(format='%Y-%m-%d'));
     event_end_date = forms.DateField(initial=timezone.now(), widget=forms.DateInput(format='%Y-%m-%d'));
+
+
+class EventForm(EventCreationForm):
+    event_rotation_detail = forms.CharField(max_length=5000, widget=forms.Textarea);
 
 
 class SummaryForm(forms.Form):
@@ -188,6 +194,7 @@ class EventTagForm(forms.Form):
             self.fields[key] = forms.ChoiceField(choices=value);
         for key, value in self.field_data.items():
             self.fields[key].initial = value;
+
     event_tag_name = forms.CharField(max_length=200);
 
 
@@ -201,8 +208,5 @@ class EventActivityForm(forms.Form):
             self.fields[key] = forms.ChoiceField(choices=value);
         for key, value in self.field_data.items():
             self.fields[key].initial = value;
+
     event_tag_name = forms.CharField(max_length=200);
-
-
-class EventForm(EventCreationForm):
-    event_rotation_detail = forms.CharField(max_length=5000, widget=forms.Textarea)

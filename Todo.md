@@ -1,6 +1,8 @@
 ### List of Important things to do/improve
-##### To Finish
-Rotation Function
+##### To Finish (By Priority)
+Multiple Choice Field Initial Values for EventCreationView
+
+EventActivity Class Implementation
 
 Ranking App
 
