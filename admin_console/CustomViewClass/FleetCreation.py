@@ -22,7 +22,7 @@ class FleetCreationView(EventCreationView):
 
     ### Class Specific Functions
     def setFormPath(self):
-        return 'fleet';
+        return 'fleet race';
 
     def __rotationGenerator(self, tag_dict, team_dict, event_race_number):
         rand_array = random.sample(range(1, event_race_number + 1), event_race_number);

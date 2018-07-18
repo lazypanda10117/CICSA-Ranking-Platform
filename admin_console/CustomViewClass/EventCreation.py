@@ -14,7 +14,6 @@ class EventCreationView(AbstractCustomClass):
 ### Constructor <-> AbstractCustomClass
 
     def __init__(self, request):
-        self.form_path = self.setFormPath();
         self.base_class = Event;
         self.form_class = EventCreationForm;
         self.validation_table = {
@@ -23,6 +22,9 @@ class EventCreationView(AbstractCustomClass):
                                   'event_create_time'},
         };
         super().__init__(request, self.base_class, self.validation_table);
+        self.form_path = self.setFormPath();
+        self.event_types = {type_name: type_id for type_id, type_name in Choices().getEventTypeChoices()};
+
 
 ### Class Specific Function
     @abstractmethod
@@ -82,12 +84,11 @@ class EventCreationView(AbstractCustomClass):
     def getSearchElement(self, **kwargs):
         return None;
 
-    def getTableRow(self, content):
-        rowContent = {};
-        rowContent["db_content"] = self.getTableRowContent(content);
-        return rowContent;
-
     ### Table Generating Functions
+    def getTableContent(self, **kwargs):
+        arg_dict = {} if self.form_path == 'all' else {"event_type": self.event_types[self.form_path]};
+        return super().getTableContent(**arg_dict);
+
     def getTableHeader(self):
         return self.getTableSpecificHeader();
 
@@ -97,11 +98,13 @@ class EventCreationView(AbstractCustomClass):
         additional_header = [];
         return base_header + additional_header;
 
+    def getTableRow(self, content):
+        rowContent = {};
+        rowContent["db_content"] = self.getTableRowContent(content);
+        return rowContent;
+
     def getTableRowContent(self, content):
-        event_types = {type_name: type_id for type_id, type_name in Choices().getEventTypeChoices()}
-        event_model = getModelObject(self.base_class, id=content.id) if self.form_path == 'all' else getModelObject(
-            self.base_class, id=content.id, event_type=event_types[self.form_path])
-        field_data = filterDict(event_model.__dict__.items(),
+        field_data = filterDict(getModelObject(self.base_class, id=content.id).__dict__.items(),
                                 self.validation_table['base_table_invalid']);
         field_data = self.updateChoiceAsValue(field_data, self.getChoiceData());
         field_data = self.serializeJSONData(field_data);

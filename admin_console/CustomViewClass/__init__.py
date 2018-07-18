@@ -1,5 +1,5 @@
 from .FleetCreation import *
-from .GroupCreation import *
+from .TeamCreation import *
 from .Summary import *
 from .Event import *
 from .EventActivity import *

@@ -5,7 +5,13 @@ from .EventCreation import *
 from ..models import *
 
 
-class GroupCreationView(EventCreationView):
+class TeamCreationView(EventCreationView):
+    def __init__(self, request):
+        super().__init__(request);
+
+    def setFormPath(self):
+        return 'team race';
+
     def _add(self):
         pass;
 

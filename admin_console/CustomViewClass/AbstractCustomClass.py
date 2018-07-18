@@ -132,8 +132,9 @@ class AbstractCustomClass(ABC):
         deleteBtn = Button('Delete', 'danger', generateGETURL(path, {"action": 'delete', "element_id": id}))
         return [editBtn, deleteBtn];
 
-    def getTableContent(self):
-        return [self.getTableRow(content) for content in sorted(self.base_class.objects.all(), key=lambda q: q.id)];
+    def getTableContent(self, **kwargs):
+        return [self.getTableRow(content) for content in sorted(filterModelObject(
+            self.base_class, **kwargs), key=lambda q: q.id)];
 
     def grabTableData(self, form_path):
         tableHeader = self.getTableHeader();

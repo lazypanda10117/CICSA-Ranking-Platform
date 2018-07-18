@@ -15,8 +15,8 @@ class CustomView:
 
     def setDispatcher(self):
         dispatcher = Dispatcher();
-        dispatcher.add('fleet', {'class': FleetCreationView, 'form': EventCreationForm});
-        dispatcher.add('group', {'class': GroupCreationView, 'form': EventCreationForm});
+        dispatcher.add('fleet race', {'class': FleetCreationView, 'form': EventCreationForm});
+        dispatcher.add('team race', {'class': TeamCreationView, 'form': EventCreationForm});
         dispatcher.add('event', {'class': EventView, 'form': EventForm});
         dispatcher.add('summary', {'class': SummaryView, 'form': SummaryForm});
         dispatcher.add('event activity', {'class': EventActivity, 'form': EventActivityForm});
