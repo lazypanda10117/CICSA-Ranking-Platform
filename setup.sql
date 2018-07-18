@@ -1,7 +1,3 @@
-DROP SCHEMA public CASCADE;
-CREATE SCHEMA public;
-GRANT ALL ON SCHEMA public TO postgres;
-GRANT ALL ON SCHEMA public TO public;
 INSERT INTO ranking_account (account_type, account_email, account_salt, account_password, account_status, account_linked_id) VALUES ('admin', 'test@sailingdinosaurs.com', 'ITBZB20GC3L4E7N', '6ccca03c25e0c679b3069937106fbf905be5cae157eaaa78922f48db', 'active',  -1);
 INSERT INTO ranking_eventtype (event_type_name) VALUES ('fleet race');
 INSERT INTO ranking_eventtype (event_type_name) VALUES ('team race');

@@ -23,4 +23,4 @@ done
 
 python3 manage.py migrate
 python3 setup.py
-python manage.py runserver 0.0.0.0:$PORT
+python3 manage.py runserver 0.0.0.0:$PORT
