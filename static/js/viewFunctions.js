@@ -6,10 +6,10 @@ function searchSetup(name, item, keyArgs, termArg, helpArg){
     function getURL(base_url, item, key, term){
         var paramStr = '?item='+item;
         if(key != null){
-            paramStr += '&key='+key;
+            paramStr += '&key='+JSON.stringify(key);
         }
         if(term != null){
-            paramStr += '&term='+term;
+            paramStr += '&term='+JSON.stringify(term);
         }
         return base_url+paramStr;
     }
@@ -52,7 +52,7 @@ function searchSetup(name, item, keyArgs, termArg, helpArg){
         if (searchTerm.length > 2){
             var termQuery = {};
             termQuery[termArg] = searchTerm;
-            var raw_result = getURL(base_url, item, null, JSON.stringify(termQuery));
+            var raw_result = getURL(base_url, item, keyArgs, termQuery);
             var queryOption = $.get(raw_result, function( data ){
                 json_data = JSON.parse(data);
                 if(!optionChanged(htmlSelect, json_data)){

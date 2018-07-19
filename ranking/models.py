@@ -48,7 +48,7 @@ class EventActivity(models.Model):
     event_activity_order = models.IntegerField(); # 1,2,3 ...
     event_activity_result = JSONField(); #json
     event_activity_type = models.CharField(max_length=50); #i.e. races
-    event_activity_note = models.CharField(max_length=500);
+    event_activity_note = models.CharField(max_length=1500);
     event_activity_status = models.CharField(max_length=50);
 
 class Summary(models.Model):

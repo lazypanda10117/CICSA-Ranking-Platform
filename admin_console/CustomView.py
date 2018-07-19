@@ -19,7 +19,7 @@ class CustomView:
         dispatcher.add('team race', {'class': TeamCreationView, 'form': EventCreationForm});
         dispatcher.add('event', {'class': EventView, 'form': EventForm});
         dispatcher.add('summary', {'class': SummaryView, 'form': SummaryForm});
-        dispatcher.add('event activity', {'class': EventActivity, 'form': EventActivityForm});
+        dispatcher.add('event activity', {'class': EventActivityView, 'form': EventActivityForm});
         dispatcher.add('event tag', {'class': EventTagView, 'form': EventTagForm});
         dispatcher.add('event team', {'class': EventTeamView, 'form': EventTeamForm});
         dispatcher.add('school', {'class': SchoolView, 'form': SchoolForm});

@@ -2,7 +2,6 @@ from django.conf.urls import url
 from django.shortcuts import render, HttpResponse, redirect, reverse
 from admin_console import generalFunctions;
 from .models import *
-from .forms import *
 
 
 def index(request):

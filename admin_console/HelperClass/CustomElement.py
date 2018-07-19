@@ -1,3 +1,4 @@
+import json
 from ..generalFunctions import *
 
 class Button:
@@ -68,7 +69,7 @@ class SearchElement:
     #name = search base name
     #label = the text to display for the search box
     #item = the class to search for
-    #key = unknown
+    #key = key dict to search for
     #term = the kwargs to search for
     #help term = an extra to display in the search dropdown to help further distinguish between results
 
@@ -83,7 +84,7 @@ class SearchElement:
         self.value = value_tuple[1];
 
     def stringify(self, text):
-        return "'" + text + "'";
+        return json.dumps(text);
 
 
 class Choices:

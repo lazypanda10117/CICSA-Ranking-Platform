@@ -209,4 +209,9 @@ class EventActivityForm(forms.Form):
         for key, value in self.field_data.items():
             self.fields[key].initial = value;
 
-    event_tag_name = forms.CharField(max_length=200);
+    event_activity_name = forms.CharField(max_length=100);
+    event_activity_order = forms.IntegerField(initial=1);
+    event_activity_result = forms.CharField(max_length=1500, widget=forms.Textarea);  # json
+    event_activity_type = forms.ChoiceField(choices=[]);
+    event_activity_note = forms.CharField(max_length=1500);
+    event_activity_status = forms.CharField(max_length=50);

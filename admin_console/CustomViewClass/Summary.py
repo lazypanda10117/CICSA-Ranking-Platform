@@ -82,11 +82,11 @@ class SummaryView(AbstractCustomClass):
             if element_id:
                 summary = getModelObject(self.base_class, id=element_id);
                 if summary.summary_event_parent is not None:
-                    event_parent = getModelObject(Event, id=summary.summary_event_parent);
+                    event_parent = getModelObject(self.assoc_class_event, id=summary.summary_event_parent);
                     return event_parent.id, event_parent.event_name + ' (' + event_parent.event_host + ')';
             return None, None;
         return [
-                    SearchElement(self.search_name[i], 'Summary Event Parent', 'Event', '', 'event_name', 'event_host',
+                    SearchElement(self.search_name[i], 'Summary Event Parent', 'Event', None, 'event_name', 'event_host',
                                   getSearchDefault(i)) for i in range(len(self.search_name))
                 ];
 
