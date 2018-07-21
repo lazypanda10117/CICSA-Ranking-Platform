@@ -17,9 +17,17 @@ def index(request):
 def eventList(request):
     return kickRequest(request, True, render(
         request, 'management/displayList.html',
-        {'title': 'Events List', 'event_list': {'future': "hi"}}));
+        {'title': 'Events List', 'event_list': genEventList()}));
 
-def genDict(request, state):
-    event_api = EventAPI();
-    events = map(lambda x: x.event_name, [e for e in event_api.getEvents(event_status=state)]);
-    return dict(state=dict(block_title=state, contents=events));
+def genDict(state):
+    events = EventAPI().getEvents(event_status=state);
+    event_dict = map(lambda event: dict(
+        event_text=event.event_name,
+        event_status_text=event.event_status,
+        event_link=event.event_name,
+        event_status_link=event.event_status),
+                     [event for event in events]);
+    return dict(block_title=state, contents=event_dict);
+
+def genEventList():
+    return dict(future=genDict('future'), done=genDict('done'), past=genDict('past'));
