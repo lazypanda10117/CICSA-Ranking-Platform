@@ -6,5 +6,4 @@ urlpatterns = [
     path('console/admin/', include('admin_console.urls')),
     path('console/team/', include('team_console.urls')),
     path('admin/', admin.site.urls),
-    path('event/', include('event.urls'))
 ]

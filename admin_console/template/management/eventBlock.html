@@ -1,0 +1,29 @@
+<head>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css">
+</head>
+<h4><pre>{{ context.block_title }}</pre></h4>
+<div class="card mb-4">
+    <div class="card-header">
+        <div class="container-fluid row">
+            <div class="col col-lg-8">
+                <b>Event</b>
+            </div>
+            <div class="col col-lg-auto">
+                <b>Status</b>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        {% for content in context.contents %}
+            <div class="container-fluid row">
+                <div class="col col-lg-8">
+                    <a href="{{ content.event_link }}">{{ content.event_text }}</a>
+                </div>
+                |
+                <div class="col col-lg-auto">
+                    <a href="{{ content.event_status_link }}">{{ content.event_status_text }}</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>

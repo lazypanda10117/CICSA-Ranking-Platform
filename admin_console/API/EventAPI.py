@@ -6,14 +6,14 @@ class EventAPI(API):
     def __init__(self):
         pass;
 
-    def getEventActivities(self):
+    def getEventActivities(self, event):
         pass;
 
     def getEvent(self):
         pass;
 
-    def getEvents(self):
-        pass;
+    def getEvents(self, **kwargs):
+        return filterModelObject(Event, **kwargs);
 
     def deleteEvent(self):
         pass;

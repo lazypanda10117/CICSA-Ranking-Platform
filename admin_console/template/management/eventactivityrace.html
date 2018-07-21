@@ -1,0 +1,29 @@
+<h4><pre>{{ block_title }}</pre></h4>
+<div class="card">
+    <div class="card-body">
+        <form action="{{ action_destination }}" id="{{ form_id }}" method="post">
+            {% for content in context.contents %}
+                <div class="container-fluid row mt-4">
+                    <div class="col col-lg-3 offset-lg-1">
+                        {{ content.boat_number }}
+                    </div>
+                    <div class="col col-lg-5">
+                        {{ content.school_name }}
+                    </div>
+                    <div class="col col-lg-auto">
+                        <select class="custom-select">
+                            {% for option in context.options %}
+                                <option value="{{ option.value }}">{{ option.text }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            {% endfor %}
+            <div class="container-fluid row mt-4">
+                <div class="col col-lg-6 offset-lg-3">
+                    <button type="submit" class="btn btn-info btn-lg btn-block">Submit Ranking</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

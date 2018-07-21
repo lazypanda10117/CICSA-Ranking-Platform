@@ -2,11 +2,17 @@
 ##### To Finish (By Priority)
 Multiple Choice Field Initial Values for EventCreationView
 
-EventActivity Class Implementation
+Push Logic to event and event activity class
+
+Pending Event Creation (might merge with event class with logic)
+
+Kwargs Filtering for Table
+
+Boat Linking
 
 Ranking App
 
-Group Event Class
+Team Race Event Class
 
 Client View
 
