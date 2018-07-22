@@ -6,12 +6,12 @@
                 <b>Event Activities</b>
             </div>
             <div class="col col-lg-auto">
-                <b>Change Status</b>
+                <b>Status</b>
             </div>
         </div>
     </div>
     <div class="card-body">
-        {% for content in context.content %}
+        {% for content in context.contents %}
             <div class="container-fluid row">
                 <div class="col col-lg-8">
                     <a href="{{ content.event_activity_link }}">{{ content.event_activity_text }}</a>

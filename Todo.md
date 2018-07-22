@@ -8,6 +8,8 @@ Pending Event Creation (might merge with event class with logic)
 
 Kwargs Filtering for Table
 
+Team Console Permission
+
 Boat Linking
 
 Ranking App

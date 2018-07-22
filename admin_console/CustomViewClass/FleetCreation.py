@@ -51,7 +51,7 @@ class FleetCreationView(EventCreationView):
             event_host = getSinglePostObj(post_dict, 'event_host');
             event_school = getMultiplePostObj(post_dict, 'event_team');
             event_race_number = getSinglePostObj(post_dict, 'event_race_number');
-            event_boat_number = getSinglePostObj(post_dict, 'event_boat_number');
+            event_boat_rotation_name = getSinglePostObj(post_dict, 'event_boat_rotation_name');
             event_start_date = getSinglePostObj(post_dict, 'event_start_date');
             event_end_date = getSinglePostObj(post_dict, 'event_end_date');
 
@@ -69,7 +69,7 @@ class FleetCreationView(EventCreationView):
             event_creation.event_season = event_season;
             event_creation.event_region = int(event_region);
             event_creation.event_host = int(event_host);
-            event_creation.event_boat_number = int(event_boat_number);
+            event_creation.event_boat_rotation_name = event_boat_rotation_name;
             event_creation.event_race_number = int(event_race_number);
             event_creation.event_start_date = event_start_date;
             event_creation.event_end_date = event_end_date;
