@@ -21,7 +21,7 @@ def executeScriptsFromFile(filename, cu):
             print("Command skipped: " + str(msg));
     print('Finish Applying Setup SQL Queries');
 
-if os.environ.get('SETUP_STATE') == 'True' or True:
+if os.environ.get('SETUP_STATE') == 'True':
     dispatcher = {1: 'dbrefresh.sql', 2: 'setup.sql'};
 
     parser = argparse.ArgumentParser()
