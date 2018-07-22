@@ -3,8 +3,8 @@ from ..generalFunctions import *
 from ..models import *
 
 class EventActivityAPI(API):
-    def __init__(self):
-        pass;
+    def __init__(self, request):
+        self.request = request;
 
     def getEventActivity(self, **kwargs):
         return getModelObject(EventActivity, **kwargs);

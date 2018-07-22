@@ -21,6 +21,7 @@ do
     rm -R $deletePath
 done
 
+python3 setup.py 1
 python3 manage.py migrate
-python3 setup.py
+python3 setup.py 2
 python3 manage.py runserver 0.0.0.0:$PORT

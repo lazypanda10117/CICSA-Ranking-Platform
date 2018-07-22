@@ -143,7 +143,7 @@ class EventCreationForm(forms.Form):
     event_host = forms.ChoiceField(choices=[]);
     event_team = forms.MultipleChoiceField(choices=[]);
     event_race_number = forms.IntegerField();
-    event_boat_number = forms.IntegerField();
+    event_boat_rotation_name = forms.CharField(max_length=2000);
     event_start_date = forms.DateField(initial=timezone.now(), widget=forms.DateInput(format='%Y-%m-%d'));
     event_end_date = forms.DateField(initial=timezone.now(), widget=forms.DateInput(format='%Y-%m-%d'));
 

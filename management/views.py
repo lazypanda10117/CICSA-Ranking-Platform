@@ -15,12 +15,12 @@ def index(request):
 def specificEvent(request, event_id):
     return kickRequest(request, True, render(
         request, 'management/displayList.html',
-        {'title': 'Event Activities List', 'event_activity_list': genEventActivityList(event_id)}));
+        {'title': 'Event Activities List', 'event_activity_list': genEventActivityList(request, event_id)}));
     pass;
 
 def specificEventActivity(request, event_activity_id):
-    event_api = EventAPI();
-    event_activity_api = EventActivityAPI();
+    event_api = EventAPI(request);
+    event_activity_api = EventActivityAPI(request);
     event_activity = event_activity_api.getEventActivity(id=int(event_activity_id));
     event = event_api.getEvent(id=int(event_activity.event_activity_event_parent));
     event_rotation = event.event_rotation_detail;
@@ -42,7 +42,7 @@ def specificEventActivity(request, event_activity_id):
         options={**{str(i+1): str(i+1) for i in range(event_team_number)}, **{choice: choice for id, choice in Choices().getScoreMapChoices()}}
     ) for i in range(event_team_number)}
     return kickRequest(request, True, render(
-        request, 'management/eventactivityrace.html',
+        request, 'management/eventActivityRace.html',
         {'block_title': 'Event Activity Ranking',
          'action_destination': reverse('managementUpdateEventActivityResult', args=[event_activity.id]),
          'form_id': "event_activity_ranking_form",
@@ -55,9 +55,9 @@ def processEventActivityRanking(request, event_activity_id):
 def eventList(request):
     return kickRequest(request, True, render(
         request, 'management/displayList.html',
-        {'title': 'Events List', 'event_list': genEventList()}));
+        {'title': 'Events List', 'event_list': genEventList(request)}));
 
-def genEventList():
+def genEventList(request):
     def genDict(state):
         events = event_api.getEvents(event_status=state);
         change_status_dict = dict(future='running', running='done', done='not applicable');
@@ -70,15 +70,15 @@ def genEventList():
                     event.id, change_status_dict[event.event_status]]) if event.event_status != 'done' else '#'),
                          [event for event in events]);
         return dict(block_title=state, contents=event_dict);
-    event_api = EventAPI();
+    event_api = EventAPI(request);
     return dict(future=genDict('future'), running=genDict('running'), done=genDict('done'));
 
 def eventActivityList(request, event_id):
     return kickRequest(request, True, render(
         request, 'management/displayList.html',
-        {'title': 'Event Activities List', 'event_activity_list': genEventActivityList(event_id)}));
+        {'title': 'Event Activities List', 'event_activity_list': genEventActivityList(request, event_id)}));
 
-def genEventActivityList(event_id):
+def genEventActivityList(request, event_id):
     def genDict(event_tag):
         event_activities = event_api.getEventActivities(
             event_activity_event_parent=event_id, event_activity_event_tag=event_tag.id);
@@ -88,12 +88,12 @@ def genEventActivityList(event_id):
             event_activity_status=event_activity.event_activity_status),
                          [eventActivity for eventActivity in event_activities]);
         return dict(block_title=event_tag.event_tag_name, contents=event_dict);
-    event_api = EventAPI();
+    event_api = EventAPI(request);
     event_tags = event_api.getEventTags(event_tag_event_id=event_id);
     return {event_tag.event_tag_name: genDict(event_tag) for event_tag in event_tags};
 
 def updateEventStatus(request, event_id, event_status):
     if signed_in(request, 'admin'):
-        event_api = EventAPI();
+        event_api = EventAPI(request);
         event_api.updateEventStatus(int(event_id), event_status);
     return redirect('managementEvents');

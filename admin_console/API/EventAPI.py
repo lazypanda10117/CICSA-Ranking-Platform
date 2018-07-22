@@ -3,8 +3,8 @@ from ..generalFunctions import *
 from ..models import *
 
 class EventAPI(API):
-    def __init__(self):
-        pass;
+    def __init__(self, request):
+        self.request = request;
 
     def getEventActivities(self, **kwargs):
         return filterModelObject(EventActivity, **kwargs);
@@ -22,3 +22,4 @@ class EventAPI(API):
         event = getModelObject(Event, id=event_id);
         event.event_status = event_status;
         event.save();
+        loghelper(self.request, 'admin', logQueryMaker(Event, 'Edit', id=event.id))
