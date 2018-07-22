@@ -24,15 +24,33 @@ def specificEventActivity(request, event_activity_id):
     event_activity = event_activity_api.getEventActivity(id=int(event_activity_id));
     event = event_api.getEvent(id=int(event_activity.event_activity_event_parent));
     event_rotation = event.event_rotation_detail;
+    event_activity_tag = event_activity.event_activity_event_tag;
     event_team_number = event.event_team_number;
     event_activity_order = event_activity.event_activity_order;
-    print(event_rotation);
+    event_specific_rotation = {key: rotation[event_activity_order-1]
+                               for key, rotation in event_rotation[str(event_activity_tag)].items()};
+    event_activity_teams = list(event_specific_rotation.keys());
+    event_activity_schools = {school_team_tuple[0]: school_team_tuple[1]
+                              for school_team_tuple in [
+                                  (lambda x: (getModelObject(School, id=x.team_school), x))
+                                  (getModelObject(Team, id=event_activity_team_id))
+                                  for event_activity_team_id in event_activity_teams]};
+    contents = {str(i+1): dict(
+        boat_identifier=str(i+1),
+        school_name=list(event_activity_schools.keys())[i].school_name,
+        event_activity_team=list(event_activity_schools.values())[i].id,
+        options={**{str(i+1): str(i+1) for i in range(event_team_number)}, **{choice: choice for id, choice in Choices().getScoreMapChoices()}}
+    ) for i in range(event_team_number)}
     return kickRequest(request, True, render(
         request, 'management/eventactivityrace.html',
         {'block_title': 'Event Activity Ranking',
-         'action_destination': genEventList(),
-         'form_id': "test",
-         'contents': dict()}));
+         'action_destination': reverse('managementUpdateEventActivityResult', args=[event_activity.id]),
+         'form_id': "event_activity_ranking_form",
+         'contents': contents}));
+
+@csrf_exempt
+def processEventActivityRanking(request, event_activity_id):
+    pass;
 
 def eventList(request):
     return kickRequest(request, True, render(

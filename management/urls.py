@@ -9,4 +9,5 @@ urlpatterns = [
     path('event/<str:event_id>/update/<str:event_status>', views.updateEventStatus,
          name='managementUpdateEventStatus'),
     path('event activities/<str:event_activity_id>', views.specificEventActivity, name='managementSpecificEventActivity'),
+    path('event activities/process/<str:event_activity_id>', views.processEventActivityRanking, name='managementUpdateEventActivityResult')
 ]

@@ -6,18 +6,18 @@
     <div class="card">
         <div class="card-body">
             <form action="{{ action_destination }}" id="{{ form_id }}" method="post">
-                {% for content in context.contents %}
+                {% for key, content in contents.items %}
                     <div class="container-fluid row mt-4">
                         <div class="col col-lg-3 offset-lg-1">
-                            {{ content.boat_number }}
+                            {{ content.boat_identifier }}
                         </div>
                         <div class="col col-lg-5">
                             {{ content.school_name }}
                         </div>
                         <div class="col col-lg-auto">
-                            <select class="custom-select">
-                                {% for option in context.options %}
-                                    <option value="{{ option.value }}">{{ option.text }}</option>
+                            <select class="custom-select" name="{{ content.event_activity_team }}">
+                                {% for value, text in content.options.items %}
+                                    <option value="{{ value }}">{{ text }}</option>
                                 {% endfor %}
                             </select>
                         </div>

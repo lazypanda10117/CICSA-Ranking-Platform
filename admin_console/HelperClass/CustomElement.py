@@ -104,6 +104,10 @@ class Choices:
         EVENT_TYPE_CHOICES = tuple([(value.id, value.event_type_name) for value in filterModelObject(EventType)]);
         return EVENT_TYPE_CHOICES;
 
+    def getScoreMapChoices(self):
+        SCORE_MAP_CHOICES = tuple([(value.id, value.score_name) for value in filterModelObject(ScoreMapping)]);
+        return SCORE_MAP_CHOICES;
+
     def getEventStatusChoices(self):
         EVENT_STATUS_CHOICES = (
             ("future", "Future"),

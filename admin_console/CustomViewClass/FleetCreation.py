@@ -24,14 +24,14 @@ class FleetCreationView(EventCreationView):
     def setFormPath(self):
         return 'fleet race';
 
-    def __rotationGenerator(self, tag_dict, team_dict, event_race_number):
-        rand_array = random.sample(range(1, event_race_number + 1), event_race_number);
+    def __rotationGenerator(self, tag_dict, team_dict, event_team_number):
+        rand_array = random.sample(range(1, event_team_number + 1), event_team_number);
         result_dict = dict();
         for shift, tag in enumerate(tag_dict):
             team_sequence = dict();
             for team_num, team_id in enumerate(team_dict[tag]):
-                team_sequence[team_id] = [modAdd(rand_array[team_num] + shift, (race - race % 2), event_race_number)
-                                          for race in range(event_race_number)];
+                team_sequence[team_id] = [modAdd(rand_array[team_num] + shift, (race - race % 2), event_team_number)
+                                          for race in range(event_team_number)];
             result_dict[tag_dict[tag]] = team_sequence;
             print(result_dict);
         return result_dict;
@@ -134,7 +134,7 @@ class FleetCreationView(EventCreationView):
                                   logQueryMaker(self.assoc_class_team_link, action.title(), id=event_team.id));
 
             event_creation.event_rotation_detail = self.__rotationGenerator(
-                race_tag_dict, team_activity_dict, event_creation.event_race_number);
+                race_tag_dict, team_activity_dict, event_creation.event_team_number);
             event_creation.save();
             loghelper(self.request, 'admin',
                       logQueryMaker(self.base_class, action.title(), id=event_creation.id))
