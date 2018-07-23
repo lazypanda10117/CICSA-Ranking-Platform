@@ -18,8 +18,8 @@ class EventCreationView(AbstractCustomClass):
         self.form_class = EventCreationForm;
         self.validation_table = {
             'base_table_invalid': {'_state', 'event_schools'},
-            'base_form_invalid': {'_state', 'id', 'event_team_number', 'event_schools', 'event_rotation_detail',
-                                  'event_create_time'},
+            'base_form_invalid': {'_state', 'id', 'event_team_number', 'event_schools', 'event_school_ids',
+                                  'event_rotation_detail', 'event_create_time'},
         };
         super().__init__(request, self.base_class, self.validation_table);
         self.form_path = self.setFormPath();
@@ -53,16 +53,10 @@ class EventCreationView(AbstractCustomClass):
         if field_data_dispatcher.get(action):
             field_data = filterDict(getModelObject(self.base_class, id=element_id).__dict__.items(),
                                     self.validation_table['base_form_invalid']);
-            field_data = self.serializeJSONData(field_data);
+            field_data = self.serializeJSONListData(['event_school_ids', 'event_rotation_detail'], field_data);
             return field_data;
         return {'event_type': self.form_path};
 
-    def serializeJSONData(self, data):
-        to_serialize = ['event_rotation_detail'];
-        for json_obj_ref in to_serialize:
-            if json_obj_ref in data:
-                data[json_obj_ref] = json.dumps(data[json_obj_ref]);
-        return data;
 
     def getChoiceData(self):
         choice_data = {};

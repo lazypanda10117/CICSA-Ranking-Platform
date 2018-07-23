@@ -11,7 +11,7 @@ class EventView(EventCreationView):
         self.form_class = EventForm;
         self.validation_table = {
             'base_table_invalid': {'_state'},
-            'base_form_invalid': {'_state', 'id', 'event_team_number', 'event_create_time'},
+            'base_form_invalid': {'_state', 'id', 'event_school_ids', 'event_team_number', 'event_create_time'},
         };
 
         self.assoc_class_activity = EventActivity;
@@ -76,7 +76,7 @@ class EventView(EventCreationView):
 
             # event generation
             event_creation.event_type = int(event_type);
-            event_creation.event_name = event_name + ' - ' + event_season_name;
+            event_creation.event_name = event_name;
             event_creation.event_status = event_status;
             event_creation.event_description = event_description;
             event_creation.event_location = event_location;
@@ -88,6 +88,7 @@ class EventView(EventCreationView):
             event_creation.event_start_date = event_start_date;
             event_creation.event_end_date = event_end_date;
             event_creation.event_team_number = 0 if event_school is None else len(event_school);
+            event_creation.event_school_ids = [] if event_school is None else event_school;
             event_creation.event_rotation_detail = event_json_rotation_detail;
             event_creation.save();
             loghelper(self.request, 'admin',

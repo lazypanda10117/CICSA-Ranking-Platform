@@ -74,6 +74,7 @@ class FleetCreationView(EventCreationView):
             event_creation.event_start_date = event_start_date;
             event_creation.event_end_date = event_end_date;
             event_creation.event_team_number = len(event_school);
+            event_creation.event_school_ids = event_school;
             event_creation.event_rotation_detail = {};
             event_creation.save();
 

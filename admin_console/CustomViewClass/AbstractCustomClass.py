@@ -21,6 +21,13 @@ class AbstractCustomClass(ABC):
         dispatcher.add('view', True);
         return dispatcher;
 
+    def serializeJSONListData(self, tags, data):
+        to_serialize = tags;
+        for json_obj_ref in to_serialize:
+            if json_obj_ref in data:
+                data[json_obj_ref] = json.dumps(data[json_obj_ref]);
+        return data;
+
 ### View Process Functions
 
     @abstractmethod

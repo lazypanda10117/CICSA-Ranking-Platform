@@ -39,12 +39,14 @@ class MemberGroupView(AbstractCustomClass):
             member_group.member_group_school = getSinglePostObj(post_dict, 'member_group_school');
             member_group.member_group_member_ids = [getSinglePostObj(post_dict, name + "_result")
                                                     for name in self.search_name]
-            member_group.member_group_name = getModelObject(
-                self.assoc_class_school, id=member_group.member_group_school).school_name + ' - ' + getSinglePostObj(
-                post_dict, 'member_group_name');
+            if action == 'add':
+                member_group.member_group_name = getModelObject(
+                    self.assoc_class_school, id=member_group.member_group_school).school_name + ' - ' + getSinglePostObj(
+                    post_dict, 'member_group_name');
+            elif action == 'edit':
+                member_group.member_group_name = getSinglePostObj(post_dict, 'member_group_name');
 
-            if not action == 'delete':
-                member_group.save();
+            member_group.save();
 
             loghelper(self.request, 'admin', logQueryMaker(self.base_class, action.title(), id=member_group.id));
 
