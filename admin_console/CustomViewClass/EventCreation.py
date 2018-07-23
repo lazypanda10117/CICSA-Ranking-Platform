@@ -101,6 +101,6 @@ class EventCreationView(AbstractCustomClass):
         field_data = filterDict(getModelObject(self.base_class, id=content.id).__dict__.items(),
                                 self.validation_table['base_table_invalid']);
         field_data = self.updateChoiceAsValue(field_data, self.getChoiceData());
-        field_data = self.serializeJSONListData(field_data);
+        field_data = self.serializeJSONListData(['event_school_ids', 'event_rotation_detail'], field_data);
         field_data = grabValueAsList(field_data);
         return field_data;
