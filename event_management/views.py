@@ -12,5 +12,8 @@ from .models import *
 def index(request):
     return kickRequest(request, True, render(request, 'console/index.html'));
 
-def dispatch(request, form_path):
+def dispatch(request, dispatch_path):
+    pass;
+
+def dispatchSpecific(request, dispatch_path, element_id):
     pass;
