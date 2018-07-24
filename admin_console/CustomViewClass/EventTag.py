@@ -1,11 +1,11 @@
-from .AbstractCustomClass import AbstractCustomClass
+from .AbstractMutableCustomClass import *
 from ..HelperClass import *
 from ..generalFunctions import *
 
 from ..models import *
 from ..forms import *
 
-class EventTagView(AbstractCustomClass):
+class EventTagView(AbstractMutableCustomClass):
 
 ### Constructor <-> AbstractCustomClass
 
@@ -19,6 +19,14 @@ class EventTagView(AbstractCustomClass):
             'base_form_invalid': {'_state', 'id', 'event_tag_event_id'},
         };
         super().__init__(request, self.base_class, self.validation_table);
+
+### Overriding Function
+
+    def setViewDispatcher(self):
+        dispatcher = super().setViewDispatcher();
+        #dispatcher.update('edit', False);
+        #dispatcher.update('delete', False);
+        return dispatcher;
 
 ### View Process Functions
 

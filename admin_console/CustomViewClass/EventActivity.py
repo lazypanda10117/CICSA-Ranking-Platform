@@ -1,11 +1,11 @@
-from .AbstractCustomClass import AbstractCustomClass
+from .AbstractMutableCustomClass import AbstractMutableCustomClass
 from ..HelperClass import *
 from ..generalFunctions import *
 
 from ..models import *
 from ..forms import *
 
-class EventActivityView(AbstractCustomClass):
+class EventActivityView(AbstractMutableCustomClass):
 
 ### Constructor <-> AbstractCustomClass
 

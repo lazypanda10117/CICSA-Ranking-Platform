@@ -1,7 +1,7 @@
 import json, random
 from abc import ABC, abstractmethod
 
-from .AbstractCustomClass import AbstractCustomClass
+from .AbstractMutableCustomClass import AbstractMutableCustomClass
 from ..HelperClass import *
 from ..generalFunctions import *
 
@@ -9,7 +9,7 @@ from ..models import *
 from ..forms import *
 
 
-class EventCreationView(AbstractCustomClass):
+class EventCreationView(AbstractMutableCustomClass):
 
 ### Constructor <-> AbstractCustomClass
 
@@ -30,13 +30,6 @@ class EventCreationView(AbstractCustomClass):
     @abstractmethod
     def setFormPath(self):
         pass;
-
-### Overriding Function
-    def setViewDispatcher(self):
-        dispatcher = super().setViewDispatcher();
-        dispatcher.update('edit', False);
-        dispatcher.update('delete', False);
-        return dispatcher;
 
 ### View Process Functions
     @abstractmethod
@@ -81,7 +74,7 @@ class EventCreationView(AbstractCustomClass):
     ### Table Generating Functions
     def getTableContent(self, **kwargs):
         arg_dict = {} if self.form_path == 'all' else {"event_type": self.event_types[self.form_path]};
-        return super().getTableContent(**arg_dict);
+        return super().getTableContent(**{**arg_dict, **kwargs});
 
     def getTableHeader(self):
         return self.getTableSpecificHeader();

@@ -5,7 +5,7 @@ from ..generalFunctions import *
 from ..models import *
 from ..forms import *
 
-class AbstractCustomClass(ABC):
+class AbstractImmutableCustomClass(ABC):
 
     def __init__(self, request, base_class, validation_table):
         self.dispatcher = self.setViewDispatcher();
@@ -16,8 +16,8 @@ class AbstractCustomClass(ABC):
     def setViewDispatcher(self):
         dispatcher = Dispatcher();
         dispatcher.add('add', True);
-        dispatcher.add('edit', True);
-        dispatcher.add('delete', True);
+        dispatcher.add('edit', False);
+        dispatcher.add('delete', False);
         dispatcher.add('view', True);
         return dispatcher;
 
@@ -27,6 +27,15 @@ class AbstractCustomClass(ABC):
             if json_obj_ref in data:
                 data[json_obj_ref] = json.dumps(data[json_obj_ref]);
         return data;
+
+    def getFilterTerms(self):
+        get_dict = self.request.GET;
+        kwargs = getMultiplePostObj(get_dict, 'kwargs')
+        if kwargs is not None:
+            kwargs = json.loads(kwargs);
+            return kwargs;
+        return {};
+
 
 ### View Process Functions
 
@@ -100,7 +109,7 @@ class AbstractCustomClass(ABC):
 
     ### Table Generating Functions
     def getTableHeader(self):
-        return self.getTableSpecificHeader() + ["edit", "delete"];
+        return self.getTableSpecificHeader();
 
     @abstractmethod
     def getTableSpecificHeader(self):
@@ -109,7 +118,6 @@ class AbstractCustomClass(ABC):
     def getTableRow(self, content):
         rowContent = {};
         rowContent["db_content"] = self.getTableRowContent(content);
-        rowContent["button"] = self.makeEditDeleteBtn('custom', str(content.id));
         return rowContent;
 
     @abstractmethod
@@ -134,17 +142,12 @@ class AbstractCustomClass(ABC):
             temp_data[key] = value;
         return temp_data;
 
-    def makeEditDeleteBtn(self, path, id):
-        editBtn = Button('Edit', 'info', generateGETURL(path, {"action": 'edit', "element_id": id}));
-        deleteBtn = Button('Delete', 'danger', generateGETURL(path, {"action": 'delete', "element_id": id}))
-        return [editBtn, deleteBtn];
-
     def getTableContent(self, **kwargs):
         return [self.getTableRow(content) for content in sorted(filterModelObject(
             self.base_class, **kwargs), key=lambda q: q.id)];
 
     def grabTableData(self, form_path):
         tableHeader = self.getTableHeader();
-        tableContent = self.getTableContent();
+        tableContent = self.getTableContent(**self.getFilterTerms());
         table = Table(self.base_class, form_path).makeCustomTables(tableHeader, tableContent);
         return [table];

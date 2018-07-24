@@ -1,11 +1,11 @@
-from .AbstractCustomClass import AbstractCustomClass
+from .AbstractMutableCustomClass import *
 from ..HelperClass import *
 from ..generalFunctions import *
 
 from ..models import *
 from ..forms import *
 
-class EventTeamView(AbstractCustomClass):
+class EventTeamView(AbstractMutableCustomClass):
 
 ### Constructor <-> AbstractCustomClass
 

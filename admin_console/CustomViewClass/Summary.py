@@ -1,11 +1,11 @@
-from .AbstractCustomClass import AbstractCustomClass
+from .AbstractMutableCustomClass import *
 from ..HelperClass import *
 from ..generalFunctions import *
 
 from ..models import *
 from ..forms import *
 
-class SummaryView(AbstractCustomClass):
+class SummaryView(AbstractMutableCustomClass):
 
 ### Constructor <-> AbstractCustomClass
 
@@ -19,6 +19,15 @@ class SummaryView(AbstractCustomClass):
             'base_form_invalid': {'_state', 'id', 'summary_event_parent'},
         };
         super().__init__(request, self.base_class, self.validation_table);
+
+### Overriding Function
+
+    def setViewDispatcher(self):
+        dispatcher = super().setViewDispatcher();
+        dispatcher.update('edit', False);
+        dispatcher.update('delete', False);
+        return dispatcher;
+
 
 ### View Process Functions
 
