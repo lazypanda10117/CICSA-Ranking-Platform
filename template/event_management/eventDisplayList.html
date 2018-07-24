@@ -1,0 +1,9 @@
+{% extends 'console/header.html' %}
+{% block 'head' %}
+{% endblock %}
+{% block 'body' %}
+    <h2><pre>{{ title }}</pre></h2>
+    {% for key, element in element_list.items %}
+        {% include "event_management/eventDisplayBlock.html" with context=element only %}
+    {% endfor %}
+{% endblock %}

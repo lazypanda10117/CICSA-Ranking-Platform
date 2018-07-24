@@ -9,13 +9,13 @@ from ..models import *
 from ..forms import *
 
 
-class EventCreationView(AbstractMutableCustomClass):
+class EventManagementView(AbstractMutableCustomClass):
 
 ### Constructor <-> AbstractCustomClass
 
     def __init__(self, request):
         self.base_class = Event;
-        self.form_class = EventCreationForm;
+        self.form_class = EventManagementForm;
         self.validation_table = {
             'base_table_invalid': {'_state', 'event_schools'},
             'base_form_invalid': {'_state', 'id', 'event_team_number', 'event_schools', 'event_school_ids',
@@ -76,19 +76,11 @@ class EventCreationView(AbstractMutableCustomClass):
         arg_dict = {} if self.form_path == 'all' else {"event_type": self.event_types[self.form_path]};
         return super().getTableContent(**{**arg_dict, **kwargs});
 
-    def getTableHeader(self):
-        return self.getTableSpecificHeader();
-
     def getTableSpecificHeader(self):
         base_header = [field.name for field in self.base_class._meta.get_fields()
                 if not field.name in self.validation_table['base_table_invalid']];
         additional_header = [];
         return base_header + additional_header;
-
-    def getTableRow(self, content):
-        rowContent = {};
-        rowContent["db_content"] = self.getTableRowContent(content);
-        return rowContent;
 
     def getTableRowContent(self, content):
         field_data = filterDict(getModelObject(self.base_class, id=content.id).__dict__.items(),

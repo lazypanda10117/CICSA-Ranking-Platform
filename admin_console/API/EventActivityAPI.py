@@ -18,3 +18,12 @@ class EventActivityAPI(API):
         event_activity = getModelObject(EventActivity, id=event_activity_id);
         event_activity.event_activity_result = event_activity_result;
         event_activity.save();
+
+    def getEventTags(self):
+        pass;
+
+    def getSummaries(self):
+        pass;
+
+    def getEventTeamLinks(self):
+        pass;

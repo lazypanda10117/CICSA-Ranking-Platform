@@ -1,11 +1,11 @@
 from ..HelperClass import *
 from ..generalFunctions import *
-from .EventCreation import *
+from .EventManagement import *
 
 from ..models import *
 
 
-class TeamCreationView(EventCreationView):
+class TeamManagementView(EventManagementView):
     def __init__(self, request):
         super().__init__(request);
 

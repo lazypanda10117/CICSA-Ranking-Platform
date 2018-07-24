@@ -14,7 +14,7 @@ def index(request):
 
 def specificEvent(request, event_id):
     return kickRequest(request, True, render(
-        request, 'management/displayList.html',
+        request, 'ranking_management/displayList.html',
         {'title': 'Event Activities List', 'event_activity_list': genEventActivityList(request, event_id)}));
     pass;
 
@@ -42,7 +42,7 @@ def specificEventActivity(request, event_activity_id):
         options={**{str(i+1): str(i+1) for i in range(event_team_number)}, **{choice: choice for id, choice in Choices().getScoreMapChoices()}}
     ) for i in range(event_team_number)}
     return kickRequest(request, True, render(
-        request, 'management/eventActivityRace.html',
+        request, 'ranking_management/eventActivityRace.html',
         {'block_title': 'Event Activity Ranking',
          'action_destination': reverse('managementUpdateEventActivityResult', args=[event_activity.id]),
          'form_id': "event_activity_ranking_form",
@@ -54,7 +54,7 @@ def processEventActivityRanking(request, event_activity_id):
 
 def eventList(request):
     return kickRequest(request, True, render(
-        request, 'management/displayList.html',
+        request, 'ranking_management/displayList.html',
         {'title': 'Events List', 'event_list': genEventList(request)}));
 
 def genEventList(request):
@@ -75,7 +75,7 @@ def genEventList(request):
 
 def eventActivityList(request, event_id):
     return kickRequest(request, True, render(
-        request, 'management/displayList.html',
+        request, 'ranking_management/displayList.html',
         {'title': 'Event Activities List', 'event_activity_list': genEventActivityList(request, event_id)}));
 
 def genEventActivityList(request, event_id):

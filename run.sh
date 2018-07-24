@@ -4,7 +4,7 @@ narr=($ndir)
 darr=()
 for d in ${narr[*]}
 do
-    [[ $d =~ (static|sailing_dinosaurs) ]] && darr+=($d)
+    [[ $d =~ (static|template|sailing_dinosaurs) ]] && darr+=($d)
 done
 for n in ${narr[*]}
 do

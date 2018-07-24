@@ -20,15 +20,6 @@ class SummaryView(AbstractMutableCustomClass):
         };
         super().__init__(request, self.base_class, self.validation_table);
 
-### Overriding Function
-
-    def setViewDispatcher(self):
-        dispatcher = super().setViewDispatcher();
-        dispatcher.update('edit', False);
-        dispatcher.update('delete', False);
-        return dispatcher;
-
-
 ### View Process Functions
 
     def abstractFormProcess(self, action, **kwargs):

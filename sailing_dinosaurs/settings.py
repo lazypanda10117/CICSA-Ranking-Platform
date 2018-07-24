@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'ranking.apps.RankingConfig',
     'admin_console.apps.AdminConsoleConfig',
     'team_console.apps.TeamConsoleConfig',
+    'event_dispatcher.apps.EventDispatcherConfig',
+    'ranking_management.apps.RankingManagementConfig',
     'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -66,8 +68,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            "admin_console/template",
-            "ranking/template"
+            "template",
         ],
         'APP_DIRS': True,
         'OPTIONS': {

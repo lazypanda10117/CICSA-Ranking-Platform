@@ -1,10 +1,10 @@
 from ..HelperClass import *
 from ..generalFunctions import *
-from .EventCreation import *
+from .EventManagement import *
 
 from ..models import *
 
-class FleetCreationView(EventCreationView):
+class FleetManagementView(EventManagementView):
     def __init__(self, request):
         super().__init__(request);
         self.assoc_class_activity = EventActivity;

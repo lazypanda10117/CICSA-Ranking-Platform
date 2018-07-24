@@ -1,11 +1,11 @@
 import json
 from ..HelperClass import *
 from ..generalFunctions import *
-from .EventCreation import *
+from .EventManagement import *
 
 from ..models import *
 
-class EventView(EventCreationView):
+class EventView(EventManagementView):
     def __init__(self, request):
         super().__init__(request);
         self.form_class = EventForm;

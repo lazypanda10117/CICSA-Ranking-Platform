@@ -4,9 +4,9 @@
 {% block 'body' %}
     <h2><pre>{{ title }}</pre></h2>
     {% for key, element in event_list.items %}
-        {% include "management/eventBlock.html" with context=element only %}
+        {% include "ranking_management/eventBlock.html" with context=element only %}
     {% endfor %}
     {% for key, element in event_activity_list.items %}
-        {% include "management/eventActivityBlock.html" with context=element only %}
+        {% include "ranking_management/eventActivityBlock.html" with context=element only %}
     {% endfor %}
 {% endblock %}

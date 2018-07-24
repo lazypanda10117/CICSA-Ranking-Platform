@@ -12,6 +12,6 @@ urlpatterns = [
     path('<str:form_path>/generalProcess', views.generalView, name='adminGeneralProcessView'),
     path('<str:form_path>/custom', views.customView, name='adminCustomView'),
     path('<str:form_path>/customProcess', views.customView, name='adminCustomProcessView'),
-    path('event/', include('event.urls'), name='adminEvent'),
-    path('management/', include('management.urls'), name='adminManagement'),
+    path('event/', include('event_dispatcher.urls'), name='adminEvent'),
+    path('management/ranking/', include('ranking_management.urls'), name='adminManagement'),
 ]

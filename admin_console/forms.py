@@ -119,7 +119,7 @@ class MemberGroupForm(forms.Form):
     member_group_school = forms.ChoiceField(choices=[]);
 
 
-class EventCreationForm(forms.Form):
+class EventManagementForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__()
         self.data = kwargs.pop('data', None);
@@ -148,7 +148,7 @@ class EventCreationForm(forms.Form):
     event_end_date = forms.DateField(initial=timezone.now(), widget=forms.DateInput(format='%Y-%m-%d'));
 
 
-class EventForm(EventCreationForm):
+class EventForm(EventManagementForm):
     event_rotation_detail = forms.CharField(max_length=5000, widget=forms.Textarea);
 
 
