@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='eventManagementIndex'),
-    path('<str:dispatch_path>', views.dispatch, name='eventManagementEvents'),
-    path('<str:dispatch_path>/<str:element_id>', views.dispatchSpecific, name='eventManagementSpecificObject'),
+    path('choice', views.choice, name='eventManagementChoice'),
+    path('<str:type>', views.eventFilter, name='eventManagementEventFilter'),
+    path('<str:dispatch_path>/<str:param>', views.viewDispatch, name='eventManagementDispatch'),
 ]

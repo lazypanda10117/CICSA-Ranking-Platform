@@ -3,11 +3,11 @@
     <div class="card-header">
         <div class="container-fluid row">
             <div class="col col-lg-8">
-                <b>{{ context.element }}</b>
+                <b>{{ context.element_name }}</b>
             </div>
             {% for element in context.header %}
                 <div class="col col-lg-auto">
-                    <b>{{ element.header }}</b>
+                    <b>{{ element }}</b>
                 </div>
             {% endfor %}
         </div>
@@ -18,7 +18,7 @@
                 <div class="col col-lg-8">
                     <a href="{{ content.element_link }}">{{ content.element_text }}</a>
                 </div>
-                {% for element in content %}
+                {% for element in content.elements %}
                     <div class="col col-lg-auto">
                         <a href="{{ element.link }}">{{ element.text }}</a>
                     </div>

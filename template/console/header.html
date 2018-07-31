@@ -39,8 +39,6 @@
         function onLoad(){
             preDropdownClicks();
         }
-
-
     </script>
     {% block 'head' %}
     {% endblock %}
@@ -55,7 +53,7 @@
 
             <li><a href="">Search (Future)</a></li>
             <li><a href="{% url 'managementEvents' %}">Event Ranking App</a></li>
-            <li><a href="{% url 'eventChoice' %}">Event Management App</a></li>
+            <li><a href="{% url 'eventManagementIndex' %}">Event Management App</a></li>
             <button class="dropdown-btn" onclick="showDropdown(1);">
                 <li>Event <i class="fa fa-caret-down"></i></li>
             </button>
