@@ -90,8 +90,15 @@ class EventView(EventManagementView):
             event_creation.event_school_ids = [] if event_school is None else event_school;
             event_creation.event_rotation_detail = event_json_rotation_detail;
             event_creation.save();
-            loghelper(self.request, 'admin',
-                      logQueryMaker(self.base_class, action.title(), id=event_creation.id))
+
+            if not action == 'delete':
+                event_creation.save();
+
+            loghelper(self.request, 'admin', logQueryMaker(self.base_class, action.title(), id=event_creation.id));
+
+            if action == 'delete':
+                event_creation.delete();
+
         except Exception as e:
             print({"Error": "Cannot Process " + action.title() + " Request." });
             print(e);
