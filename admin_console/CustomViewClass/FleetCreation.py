@@ -6,6 +6,7 @@ from ..models import *
 
 class FleetManagementView(EventManagementView):
     def __init__(self, request):
+        self.event_type = 'fleet race';
         super().__init__(request);
         self.assoc_class_activity = EventActivity;
         self.assoc_class_team = Team;
@@ -21,8 +22,14 @@ class FleetManagementView(EventManagementView):
 
 
     ### Class Specific Functions
+    def getChoiceData(self):
+        choice_data = super().getChoiceData();
+        choice_data['event_type'] = tuple([(lambda x: (x.id, x.event_type_name))
+                                           (getModelObject(EventType, event_type_name=self.event_type))]);
+        return choice_data;
+
     def setFormPath(self):
-        return 'fleet race';
+        return self.event_type;
 
     def __rotationGenerator(self, tag_dict, team_dict, event_race_number, event_team_number):
         rand_array = random.sample(range(1, event_team_number + 1), event_team_number);

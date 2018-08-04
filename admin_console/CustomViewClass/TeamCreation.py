@@ -7,10 +7,17 @@ from ..models import *
 
 class TeamManagementView(EventManagementView):
     def __init__(self, request):
+        self.event_type = 'team race';
         super().__init__(request);
 
+    def getChoiceData(self):
+        choice_data = super().getChoiceData();
+        choice_data['event_type'] = tuple([(lambda x: (x.id, x.event_type_name))
+                                           (getModelObject(EventType, event_type_name=self.event_type))]);
+        return choice_data;
+
     def setFormPath(self):
-        return 'team race';
+        return self.event_type;
 
     def _add(self):
         pass;

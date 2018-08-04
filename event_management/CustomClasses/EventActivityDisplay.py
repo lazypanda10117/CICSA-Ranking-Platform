@@ -27,32 +27,21 @@ class EventActivityDisplay(AbstractDisplayClass):
             event_tags = event_api.getEventTags(event_tag_event_id=event_id);
             event_tag_dict = map(lambda event_tag: dict(
                 element_text=event_tag.event_tag_name,
-                element_link='#',
-                elements=[
-                    dict(
-                        text='Modify',
-                        link=event_api.getEventTagModifyLink(id=event_tag.id)
-                    )
-                ]
+                element_link=event_api.getEventTagModifyLink(id=event_tag.id),
+                elements=[]
             ),
                                       [event_tag for event_tag in event_tags]);
-            return dict(block_title='Event Tags', element_name='Event Tag', header=['Modify'],
-                        contents=event_tag_dict);
+            return dict(block_title='Event Tags', element_name='Event Tag', header=[], contents=event_tag_dict);
 
         def genSummaryDict(event_id):
             event_summaries = event_api.getEventSummaries(summary_event_parent=event_id);
             event_summary_dict = map(lambda event_summary: dict(
                 element_text='Summary - ' + school_api.getSchool(id=event_summary.summary_event_school).school_name,
-                element_link='#',
-                elements=[
-                    dict(
-                        text='Modify',
-                        link=event_api.getEventSummaryModifiyLink(id=event_summary.id)
-                    )
-                ]
+                element_link=event_api.getEventSummaryModifiyLink(id=event_summary.id),
+                elements=[]
             ),
                                       [event_summary for event_summary in event_summaries]);
-            return dict(block_title='Event Summaries', element_name='Event Summary', header=['Modify'],
+            return dict(block_title='Event Summaries', element_name='Event Summary', header=[],
                         contents=event_summary_dict);
 
         def genTeamDict(event_id):
@@ -60,16 +49,10 @@ class EventActivityDisplay(AbstractDisplayClass):
             event_team_dict = map(lambda event_team: dict(
                 element_text=school_api.getSchool(id=event_team.team_school).school_name + ' - ' + event_team.team_name,
                 element_link=event_api.getTeamModifyLink(id=event_team.id),
-                elements=[
-                    dict(
-                        text='Modify',
-                        link=event_api.getTeamModifyLink(id=event_team.id)
-                    )
-                ]
+                elements=[]
             ),
                                       [event_team for event_team in event_teams]);
-            return dict(block_title='Event Teams', element_name='Event Team', header=['Modify'],
-                        contents=event_team_dict);
+            return dict(block_title='Event Teams', element_name='Event Team', header=[], contents=event_team_dict);
 
         event_id = int(self.param);
         event_api = EventAPI(self.request);
@@ -83,6 +66,4 @@ class EventActivityDisplay(AbstractDisplayClass):
         return {**event_activity_result, **event_tag_result, **event_summary_result, **event_team_result};
 
     def render(self):
-        return kickRequest(self.request, True, render(
-            self.request, 'event_management/eventDisplayList.html',
-            {'title': 'Event Related Objects List', 'element_list': self.generateList()}));
+        return super().renderHelper('Event Related Objects List', self.generateList());

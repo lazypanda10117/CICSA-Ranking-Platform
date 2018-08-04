@@ -29,4 +29,6 @@ class EventDisplay(AbstractDisplayClass):
     def render(self):
         return kickRequest(self.request, True, render(
             self.request, 'event_management/eventDisplayList.html',
-            {'title': 'Events List', 'element_list': self.generateList()}));
+            {'title': 'Events List', 'element_list': self.generateList(),
+             'header': {'button': {'link': reverse('adminCustomView', args=[self.param])+'?action=add',
+                                   'text': 'Add Event'}}}));
