@@ -7,10 +7,6 @@ class Button:
         self.style = style;
         self.redirect = redirect;
 
-class FieldExtendButton:
-    def __init__(self):
-        pass;
-
 class Table:
     def __init__(self, currentClass, title):
         self.currentClass = currentClass;

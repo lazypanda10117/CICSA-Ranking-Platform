@@ -43,6 +43,11 @@ class EventActivityView(AbstractCustomClass):
             event_activity.event_activity_note = getSinglePostObj(post_dict, 'event_activity_note');
             event_activity.event_activity_status = getSinglePostObj(post_dict, 'event_activity_status');
 
+            try:
+                event_activity.event_activity_result = json.loads(event_activity.event_activity_result);
+            except:
+                event_activity.event_activity_result = {};
+
             if not action == 'delete':
                 event_activity.save();
 

@@ -28,8 +28,8 @@
                         </div>
                         <div class="col col-lg-auto">
                             <select class="custom-select" name="{{ content.event_activity_team }}">
-                                {% for value, text in content.options.items %}
-                                    <option value="{{ value }}">{{ text }}</option>
+                                {% for value, data in content.options.items %}
+                                    <option {{ data.selected }} value="{{ value }}">{{ data.text }}</option>
                                 {% endfor %}
                             </select>
                         </div>

@@ -61,7 +61,6 @@ class EventView(EventManagementView):
             event_start_date = getSinglePostObj(post_dict, 'event_start_date');
             event_end_date = getSinglePostObj(post_dict, 'event_end_date');
 
-            event_season_name = getModelObject(self.assoc_class_season, id=event_season).season_name;
             try:
                 event_json_rotation_detail = json.loads(event_rotation_detail);
             except:
