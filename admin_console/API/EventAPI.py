@@ -46,5 +46,5 @@ class EventAPI(API):
     def getTeamModifyLink(self, **kwargs):
         return getModifiyLink('team', **kwargs);
 
-    def getEventModifyLink(self, **kwargs):
-        return getModifiyLink('event', **kwargs);
+    def getEventModifyLink(self, event_type, **kwargs):
+        return getModifiyLink(event_type, **kwargs);

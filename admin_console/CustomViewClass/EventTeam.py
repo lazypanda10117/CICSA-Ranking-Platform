@@ -94,8 +94,8 @@ class EventTeamView(AbstractMutableCustomClass):
                     return member_group.id, member_group.member_group_name;
             return None, None;
         return [
-                    SearchElement(self.search_name[i], 'Event Team Event Member Group', 'MemberGroup', '', 'member_group_name', '',
-                                  getSearchDefault(i)) for i in range(len(self.search_name))
+                    SearchElement(self.search_name[i], 'Event Team Event Member Group', 'MemberGroup', None,
+                                  'member_group_name', None, getSearchDefault(i)) for i in range(len(self.search_name))
                 ];
 
     ### Table Generating Functions

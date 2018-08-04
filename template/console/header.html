@@ -48,18 +48,17 @@
     <div id="sidebar-wrapper">
         <div class="sidebar-nav">
             <li class="sidebar-brand">
-                <a href="#">Admin Dashboard</a>
+                <a href="{% url 'adminIndex' %}">Admin Dashboard</a>
             </li>
-
-            <li><a href="">Search (Future)</a></li>
-            <li><a href="{% url 'managementEvents' %}">Event Ranking App</a></li>
-            <li><a href="{% url 'eventManagementIndex' %}">Event Management App</a></li>
+            <!-- <li><a href="">Search (Future)</a></li> -->
+            <li><a href="{% url 'managementEvents' %}">Ranking System</a></li>
+            <li><a href="{% url 'eventManagementIndex' %}">Management System</a></li>
             <button class="dropdown-btn" onclick="showDropdown(1);">
                 <li>Event <i class="fa fa-caret-down"></i></li>
             </button>
             <div class="custom-dropdown-container" id="dropdown-container-1">
                 <ul>
-                    <li><a href="{% url 'adminCustomView' 'event' %}">Event</a></li>
+                    <li><a href="{% url 'adminCustomView' 'event' %}">Event (Logic-less)</a></li>
                     <li><a href="{% url 'adminCustomView' 'summary' %}">Summary</a></li>
                     <li><a href="{% url 'adminCustomView' 'event activity' %}">Event Activity</a></li>
                     <li><a href="{% url 'adminCustomView' 'event tag' %}">Event Tag</a></li>

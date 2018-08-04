@@ -20,6 +20,16 @@ class EventActivityAPI(API):
         event_activity.event_activity_result = event_activity_result;
         event_activity.save();
 
+    def getMemberGroupName(self, member_group_id):
+        if member_group_id is not None:
+            return getModelObject(MemberGroup, id=member_group_id).member_group_name;
+        return 'Unlinked';
+
+    def getMemberGroupLink(self, member_group_id):
+        if member_group_id is not None:
+            return getModifiyLink('member group', id=member_group_id);
+        return '#';
+
     def getEventTeamLinks(self, **kwargs):
         return filterModelObject(EventTeam, **kwargs);
 
