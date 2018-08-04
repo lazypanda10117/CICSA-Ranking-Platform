@@ -16,7 +16,7 @@ class EventDisplay(AbstractDisplayClass):
                 elements=[
                     dict(
                         text='Modify',
-                        link='view'
+                        link=event_api.getEventModifyLink(id=event.id)
                     )
                 ]
             ),

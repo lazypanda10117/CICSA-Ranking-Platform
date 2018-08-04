@@ -2,7 +2,7 @@ from django.shortcuts import render, reverse, redirect, get_object_or_404, HttpR
 from django.urls import resolve
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-import math, datetime
+import math, datetime, json
 
 from .models import *
 
@@ -99,3 +99,7 @@ def getTimeNow():
 @csrf_exempt
 def modAdd(base, add, mod):
     return ((base + add) % mod) + 1;
+
+@csrf_exempt
+def getModifiyLink(tag, **kwargs):
+    return reverse('adminCustomView', args=[tag])+'?kwargs='+json.dumps(kwargs);

@@ -1,3 +1,4 @@
+import json
 from .API import *
 from ..generalFunctions import *
 from ..models import *
@@ -19,11 +20,14 @@ class EventActivityAPI(API):
         event_activity.event_activity_result = event_activity_result;
         event_activity.save();
 
-    def getEventTags(self):
-        pass;
+    def getEventTeamLinks(self, **kwargs):
+        return filterModelObject(EventTeam, **kwargs);
 
-    def getSummaries(self):
-        pass;
+    def getEventTeam(self, **kwargs):
+        return getModelObject(Team, **kwargs);
 
-    def getEventTeamLinks(self):
-        pass;
+    def getEventActivityModifyLink(self, **kwargs):
+        return getModifiyLink('event activity', **kwargs);
+
+    def getEventTeamModifyLink(self, **kwargs):
+        return getModifiyLink('event team', **kwargs);
