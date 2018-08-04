@@ -1,11 +1,11 @@
-from .AbstractMutableCustomClass import *
+from .AbstractCustomClass import *
 from ..HelperClass import *
 from ..generalFunctions import *
 
 from ..models import *
 from ..forms import *
 
-class EventTagView(AbstractMutableCustomClass):
+class EventTagView(AbstractCustomClass):
 
 ### Constructor <-> AbstractCustomClass
 

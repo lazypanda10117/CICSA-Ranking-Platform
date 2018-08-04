@@ -31,7 +31,7 @@ class EventView(EventManagementView):
         return 'all';
 
     def setViewDispatcher(self):
-        return AbstractMutableCustomClass.setViewDispatcher(self);
+        return AbstractCustomClass.setViewDispatcher(self);
 
     def getTableHeader(self):
         return self.getTableSpecificHeader() + ["edit", "delete"];

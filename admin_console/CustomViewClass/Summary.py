@@ -1,11 +1,11 @@
-from .AbstractMutableCustomClass import *
+from .AbstractCustomClass import *
 from ..HelperClass import *
 from ..generalFunctions import *
 
 from ..models import *
 from ..forms import *
 
-class SummaryView(AbstractMutableCustomClass):
+class SummaryView(AbstractCustomClass):
 
 ### Constructor <-> AbstractCustomClass
 

@@ -1,7 +1,7 @@
 import json, random
 from abc import ABC, abstractmethod
 
-from .AbstractMutableCustomClass import AbstractMutableCustomClass
+from .AbstractCustomClass import AbstractCustomClass
 from ..HelperClass import *
 from ..generalFunctions import *
 
@@ -9,7 +9,7 @@ from ..models import *
 from ..forms import *
 
 
-class EventManagementView(AbstractMutableCustomClass):
+class EventManagementView(AbstractCustomClass):
 
 ### Constructor <-> AbstractCustomClass
 
@@ -17,8 +17,8 @@ class EventManagementView(AbstractMutableCustomClass):
         self.base_class = Event;
         self.form_class = EventManagementForm;
         self.validation_table = {
-            'base_table_invalid': {'_state', 'event_schools'},
-            'base_form_invalid': {'_state', 'id', 'event_team_number', 'event_schools', 'event_school_ids',
+            'base_table_invalid': {'_state'},
+            'base_form_invalid': {'_state', 'id', 'event_team_number', 'event_school_ids',
                                   'event_rotation_detail', 'event_create_time'},
         };
         super().__init__(request, self.base_class, self.validation_table);
@@ -44,8 +44,9 @@ class EventManagementView(AbstractMutableCustomClass):
         element_id = kwargs.pop('element_id');
         field_data_dispatcher = self.populateDispatcher();
         if field_data_dispatcher.get(action):
-            field_data = filterDict(getModelObject(self.base_class, id=element_id).__dict__.items(),
-                                    self.validation_table['base_form_invalid']);
+            raw_data = getModelObject(self.base_class, id=element_id).__dict__;
+            field_data = filterDict(raw_data.items(), self.validation_table['base_form_invalid']);
+            field_data['event_team'] = raw_data['event_school_ids'];
             field_data = self.serializeJSONListData(['event_school_ids', 'event_rotation_detail'], field_data);
             return field_data;
         return {'event_type': self.form_path};

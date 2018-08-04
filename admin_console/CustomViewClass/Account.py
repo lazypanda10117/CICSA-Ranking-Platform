@@ -1,13 +1,13 @@
 import hashlib, random, string
 
-from .AbstractMutableCustomClass import AbstractMutableCustomClass
+from .AbstractCustomClass import AbstractCustomClass
 from ..HelperClass import *
 from ..generalFunctions import *
 
 from ..models import *
 from ..forms import *
 
-class AccountView(AbstractMutableCustomClass):
+class AccountView(AbstractCustomClass):
 
 ### Constructor <-> AbstractCustomClass
 

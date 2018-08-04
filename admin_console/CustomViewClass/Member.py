@@ -1,11 +1,11 @@
-from .AbstractMutableCustomClass import AbstractMutableCustomClass
+from .AbstractCustomClass import AbstractCustomClass
 from ..HelperClass import *
 from ..generalFunctions import *
 
 from ..models import *
 from ..forms import *
 
-class MemberView(AbstractMutableCustomClass):
+class MemberView(AbstractCustomClass):
 
 ### Constructor <-> AbstractCustomClass
 

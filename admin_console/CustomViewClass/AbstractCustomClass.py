@@ -7,7 +7,7 @@ from ..generalFunctions import *
 from ..models import *
 from ..forms import *
 
-class AbstractMutableCustomClass(AbstractImmutableCustomClass):
+class AbstractCustomClass(AbstractImmutableCustomClass):
 
     def __init__(self, request, base_class, validation_table):
         self.dispatcher = self.setViewDispatcher();
