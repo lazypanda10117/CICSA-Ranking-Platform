@@ -116,7 +116,7 @@ class EventActivityView(AbstractCustomClass):
 
         return [
                     SearchElement(self.search_name[0], 'Event Activity Event Parent (Unalterable)',
-                                  'Event', getSearchKeyDict("id"), 'event_name', 'event_host', getSearchDefault0()),
+                                  'Event', getSearchKeyDict("id"), 'event_name', 'id', getSearchDefault0()),
                     SearchElement(self.search_name[1], 'Event Activity Event Tag',
                                   'EventTag', getSearchKeyDict("event_tag_event_id"), 'event_tag_name',
                                   'event_tag_event_id', getSearchDefault1())

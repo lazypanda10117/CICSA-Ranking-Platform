@@ -163,11 +163,6 @@ class FleetManagementView(EventManagementView):
             event_team_links = [event_activity_api.getEventTeamLinks(event_team_event_activity_id=activity.id)
                                 for activity in event_activities];
 
-            for team_links in event_team_links:
-                for team_link in team_links:
-                    loghelper(self.request, 'admin',
-                              logQueryMaker(self.assoc_class_team_link, action.title(), id=team_link.id))
-                    team_link.delete();
             for team in event_teams:
                 loghelper(self.request, 'admin',
                           logQueryMaker(self.assoc_class_team, action.title(), id=team.id))
@@ -180,10 +175,16 @@ class FleetManagementView(EventManagementView):
                 loghelper(self.request, 'admin',
                           logQueryMaker(self.assoc_class_summary, action.title(), id=summary.id))
                 summary.delete();
+
             for activity in event_activities:
                 loghelper(self.request, 'admin',
                           logQueryMaker(self.assoc_class_activity, action.title(), id=activity.id))
                 activity.delete();
+            for team_links in event_team_links:
+                for team_link in team_links:
+                    loghelper(self.request, 'admin',
+                              logQueryMaker(self.assoc_class_team_link, action.title(), id=team_link.id))
+                    team_link.delete();
             loghelper(self.request, 'admin',
                       logQueryMaker(self.base_class, action.title(), id=event.id))
             event.delete();

@@ -18,6 +18,6 @@ class SearchAPI():
         for obj in filterModelObject(model, **searchDict):
             tempDict = vars(obj);
             tempDict.pop('_state');
-            id = tempDict.pop('id');
+            id = tempDict['id'];
             resultList[id] = tempDict;
         return HttpResponse(json.dumps(resultList, default=str));
