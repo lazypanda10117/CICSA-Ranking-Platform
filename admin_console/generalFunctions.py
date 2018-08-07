@@ -84,6 +84,13 @@ def noneCatcher(key, data):
     return data[key] if key in data else None;
 
 @csrf_exempt
+def jsonLoadCatch(text):
+    try:
+        return json.loads(text);
+    except:
+        return {};
+
+@csrf_exempt
 def emptyActionRedirect(request, func):
     if request.GET.get('action') is None:
         current_url = resolve(request.path_info).url_name;

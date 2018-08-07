@@ -75,6 +75,7 @@ class School(models.Model):
 class Team(models.Model):
     team_name = models.CharField(max_length=200);
     team_school = models.IntegerField();
+    team_tag_id = models.IntegerField();
     team_status = models.CharField(max_length=50);
 
 class MemberGroup(models.Model):

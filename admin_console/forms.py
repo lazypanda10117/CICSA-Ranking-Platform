@@ -1,6 +1,6 @@
 from django import forms
 from .generalFunctions import *
-from .models import School, Season, Region, EventType, ScoreMapping, Account, Log
+from .models import Season, Region, EventType, ScoreMapping, Log
 
 
 class SeasonForm(forms.ModelForm):
@@ -100,7 +100,7 @@ class MemberForm(forms.Form):
 
     member_name = forms.CharField(max_length=200);
     member_school = forms.ChoiceField(choices=[]);
-    member_email = forms.EmailField();
+    member_email = forms.EmailField(required=False);
     member_status = forms.ChoiceField(choices=[]);
 
 
@@ -136,7 +136,7 @@ class EventManagementForm(forms.Form):
     event_type = forms.ChoiceField(choices=[]);
     event_name = forms.CharField(max_length=200);
     event_status = forms.ChoiceField(choices=[]);
-    event_description = forms.CharField(max_length=1500, widget=forms.Textarea);
+    event_description = forms.CharField(max_length=1500, widget=forms.Textarea, required=False);
     event_location = forms.CharField(max_length=1000);
     event_season = forms.ChoiceField(choices=[]);
     event_region = forms.ChoiceField(choices=[]);
@@ -211,7 +211,7 @@ class EventActivityForm(forms.Form):
 
     event_activity_name = forms.CharField(max_length=100);
     event_activity_order = forms.IntegerField(initial=1);
-    event_activity_result = forms.CharField(max_length=1500, widget=forms.Textarea);  # json
+    event_activity_result = forms.CharField(max_length=1500, widget=forms.Textarea, required=False);  # json
     event_activity_type = forms.ChoiceField(choices=[]);
-    event_activity_note = forms.CharField(max_length=1500);
+    event_activity_note = forms.CharField(max_length=1500, required=False);
     event_activity_status = forms.CharField(max_length=50);

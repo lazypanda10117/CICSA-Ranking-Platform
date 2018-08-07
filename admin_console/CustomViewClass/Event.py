@@ -57,14 +57,9 @@ class EventView(EventManagementView):
             event_school = getMultiplePostObj(post_dict, 'event_team');
             event_race_number = getSinglePostObj(post_dict, 'event_race_number');
             event_boat_rotation_name = getSinglePostObj(post_dict, 'event_boat_rotation_name');
-            event_rotation_detail = getSinglePostObj(post_dict, 'event_rotation_detail');
+            event_rotation_detail = jsonLoadCatch(getSinglePostObj(post_dict, 'event_rotation_detail'));
             event_start_date = getSinglePostObj(post_dict, 'event_start_date');
             event_end_date = getSinglePostObj(post_dict, 'event_end_date');
-
-            try:
-                event_json_rotation_detail = json.loads(event_rotation_detail);
-            except:
-                event_json_rotation_detail = {};
 
             dispatcher = super().populateDispatcher();
             if dispatcher.get(action):
@@ -88,7 +83,7 @@ class EventView(EventManagementView):
             event_creation.event_end_date = event_end_date;
             event_creation.event_team_number = 0 if event_school is None else len(event_school);
             event_creation.event_school_ids = [] if event_school is None else event_school;
-            event_creation.event_rotation_detail = event_json_rotation_detail;
+            event_creation.event_rotation_detail = event_rotation_detail;
             event_creation.save();
 
             if not action == 'delete':

@@ -10,6 +10,7 @@ class EventActivityDisplay(AbstractDisplayClass):
         def genActivityDict(tag):
             event_activities = event_api.getEventActivities(
                 event_activity_event_parent=event_id, event_activity_event_tag=tag.id);
+            event_activities = sorted(list(event_activities), key=(lambda x: x.event_activity_order))
             event_activity_dict = map(lambda event_activity: dict(
                 element_text=event_activity.event_activity_name,
                 element_link=reverse('eventManagementDispatch', args=['activity detail', event_activity.id]),
@@ -25,6 +26,7 @@ class EventActivityDisplay(AbstractDisplayClass):
 
         def genTagDict(event_id):
             event_tags = event_api.getEventTags(event_tag_event_id=event_id);
+            event_tags = sorted(list(event_tags), key=(lambda x: x.id))
             event_tag_dict = map(lambda event_tag: dict(
                 element_text=event_tag.event_tag_name,
                 element_link=event_api.getEventTagModifyLink(id=event_tag.id),
@@ -35,6 +37,7 @@ class EventActivityDisplay(AbstractDisplayClass):
 
         def genSummaryDict(event_id):
             event_summaries = event_api.getEventSummaries(summary_event_parent=event_id);
+            event_summaries = sorted(list(event_summaries), key=(lambda x: x.id))
             event_summary_dict = map(lambda event_summary: dict(
                 element_text='Summary - ' + school_api.getSchool(id=event_summary.summary_event_school).school_name,
                 element_link=event_api.getEventSummaryModifiyLink(id=event_summary.id),
@@ -46,6 +49,7 @@ class EventActivityDisplay(AbstractDisplayClass):
 
         def genTeamDict(event_id):
             event_teams = event_api.getEventTeams(event_id);
+            event_teams = sorted(list(event_teams), key=(lambda x: x.id))
             event_team_dict = map(lambda event_team: dict(
                 element_text=school_api.getSchool(id=event_team.team_school).school_name + ' - ' + event_team.team_name,
                 element_link=event_api.getTeamModifyLink(id=event_team.id),

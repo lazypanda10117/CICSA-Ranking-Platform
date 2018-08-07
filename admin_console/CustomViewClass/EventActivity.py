@@ -1,6 +1,9 @@
+import random
+
 from .AbstractCustomClass import AbstractCustomClass
 from ..HelperClass import *
 from ..generalFunctions import *
+from ..API import *
 
 from ..models import *
 from ..forms import *
@@ -13,6 +16,7 @@ class EventActivityView(AbstractCustomClass):
         self.base_class = EventActivity;
         self.assoc_class_event = Event;
         self.assoc_class_event_tag = EventTag;
+        self.assoc_class_team_link = EventTeam;
         self.form_class = EventActivityForm;
         self.search_name = ['event_activity_event_parent', 'evnet_activity_event_tag'];
         self.validation_table = {
@@ -21,42 +25,121 @@ class EventActivityView(AbstractCustomClass):
         };
         super().__init__(request, self.base_class, self.validation_table);
 
+
+    def __fleetRotationUpdater(self, tag_id, team_num, action, rotation):
+        def updateRotationArray(action, array):
+            if action == 'add':
+                if(len(array)%2 == 0):
+                    array.append(modAdd(array[len(array)-1]-1, 2, team_num))
+                else:
+                    array.append(array[len(array)-1])
+                return array;
+            elif action == 'delete':
+                array.pop();
+                return array;
+        new_rotation = rotation;
+        new_rotation[tag_id] = {team_id: updateRotationArray(action, team_rot)
+                                for team_id, team_rot in rotation[str(tag_id)].items()};
+        return new_rotation;
+
+    def __teamRotationUpdater(self):
+        return {};
+
 ### View Process Functions
 
     def abstractFormProcess(self, action, **kwargs):
-        try:
-            post_dict = dict(self.request.POST);
-            dispatcher = super().populateDispatcher();
-
-            if dispatcher.get(action):
-                event_activity_id = kwargs.pop('id', None);
-                event_activity = self.base_class.objects.get(id=event_activity_id);
-            else:
-                event_activity = self.base_class();
-
-            event_activity.event_activity_event_parent = [getSinglePostObj(post_dict, self.search_name[0] + "_result")][0];
-            event_activity.event_activity_event_tag = [getSinglePostObj(post_dict, self.search_name[1] + "_result")][0];
+        def add():
+            event_api = EventAPI(self.request);
+            event_activity = self.base_class();
+            event_activity.event_activity_event_parent = int([getSinglePostObj(post_dict, self.search_name[0] + "_result")][
+                0]);
+            event_activity.event_activity_event_tag = int([getSinglePostObj(post_dict, self.search_name[1] + "_result")][0]);
             event_activity.event_activity_name = getSinglePostObj(post_dict, 'event_activity_name');
             event_activity.event_activity_order = getSinglePostObj(post_dict, 'event_activity_order');
-            event_activity.event_activity_result = getSinglePostObj(post_dict, 'event_activity_result');
+            event_activity.event_activity_result = jsonLoadCatch(getSinglePostObj(post_dict, 'event_activity_result'));
             event_activity.event_activity_type = getSinglePostObj(post_dict, 'event_activity_type');
             event_activity.event_activity_note = getSinglePostObj(post_dict, 'event_activity_note');
             event_activity.event_activity_status = getSinglePostObj(post_dict, 'event_activity_status');
-
-            try:
-                event_activity.event_activity_result = json.loads(event_activity.event_activity_result);
-            except:
-                event_activity.event_activity_result = {};
-
-            if not action == 'delete':
-                event_activity.save();
+            event_activity.save();
 
             loghelper(self.request, 'admin', logQueryMaker(self.base_class, action.title(), id=event_activity.id));
 
-            if action == 'delete':
-                event_activity.delete();
-        except:
+            teams = event_api.getEventTeams(event_activity.event_activity_event_parent);
+            matching_teams = list(filter(lambda x: x.team_tag_id==event_activity.event_activity_event_tag, teams));
+            for team in matching_teams:
+                event_team = self.assoc_class_team_link();
+                event_team.event_team_event_activity_id = event_activity.id;
+                event_team.event_team_id = team.id;
+                event_team.save();
+                loghelper(self.request, 'admin',
+                          logQueryMaker(self.assoc_class_team_link, action.title(), id=event_team.id));
+
+            event = event_api.getEvent(id=event_activity.event_activity_event_parent);
+            event_type = int(event.event_type);
+            event_team_num = int(event.event_team_number);
+            event_rotation = event.event_rotation_detail;
+            event_tag = event_activity.event_activity_event_tag;
+            new_rotation = {};
+            if event_type == 1:
+                new_rotation = self.__fleetRotationUpdater(event_tag, event_team_num, 'add', event_rotation);
+            elif event_type == 2:
+                new_rotation = self.__teamRotationUpdater();
+            event.event_rotation_detail = new_rotation;
+            event.save();
+            loghelper(self.request, 'admin', logQueryMaker(self.assoc_class_event, action.title(), id=event.id));
+
+        def edit(key):
+            event_activity = self.base_class.objects.get(id=key);
+            event_activity.event_activity_event_parent = int([getSinglePostObj(post_dict, self.search_name[0] + "_result")][0]);
+            event_activity.event_activity_event_tag = int([getSinglePostObj(post_dict, self.search_name[1] + "_result")][0]);
+            event_activity.event_activity_name = getSinglePostObj(post_dict, 'event_activity_name');
+            event_activity.event_activity_order = getSinglePostObj(post_dict, 'event_activity_order');
+            event_activity.event_activity_result = jsonLoadCatch(getSinglePostObj(post_dict, 'event_activity_result'));
+            event_activity.event_activity_type = getSinglePostObj(post_dict, 'event_activity_type');
+            event_activity.event_activity_note = getSinglePostObj(post_dict, 'event_activity_note');
+            event_activity.event_activity_status = getSinglePostObj(post_dict, 'event_activity_status');
+            event_activity.save();
+            loghelper(self.request, 'admin', logQueryMaker(self.base_class, action.title(), id=event_activity.id));
+
+        def delete(key):
+            event_api = EventAPI(self.request);
+            event_activity = self.base_class.objects.get(id=key);
+            event_team_links = filterModelObject(EventTeam, event_team_event_activity_id=event_activity.id);
+            for event_team_link in event_team_links:
+                loghelper(self.request, 'admin', logQueryMaker(self.assoc_class_team_link, action.title(), id=event_team_link.id));
+                event_team_link.delete();
+            loghelper(self.request, 'admin', logQueryMaker(self.base_class, action.title(), id=event_activity.id));
+            event_activity.delete();
+
+            event = event_api.getEvent(id=event_activity.event_activity_event_parent);
+            event_type = int(event.event_type);
+            event_team_num = int(event.event_team_number);
+            event_rotation = event.event_rotation_detail;
+            event_tag = event_activity.event_activity_event_tag;
+            new_rotation = {};
+            if event_type == 1:
+                new_rotation = self.__fleetRotationUpdater(event_tag, event_team_num, 'delete', event_rotation);
+            elif event_type == 2:
+                new_rotation = self.__teamRotationUpdater();
+            event.event_rotation_detail = new_rotation;
+            event.save();
+            loghelper(self.request, 'admin', logQueryMaker(self.assoc_class_event, action.title(), id=event.id));
+
+        try:
+            post_dict = dict(self.request.POST);
+            dispatcher = super().populateDispatcher();
+            if dispatcher.get(action):
+                event_activity_id = kwargs.pop('id', None);
+                if action == 'edit':
+                    edit(event_activity_id);
+                elif action == 'delete':
+                    delete(event_activity_id);
+            else:
+                if action == 'add':
+                    add();
+        except Exception as e:
             print({"Error": "Cannot Process " + action.title() + " Request." });
+            print(e);
 
 ### View Generating Functions
 

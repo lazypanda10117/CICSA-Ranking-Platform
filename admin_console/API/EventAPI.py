@@ -5,9 +5,6 @@ from ..generalFunctions import *
 from ..models import *
 
 class EventAPI(API):
-    def __init__(self, request):
-        self.request = request;
-
     def getEventActivities(self, **kwargs):
         return filterModelObject(EventActivity, **kwargs);
 

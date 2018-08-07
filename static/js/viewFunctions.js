@@ -3,7 +3,7 @@ function dynamicChoiceGenerator(choice_id, params){
 }
 
 function searchSetup(name, item, keyArgs, termArg, helpArg){
-    function getURL(base_url, item, key, term){
+    function getURL(baseUrl, item, key, term){
         var paramStr = '?item='+item;
         if(key != null){
             paramStr += '&key='+JSON.stringify(key);
@@ -11,7 +11,7 @@ function searchSetup(name, item, keyArgs, termArg, helpArg){
         if(term != null){
             paramStr += '&term='+JSON.stringify(term);
         }
-        return base_url+paramStr;
+        return baseUrl+paramStr;
     }
 
     function dynamicRemoveOption(optionFields){

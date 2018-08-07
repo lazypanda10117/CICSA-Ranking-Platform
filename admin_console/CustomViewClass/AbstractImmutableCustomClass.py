@@ -7,12 +7,6 @@ from ..forms import *
 
 class AbstractImmutableCustomClass(ABC):
 
-    def __init__(self, request, base_class, validation_table):
-        self.dispatcher = self.setViewDispatcher();
-        self.request = request;
-        self.base_class = base_class;
-        self.validation_table = validation_table;
-
     def setViewDispatcher(self):
         dispatcher = Dispatcher();
         dispatcher.add('add', True);

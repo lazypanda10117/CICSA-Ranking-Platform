@@ -109,6 +109,7 @@ class FleetManagementView(EventManagementView):
                     team.team_name = team_name;
                     team.team_school = school_id;
                     team.team_status = "active";
+                    team.team_tag_id = list(race_tag_dict.values())[index];
                     team.save();
                     if self.event_race_tag[index] not in team_activity_dict:
                         team_activity_dict[self.event_race_tag[index]] = [];

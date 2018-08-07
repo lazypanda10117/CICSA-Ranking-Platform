@@ -33,6 +33,7 @@ class TeamView(AbstractCustomClass):
 
             team.team_name = getSinglePostObj(post_dict, 'team_name');
             team.team_school = getSinglePostObj(post_dict, 'team_school');
+            team.team_tag_id = getSinglePostObj(post_dict, 'team_tag_id');
             team.team_status = getSinglePostObj(post_dict, 'team_status');
 
             if not action == 'delete':
