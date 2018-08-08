@@ -13,7 +13,6 @@ django = "*"
 request = "*"
 sqlalchemy = "*"
 django-cors-middleware = "*"
-bson = "*"
 futures = "*"
 
 [dev-packages]
