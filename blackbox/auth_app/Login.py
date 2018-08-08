@@ -32,8 +32,6 @@ class Authentication:
         else:
             return HttpResponse('{"Response": "Error: Insufficient Parameters."}');
 
-
-    @csrf_exempt
     def logout(self):
         if sessionChecker(self.request, 'uid', 'utype'):
             loghelper(self.request, "system", logQueryMaker(Account, 'Logout', id=self.request.session['uid']));

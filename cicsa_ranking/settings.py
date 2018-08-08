@@ -37,11 +37,10 @@ CORS_ORIGIN_ALLOW_ALL = True
 # Application definition
 
 INSTALLED_APPS = [
-    'ranking.apps.RankingConfig',
-    'admin_console.apps.AdminConsoleConfig',
-    'team_console.apps.TeamConsoleConfig',
-    'ranking_management.apps.RankingManagementConfig',
-    'event_management.apps.EventManagementConfig',
+    'admin_platform.apps.AdminPlatformConfig',
+    'team_platform.apps.TeamPlatformConfig',
+    'management_event.apps.ManagementEventConfig',
+    'management_ranking.apps.ManagementRankingConfig',
     'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -62,7 +61,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'sailing_dinosaurs.urls'
+ROOT_URLCONF = 'cicsa_ranking.urls'
 
 TEMPLATES = [
     {
@@ -84,7 +83,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'sailing_dinosaurs.wsgi.application'
+WSGI_APPLICATION = 'cicsa_ranking.wsgi.application'
 
 
 # Database

@@ -1,6 +1,5 @@
 from django.contrib.postgres.fields import JSONField, ArrayField
 from django.db import models
-from django.utils import timezone
 
 class Event(models.Model):
     event_name = models.CharField(max_length=200);
