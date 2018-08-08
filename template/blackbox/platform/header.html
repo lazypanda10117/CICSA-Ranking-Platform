@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="CISCA Ranking Platform">
+    <meta name="author" content="Jeffrey Kam">
+    <title>CISCA Admin</title>
+    <link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}">
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/simple-sidebar.css' %}" rel="stylesheet">
+    <script src="{% static 'js/viewFunctions.js' %}"></script>
+    <script>
+        function showDropdown(i){
+            var container = document.getElementById("dropdown-container-"+i);
+            if (container.style.display === 'none'){
+                container.style.display = 'block';
+            }else{
+                container.style.display = 'none';
+            }
+        }
+
+        function redirect(link){
+            window.location.href = link;
+        }
+
+        function preDropdownClicks(){
+            dropdown_num = 4;
+            for(i = 1; i <= dropdown_num; i++){
+                showDropdown(i);
+            }
+        }
+
+        function onLoad(){
+            preDropdownClicks();
+        }
+    </script>
+    {% block 'head' %}
+    {% endblock %}
+</head>
+<body onload="onLoad();">
+<div id="wrapper" class="toggled">
+    <div id="sidebar-wrapper">
+        <div class="sidebar-nav">
+            <li class="sidebar-brand">
+                <a href="{% url 'adminIndex' %}">Admin Dashboard</a>
+            </li>
+            <!-- <li><a href="">Search (Future)</a></li> -->
+            <li><a href="{% url 'managementEvents' %}">Ranking System</a></li>
+            <li><a href="{% url 'eventManagementIndex' %}">Management System</a></li>
+            <button class="dropdown-btn" onclick="showDropdown(1);">
+                <li>Event <i class="fa fa-caret-down"></i></li>
+            </button>
+            <div class="custom-dropdown-container" id="dropdown-container-1">
+                <ul>
+                    <li><a href="{% url 'adminCustomView' 'event' %}">Event (Logic-less)</a></li>
+                    <li><a href="{% url 'adminCustomView' 'summary' %}">Summary</a></li>
+                    <li><a href="{% url 'adminCustomView' 'event activity' %}">Event Activity</a></li>
+                    <li><a href="{% url 'adminCustomView' 'event tag' %}">Event Tag</a></li>
+                    <li><a href="{% url 'adminCustomView' 'event team' %}">Event Team Link</a></li>
+                </ul>
+            </div>
+
+            <button class="dropdown-btn" onclick="showDropdown(2);">
+                <li>School <i class="fa fa-caret-down"></i></li>
+            </button>
+            <div class="custom-dropdown-container" id="dropdown-container-2">
+                <ul>
+                    <li><a href="{% url 'adminCustomView' 'school' %}">School</a></li>
+                    <li><a href="{% url 'adminCustomView' 'team' %}">Team</a></li>
+                    <li><a href="{% url 'adminCustomView' 'member' %}">Member</a></li>
+                    <li><a href="{% url 'adminCustomView' 'member group' %}">Member Group</a></li>
+                </ul>
+            </div>
+
+            <button class="dropdown-btn" onclick="showDropdown(3);">
+                <li>Global Settings <i class="fa fa-caret-down"></i></li>
+            </button>
+            <div class="custom-dropdown-container" id="dropdown-container-3">
+                <ul>
+                    <li><a href="{% url 'adminGeneralView' 'season' %}">Season</a></li>
+                    <li><a href="{% url 'adminGeneralView' 'region' %}">Region</a></li>
+                    <li><a href="{% url 'adminGeneralView' 'event type' %}">Event Type</a></li>
+                    <li><a href="{% url 'adminGeneralView' 'score mapping' %}">Score Map</a></li>
+                </ul>
+            </div>
+
+            <button class="dropdown-btn" onclick="showDropdown(4);">
+                <li>System Info<i class="fa fa-caret-down"></i></li>
+            </button>
+            <div class="custom-dropdown-container" id="dropdown-container-4">
+                <ul>
+                    <li><a href="{% url 'adminCustomView' 'account' %}">Account</a></li>
+                    <li><a href="{% url 'adminGeneralView' 'log' %}">Log</a></li>
+                </ul>
+            </div>
+
+            <li><a href="{% url 'adminLogout' %}">Logout</a></li>
+        </div>
+    </div>
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+            {% block 'body' %}
+            {% endblock %}
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

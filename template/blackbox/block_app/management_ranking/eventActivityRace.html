@@ -1,0 +1,46 @@
+{% extends 'console/header.html' %}
+{% block 'head' %}
+{% endblock %}
+{% block 'body' %}
+    <h4><pre>{{ block_title }}</pre></h4>
+    <div class="card">
+        <div class="card-body">
+            <div class="container-fluid row mb-2">
+                <div class="col col-lg-3 offset-lg-1">
+                    Boat Identifier
+                </div>
+                <div class="col col-lg-5">
+                    School
+                </div>
+                <div class="col col-lg-auto">
+                    Ranking
+                </div>
+            </div>
+            <hr>
+            <form action="{{ action_destination }}" id="{{ form_id }}" method="post">
+                {% for key, content in contents.items %}
+                    <div class="container-fluid row mt-4">
+                        <div class="col col-lg-3 offset-lg-1">
+                            {{ content.boat_identifier }}
+                        </div>
+                        <div class="col col-lg-5">
+                            {{ content.school_name }}
+                        </div>
+                        <div class="col col-lg-auto">
+                            <select class="custom-select" name="{{ content.event_activity_team }}">
+                                {% for value, data in content.options.items %}
+                                    <option {{ data.selected }} value="{{ value }}">{{ data.text }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="container-fluid row mt-4">
+                    <div class="col col-lg-6 offset-lg-3">
+                        <button type="submit" class="btn btn-info btn-lg btn-block">Submit Ranking</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

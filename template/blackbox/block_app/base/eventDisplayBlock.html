@@ -1,0 +1,29 @@
+<h4><pre>{{ context.block_title }}</pre></h4>
+<div class="card mb-4">
+    <div class="card-header">
+        <div class="container-fluid row">
+            <div class="col col-lg-8">
+                <b>{{ context.element_name }}</b>
+            </div>
+            {% for element in context.header %}
+                <div class="col col-lg-auto">
+                    <b>{{ element }}</b>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="card-body">
+        {% for content in context.contents %}
+            <div class="container-fluid row">
+                <div class="col col-lg-8">
+                    <a href="{{ content.element_link }}">{{ content.element_text }}</a>
+                </div>
+                {% for element in content.elements %}
+                    <div class="col col-lg-auto">
+                        <a href="{{ element.link }}">{{ element.text }}</a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+</div>
