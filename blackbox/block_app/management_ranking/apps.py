@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class RankingManagementConfig(AppConfig):
-    name = 'ranking_management'
+class ManagementRankingConfig(AppConfig):
+    name = 'blackbox.block_app.management_ranking'

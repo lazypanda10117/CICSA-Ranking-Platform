@@ -39,8 +39,10 @@ CORS_ORIGIN_ALLOW_ALL = True
 INSTALLED_APPS = [
     'admin_platform.apps.AdminPlatformConfig',
     'team_platform.apps.TeamPlatformConfig',
-    'management_event.apps.ManagementEventConfig',
-    'management_ranking.apps.ManagementRankingConfig',
+    'blackbox.auth_app.apps.AuthAppConfig',
+    'blackbox.block_app.management_event.apps.ManagementEventConfig',
+    'blackbox.block_app.management_ranking.apps.ManagementRankingConfig',
+    'blackbox.sudo_app.apps.SudoAppConfig',
     'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',

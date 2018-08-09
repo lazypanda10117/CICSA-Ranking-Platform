@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 import math, datetime, json
 
-from .models import *
+from cicsa_ranking.models import *
 
 @csrf_exempt
 def kickRequest(request, loggedin, rend):

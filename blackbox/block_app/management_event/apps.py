@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class EventManagementConfig(AppConfig):
-    name = 'event_management'
+class ManagementEventConfig(AppConfig):
+    name = 'blackbox.block_app.management_event'
