@@ -1,6 +1,4 @@
 from django.shortcuts import redirect, reverse
-from misc.GeneralFunctions import generalFunctions as gf
-from blackbox import api
 from blackbox.block_app.base.CustomProcesses import AbstractBaseProcess
 
 class EventChoiceProcess(AbstractBaseProcess):

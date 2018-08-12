@@ -20,10 +20,15 @@ class EventActivityDetailPage(AbstractBasePage):
                              [event_team for event_team in event_teams]);
             return BlockObject('Event Teams', 'Event Team', ['Member Group Link'], event_team_dict);
 
-        event_activity_id = int(self.param);
+        event_activity_id = int(self.param["id"]);
         event_activity_api = api.EventActivityAPI(self.request);
         school_api = api.SchoolAPI(self.request);
         return BlockSet().makeBlockSet(genEventTeamDict(event_activity_id));
 
     def render(self):
         return super().renderHelper(PageObject('Event Activity Related Objects List', self.generateList(), []));
+
+    def parseParams(self, param):
+        match = super().parseMatch('\d+');
+        param = dict(id=param);
+        return param;

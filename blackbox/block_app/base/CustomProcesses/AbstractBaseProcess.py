@@ -1,8 +1,6 @@
-from django.shortcuts import render, reverse, redirect
 from django.http import Http404
 import re
 from abc import abstractmethod, ABC
-from misc.GeneralFunctions import generalFunctions as gf
 
 class AbstractBaseProcess(ABC):
     def __init__(self, request, param):

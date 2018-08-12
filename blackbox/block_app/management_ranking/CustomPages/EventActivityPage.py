@@ -24,8 +24,7 @@ class EventActivityPage(AbstractBasePage):
                              [event_activity for event_activity in event_activities]);
             return BlockObject(tag.event_tag_name, 'Event Activity', ['Status'], event_activity_dict);
 
-
-        event_id = int(self.param);
+        event_id = int(self.param["id"]);
         event_api = api.EventAPI(self.request);
         blockset = BlockSet().makeBlockSet(
             *[genActivityDict(event_tag) for event_tag in event_api.getEventTags(event_tag_event_id=event_id)] #event_activity_result
@@ -34,3 +33,8 @@ class EventActivityPage(AbstractBasePage):
 
     def render(self):
         return super().renderHelper(PageObject('Event Activities List', self.generateList(), []));
+
+    def parseParams(self, param):
+        match = super().parseMatch('\d+');
+        param = dict(id=param);
+        return param;

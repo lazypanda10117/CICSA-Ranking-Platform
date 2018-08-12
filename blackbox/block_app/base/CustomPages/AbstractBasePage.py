@@ -1,4 +1,6 @@
+import re
 from django.shortcuts import render, reverse, redirect
+from django.http import Http404
 from abc import abstractmethod, ABC
 from misc.GeneralFunctions import generalFunctions as gf
 
@@ -9,12 +11,19 @@ class AbstractBasePage(ABC):
         self.page_path = self.getPagePath();
 
     @abstractmethod
-    def generateList(self):
+    def render(self):
         pass;
 
     @abstractmethod
-    def render(self):
+    def parseParams(self, param):
         pass;
+
+    def parseMatch(self, pattern):
+        match = re.match(pattern, self.param);
+        if match:
+            return match;
+        else:
+            raise Http404;
 
     def getPagePath(self):
         return 'console/sth.html';

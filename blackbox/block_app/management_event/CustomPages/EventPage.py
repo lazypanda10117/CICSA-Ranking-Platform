@@ -5,7 +5,7 @@ from blackbox.block_app.base.CustomComponents import BlockObject, BlockSet, Page
 
 class EventPage(AbstractBasePage):
     def generateList(self):
-        event_type = dict((y, x) for x, y in CustomElements.Choices().getEventTypeChoices())[self.param];
+        event_type = dict((y, x) for x, y in CustomElements.Choices().getEventTypeChoices())[self.param["type"]];
         def genDict(status):
             events = event_api.getEvents(event_status=status, event_type=event_type);
             event_dict = map(lambda event: dict(
@@ -34,3 +34,8 @@ class EventPage(AbstractBasePage):
             )
         );
         return super().renderHelper(PageObject('Events List', self.generateList(), header))
+
+    def parseParams(self, param):
+        match = super().parseMatch('\s+');
+        param = dict(type=param);
+        return param;

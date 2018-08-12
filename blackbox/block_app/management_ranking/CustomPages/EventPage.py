@@ -30,4 +30,7 @@ class EventPage(AbstractBasePage):
         return BlockSet().makeBlockSet(genDict('future'), genDict('running'), genDict('Done'));
 
     def render(self):
-        return super().renderHelper(PageObject('Events List', self.generateList(), []))
+        return super().renderHelper(PageObject('Events List', self.generateList(), []));
+
+    def parseParams(self, param):
+        return None;

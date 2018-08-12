@@ -58,7 +58,7 @@ class EventActivityPage(AbstractBasePage):
                                       [event_team for event_team in event_teams]);
             return BlockObject('Event Teams', 'Event Team', [], event_team_dict);
 
-        event_id = int(self.param);
+        event_id = int(self.param["id"]);
         event_api = api.EventAPI(self.request);
         event_activity_api = api.EventActivityAPI(self.request);
         school_api = api.SchoolAPI(self.request);
@@ -73,3 +73,8 @@ class EventActivityPage(AbstractBasePage):
 
     def render(self):
         return super().renderHelper(PageObject('Event Related Objects List', self.generateList(), []));
+
+    def parseParams(self, param):
+        match = super().parseMatch('\d+');
+        param = dict(id=param);
+        return param;
