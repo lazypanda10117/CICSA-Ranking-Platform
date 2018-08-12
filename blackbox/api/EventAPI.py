@@ -28,6 +28,9 @@ class EventAPI(API):
         event_teams = filterModelObject(Team, id__in=event_team_ids);
         return event_teams;
 
+    def getEventTypes(self):
+        return filterModelObject(EventType);
+
     def updateEventStatus(self, event_id, event_status):
         event = getModelObject(Event, id=event_id);
         event.event_status = event_status;

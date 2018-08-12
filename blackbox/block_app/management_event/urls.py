@@ -3,7 +3,8 @@ from blackbox.block_app.management_event.views import ManagementEventView as MEV
 
 urlpatterns = [
     path('', MEView.home, name='blackbox.block_app.management_event.index'),
-    path('choice', MEView.choice, name='blackbox.block_app.management_event.choice'),
-    path('<str:type>', MEView.eventFilter, name='blackbox.block_app.management_event.event_filter'),
-    path('<str:dispatch_path>/<str:param>', MEView.viewDispatch, name='blackbox.block_app.management_event.view_dispatch'),
+    path('<str:dispatch_path>', MEView.viewDispatch, name='blackbox.block_app.management_event.view_dispatch'),
+    path('<str:dispatch_path>/process', MEView.processDispatch, name='blackbox.block_app.management_event.process_dispatch'),
+    path('<str:dispatch_path>/<str:param>', MEView.viewDispatch, name='blackbox.block_app.management_event.view_dispatch_param'),
+    path('<str:dispatch_path>/process/<str:param>', MEView.processDispatch, name='blackbox.block_app.management_event.process_dispatch_param'),
 ]
