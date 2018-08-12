@@ -1,11 +1,8 @@
-from .AbstractDisplayClass import *
+from blackbox import api
+from blackbox.block_app.base.CustomPages import AbstractBasePage
+from blackbox.block_app.base.CustomComponents import BlockObject, BlockSet, PageObject
 
-from admin_console.generalFunctions import *
-from admin_console.HelperClass import *
-from admin_console.API import *
-
-
-class EventActivityDetailDisplay(AbstractDisplayClass):
+class EventActivityDetailPage(AbstractBasePage):
     def generateList(self):
         def genEventTeamDict(activity_id):
             event_teams = event_activity_api.getEventTeamLinks(event_team_event_activity_id=activity_id);
@@ -21,12 +18,12 @@ class EventActivityDetailDisplay(AbstractDisplayClass):
                 ]
             ),
                              [event_team for event_team in event_teams]);
-            return dict(block_title='Event Teams', element_name='Event Team', header=['Member Group Link'], contents=event_team_dict);
+            return BlockObject('Event Teams', 'Event Team', ['Member Group Link'], event_team_dict);
+
         event_activity_id = int(self.param);
-        event_activity_api = EventActivityAPI(self.request);
-        school_api = SchoolAPI(self.request);
-        event_team_result = {"Event Team": genEventTeamDict(event_activity_id)};
-        return event_team_result;
+        event_activity_api = api.EventActivityAPI(self.request);
+        school_api = api.SchoolAPI(self.request);
+        return BlockSet().makeBlockSet(genEventTeamDict(event_activity_id));
 
     def render(self):
-        return super().renderHelper('Event Activity Related Objects List', self.generateList());
+        return super().renderHelper(PageObject('Event Activity Related Objects List', self.generateList(), []));

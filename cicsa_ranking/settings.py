@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'blackbox.block_app.management_event.apps.ManagementEventConfig',
     'blackbox.block_app.management_ranking.apps.ManagementRankingConfig',
     'blackbox.sudo_app.apps.SudoAppConfig',
+    'client.apps.ClientConfig',
     'corsheaders',
     'django.contrib.admin',
     'django.contrib.auth',

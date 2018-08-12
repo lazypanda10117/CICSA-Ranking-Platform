@@ -1,10 +1,9 @@
 from django.urls import path
-
-from . import views
+from blackbox.block_app.management_event.views import ManagementEventView as MEView
 
 urlpatterns = [
-    path('', views.index, name='eventManagementIndex'),
-    path('choice', views.choice, name='eventManagementChoice'),
-    path('<str:type>', views.eventFilter, name='eventManagementEventFilter'),
-    path('<str:dispatch_path>/<str:param>', views.viewDispatch, name='eventManagementDispatch'),
+    path('', MEView.home, name='blackbox.block_app.management_event.index'),
+    path('choice', MEView.choice, name='blackbox.block_app.management_event.choice'),
+    path('<str:type>', MEView.eventFilter, name='blackbox.block_app.management_event.event_filter'),
+    path('<str:dispatch_path>/<str:param>', MEView.viewDispatch, name='blackbox.block_app.management_event.view_dispatch'),
 ]

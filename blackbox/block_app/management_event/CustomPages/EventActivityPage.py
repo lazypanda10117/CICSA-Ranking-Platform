@@ -1,11 +1,10 @@
-from .AbstractDisplayClass import *
+from django.shortcuts import reverse
+from blackbox import api
+from blackbox.block_app.base.CustomPages import AbstractBasePage
+from blackbox.block_app.base.CustomComponents import BlockObject, BlockSet, PageObject
 
-from admin_console.generalFunctions import *
-from admin_console.HelperClass import *
-from admin_console.API import *
 
-
-class EventActivityDisplay(AbstractDisplayClass):
+class EventActivityPage(AbstractBasePage):
     def generateList(self):
         def genActivityDict(tag):
             event_activities = event_api.getEventActivities(
@@ -13,7 +12,9 @@ class EventActivityDisplay(AbstractDisplayClass):
             event_activities = sorted(list(event_activities), key=(lambda x: x.event_activity_order))
             event_activity_dict = map(lambda event_activity: dict(
                 element_text=event_activity.event_activity_name,
-                element_link=reverse('eventManagementDispatch', args=['activity detail', event_activity.id]),
+                element_link=reverse(
+                    'blackbox.block_app.management_event.view_dispatch',
+                    args=['activity detail', event_activity.id]),
                 elements=[
                     dict(
                         text='Modify',
@@ -22,7 +23,7 @@ class EventActivityDisplay(AbstractDisplayClass):
                 ]
             ),
                              [event_activity for event_activity in event_activities]);
-            return dict(block_title=tag.event_tag_name, element_name='Event Activity', header=['Modify'], contents=event_activity_dict);
+            return BlockObject(tag.event_tag_name, 'Event Activity', ['Modify'], event_activity_dict);
 
         def genTagDict(event_id):
             event_tags = event_api.getEventTags(event_tag_event_id=event_id);
@@ -33,7 +34,7 @@ class EventActivityDisplay(AbstractDisplayClass):
                 elements=[]
             ),
                                       [event_tag for event_tag in event_tags]);
-            return dict(block_title='Event Tags', element_name='Event Tag', header=[], contents=event_tag_dict);
+            return BlockObject('Event Tags', 'Event Tag', [], event_tag_dict);
 
         def genSummaryDict(event_id):
             event_summaries = event_api.getEventSummaries(summary_event_parent=event_id);
@@ -44,8 +45,7 @@ class EventActivityDisplay(AbstractDisplayClass):
                 elements=[]
             ),
                                       [event_summary for event_summary in event_summaries]);
-            return dict(block_title='Event Summaries', element_name='Event Summary', header=[],
-                        contents=event_summary_dict);
+            return BlockObject('Event Summaries', 'Event Summary', [], event_summary_dict);
 
         def genTeamDict(event_id):
             event_teams = event_api.getEventTeams(event_id);
@@ -56,18 +56,20 @@ class EventActivityDisplay(AbstractDisplayClass):
                 elements=[]
             ),
                                       [event_team for event_team in event_teams]);
-            return dict(block_title='Event Teams', element_name='Event Team', header=[], contents=event_team_dict);
+            return BlockObject('Event Teams', 'Event Team', [], event_team_dict);
 
         event_id = int(self.param);
-        event_api = EventAPI(self.request);
-        event_activity_api = EventActivityAPI(self.request);
-        school_api = SchoolAPI(self.request);
-        event_activity_result = {event_tag.event_tag_name: genActivityDict(event_tag)
-                                 for event_tag in event_api.getEventTags(event_tag_event_id=event_id)};
-        event_tag_result = {"Event Tags": genTagDict(event_id)};
-        event_summary_result = {"Event Summaries": genSummaryDict(event_id)};
-        event_team_result = {"Event Teams": genTeamDict(event_id)};
-        return {**event_activity_result, **event_tag_result, **event_summary_result, **event_team_result};
+        event_api = api.EventAPI(self.request);
+        event_activity_api = api.EventActivityAPI(self.request);
+        school_api = api.SchoolAPI(self.request);
+
+        blockset = BlockSet().makeBlockSet(
+            *[genActivityDict(event_tag) for event_tag in event_api.getEventTags(event_tag_event_id=event_id)], #event_activity_result
+            genTagDict(event_id), #event_tag_result
+            genSummaryDict(event_id), #event_summary_result
+            genTeamDict(event_id) #event_team_result
+        )
+        return blockset;
 
     def render(self):
-        return super().renderHelper('Event Related Objects List', self.generateList());
+        return super().renderHelper(PageObject('Event Related Objects List', self.generateList(), []));

@@ -1,5 +1,6 @@
+from cicsa_ranking.models import *
+from misc.GeneralFunctions import generalFunctions as gf
 import json
-from ..generalFunctions import *
 
 class Button:
     def __init__(self, title, style, redirect):
@@ -29,7 +30,7 @@ class Table:
 
     def getTableElement(self, process):
         def makeAddBtn(path):
-            addBtn = Button('Add', 'success', generateGETURL(path, {"action": 'add'}));
+            addBtn = Button('Add', 'success', gf.generateGETURL(path, {"action": 'add'}));
             return dict(add_button=addBtn);
         return makeAddBtn(process);
 
@@ -39,8 +40,8 @@ class Table:
 
     def getTableContent(self):
         def makeEditDeleteBtn(path, id):
-            editBtn = Button('Edit', 'info', generateGETURL(path, {"action": 'edit', "element_id": id}));
-            deleteBtn = Button('Delete', 'danger', generateGETURL(path, {"action": 'delete', "element_id": id}))
+            editBtn = Button('Edit', 'info', gf.generateGETURL(path, {"action": 'edit', "element_id": id}));
+            deleteBtn = Button('Delete', 'danger', gf.generateGETURL(path, {"action": 'delete', "element_id": id}))
             return [editBtn, deleteBtn];
 
         def getTableRow(content):
@@ -85,23 +86,23 @@ class SearchElement:
 
 class Choices:
     def getSeasonChoices(self):
-        SEASON_CHOICES = tuple([(value.id, value.season_name) for value in filterModelObject(Season)]);
+        SEASON_CHOICES = tuple([(value.id, value.season_name) for value in gf.filterModelObject(Season)]);
         return SEASON_CHOICES;
 
     def getRegionChoices(self):
-        REGION_CHOICES = tuple([(value.id, value.region_name) for value in filterModelObject(Region)]);
+        REGION_CHOICES = tuple([(value.id, value.region_name) for value in gf.filterModelObject(Region)]);
         return REGION_CHOICES;
 
     def getSchoolChoices(self):
-        SCHOOL_CHOICES = tuple([(value.id, value.school_name) for value in filterModelObject(School)]);
+        SCHOOL_CHOICES = tuple([(value.id, value.school_name) for value in gf.filterModelObject(School)]);
         return SCHOOL_CHOICES;
 
     def getEventTypeChoices(self):
-        EVENT_TYPE_CHOICES = tuple([(value.id, value.event_type_name) for value in filterModelObject(EventType)]);
+        EVENT_TYPE_CHOICES = tuple([(value.id, value.event_type_name) for value in gf.filterModelObject(EventType)]);
         return EVENT_TYPE_CHOICES;
 
     def getScoreMapChoices(self):
-        SCORE_MAP_CHOICES = tuple([(value.id, value.score_name) for value in filterModelObject(ScoreMapping)]);
+        SCORE_MAP_CHOICES = tuple([(value.id, value.score_name) for value in gf.filterModelObject(ScoreMapping)]);
         return SCORE_MAP_CHOICES;
 
     def getEventStatusChoices(self):
@@ -144,4 +145,4 @@ class Choices:
 
 class DBMap():
     def getMap(self, query_class, query_id, target_field):
-        return noneCatcher(target_field, getModelObject(query_class, id=query_id).__dict__);
+        return gf.noneCatcher(target_field, gf.getModelObject(query_class, id=query_id).__dict__);
