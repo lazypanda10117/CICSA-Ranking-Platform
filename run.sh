@@ -4,7 +4,7 @@ narr=($ndir)
 darr=()
 for d in ${narr[*]}
 do
-    [[ $d =~ (static|template|sailing_dinosaurs) ]] && darr+=($d)
+    [[ $d =~ (static|misc|init|template) ]] && darr+=($d)
 done
 for n in ${narr[*]}
 do
@@ -21,7 +21,7 @@ do
     rm -R $deletePath
 done
 
-python3 setup.py 1
+python3 init/setup.py 1
 python3 manage.py migrate
-python3 setup.py 2
+python3 init/setup.py 2
 python3 manage.py runserver 0.0.0.0:$PORT
