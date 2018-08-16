@@ -1,15 +1,15 @@
 import misc
-import blackbox.auth_app
+from blackbox.auth_app import AuthenticationPublic, AuthenticationTeam, AuthenticationAdmin
 
 class AuthenticaitonFactory():
-    def __init__(self, path):
+    def __init__(self, request, path):
         self.path = path;
 
     def getDispatcher(self):
         dispatcher = misc.Dispatcher.Dispatcher();
-        dispatcher.add('admin', blackbox.auth_app.AuthenticationAdmin);
-        dispatcher.add('team', blackbox.auth_app.AuthenticationTeam);
-        dispatcher.add('public', blackbox.auth_app.AuthenticationPublic);
+        dispatcher.add('admin', AuthenticationAdmin);
+        dispatcher.add('team', AuthenticationTeam);
+        dispatcher.add('public', AuthenticationPublic);
         return dispatcher;
 
     def dispatch(self):

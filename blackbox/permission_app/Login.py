@@ -1,10 +1,10 @@
 import hashlib
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from misc.GeneralFunctions import generalFunctions as gf
+from cicsa_ranking.models import *
 
-from ..generalFunctions import *
-from ..models import *
-from ..forms import *
-
-class Authentication:
+class Login:
     def __init__(self, request):
         self.request = request;
 
@@ -12,7 +12,7 @@ class Authentication:
         if (self.request.POST.get("email") != None and self.request.POST.get("password") != None):
             uemail = self.request.POST.get("email");
             upwd = self.request.POST.get("password");
-            u = getModelObject(Account, account_email=uemail);
+            u = gf.getModelObject(Account, account_email=uemail);
             if u is None:
                 return HttpResponse('{"Response": "Error: No Such User"}');
             else:
@@ -23,7 +23,7 @@ class Authentication:
                     if u.account_type == "admin":
                         self.request.session['uid'] = u.id;
                         self.request.session['utype'] = u.account_type;
-                        loghelper(self.request, "system", logQueryMaker(Account, 'Login', id=u.id));
+                        loghelper(self.request, "system", gf.logQueryMaker(Account, 'Login', id=u.id));
                         return redirect('adminIndex');
                     else:
                         return HttpResponse('{"Response": "Error: Insufficient Permission"}');
@@ -33,8 +33,8 @@ class Authentication:
             return HttpResponse('{"Response": "Error: Insufficient Parameters."}');
 
     def logout(self):
-        if sessionChecker(self.request, 'uid', 'utype'):
-            loghelper(self.request, "system", logQueryMaker(Account, 'Logout', id=self.request.session['uid']));
+        if gf.sessionChecker(self.request, 'uid', 'utype'):
+            gf.loghelper(self.request, "system", gf.logQueryMaker(Account, 'Logout', id=self.request.session['uid']));
             self.request.session['uid'] = None;
             self.request.session['utype'] = None;
             return redirect('adminIndex');

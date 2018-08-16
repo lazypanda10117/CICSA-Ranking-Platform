@@ -3,8 +3,13 @@ from misc.GeneralFunctions import generalFunctions as gf
 from cicsa_ranking.models import EventActivity, MemberGroup,EventTeam, Team
 
 class EventActivityAPI(API):
+    def __init__(self, request):
+        super().__init__(request);
+        self.base_class = EventActivity;
+
+
     def getEventActivity(self, **kwargs):
-        return getModelObject(EventActivity, **kwargs);
+        return gf.getModelObject(EventActivity, **kwargs);
 
     def updateEventActivityState(self, event_activity_id, event_activity_status):
         event_activity = gf.getModelObject(EventActivity, id=event_activity_id);
