@@ -1,4 +1,5 @@
-import cicsa_ranking.models as model
+from cicsa_ranking import models as model
+from blackbox import api
 from .AuthenticantionComponentBase import AuthenticationComponentBase
 
 class AuthenticationAdmin():
