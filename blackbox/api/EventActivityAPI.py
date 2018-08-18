@@ -1,8 +1,8 @@
-from .API import API
+from .AbstractAPI import AbstractAPI
 from misc.GeneralFunctions import generalFunctions as gf
 from cicsa_ranking.models import EventActivity, MemberGroup,EventTeam, Team
 
-class EventActivityAPI(API):
+class EventActivityAPI(AbstractAPI):
     def __init__(self, request):
         super().__init__(request);
         self.base_class = EventActivity;

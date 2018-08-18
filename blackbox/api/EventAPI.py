@@ -1,10 +1,10 @@
 import json
 
-from .API import *
+from .AbstractAPI import *
 from ..generalFunctions import *
 from ..models import *
 
-class EventAPI(API):
+class EventAPI(AbstractAPI):
     def getEventActivities(self, **kwargs):
         return filterModelObject(EventActivity, **kwargs);
 

@@ -1,9 +1,9 @@
 import json
-from .API import *
+from .AbstractAPI import *
 from ..generalFunctions import *
 from ..models import *
 
-class SchoolAPI(API):
+class SchoolAPI(AbstractAPI):
     def getSchools(self, **kwargs):
         return filterModelObject(School, **kwargs);
 
