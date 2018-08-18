@@ -1,6 +1,4 @@
-import json
-
-from .AbstractAPI import *
+from blackbox.api.base.AbstractAPI import *
 from ..generalFunctions import *
 from ..models import *
 

@@ -1,4 +1,4 @@
-from .AbstractAPI import AbstractAPI
+from blackbox.api.base.AbstractAPI import AbstractAPI
 from misc.GeneralFunctions import generalFunctions as gf
 from cicsa_ranking.models import EventActivity, MemberGroup,EventTeam, Team
 
