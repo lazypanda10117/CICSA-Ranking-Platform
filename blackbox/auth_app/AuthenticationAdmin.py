@@ -1,37 +1,57 @@
 from cicsa_ranking import models as model
-from blackbox import api
-from misc.Dispatcher import Dispatcher
+from .AuthenticationBase import AuthenticationBase
 from .AuthenticantionComponentBase import AuthenticationComponentBase
 
-class AuthenticationAdmin():
-    def __init__(self, request):
-        self.request = request;
 
-    def getDispatcher(self):
-        dispatcher = Dispatcher();
-        dispatcher.add(model.EventActivity.__class__.__name__, self.EventActivity);
-        dispatcher.add(model.EventActivity.__class__.__name__, self.EventActivity);
-        dispatcher.add(model.EventActivity.__class__.__name__, self.EventActivity);
-        dispatcher.add(model.EventActivity.__class__.__name__, self.EventActivity);
-        dispatcher.add(model.EventActivity.__class__.__name__, self.EventActivity);
-        dispatcher.add(model.EventActivity.__class__.__name__, self.EventActivity);
-        dispatcher.add(model.EventActivity.__class__.__name__, self.EventActivity);
-        dispatcher.add(model.EventActivity.__class__.__name__, self.EventActivity);
-        dispatcher.add(model.EventActivity.__class__.__name__, self.EventActivity);
-        return dispatcher;
-
-    def dispatch(self, key):
-        dispatcher = self.getDispatcher();
-        return dispatcher.get(key);
-
-    class EventActivity(AuthenticationComponentBase):
+class AuthenticationAdmin(AuthenticationBase):
+    class EventActivity(AuthenticationBase.EventActivity):
         def setBaseModelClass(self):
             return model.EventActivity;
 
-    class EventActivity(AuthenticationComponentBase):
+    class Event(AuthenticationComponentBase):
         def setBaseModelClass(self):
-            return model.EventActivity;
+            return model.Event;
 
-    class EventActivity(AuthenticationComponentBase):
+    class EventTag(AuthenticationComponentBase):
         def setBaseModelClass(self):
-            return model.EventActivity;
+            return model.EventTag;
+
+    class EventTeam(AuthenticationComponentBase):
+        def setBaseModelClass(self):
+            return model.EventTeam;
+
+    class Log(AuthenticationComponentBase):
+        def setBaseModelClass(self):
+            return model.Log;
+
+    class Member(AuthenticationComponentBase):
+        def setBaseModelClass(self):
+            return model.Member;
+
+    class MemberGroup(AuthenticationComponentBase):
+        def setBaseModelClass(self):
+            return model.MemberGroup;
+
+    class Region(AuthenticationComponentBase):
+        def setBaseModelClass(self):
+            return model.Region;
+
+    class School(AuthenticationComponentBase):
+        def setBaseModelClass(self):
+            return model.School;
+
+    class ScoreMapping(AuthenticationComponentBase):
+        def setBaseModelClass(self):
+            return model.ScoreMapping;
+
+    class Season(AuthenticationComponentBase):
+        def setBaseModelClass(self):
+            return model.Season;
+
+    class Summary(AuthenticationComponentBase):
+        def setBaseModelClass(self):
+            return model.Summary;
+
+    class Team(AuthenticationComponentBase):
+        def setBaseModelClass(self):
+            return model.Team;
