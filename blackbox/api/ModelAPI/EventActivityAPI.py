@@ -7,10 +7,6 @@ class EventActivityAPI(AbstractAPI):
         super().__init__(request);
         self.base_class = EventActivity;
 
-
-    def getEventActivity(self, **kwargs):
-        return gf.getModelObject(EventActivity, **kwargs);
-
     def updateEventActivityState(self, event_activity_id, event_activity_status):
         event_activity = gf.getModelObject(EventActivity, id=event_activity_id);
         event_activity.event_activity_status = event_activity_status;

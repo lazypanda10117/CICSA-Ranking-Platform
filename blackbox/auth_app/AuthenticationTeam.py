@@ -4,7 +4,7 @@ from .AuthenticationBase import AuthenticationBase
 from .AuthenticantionComponentBase import AuthenticationComponentBase
 
 
-class AuthenticatioTeam(AuthenticationBase):
+class AuthenticationTeam(AuthenticationBase):
     class EventActivity(AuthenticationComponentBase):
         def setBaseModelClass(self):
             return model.EventActivity;
