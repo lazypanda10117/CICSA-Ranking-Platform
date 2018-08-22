@@ -1,8 +1,11 @@
-from .HelperClass import *
-from .generalFunctions import *
-from .CustomViewClass import *
+from django.shortcuts import render, redirect
+from django.http import HttpResponse, HttpResponseRedirect
+from misc.GeneralFunctions import generalFunctions as gf
+from misc.Dispatcher import Dispatcher
+from blackbox.CustomElements import *
+from .CustomViews import *
 
-from .models import *
+from cicsa_ranking.models import *
 from .forms import *
 
 
@@ -47,7 +50,7 @@ class CustomView:
                 return dict(page_title=page_title, type=type, context=data);
 
             def actionAdd(data):
-                self.request.session[self.session_name] = getViewJSON(action, None);
+                self.request.session[self.session_name] = gf.getViewJSON(action, None);
                 type = dict(form=True);
                 content = Form('_add_form', form_path, action, destination,
                                self.view_dispatcher.get(self.form_path)["form"](data=data['data']));
@@ -58,7 +61,7 @@ class CustomView:
                 if element_id is None:
                     return HttpResponse('{"Response": "Error: No Element ID Provided"}');
                 else:
-                    self.request.session[self.session_name] = getViewJSON(action, element_id);
+                    self.request.session[self.session_name] = gf.getViewJSON(action, element_id);
                     type = dict(form=True);
                     content = Form('_edit_form', form_path, action, destination,
                                    self.view_dispatcher.get(self.form_path)["form"](data=data['data']));
@@ -69,7 +72,7 @@ class CustomView:
                 if element_id is None:
                     return HttpResponse('{"Response": "Error: No Element ID Provided"}');
                 else:
-                    self.request.session[self.session_name] = getViewJSON(action, element_id);
+                    self.request.session[self.session_name] = gf.getViewJSON(action, element_id);
                     type = dict(form=True);
                     content = Form('_delete_form', form_path, action, destination,
                                    self.view_dispatcher.get(self.form_path)["form"](data=data['data']));
@@ -125,6 +128,6 @@ class CustomView:
             functionDispatch.get(action)();
             return HttpResponseRedirect('custom');
 
-        return kickRequest(self.request, True,
+        return gf.kickRequest(self.request, True,
                            (lambda x: CustomViewLogic() if x else CustomViewDisplay())
                            (self.request.method == 'POST'));

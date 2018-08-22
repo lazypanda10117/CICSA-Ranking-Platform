@@ -1,7 +1,11 @@
-from .HelperClass import *
-from .generalFunctions import *
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse, HttpResponseRedirect
+from misc.GeneralFunctions import generalFunctions as gf
+from misc.Dispatcher import Dispatcher
+from blackbox.CustomElements import *
+from .CustomViews import *
 
-from .models import *
+from cicsa_ranking.models import *
 from .forms import *
 
 class GeneralView:
@@ -31,7 +35,7 @@ class GeneralView:
                 return dict(page_title=page_title, type=type, context=content);
 
             def actionAdd():
-                self.request.session[self.session_name] = getViewJSON(action, None);
+                self.request.session[self.session_name] = gf.getViewJSON(action, None);
                 type = dict(form=True);
                 content = Form('_add_form', form_path, action, self.destination,
                                self.view_dispatcher.get(self.form_path)["form"]());
@@ -42,7 +46,7 @@ class GeneralView:
                 if element_id is None:
                     return HttpResponse('{"Response": "Error: No Element ID Provided"}');
                 else:
-                    self.request.session[self.session_name] = getViewJSON(action, element_id);
+                    self.request.session[self.session_name] = gf.getViewJSON(action, element_id);
                     element = currentClass.objects.get(pk=int(element_id));
                     type = dict(form=True);
                     content = Form(choiceDict[choice], form_path, action, self.destination,
@@ -74,17 +78,17 @@ class GeneralView:
             def actionAdd():
                 form = self.view_dispatcher.get(self.form_path)["form"](self.request.POST);
                 temp = form.save();
-                loghelper(self.request, 'admin', logQueryMaker(currentClass, action.title(), id=temp.id));
+                gf.loghelper(self.request, 'admin', gf.logQueryMaker(currentClass, action.title(), id=temp.id));
 
             def actionEdit():
                 element = get_object_or_404(currentClass, pk=element_id);
                 form = self.view_dispatcher.get(self.form_path)["form"](self.request.POST, instance=element);
                 temp = form.save();
-                loghelper(self.request, 'admin', logQueryMaker(currentClass, action.title(), id=temp.id));
+                gf.loghelper(self.request, 'admin', gf.logQueryMaker(currentClass, action.title(), id=temp.id));
 
             def actionDelete():
                 element = get_object_or_404(currentClass, pk=element_id);
-                loghelper(self.request, 'admin', logQueryMaker(currentClass, action.title(), id=element.id));
+                gf.loghelper(self.request, 'admin', gf.logQueryMaker(currentClass, action.title(), id=element.id));
                 element.delete();
 
             def setFunctionDispatcher():
@@ -107,6 +111,6 @@ class GeneralView:
 
             return HttpResponseRedirect('general');
 
-        return kickRequest(self.request, True,
+        return gf.kickRequest(self.request, True,
                            (lambda x: generalViewLogic() if x else generalViewDisplay())
                            (self.request.method == 'POST'));
