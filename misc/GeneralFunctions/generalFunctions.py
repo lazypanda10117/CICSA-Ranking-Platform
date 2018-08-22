@@ -1,6 +1,6 @@
 from django.shortcuts import render, reverse, redirect, get_object_or_404, HttpResponseRedirect
 from django.urls import resolve
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.views.decorators.csrf import csrf_exempt
 import math, datetime, json
 
@@ -110,3 +110,8 @@ def modAdd(base, add, mod):
 @csrf_exempt
 def getModifiyLink(tag, **kwargs):
     return reverse('adminCustomView', args=[tag])+'?kwargs='+json.dumps(kwargs);
+
+@csrf_exempt
+def raise404Empty(objects):
+    if len(objects) == 0:
+        raise Http404;

@@ -6,3 +6,6 @@ from blackbox.api.base.GeneralModelAPI import GeneralModelAPI
 class TeamAPI(GeneralModelAPI):
     def setBaseClass(self):
         return Team;
+
+    def getTeamModifyLink(self, **kwargs):
+        return gf.getModifiyLink('team', **kwargs);

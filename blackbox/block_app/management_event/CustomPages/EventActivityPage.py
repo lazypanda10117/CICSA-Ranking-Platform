@@ -48,7 +48,7 @@ class EventActivityPage(AbstractBasePage):
             return BlockObject('Event Summaries', 'Event Summary', [], event_summary_dict);
 
         def genTeamDict(event_id):
-            event_teams = event_api.getEventTeams(event_id);
+            event_teams = event_api.getEventCascadeTeams(event_id);
             event_teams = sorted(list(event_teams), key=(lambda x: x.id))
             event_team_dict = map(lambda event_team: dict(
                 element_text=school_api.getSchool(id=event_team.team_school).school_name + ' - ' + event_team.team_name,

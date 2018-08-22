@@ -21,3 +21,6 @@ class SearchAPI(AbstractAPI):
             id = tempDict['id'];
             resultList[id] = tempDict;
         return HttpResponse(json.dumps(resultList, default=str));
+
+    def authenticate(self):
+        pass;

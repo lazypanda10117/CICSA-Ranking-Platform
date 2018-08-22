@@ -1,6 +1,5 @@
 from cicsa_ranking import models as model
 from misc.Dispatcher import Dispatcher
-from .AuthenticantionComponentBase import AuthenticationComponentBase
 
 class AuthenticationBase():
     def __init__(self, request):

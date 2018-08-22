@@ -160,7 +160,7 @@ class FleetManagementView(EventManagementView):
             print(event_summaries);
 
             event_tags = event_api.getEventTags(event_tag_event_id=event.id);
-            event_teams = event_api.getEventTeams(event.id);
+            event_teams = event_api.getEventCascadeTeams(event.id);
             event_team_links = [event_activity_api.getEventTeamLinks(event_team_event_activity_id=activity.id)
                                 for activity in event_activities];
 

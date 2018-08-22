@@ -2,7 +2,7 @@ import misc
 from blackbox.auth_app import AuthenticationPublic, AuthenticationTeam, AuthenticationAdmin
 
 class AuthenticaitonFactory():
-    def __init__(self, request, path):
+    def __init__(self, path):
         self.path = path;
 
     def getDispatcher(self):

@@ -6,3 +6,6 @@ from blackbox.api.base.GeneralModelAPI import GeneralModelAPI
 class EventTagAPI(GeneralModelAPI):
     def setBaseClass(self):
         return EventTag;
+
+    def getEventTagModifyLink(self, **kwargs):
+        return gf.getModifiyLink('event tag', **kwargs);

@@ -64,7 +64,7 @@ class EventActivityView(AbstractCustomClass):
 
             loghelper(self.request, 'admin', logQueryMaker(self.base_class, action.title(), id=event_activity.id));
 
-            teams = event_api.getEventTeams(event_activity.event_activity_event_parent);
+            teams = event_api.getEventCascadeTeams(event_activity.event_activity_event_parent);
             matching_teams = list(filter(lambda x: x.team_tag_id==event_activity.event_activity_event_tag, teams));
             for team in matching_teams:
                 event_team = self.assoc_class_team_link();

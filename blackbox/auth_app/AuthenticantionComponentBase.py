@@ -4,7 +4,6 @@ from misc.Dispatcher import Dispatcher
 class AuthenticationComponentBase(ABC):
     def __init__(self, request, route):
         self.request = request;
-        self.route = route;
         self.base = self.setBaseModelClass();
 
     @abstractmethod
@@ -54,5 +53,5 @@ class AuthenticationComponentBase(ABC):
         dispatcher.add('delete', self.authTypeDispatcher(objects).deleteAuthenticate());
         return dispatcher;
 
-    def authenticate(self, objects):
-        return self.getAuthDispatcher(objects).get(self.route);
+    def authenticate(self, route, objects):
+        return self.getAuthDispatcher(objects).get(route);

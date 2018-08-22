@@ -1,48 +1,26 @@
-from blackbox.api.base.AbstractAPI import *
-from ..generalFunctions import *
-from ..models import *
+from blackbox.api.base.GeneralModelAPI import GeneralModelAPI
+from blackbox.api.ModelAPI import EventActivityAPI, EventTeamAPI, TeamAPI
+from misc.GeneralFunctions import generalFunctions as gf
+from cicsa_ranking.models import Event
 
-class EventAPI(AbstractAPI):
-    def getEventActivities(self, **kwargs):
-        return filterModelObject(EventActivity, **kwargs);
+class EventAPI(GeneralModelAPI):
+    def setBaseClass(self):
+        return Event;
 
-    def getEvent(self, **kwargs):
-        return getModelObject(Event, **kwargs);
-
-    def getEvents(self, **kwargs):
-        return filterModelObject(Event, **kwargs);
-
-    def getEventTags(self, **kwargs):
-        return filterModelObject(EventTag, **kwargs);
-
-    def getEventSummaries(self, **kwargs):
-        return filterModelObject(Summary, **kwargs);
-
-    def getEventTeams(self, event_id):
-        event_activities = filterModelObject(EventActivity, event_activity_event_parent=event_id);
-        event_activity_ids = [activity.id for activity in event_activities];
-        event_team_links = filterModelObject(EventTeam, event_team_event_activity_id__in=event_activity_ids).distinct('event_team_id');
-        event_team_ids = [team.event_team_id for team in event_team_links];
-        event_teams = filterModelObject(Team, id__in=event_team_ids);
-        return event_teams;
-
-    def getEventTypes(self):
-        return filterModelObject(EventType);
+    def getEventCascadeTeams(self, event_id):
+        event_activity_api = EventActivityAPI(self.request);
+        event_team_api = EventTeamAPI(self.request);
+        team_api = TeamAPI(self.request);
+        event_activities = list(map(lambda x: x.id,
+                                    event_activity_api.filterEventActivity(event_activity_event_parent=event_id)));
+        event_teams = list(map(lambda x: x.event_team_id, event_team_api.filterEventTeam(event_team_event_activity_id__in=event_activities).distinct('event_team_id')));
+        teams = team_api.filterTeam(id__in=event_teams);
+        return teams;
 
     def updateEventStatus(self, event_id, event_status):
-        event = getModelObject(Event, id=event_id);
+        event = self.getEvent(id=event_id);
+        gf.raise404Empty(event);
         event.event_status = event_status;
         event.save();
-        loghelper(self.request, 'admin', logQueryMaker(Event, 'Edit', id=event.id))
+        gf.loghelper(self.request, 'admin', gf.logQueryMaker(Event, 'Edit', id=event.id))
 
-    def getEventSummaryModifiyLink(self, **kwargs):
-        return getModifiyLink('summary', **kwargs);
-
-    def getEventTagModifyLink(self, **kwargs):
-        return getModifiyLink('event tag', **kwargs);
-
-    def getTeamModifyLink(self, **kwargs):
-        return getModifiyLink('team', **kwargs);
-
-    def getEventModifyLink(self, event_type, **kwargs):
-        return getModifiyLink(event_type, **kwargs);

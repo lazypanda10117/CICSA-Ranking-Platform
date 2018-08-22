@@ -9,6 +9,20 @@ class AuthenticationTeam(AuthenticationBase):
         def setBaseModelClass(self):
             return model.EventActivity;
 
+        class SingleAuthenticate(AuthenticationComponentBase.SingleAuthenticate):
+            def viewAuthenticate(self):
+                pass;
+
+            def editAuthenticate(self):
+                pass;
+
+        class BulkAuthenticate(AuthenticationComponentBase.BulkAuthenticate):
+            def viewAuthenticate(self):
+                pass;
+
+            def editAuthenticate(self):
+                pass;
+
     class Event(AuthenticationComponentBase):
         def setBaseModelClass(self):
             return model.Event;

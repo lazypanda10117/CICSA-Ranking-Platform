@@ -6,3 +6,6 @@ from blackbox.api.base.GeneralModelAPI import GeneralModelAPI
 class EventTypeAPI(GeneralModelAPI):
     def setBaseClass(self):
         return EventType;
+
+    def getEventModifyLink(self, event_type, **kwargs):
+        return getModifiyLink(event_type, **kwargs);
