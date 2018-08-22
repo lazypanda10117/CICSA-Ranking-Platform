@@ -18,6 +18,10 @@ class AbstractBasePage(ABC):
     def parseParams(self, param):
         pass;
 
+    @abstractmethod
+    def setBaseUrl(self):
+        pass;
+
     def parseMatch(self, pattern):
         match = re.match(pattern, self.param);
         if match:

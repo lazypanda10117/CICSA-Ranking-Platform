@@ -1,4 +1,3 @@
-from blackbox import api
 from blackbox.block_app.base.Base import *
 from .CustomPages import EventPage, EventActivityPage, EventActivityRankingPage
 from .CustomProcesses import UpdateEventStatusProcess, EventActivityRankingProcess

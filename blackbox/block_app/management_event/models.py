@@ -1,3 +1,2 @@
 from django.db import models
-from ranking.models import *
-# Create your models here.
+from cicsa_ranking.models import *
