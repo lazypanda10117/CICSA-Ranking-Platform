@@ -26,7 +26,7 @@ class Login:
                         self.request.session['utype'] = u.account_type;
                         self.request.session['auth'] = AuthenticaitonFactory(u.account_type).dispatch();
                         gf.loghelper(self.request, "system", gf.logQueryMaker(Account, 'Login', id=u.id));
-                        return redirect('adminIndex'); #respective index page for the auth user
+                        return redirect('adminIndex'); #TODO: respective index page for the auth user
                     else:
                         return HttpResponse('{"Response": "Error: Insufficient Permission"}');
                 else:
@@ -40,6 +40,6 @@ class Login:
             self.request.session['uid'] = None;
             self.request.session['utype'] = None;
             self.request.session['auth'] = None;
-            return redirect('adminIndex'); #client home
+            return redirect('adminIndex'); #TODO: client home
         else:
             return HttpResponse('{"Response": "Error: Not Logged In"}');

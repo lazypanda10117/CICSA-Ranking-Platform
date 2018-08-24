@@ -3,7 +3,7 @@ from blackbox.block_app.base.CustomPages import AbstractBasePage
 
 class EventChoicePage(AbstractBasePage):
     def getPagePath(self):
-        return 'console/event.html';
+        return 'blackbox/block_app/management_event/event.html';
 
     def render(self):
         types = [value.event_type_name for value in api.EventAPI(self.request).getEventTypes()];

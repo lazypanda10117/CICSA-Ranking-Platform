@@ -1,5 +1,6 @@
 from django.shortcuts import render
+from misc.GeneralFunctions import generalFunctions as gf
 
-# Create your views here.
-def index():
-    return None;
+
+def index(request):
+    return gf.kickRequest(request, True, render(request, 'blackbox/platform/index.html'));

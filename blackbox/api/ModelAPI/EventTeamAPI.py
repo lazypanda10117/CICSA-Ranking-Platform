@@ -6,3 +6,6 @@ from blackbox.api.base.GeneralModelAPI import GeneralModelAPI
 class EventTeamAPI(GeneralModelAPI):
     def setBaseClass(self):
         return EventTeam;
+
+    def getEventTeamModifyLink(self, **kwargs):
+        return gf.getModifiyLink('event team', **kwargs);

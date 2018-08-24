@@ -24,3 +24,5 @@ class EventAPI(GeneralModelAPI):
         event.save();
         gf.loghelper(self.request, 'admin', gf.logQueryMaker(Event, 'Edit', id=event.id))
 
+    def getEventModifyLink(self, event_type, **kwargs):
+        return gf.getModifiyLink(event_type, **kwargs);

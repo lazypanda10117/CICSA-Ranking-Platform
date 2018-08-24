@@ -30,7 +30,7 @@ class AbstractBasePage(ABC):
             raise Http404;
 
     def getPagePath(self):
-        return 'console/sth.html';
+        return 'blackbox/block_app/base/sth.html';
 
     def renderHelper(self, page_object):
         return gf.kickRequest(self.request, True, render(self.request, self.page_path, page_object));
