@@ -1,0 +1,25 @@
+{% block content %}
+	<div class="container mt-3">
+		<h2>Teams</h2>
+		<ul class="list-group">
+			{% for region in regions %}
+				<li class="list-group-item">
+					<h4>{{ region.name }}</h4>
+					{% for team in region.teams %}
+						<div class="row">
+							<div class="col">
+								{{ team.university }}
+							</div>
+							<div class="col">
+								{{ team.mascot }}
+							</div>
+							<div class="col">
+								{{ team.location }}
+							</div>
+						</div>
+					{% endfor %}
+				</li>
+			{% endfor %}
+		</ul>
+	</div>
+{% endblock %}
