@@ -1,3 +1,3 @@
-from blackbox.block_app.management_ranking import urls
+from blackbox.block_app.management_event import urls
 
 urlpatterns = urls.urlpatterns

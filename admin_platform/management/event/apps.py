@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class ManagementEventConfig(AppConfig):
+class AdminManagementEventConfig(AppConfig):
     name = 'admin_platform.management.event'

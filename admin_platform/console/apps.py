@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class ManagementEventConfig(AppConfig):
+class AdminConsoleConfig(AppConfig):
     name = 'admin_platform.console'

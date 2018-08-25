@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class SudoAppConfig(AppConfig):
+class BlackboxSudoAppConfig(AppConfig):
     name = 'blackbox.sudo_app'

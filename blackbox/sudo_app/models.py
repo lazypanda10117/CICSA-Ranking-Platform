@@ -1,2 +1,2 @@
 from django.db import models
-from ranking.models import *
+from cicsa_ranking.models import *

@@ -1,5 +1,5 @@
 import hashlib
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.http import HttpResponse
 from misc.GeneralFunctions import generalFunctions as gf
 from cicsa_ranking.models import *
@@ -24,9 +24,8 @@ class Login:
                     if u.account_type == "admin":
                         self.request.session['uid'] = u.id;
                         self.request.session['utype'] = u.account_type;
-                        self.request.session['auth'] = AuthenticaitonFactory(u.account_type).dispatch();
                         gf.loghelper(self.request, "system", gf.logQueryMaker(Account, 'Login', id=u.id));
-                        return redirect('adminIndex'); #TODO: respective index page for the auth user
+                        return redirect(reverse('adminIndex'));
                     else:
                         return HttpResponse('{"Response": "Error: Insufficient Permission"}');
                 else:
@@ -39,7 +38,6 @@ class Login:
             gf.loghelper(self.request, "system", gf.logQueryMaker(Account, 'Logout', id=self.request.session['uid']));
             self.request.session['uid'] = None;
             self.request.session['utype'] = None;
-            self.request.session['auth'] = None;
-            return redirect('adminIndex'); #TODO: client home
+            return redirect(reverse('blackbox.permission_app.dispatch', args=['view'])); #TODO: client home
         else:
             return HttpResponse('{"Response": "Error: Not Logged In"}');

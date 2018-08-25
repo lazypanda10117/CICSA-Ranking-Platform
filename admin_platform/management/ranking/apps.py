@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class ManagementEventConfig(AppConfig):
+class AdminManagementRankingConfig(AppConfig):
     name = 'admin_platform.management.ranking'

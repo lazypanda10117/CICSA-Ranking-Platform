@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class ManagementEventConfig(AppConfig):
-    name = 'blackbox.block_app.management_event'
+class BlackboxPermissionAppConfig(AppConfig):
+    name = 'blackbox.permission_app'

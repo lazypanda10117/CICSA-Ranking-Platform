@@ -1,0 +1,61 @@
+body {
+    color: #999;
+	background: #e5e5e5;
+	font-family: 'Loto', sans-serif;
+}
+.form-control:focus {
+	border-color: #BF1E2E; 
+}
+.login-form {
+    width: 350px;
+	margin: 0 auto;
+	padding: 30px 0;
+}
+.login-form form {
+	border-radius: 20px;
+	margin: 5px;
+    background: #fff;
+	border: 1px solid #f3f3f3;
+    padding: 30px;
+}
+.login-form h4 {
+	text-align: center;
+	font-size: 22px;
+    margin-bottom: 20px;
+}
+.login-form .avatar {
+	margin: auto;
+    text-align: center;
+	width: 200px;
+	height: 200px;
+	z-index: 9;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-bottom: 10px;
+}
+
+.login-form .form-group {
+    margin-bottom: 20px;
+}
+.login-form .form-control, .login-form .btn {
+	min-height: 40px;
+	border-radius: 2px; 
+    transition: all 0.5s;
+}
+.login-form .btn {
+	background: #BF1E2E;
+	border: none;
+	line-height: normal;
+}
+.login-form .btn:hover, .login-form .btn:focus, .login-form .btn:active {
+	background: #d87881;
+}
+.login-form .checkbox-inline {
+    float: left;
+}
+.login-form .small {
+    font-size: 13px;
+}
+.login-form a {
+    color: #BF1E2E;
+}

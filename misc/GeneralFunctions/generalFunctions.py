@@ -3,13 +3,15 @@ from django.urls import resolve
 from django.http import HttpResponse, Http404
 from django.views.decorators.csrf import csrf_exempt
 import math, datetime, json
+from django.apps import apps
+
 
 from cicsa_ranking.models import *
 
 @csrf_exempt
 def kickRequest(request, loggedin, rend):
     return (lambda x: rend if math.ceil(x+0.5) else
-    (lambda y: redirect('adminPermission') if math.ceil(y+0.5) else redirect('adminIndex'))
+    (lambda y: redirect(reverse('blackbox.permission_app.dispatch', args=['view'])) if math.ceil(y+0.5) else redirect('adminIndex'))
     (loggedin*2-1))((loggedin*2-1)*(signed_in(request, 'admin')*2-1))
 
 @csrf_exempt
@@ -47,7 +49,8 @@ def filterModelObject(model_name, **kwargs):
 def getModelObject(model_name, **kwargs):
     try:
         result = model_name.objects.get(**kwargs);
-    except:
+    except Exception as e:
+        print(e);
         result = None;
     return result;
 
