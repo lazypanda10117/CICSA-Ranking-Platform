@@ -9,26 +9,15 @@ class GeneralModelAPI(AbstractAPI, ABC):
         self.base = self.setBaseClass();
         self.class_name = self.base.__class__.__name__;
         self.auth_class = self.auth(request).dispatch(self.class_name);
-        self.__funcBindingSetup();
 
     @abstractmethod
     def setBaseClass(self):
         pass;
 
-    def __funcBindingSetup(self):
-        setattr(self, 'get' + self.class_name, self._getFuncBinder());
-        setattr(self, 'filter' + self.class_name, self._filterFuncBinder());
+    def getSelf(self, **kwargs):
+        result = gf.getModelObject(self.base, **kwargs);
+        return self.auth_class(self.request).authenticate('view', result);
 
-    def _getFuncBinder(self):
-        def _getModelVal(**kwargs):
-            result = [gf.getModelObject(self.base, **kwargs)];
-            return self.auth_class.authenticate('view', result);
-        _getModelVal.__name__ = 'get' + self.class_name;
-        return _getModelVal;
-
-    def _filterFuncBinder(self):
-        def _filterModelVal(**kwargs):
-            result = gf.filterModelObject(self.base, **kwargs);
-            return self.auth_class.authenticate('view', result);
-        _filterModelVal.__name__ = 'filter' + self.class_name;
-        return _filterModelVal;
+    def filterSelf(self, **kwargs):
+        result = gf.filterModelObject(self.base, **kwargs);
+        return self.auth_class(self.request).authenticate('view', result);

@@ -1,9 +1,9 @@
-{% extends 'console/header.html' %}
+{% extends 'blackbox/platform/header.html' %}
 {% block 'head' %}
 {% endblock %}
 {% block 'body' %}
     <div class="row">
-        <div class="col-lg-6"><h2><pre>{{ title }}</pre></h2></div>
+        <div class="col-lg-6"><h2><pre>{{ page.title }}</pre></h2></div>
         <div class="col-lg-4"></div>
         {% if header.button %}
             <div class="col-lg-2" style="">
@@ -13,7 +13,7 @@
             </div>
         {% endif %}
     </div>
-    {% for key, element in element_list.items %}
-        {% include "event_management/eventDisplayBlock.html" with context=element only %}
+    {% for block in page.element_list.blocks %}
+        {% include "blackbox/block_app/base/displayBlock.html" with context=block only %}
     {% endfor %}
 {% endblock %}

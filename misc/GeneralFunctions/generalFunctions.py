@@ -48,7 +48,7 @@ def filterModelObject(model_name, **kwargs):
 @csrf_exempt
 def getModelObject(model_name, **kwargs):
     try:
-        result = model_name.objects.get(**kwargs);
+        result = get_object_or_404(model_name, **kwargs);
     except Exception as e:
         print(e);
         result = None;

@@ -6,5 +6,5 @@ from blackbox.auth_app.AuthenticationFactory import AuthenticaitonFactory
 class AbstractAPI():
     def __init__(self, request):
         self.request = request;
-        self.auth = AuthenticaitonFactory(self.request['utype']).dispatch();
+        self.auth = AuthenticaitonFactory(self.request.session['utype']).dispatch();
 

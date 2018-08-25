@@ -18,10 +18,6 @@ class AbstractBasePage(ABC):
     def parseParams(self, param):
         pass;
 
-    @abstractmethod
-    def setBaseUrl(self):
-        pass;
-
     def parseMatch(self, pattern):
         match = re.match(pattern, self.param);
         if match:
@@ -30,9 +26,9 @@ class AbstractBasePage(ABC):
             raise Http404;
 
     def getPagePath(self):
-        return 'blackbox/block_app/base/sth.html';
+        return 'blackbox/block_app/base/displayList.html';
 
     def renderHelper(self, page_object):
-        return gf.kickRequest(self.request, True, render(self.request, self.page_path, page_object));
+        return gf.kickRequest(self.request, True, render(self.request, self.page_path, dict(page=page_object)));
 
 
