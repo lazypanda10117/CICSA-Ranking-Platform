@@ -1,11 +1,12 @@
 from cicsa_ranking.models import EventTag
-from misc.GeneralFunctions import generalFunctions as gf
-from blackbox.api.base.GeneralModelAPI import GeneralModelAPI
+from misc.CustomFunctions import UrlFunctions
+from ..base.GeneralModelAPI import GeneralModelAPI
 
 
 class EventTagAPI(GeneralModelAPI):
     def setBaseClass(self):
         return EventTag;
 
+    @staticmethod
     def getEventTagModifyLink(self, **kwargs):
-        return gf.getModifiyLink('event tag', **kwargs);
+        return UrlFunctions.getModifiyLink('event tag', **kwargs);

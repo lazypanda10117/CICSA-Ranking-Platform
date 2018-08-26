@@ -1,8 +1,8 @@
 # Importing APIs From FunctionAPI
-from .FunctionalAPI import *
+from .functional_api import *
 
 # Importing APIs From ModelAPI
-from .ModelAPI import *
+from .model_api import *
 
 
 

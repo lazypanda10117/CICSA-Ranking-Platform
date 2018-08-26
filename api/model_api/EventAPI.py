@@ -1,7 +1,7 @@
-from blackbox.api.base.GeneralModelAPI import GeneralModelAPI
-from blackbox.api.ModelAPI import EventActivityAPI, EventTeamAPI, TeamAPI
-from misc.GeneralFunctions import generalFunctions as gf
 from cicsa_ranking.models import Event
+from misc.CustomFunctions import AuthFunctions, LogFunctions, UrlFunctions
+from ..base.GeneralModelAPI import GeneralModelAPI
+from ..model_api import EventActivityAPI, EventTeamAPI, TeamAPI
 
 
 class EventAPI(GeneralModelAPI):
@@ -20,10 +20,11 @@ class EventAPI(GeneralModelAPI):
 
     def updateEventStatus(self, event_id, event_status):
         event = self.getSelf(id=event_id);
-        gf.raise404Empty(event);
+        AuthFunctions.raise404Empty(event);
         event.event_status = event_status;
         event.save();
-        gf.loghelper(self.request, 'admin', gf.logQueryMaker(Event, 'Edit', id=event.id))
+        LogFunctions.loghelper(self.request, 'admin', gf.logQueryMaker(Event, 'Edit', id=event.id))
 
+    @staticmethod
     def getEventModifyLink(self, event_type, **kwargs):
-        return gf.getModifiyLink(event_type, **kwargs);
+        return UrlFunctions.getModifiyLink(event_type, **kwargs);

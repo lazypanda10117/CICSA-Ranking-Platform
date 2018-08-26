@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from misc.Dispatcher import Dispatcher
+from misc.CustomElements import Dispatcher
 
 class AuthenticationComponentBase(ABC):
     def __init__(self, request):

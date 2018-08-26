@@ -1,5 +1,5 @@
 from cicsa_ranking import models as model
-from blackbox import api
+from ..model_api import *
 from .AuthenticationBase import AuthenticationBase
 from .AuthenticantionComponentBase import AuthenticationComponentBase
 

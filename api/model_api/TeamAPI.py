@@ -1,6 +1,6 @@
 from cicsa_ranking.models import Team
-from misc.GeneralFunctions import generalFunctions as gf
-from blackbox.api.base.GeneralModelAPI import GeneralModelAPI
+from misc.CustomFunctions import UrlFunctions
+from ..base.GeneralModelAPI import GeneralModelAPI
 
 
 class TeamAPI(GeneralModelAPI):
@@ -8,4 +8,4 @@ class TeamAPI(GeneralModelAPI):
         return Team;
 
     def getTeamModifyLink(self, **kwargs):
-        return gf.getModifiyLink('team', **kwargs);
+        return UrlFunctions.getModifiyLink('team', **kwargs);

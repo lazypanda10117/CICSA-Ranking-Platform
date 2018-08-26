@@ -1,5 +1,5 @@
-from blackbox.api.base.GeneralModelAPI import GeneralModelAPI
-from misc.GeneralFunctions import generalFunctions as gf
+from ..base.GeneralModelAPI import GeneralModelAPI
+from misc.CustomFunctions import ModelFunctions, AuthFunctions, UrlFunctions
 from cicsa_ranking.models import EventActivity
 
 
@@ -8,13 +8,14 @@ class EventActivityAPI(GeneralModelAPI):
         return EventActivity;
 
     def updateEventActivityState(self, event_activity_id, event_activity_status):
-        event_activity = self.auth_class.authenticate('edit', gf.getModelObject(EventActivity, id=event_activity_id));
-        gf.raise404Empty(event_activity);
+        event_activity = self.auth_class.authenticate('edit', ModelFunctions.getModelObject(EventActivity, id=event_activity_id));
+        AuthFunctions.raise404Empty(event_activity);
         event_activity.event_activity_status = event_activity_status;
         event_activity.save();
 
     def updateEventActivityResult(self, event_activity_id, event_activity_result):
-        event_activity = self.auth_class.authenticate('edit', gf.getModelObject(EventActivity, id=event_activity_id));
+        event_activity = self.auth_class.authenticate('edit', ModelFunctions.getModelObject(EventActivity, id=event_activity_id));
+        AuthFunctions.raise404Empty(event_activity);
         event_activity.event_activity_result = event_activity_result;
         event_activity.save();
 
@@ -23,4 +24,4 @@ class EventActivityAPI(GeneralModelAPI):
     #the event team function is to team
 
     def getEventActivityModifyLink(self, **kwargs):
-        return gf.getModifiyLink('event activity', **kwargs);
+        return UrlFunctions.getModifiyLink('event activity', **kwargs);
