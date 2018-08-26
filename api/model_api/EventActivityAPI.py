@@ -23,5 +23,6 @@ class EventActivityAPI(GeneralModelAPI):
 
     #the event team function is to team
 
-    def getEventActivityModifyLink(self, **kwargs):
+    @staticmethod
+    def getEventActivityModifyLink(**kwargs):
         return UrlFunctions.getModifiyLink('event activity', **kwargs);

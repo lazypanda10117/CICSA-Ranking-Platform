@@ -7,5 +7,6 @@ class SummaryAPI(GeneralModelAPI):
     def setBaseClass(self):
         return Summary;
 
-    def getEventSummaryModifiyLink(self, **kwargs):
+    @staticmethod
+    def getEventSummaryModifiyLink(**kwargs):
         return UrlFunctions.getModifiyLink('summary', **kwargs);

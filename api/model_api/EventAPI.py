@@ -26,5 +26,5 @@ class EventAPI(GeneralModelAPI):
         LogFunctions.loghelper(self.request, 'admin', gf.logQueryMaker(Event, 'Edit', id=event.id))
 
     @staticmethod
-    def getEventModifyLink(self, event_type, **kwargs):
+    def getEventModifyLink(event_type, **kwargs):
         return UrlFunctions.getModifiyLink(event_type, **kwargs);

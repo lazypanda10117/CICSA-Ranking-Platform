@@ -7,5 +7,6 @@ class TeamAPI(GeneralModelAPI):
     def setBaseClass(self):
         return Team;
 
-    def getTeamModifyLink(self, **kwargs):
+    @staticmethod
+    def getTeamModifyLink(**kwargs):
         return UrlFunctions.getModifiyLink('team', **kwargs);

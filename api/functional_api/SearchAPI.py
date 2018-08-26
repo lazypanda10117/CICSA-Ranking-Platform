@@ -1,11 +1,13 @@
 import json
 from django.apps import apps
 from django.http import HttpResponse
-from misc.GeneralFunctions import generalFunctions as gf
-from blackbox.api.base.AbstractAPI import AbstractAPI
+from misc.CustomFunctions import ModelFunctions
+from ..base.AbstractAPI import AbstractAPI
+
 
 class SearchAPI(AbstractAPI):
-    def search(self, model_name, key, term):
+    @staticmethod
+    def search(model_name, key, term):
         resultList = {};
         model = apps.get_model(app_label='cicsa_ranking', model_name=model_name);
         keyDict = (lambda x: {} if x is None else json.loads(key))(key);
@@ -15,7 +17,7 @@ class SearchAPI(AbstractAPI):
             newTermDict[key + '__icontains'] = val;
         searchDict = {**keyDict, **newTermDict};
 
-        for obj in gf.filterModelObject(model, **searchDict):
+        for obj in ModelFunctions.filterModelObject(model, **searchDict):
             tempDict = vars(obj);
             tempDict.pop('_state');
             id = tempDict['id'];

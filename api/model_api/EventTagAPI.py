@@ -8,5 +8,5 @@ class EventTagAPI(GeneralModelAPI):
         return EventTag;
 
     @staticmethod
-    def getEventTagModifyLink(self, **kwargs):
+    def getEventTagModifyLink(**kwargs):
         return UrlFunctions.getModifiyLink('event tag', **kwargs);

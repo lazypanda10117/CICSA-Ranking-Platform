@@ -1,9 +1,9 @@
-from abc import ABC, abstractmethod
-from misc.GeneralFunctions import generalFunctions as gf
-from blackbox.api.base.AbstractAPI import AbstractAPI
+from abc import abstractmethod
+from misc.CustomFunctions import ModelFunctions
+from ..base.AbstractAPI import AbstractAPI
 
 
-class GeneralModelAPI(AbstractAPI, ABC):
+class GeneralModelAPI(AbstractAPI):
     def __init__(self, request):
         super().__init__(request);
         self.base = self.setBaseClass();
@@ -15,9 +15,9 @@ class GeneralModelAPI(AbstractAPI, ABC):
         pass;
 
     def getSelf(self, **kwargs):
-        result = gf.getModelObject(self.base, **kwargs);
+        result = ModelFunctions.getModelObject(self.base, **kwargs);
         return self.auth_class(self.request).authenticate('view', result);
 
     def filterSelf(self, **kwargs):
-        result = gf.filterModelObject(self.base, **kwargs);
+        result = ModelFunctions.filterModelObject(self.base, **kwargs);
         return self.auth_class(self.request).authenticate('view', result);
