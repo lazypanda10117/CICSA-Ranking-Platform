@@ -29,7 +29,7 @@ class Login:
                         self.request.session['utype'] = u.account_type
                         LogFunctions.loghelper(self.request, "system",
                                                LogFunctions.logQueryMaker(Account, 'Login', id=u.id))
-                        return redirect(reverse('adminIndex'))  # TODO: platform index
+                        return redirect(reverse('permission.dispatch', args=['view']))  # TODO: platform index
                     else:
                         return HttpResponse('{"Response": "Error: Insufficient Permission"}')
                 else:
@@ -43,6 +43,6 @@ class Login:
                                    LogFunctions.logQueryMaker(Account, 'Logout', id=self.request.session['uid']))
             self.request.session['uid'] = None
             self.request.session['utype'] = None
-            return redirect(reverse('blackbox.permission_app.dispatch', args=['view']))  # TODO: login page
+            return redirect(reverse('permission.dispatch', args=['view']))  # TODO: login page
         else:
             return HttpResponse('{"Response": "Error: Not Logged In"}')
