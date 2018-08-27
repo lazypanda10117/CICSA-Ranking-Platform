@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from misc.Dispatcher import Dispatcher
 from misc.GeneralFunctions import generalFunctions as gf
-from .Login import Login
+from permission.CustomClasses.Login import Login
 
 
 @csrf_exempt

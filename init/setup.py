@@ -21,33 +21,36 @@ def executeScriptsFromFile(filename, cu):
             print("Command skipped: " + str(msg));
     print('Finish Applying Setup SQL Queries');
 
-if os.environ.get('SETUP_STATE') == 'True':
-    dispatcher = {1: 'dbrefresh.sql', 2: 'setup.sql'};
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument("mode", help="setup mode", type=int)
-    args = parser.parse_args()
+def main():
+    if os.environ.get('SETUP_STATE') == 'True':
+        dispatcher = {1: 'reset.sql', 2: 'setup.sql'};
 
-    db_remote_url = None;
-    db_url = 'localhost';
-    db_name = 'ranking';
-    db_user = 'lazypanda';
-    db_pwd = '';
-    db_port = '5432';
+        parser = argparse.ArgumentParser()
+        parser.add_argument("mode", help="setup mode", type=int)
+        args = parser.parse_args()
 
-    if os.environ.get('DATABASE_URL') is not None:
-        db_remote_url = make_url(os.environ.get('DATABASE_URL'));
-        db_url = db_remote_url.host;
-        db_name = db_remote_url.database;
-        db_user = db_remote_url.username;
-        db_pwd = db_remote_url.password;
-        db_port = db_remote_url.port;
+        db_url = 'localhost';
+        db_name = 'ranking';
+        db_user = 'lazypanda';
+        db_pwd = '';
+        db_port = '5432';
 
-    connection_string = "dbname=%s user=%s password=%s host=%s port=%s" % (db_name, db_user, db_pwd, db_url, db_port)
-    conn = psycopg2.connect(connection_string);
-    print('Postgres Connection Created');
-    conn.autocommit = True;
-    cursor = conn.cursor();
-    executeScriptsFromFile(dispatcher[args.mode], cursor);
-    conn.close();
-    print('Postgres Connection Closed');
+        if os.environ.get('DATABASE_URL') is not None:
+            db_remote_url = make_url(os.environ.get('DATABASE_URL'));
+            db_url = db_remote_url.host;
+            db_name = db_remote_url.database;
+            db_user = db_remote_url.username;
+            db_pwd = db_remote_url.password;
+            db_port = db_remote_url.port;
+
+        connection_string = "dbname=%s user=%s password=%s host=%s port=%s" % (db_name, db_user, db_pwd, db_url, db_port)
+        conn = psycopg2.connect(connection_string);
+        print('Postgres Connection Created');
+        conn.autocommit = True;
+        cursor = conn.cursor();
+        executeScriptsFromFile(dispatcher[args.mode], cursor);
+        conn.close();
+        print('Postgres Connection Closed');
+
+main();
