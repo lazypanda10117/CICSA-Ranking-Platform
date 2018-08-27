@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-from misc.Dispatcher import Dispatcher
-from misc.GeneralFunctions import generalFunctions as gf
+from misc.CustomElements import Dispatcher
+from misc.CustomFunctions import AuthFunctions
 from permission.CustomClasses.Login import Login
 
 
@@ -28,4 +28,4 @@ class PermissionView():
         return self.permission_object(request).logout();
 
     def view(self, request):
-        return gf.kickRequest(request, False, render(request, 'blackbox/platform/login/login.html'));
+        return AuthFunctions.kickRequest(request, False, render(request, 'permission/login.html'));

@@ -4,16 +4,11 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-numpy = "*"
 requests = "*"
-rsa = "*"
 "psycopg2" = "*"
-"psycopg2-binary" = "*"
 django = "*"
-request = "*"
 sqlalchemy = "*"
 django-cors-middleware = "*"
-futures = "*"
 
 [dev-packages]
 
