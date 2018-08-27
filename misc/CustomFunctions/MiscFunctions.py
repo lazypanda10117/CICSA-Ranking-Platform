@@ -1,38 +1,39 @@
-import datetime, json
+import datetime
+import json
 
 
 def filterDict(dict_items, invalid):
-    return {key: val for key, val in dict_items if key not in invalid};
+    return {key: val for key, val in dict_items if key not in invalid}
 
 
-def grabValueAsList(dict):
-    return list(dict.values());
+def grabValueAsList(dictionary):
+    return list(dictionary.values())
 
 
 def grabLinkValueFromChoices(choices, key):
-    choice_data = {choice_id: choice_val for choice_id, choice_val in choices};
-    return choice_data[key] if key in choice_data else None;
+    choice_data = {choice_id: choice_val for choice_id, choice_val in choices}
+    return choice_data[key] if key in choice_data else None
 
 
 def noneCatcher(key, data):
-    return data[key] if key in data else None;
+    return data[key] if key in data else None
 
 
 def jsonLoadCatch(text):
     try:
-        return json.loads(text);
+        return json.loads(text)
     except Exception as e:
-        print(e);
-        return {};
+        print(e)
+        return {}
 
 
 def getTimeNow():
-    return datetime.datetime.now();
+    return datetime.datetime.now()
 
 
 def modAdd(base, add, mod):
-    return ((base + add) % mod) + 1;
+    return ((base + add) % mod) + 1
 
 
-def getViewJSON(action, id):
-    return {"action": action, "id": id};
+def getViewJSON(action, element_id):
+    return {"action": action, "id": element_id}

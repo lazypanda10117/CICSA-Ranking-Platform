@@ -1,9 +1,9 @@
 from abc import ABC
-from ..authentication.AuthenticationFactory import AuthenticaitonFactory
+from ..authentication.AuthenticationFactory import AuthenticationFactory
 
 
 # not much use of a class right now, but might be more useful later
 class AbstractAPI(ABC):
     def __init__(self, request):
-        self.request = request;
-        self.auth = AuthenticaitonFactory(self.request.session['utype']).dispatch();
+        self.request = request
+        self.auth = AuthenticationFactory(self.request.session['utype']).dispatch()

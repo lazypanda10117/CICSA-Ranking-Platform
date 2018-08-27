@@ -5,8 +5,8 @@ from ..base.GeneralModelAPI import GeneralModelAPI
 
 class EventTagAPI(GeneralModelAPI):
     def setBaseClass(self):
-        return EventTag;
+        return EventTag
 
     @staticmethod
     def getEventTagModifyLink(**kwargs):
-        return UrlFunctions.getModifiyLink('event tag', **kwargs);
+        return UrlFunctions.getModifiyLink('event tag', **kwargs)

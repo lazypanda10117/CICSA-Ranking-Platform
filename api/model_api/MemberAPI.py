@@ -4,4 +4,4 @@ from ..base.GeneralModelAPI import GeneralModelAPI
 
 class MemberAPI(GeneralModelAPI):
     def setBaseClass(self):
-        return Member;
+        return Member

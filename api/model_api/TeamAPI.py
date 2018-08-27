@@ -5,8 +5,8 @@ from ..base.GeneralModelAPI import GeneralModelAPI
 
 class TeamAPI(GeneralModelAPI):
     def setBaseClass(self):
-        return Team;
+        return Team
 
     @staticmethod
     def getTeamModifyLink(**kwargs):
-        return UrlFunctions.getModifiyLink('team', **kwargs);
+        return UrlFunctions.getModifiyLink('team', **kwargs)

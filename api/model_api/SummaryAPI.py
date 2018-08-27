@@ -5,8 +5,8 @@ from ..base.GeneralModelAPI import GeneralModelAPI
 
 class SummaryAPI(GeneralModelAPI):
     def setBaseClass(self):
-        return Summary;
+        return Summary
 
     @staticmethod
     def getEventSummaryModifiyLink(**kwargs):
-        return UrlFunctions.getModifiyLink('summary', **kwargs);
+        return UrlFunctions.getModifiyLink('summary', **kwargs)

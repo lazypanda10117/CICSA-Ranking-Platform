@@ -1,14 +1,15 @@
-from blackbox.api import SchoolAPI, EventTeamAPI, TeamAPI, MemberGroupAPI
-from blackbox.block_app.base.CustomPages import AbstractBasePage
-from blackbox.block_app.base.CustomComponents import BlockObject, BlockSet, PageObject
+from api import SchoolAPI, EventTeamAPI, TeamAPI, MemberGroupAPI
+from ...base.block.CustomPages import AbstractBasePage
+from ...base.block.CustomComponents import BlockObject, BlockSet, PageObject
+
 
 class EventActivityDetailPage(AbstractBasePage):
     def generateList(self):
         def genEventTeamDict(activity_id):
-            event_teams = event_team_api.getEventTeam(event_team_event_activity_id=activity_id);
+            event_teams = event_team_api.getSelf(event_team_event_activity_id=activity_id)
             event_team_dict = map(lambda event_team: dict(
-                element_text=(lambda x: school_api.getSchool(id=x.team_school).school_name + ' - ' + x.team_name)
-                (team_api.getTeam(id=event_team.event_team_id)),
+                element_text=(lambda x: school_api.getSelf(id=x.team_school).school_name + ' - ' + x.team_name)
+                (team_api.getSelf(id=event_team.event_team_id)),
                 element_link=event_team_api.getEventTeamModifyLink(id=event_team.id),
                 elements=[
                     dict(
@@ -17,20 +18,20 @@ class EventActivityDetailPage(AbstractBasePage):
                     )
                 ]
             ),
-                             [event_team for event_team in event_teams]);
-            return BlockObject('Event Teams', 'Event Team', ['Member Group Link'], event_team_dict);
+                             [event_team for event_team in event_teams])
+            return BlockObject('Event Teams', 'Event Team', ['Member Group Link'], event_team_dict)
 
-        event_activity_id = int(self.param["id"]);
-        school_api = SchoolAPI(self.request);
-        event_team_api = EventTeamAPI(self.request);
-        team_api = TeamAPI(self.request);
-        member_group_api = MemberGroupAPI(self.request);
-        return BlockSet().makeBlockSet(genEventTeamDict(event_activity_id));
+        event_activity_id = int(self.param["id"])
+        school_api = SchoolAPI(self.request)
+        event_team_api = EventTeamAPI(self.request)
+        team_api = TeamAPI(self.request)
+        member_group_api = MemberGroupAPI(self.request)
+        return BlockSet().makeBlockSet(genEventTeamDict(event_activity_id))
 
     def render(self):
-        return super().renderHelper(PageObject('Event Activity Related Objects List', self.generateList(), []));
+        return super().renderHelper(PageObject('Event Activity Related Objects List', self.generateList(), []))
 
     def parseParams(self, param):
-        match = super().parseMatch('\d+');
-        param = dict(id=param);
-        return param;
+        match = super().parseMatch('\d+')
+        param = dict(id=param)
+        return param

@@ -7,25 +7,26 @@ from permission.CustomClasses.Login import Login
 
 @csrf_exempt
 def dispatch(request, route):
-    return PermissionView().setFunctionDispatcher().get(route)(request);
+    return PermissionView().setFunctionDispatcher().get(route)(request)
 
 
-class PermissionView():
+class PermissionView:
     def __init__(self):
-        self.permission_object = Login;
+        self.permission_object = Login
 
     def setFunctionDispatcher(self):
-        dispatcher = Dispatcher();
-        dispatcher.add('login', self.login);
-        dispatcher.add('logout', self.logout);
-        dispatcher.add('view', self.view);
-        return dispatcher;
+        dispatcher = Dispatcher()
+        dispatcher.add('login', self.login)
+        dispatcher.add('logout', self.logout)
+        dispatcher.add('view', self.view)
+        return dispatcher
 
     def login(self, request):
-        return self.permission_object(request).login();
+        return self.permission_object(request).login()
 
     def logout(self, request):
-        return self.permission_object(request).logout();
+        return self.permission_object(request).logout()
 
-    def view(self, request):
-        return AuthFunctions.kickRequest(request, False, render(request, 'permission/login.html'));
+    @staticmethod
+    def view(request):
+        return AuthFunctions.kickRequest(request, False, render(request, 'permission/login.html'))

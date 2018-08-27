@@ -4,4 +4,4 @@ from ..base.GeneralModelAPI import GeneralModelAPI
 
 class ScoreMappingAPI(GeneralModelAPI):
     def setBaseClass(self):
-        return ScoreMapping;
+        return ScoreMapping

@@ -4,4 +4,4 @@ from ..base.GeneralModelAPI import GeneralModelAPI
 
 class EventTypeAPI(GeneralModelAPI):
     def setBaseClass(self):
-        return EventType;
+        return EventType

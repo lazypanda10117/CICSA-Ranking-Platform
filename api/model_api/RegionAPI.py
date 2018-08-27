@@ -4,4 +4,4 @@ from ..base.GeneralModelAPI import GeneralModelAPI
 
 class RegionAPI(GeneralModelAPI):
     def setBaseClass(self):
-        return Region;
+        return Region

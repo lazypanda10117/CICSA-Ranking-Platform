@@ -38,16 +38,6 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 INSTALLED_APPS = [
     'cicsa_ranking.apps.CicsaRankingConfig',
-    'admin_platform.apps.AdminPlatformConfig',
-    #'admin_platform.console.apps.AdminConsoleConfig',
-    'admin_platform.management.event.apps.AdminManagementEventConfig',
-    'admin_platform.management.ranking.apps.AdminManagementRankingConfig',
-    'admin_platform.search.apps.AdminSearchConfig',
-    'team_platform.apps.TeamPlatformConfig',
-    'blackbox.block_app.management_event.apps.BlackboxManagementEventConfig',
-    'blackbox.block_app.management_ranking.apps.BlackboxManagementRankingConfig',
-    'blackbox.permission_app.apps.BlackboxPermissionAppConfig',
-    #'blackbox.sudo_app.apps.BlackboxSudoAppConfig',
     'client.apps.ClientConfig',
     'corsheaders',
     'django.contrib.admin',

@@ -4,4 +4,4 @@ from ..base.GeneralModelAPI import GeneralModelAPI
 
 class LogAPI(GeneralModelAPI):
     def setBaseClass(self):
-        return Log;
+        return Log

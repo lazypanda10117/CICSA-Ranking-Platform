@@ -1,23 +1,24 @@
-from django.http import Http404
 import re
+from django.http import Http404
 from abc import abstractmethod, ABC
+
 
 class AbstractBaseProcess(ABC):
     def __init__(self, request, param):
-        self.request = request;
-        self.param = self.parseParams(param);
+        self.request = request
+        self.param = self.parseParams(param)
 
     def parseMatch(self, pattern):
-        match = re.match(pattern, self.param);
+        match = re.match(pattern, self.param)
         if match:
-            return match;
+            return match
         else:
-            raise Http404;
+            raise Http404
 
     @abstractmethod
     def parseParams(self, param):
-        pass;
+        pass
 
     @abstractmethod
     def process(self):
-        pass;
+        pass
