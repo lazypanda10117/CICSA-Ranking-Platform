@@ -1,5 +1,6 @@
 from django.shortcuts import redirect, reverse
-from blackbox.block_app.base.CustomProcesses import AbstractBaseProcess
+from ...base.block.CustomProcesses import AbstractBaseProcess
+
 
 class EventChoiceProcess(AbstractBaseProcess):
     def process(self):
@@ -7,9 +8,9 @@ class EventChoiceProcess(AbstractBaseProcess):
             reverse(
                 'blackbox.block_app.management_event.view_dispatch',
                 args=['event', self.param["type"]])
-        );
+        )
 
     def parseParams(self, param):
-        match = super().parseMatch('\s+');
-        param = dict(type=param);
-        return param;
+        match = super().parseMatch('\s+')
+        param = dict(type=param)
+        return param

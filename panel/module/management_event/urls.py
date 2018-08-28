@@ -1,10 +1,11 @@
 from django.urls import path
-from blackbox.block_app.management_event.views import ManagementEventView as MEView
+from . import views
 
 urlpatterns = [
-    path('', MEView.home, name='blackbox.block_app.management.event.index'),
-    path('<str:dispatch_path>', MEView.viewDispatch, name='blackbox.block_app.management.event.view_dispatch'),
-    path('<str:dispatch_path>/process', MEView.processDispatch, name='blackbox.block_app.management.event.process_dispatch'),
-    path('<str:dispatch_path>/<str:param>', MEView.viewDispatch, name='blackbox.block_app.management.event.view_dispatch_param'),
-    path('<str:dispatch_path>/process/<str:param>', MEView.processDispatch, name='blackbox.block_app.management.event.process_dispatch_param'),
+    path('', views.index, name='panel.module.management_event.index'),
+    path('<str:route>', views.viewDispatch, name='panel.module.management_event.view_dispatch'),
+    path('<str:route>/process', views.processDispatch, name='panel.module.management_event.process_dispatch'),
+    path('<str:route>/<str:param>', views.viewDispatch, name='panel.module.management_event.view_dispatch_param'),
+    path('<str:route>/process/<str:param>', views.processDispatch,
+         name='panel.module.management_event.process_dispatch_param'),
 ]

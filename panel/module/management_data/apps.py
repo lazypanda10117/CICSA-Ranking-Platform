@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class BlackboxSudoAppConfig(AppConfig):
-    name = 'blackbox.sudo_app'
+class PanelManagementData(AppConfig):
+    name = 'panel.module.management_data'

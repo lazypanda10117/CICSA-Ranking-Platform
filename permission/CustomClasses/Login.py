@@ -2,7 +2,7 @@ import hashlib
 from django.shortcuts import redirect, reverse
 from django.http import HttpResponse
 from cicsa_ranking.models import *
-from misc.CustomFunctions import AuthFunctions, LogFunctions, ModelFunctions
+from misc.CustomFunctions import AuthFunctions, LogFunctions, ModelFunctions, RequestFunctions
 
 
 class Login:
@@ -10,12 +10,10 @@ class Login:
         self.request = request
 
     def login(self):
-        # post_dict = dict(self.request.POST)
-        # if (RequestFunctions.getSinglePostObj(post_dict, "email") and
-        # RequestFunctions.getSinglePostObj(post_dict, "password"):
-        if self.request.POST.get("email") is not None and self.request.POST.get("password") is not None:
-            uemail = self.request.POST.get("email")
-            upwd = self.request.POST.get("password")
+        post_dict = dict(self.request.POST)
+        uemail = RequestFunctions.getSinglePostObj(post_dict, "email")
+        upwd = RequestFunctions.getSinglePostObj(post_dict, "password")
+        if uemail and upwd:
             u = ModelFunctions.getModelObject(Account, account_email=uemail)
             if u is None:
                 return HttpResponse('{"Response": "Error: No Such User"}')
@@ -29,7 +27,7 @@ class Login:
                         self.request.session['utype'] = u.account_type
                         LogFunctions.loghelper(self.request, "system",
                                                LogFunctions.logQueryMaker(Account, 'Login', id=u.id))
-                        return redirect(reverse('permission.dispatch', args=['view']))  # TODO: platform index
+                        return redirect(reverse('panel.index'))
                     else:
                         return HttpResponse('{"Response": "Error: Insufficient Permission"}')
                 else:
@@ -43,6 +41,6 @@ class Login:
                                    LogFunctions.logQueryMaker(Account, 'Logout', id=self.request.session['uid']))
             self.request.session['uid'] = None
             self.request.session['utype'] = None
-            return redirect(reverse('permission.dispatch', args=['view']))  # TODO: login page
+            return redirect(reverse('permission.dispatch', args=['view']))
         else:
             return HttpResponse('{"Response": "Error: Not Logged In"}')

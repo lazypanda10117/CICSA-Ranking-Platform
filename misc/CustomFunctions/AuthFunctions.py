@@ -9,7 +9,7 @@ def kickRequest(request, authenticated, rend):
             rend if math.ceil(x+0.5) else (
                 lambda y: redirect(
                     reverse('permission.dispatch', args=['view'])
-                ) if math.ceil(y+0.5) else redirect('adminIndex')
+                ) if math.ceil(y+0.5) else redirect('panel.index')
             )(authenticated*2-1))((authenticated*2-1)*(signed_in(request, 'admin')*2-1))
 
 

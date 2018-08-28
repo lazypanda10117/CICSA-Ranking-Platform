@@ -38,6 +38,9 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 INSTALLED_APPS = [
     'cicsa_ranking.apps.CicsaRankingConfig',
+    'panel.apps.PanelConfig',
+    'panel.module.management_event.apps.PanelManagementEventConfig',
+    'panel.module.management_ranking.apps.PanelManagementRankingConfig',
     'client.apps.ClientConfig',
     'corsheaders',
     'django.contrib.admin',
