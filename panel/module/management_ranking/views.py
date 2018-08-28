@@ -10,16 +10,11 @@ def index(request):
 
 
 def viewDispatch(request, route, param=''):
-    dispatcher = ManagementRankingView().setViewDispatcher()
-    page = dispatcher.get(route)(request, param)
-    return page.render()
-
+    return ManagementRankingView.viewDispatch(request, route, param)
 
 @csrf_exempt
 def processDispatch(request, route, param=''):
-    dispatcher = ManagementRankingView().setProcessDispatcher()
-    page = dispatcher.get(route)(request, param)
-    return page.process()
+    return ManagementRankingView.processDispatch(request, route, param)
 
 
 class ManagementRankingView(AbstractBlockApp.AppView):

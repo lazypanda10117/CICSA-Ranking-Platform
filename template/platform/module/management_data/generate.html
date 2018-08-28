@@ -1,4 +1,4 @@
-{% extends 'blackbox/platform/header.html' %}
+{% extends 'platform/module/management_data/base.html' %}
 {% block 'head' %}
     {% if type.form %}
         <script>
@@ -61,6 +61,6 @@
         {% endfor %}
     {% endif %}
     {% if type.form %}
-        {% include "blackbox/platform/component/regularForm.html" with action_destination=context.destination form_action=context.form_action form_id=context.form_id form=context.form special_context=special_context only %}
+        {% include "blackbox/platform/component/form.html" with action_destination=context.destination form_action=context.form_action form_id=context.form_id form=context.form special_context=special_context only %}
     {% endif %}
 {% endblock %}

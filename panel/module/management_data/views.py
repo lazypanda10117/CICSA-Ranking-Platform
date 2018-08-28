@@ -1,43 +1,34 @@
-from django.shortcuts import render, redirect, get_object_or_404, HttpResponseRedirect
-from django.http import HttpResponse
+from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+from misc.CustomElements import Dispatcher
+from ..base.block.Base import AbstractBlockApp
+from .CustomView import CustomView
+from .GeneralView import GeneralView
 
-from .generalFunctions import *
-from .HelperClass import *
-from .API import *
-from .GeneralView import *
-from .CustomView import *
 
-from .models import *
-from .forms import *
-
-@csrf_exempt
 def index(request):
-    return kickRequest(request, True, render(request, 'console/index.html'));
+    return ManagementDataView().home(request)
+
 
 @csrf_exempt
-def permission(request):
-    return kickRequest(request, False, render(request, 'console/login.html'));
+def viewDispatch(request, route, param=''):
+    dispatcher = ManagementDataView().setViewDispatcher()
+    view = dispatcher.get(route)(request)
+    return view.dispatch(param)
 
-@csrf_exempt
-def login(request):
-    return Authentication(request).login();
 
-@csrf_exempt
-def logout(request):
-    return Authentication(request).logout();
+class ManagementDataView(AbstractBlockApp.AppView):
+    # Block App Base View Inherited Functions
+    @staticmethod
+    def home(request):
+        # return super().index('panel.module.management_data.index', ['event'])
+        return render(request, 'platform/index.html')
 
-@csrf_exempt
-def search(request):
-    item = request.GET.get("item");
-    key = request.GET.get("key");
-    term = request.GET.get("term");
-    return SearchAPI().search(item, key, term);
+    def setViewDispatcher(self):
+        dispatcher = Dispatcher()
+        dispatcher.add('general', GeneralView)
+        dispatcher.add('custom', CustomView)
+        return dispatcher
 
-@csrf_exempt
-def generalView(request, form_path):
-    return GeneralView(request).dispatch(form_path);
-
-@csrf_exempt
-def customView(request, form_path):
-    return CustomView(request).dispatch(form_path);
+    def setProcessDispatcher(self):
+        pass

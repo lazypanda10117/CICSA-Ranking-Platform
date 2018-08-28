@@ -1,7 +1,7 @@
 <form action="{{ action_destination }}" id="{{ form_id }}" method="post">
     {{ form.as_p }}
     {% if special_context %}
-        {% include "console/searchField.html" with special_context=special_context only %}
+        {% include "console/search_element.html" with special_context=special_context only %}
     {% endif %}
     <input type="submit" value="{{ form_action }}" name="{{ form_action }}"/>
 </form>

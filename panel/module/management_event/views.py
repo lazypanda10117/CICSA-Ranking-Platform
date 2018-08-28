@@ -10,16 +10,11 @@ def index(request):
 
 
 def viewDispatch(request, route, param=''):
-    dispatcher = ManagementEventView().setViewDispatcher()
-    page = dispatcher.get(route)(request, param)
-    return page.render()
-
+    return ManagementEventView.viewDispatch(request, route, param)
 
 @csrf_exempt
 def processDispatch(request, route, param=''):
-    dispatcher = ManagementEventView().setProcessDispatcher()
-    page = dispatcher.get(route)(request, param)
-    return page.process()
+    return ManagementEventView.processDispatch(request, route, param)
 
 
 class ManagementEventView(AbstractBlockApp.AppView):
