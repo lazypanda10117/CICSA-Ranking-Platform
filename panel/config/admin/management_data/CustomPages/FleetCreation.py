@@ -3,7 +3,8 @@ from ..generalFunctions import *
 from .EventManagement import *
 from ..API import *
 
-from ..models import *
+from cicsa_ranking.models import Event, EventActivity, Team, School, EventTeam, EventTag, Summary, Season
+
 
 class FleetManagementView(EventManagementView):
     def __init__(self, request):
@@ -21,8 +22,7 @@ class FleetManagementView(EventManagementView):
         self.event_team_name_suffix = ["Team A", "Team B"];
         self.event_activity_type = "race";
 
-
-    ### Class Specific Functions
+    # Class Specific Functions
     def getChoiceData(self):
         choice_data = super().getChoiceData();
         choice_data['event_type'] = tuple([(lambda x: (x.id, x.event_type_name))
@@ -42,7 +42,6 @@ class FleetManagementView(EventManagementView):
                                           for race in range(event_race_number)];
             result_dict[tag_dict[tag]] = team_sequence;
         return result_dict;
-
 
     def abstractFormProcess(self, action, **kwargs):
         def add():

@@ -1,71 +1,37 @@
-from cicsa_ranking import models as model
-from .AuthenticationBase import AuthenticationBase
-from .AuthenticantionComponentBase import AuthenticationComponentBase
+from misc.CustomElements import Dispatcher
+from ...config.team.management_data.CustomPages import *
+from ...config.team.management_data.CustomForms import *
 
 
-class AuthenticationTeam(AuthenticationBase):
-    class EventActivity(AuthenticationComponentBase):
-        def setBaseModelClass(self):
-            return model.EventActivity
+class AuthenticationAdmin:
+    @staticmethod
+    def getIdentifier():
+        return 'team'
 
-        class SingleAuthenticate(AuthenticationComponentBase.SingleAuthenticate):
-            def viewAuthenticate(self):
-                pass
+    class ManagementData:
+        @staticmethod
+        def getDataGeneralDispatcher():
+            dispatcher = Dispatcher()
+            dispatcher.add('season', {'class': Season, 'form': SeasonForm})
+            dispatcher.add('region', {'class': Region, 'form': RegionForm})
+            dispatcher.add('event type', {'class': EventType, 'form': EventTypeForm})
+            dispatcher.add('score mapping', {'class': ScoreMapping, 'form': ScoreMappingForm})
+            dispatcher.add('log', {'class': Log, 'form': LogForm})
 
-            def editAuthenticate(self):
-                pass
+        @staticmethod
+        def getDataCustomDispatcher():
+            dispatcher = Dispatcher()
+            dispatcher.add('fleet race', {'class': FleetManagementView, 'form': EventManagementForm})
+            dispatcher.add('team race', {'class': TeamManagementView, 'form': EventManagementForm})
+            dispatcher.add('event', {'class': EventView, 'form': EventForm})
+            dispatcher.add('summary', {'class': SummaryView, 'form': SummaryForm})
+            dispatcher.add('event activity', {'class': EventActivityView, 'form': EventActivityForm})
+            dispatcher.add('event tag', {'class': EventTagView, 'form': EventTagForm})
+            dispatcher.add('event team', {'class': EventTeamView, 'form': EventTeamForm})
+            dispatcher.add('school', {'class': SchoolView, 'form': SchoolForm})
+            dispatcher.add('team', {'class': TeamView, 'form': TeamForm})
+            dispatcher.add('member', {'class': MemberView, 'form': MemberForm})
+            dispatcher.add('member group', {'class': MemberGroupView, 'form': MemberGroupForm})
+            dispatcher.add('account', {'class': AccountView, 'form': AccountForm})
 
-        class BulkAuthenticate(AuthenticationComponentBase.BulkAuthenticate):
-            def viewAuthenticate(self):
-                pass
 
-            def editAuthenticate(self):
-                pass
-
-    class Event(AuthenticationComponentBase):
-        def setBaseModelClass(self):
-            return model.Event
-
-    class EventTag(AuthenticationComponentBase):
-        def setBaseModelClass(self):
-            return model.EventTag
-
-    class EventTeam(AuthenticationComponentBase):
-        def setBaseModelClass(self):
-            return model.EventTeam
-
-    class Log(AuthenticationComponentBase):
-        def setBaseModelClass(self):
-            return model.Log
-
-    class Member(AuthenticationComponentBase):
-        def setBaseModelClass(self):
-            return model.Member
-
-    class MemberGroup(AuthenticationComponentBase):
-        def setBaseModelClass(self):
-            return model.MemberGroup
-
-    class Region(AuthenticationComponentBase):
-        def setBaseModelClass(self):
-            return model.Region
-
-    class School(AuthenticationComponentBase):
-        def setBaseModelClass(self):
-            return model.School
-
-    class ScoreMapping(AuthenticationComponentBase):
-        def setBaseModelClass(self):
-            return model.ScoreMapping
-
-    class Season(AuthenticationComponentBase):
-        def setBaseModelClass(self):
-            return model.Season
-
-    class Summary(AuthenticationComponentBase):
-        def setBaseModelClass(self):
-            return model.Summary
-
-    class Team(AuthenticationComponentBase):
-        def setBaseModelClass(self):
-            return model.Team

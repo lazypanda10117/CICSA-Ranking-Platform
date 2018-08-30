@@ -37,3 +37,9 @@ def modAdd(base, add, mod):
 
 def getViewJSON(action, element_id):
     return {"action": action, "id": element_id}
+
+
+def updateDict(dictionary, new_dictionary):
+    d = dictionary
+    d.update(new_dictionary)
+    return d

@@ -6,7 +6,8 @@ class AuthenticationFactory:
     def __init__(self, path):
         self.path = path
 
-    def getDispatcher(self):
+    @staticmethod
+    def getDispatcher():
         dispatcher = Dispatcher();
         dispatcher.add('admin', AuthenticationAdmin)
         dispatcher.add('team', AuthenticationTeam)
