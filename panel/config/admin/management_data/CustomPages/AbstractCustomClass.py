@@ -1,37 +1,28 @@
-from abc import abstractmethod
+from abc import ABC
+from panel.component.CustomElements import Button
+from misc.CustomFunctions import UrlFunctions
+from .ImmutableBase import ImmutableBase
 
-from .AbstractImmutableCustomClass import *
-from ..HelperClass import *
-from ..generalFunctions import *
 
-from ..models import *
-from ..forms import *
-
-class AbstractCustomClass(AbstractImmutableCustomClass):
-
-    def __init__(self, request, base_class, validation_table):
-        self.dispatcher = self.setViewDispatcher();
-        self.request = request;
-        self.base_class = base_class;
-        self.validation_table = validation_table;
-
+class AbstractCustomClass(ImmutableBase, ABC):
     def setViewDispatcher(self):
-        dispatcher = super().setViewDispatcher();
-        dispatcher.update('edit', True);
-        dispatcher.update('delete', True);
-        return dispatcher;
+        dispatcher = super().setViewDispatcher()
+        dispatcher.update('edit', True)
+        dispatcher.update('delete', True)
+        return dispatcher
 
-    ### Table Generating Functions
+    # Table Generating Functions
     def getTableHeader(self):
-        return self.getTableSpecificHeader() + ["edit", "delete"];
+        return self.getTableSpecificHeader() + ["edit", "delete"]
 
     def getTableRow(self, content):
-        rowContent = {};
-        rowContent["db_content"] = self.getTableRowContent(content);
-        rowContent["button"] = self.makeEditDeleteBtn('custom', str(content.id));
-        return rowContent;
+        rowContent = dict()
+        rowContent["db_content"] = self.getTableRowContent(content)
+        rowContent["button"] = self.makeEditDeleteBtn('custom', str(content.id))
+        return rowContent
 
-    def makeEditDeleteBtn(self, path, id):
-        editBtn = Button('Edit', 'info', generateGETURL(path, {"action": 'edit', "element_id": id}));
-        deleteBtn = Button('Delete', 'danger', generateGETURL(path, {"action": 'delete', "element_id": id}))
-        return [editBtn, deleteBtn];
+    @staticmethod
+    def makeEditDeleteBtn(path, id):
+        editBtn = Button('Edit', 'info', UrlFunctions.generateGETURL(path, {"action": 'edit', "element_id": id}))
+        deleteBtn = Button('Delete', 'danger', UrlFunctions.generateGETURL(path, {"action": 'delete', "element_id": id}))
+        return [editBtn, deleteBtn]
