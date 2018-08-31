@@ -3,10 +3,10 @@
 		<div class="row">
 			<div class="col-lg-4">
 				<h3>Standings</h3>
-				{% if y %}
+				{% if standings %}
 					<ol>
-						{% for x in y %}
-							<li>{{ x }}</li>
+						{% for standing in standings %}
+							<li>{{ standing }}</li>
 						{% endfor %}
 					</ol>
 				{% else %}
@@ -15,18 +15,15 @@
 			</div>
 			<div class="col-lg-8">
 				<h3>Upcoming Regattas</h3>
-				{% if z %}
+				{% if regattas %}
 					<table class="table">
 						<tbody>
-							{% for y in z %}
+							{% for regatta in regattas %}
 								<tr>
-									{% for x in y %}
-										{% if forloop.first %}
-											<th scope="row">{{ x }}</th>
-										{% else %}
-											<td>{{ x }}</td>
-										{% endif %}
-									{% endfor %}
+									<td scope="row">{{ regatta.name }}</th>
+									<td>{{ regatta.university }}</td>
+									<td>{{ regatta.location }}</td>
+									<td>{{ regatta.date }}</td>
 								</tr>
 							{% endfor %}
 						</tbody>
@@ -39,8 +36,8 @@
 		<div class="row">
 			<div class="col">
 				<h3>News/Notices</h3>
-				{% for x in y %}
-					<p>{{ x }}</p>
+				{% for news in all_news %}
+					<p>{{ news }}</p>
 				{% empty %}
 					No News/Notices
 				{% endfor %}
