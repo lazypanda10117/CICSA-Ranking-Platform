@@ -43,3 +43,7 @@ def updateDict(dictionary, new_dictionary):
     d = dictionary
     d.update(new_dictionary)
     return d
+
+
+def getModelName(model):
+    return model.__class__.__name__

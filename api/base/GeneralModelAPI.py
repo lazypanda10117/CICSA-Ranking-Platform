@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from misc.CustomFunctions import ModelFunctions
+from misc.CustomFunctions import ModelFunctions, AuthFunctions
 from ..base.AbstractAPI import AbstractAPI
 
 
@@ -13,6 +13,12 @@ class GeneralModelAPI(AbstractAPI):
     @abstractmethod
     def setBaseClass(self):
         pass;
+
+    def verifySelf(self, **kwargs):
+        result = ModelFunctions.getModelObject(self.base, **kwargs)
+        result = self.auth_class(self.request).authenticate('edit', result)
+        AuthFunctions.raise404Empty(result)
+        return result
 
     def getSelf(self, **kwargs):
         result = ModelFunctions.getModelObject(self.base, **kwargs)

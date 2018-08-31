@@ -10,7 +10,8 @@ class ImmutableBase(ABC):
         self.dispatcher = self.setViewDispatcher()
         self.request = request
         self.base_class = base_class
-        self.base_class_name = self.base_class.__class__.__name__
+        self.base_class_name = MiscFunctions.getModelName(self.base_class)
+        self.api_table = self.setAPIDispatcher()
         self.validation_table = validation_table
 
     @staticmethod
@@ -165,3 +166,7 @@ class ImmutableBase(ABC):
         tableContent = self.getTableContent(**self.getFilterTerms())
         table = Table(self.base_class, form_path).makeCustomTables(tableHeader, tableContent)
         return [table]
+
+# Useful Functions
+    def useAPI(self, model):
+        return self.api_table.get(MiscFunctions.getModelName(model))(self.request)
