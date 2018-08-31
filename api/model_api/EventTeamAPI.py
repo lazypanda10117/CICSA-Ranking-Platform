@@ -9,4 +9,4 @@ class EventTeamAPI(GeneralModelAPI):
 
     @staticmethod
     def getEventTeamModifyLink(**kwargs):
-        return UrlFunctions.getModifiyLink('event team', **kwargs)
+        return UrlFunctions.getModifyLink('event team', **kwargs)

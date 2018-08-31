@@ -9,4 +9,4 @@ class SummaryAPI(GeneralModelAPI):
 
     @staticmethod
     def getEventSummaryModifiyLink(**kwargs):
-        return UrlFunctions.getModifiyLink('summary', **kwargs)
+        return UrlFunctions.getModifyLink('summary', **kwargs)

@@ -12,7 +12,7 @@ def emptyActionRedirect(request, func):
         return func
 
 
-def getModifiyLink(tag, **kwargs):
+def getModifyLink(tag, **kwargs):
     return reverse('adminCustomView', args=[tag]) + '?kwargs=' + json.dumps(kwargs)
 
 

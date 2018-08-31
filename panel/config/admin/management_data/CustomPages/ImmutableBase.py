@@ -1,9 +1,8 @@
 import json
 from abc import ABC, abstractmethod
-from django.apps import apps
 from panel.component.CustomElements import Table
 from misc.CustomElements import Dispatcher
-from misc.CustomFunctions import MiscFunctions, RequestFunctions
+from misc.CustomFunctions import APIFunctions, MiscFunctions, RequestFunctions
 
 
 class ImmutableBase(ABC):
@@ -16,12 +15,8 @@ class ImmutableBase(ABC):
 
     @staticmethod
     def setAPIDispatcher():
-        dispatcher = Dispatcher()
-        app_models = apps.get_app_config('cicsa_ranking').get_models()
-        for model in app_models:
-            dispatcher.add(model.__name__, )
+        dispatcher = APIFunctions.getModelAPIDispatcher()
         return dispatcher
-
 
     @staticmethod
     def setViewDispatcher():
@@ -158,8 +153,12 @@ class ImmutableBase(ABC):
 
     def getTableContent(self, sort_function, **kwargs):
         api_dispatcher = self.setAPIDispatcher()
-        return [self.getTableRow(content) for content in sorted(
-            api_dispatcher.get(self.base_class_name).getSelf(**kwargs), key=lambda q: q.id)]
+        return [
+            self.getTableRow(content) for content in sorted(
+                api_dispatcher.get(self.base_class_name).getSelf(**kwargs),
+                key=lambda q: q.id
+            )
+        ]
 
     def grabTableData(self, form_path):
         tableHeader = self.getTableHeader()

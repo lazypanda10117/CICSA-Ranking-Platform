@@ -9,4 +9,4 @@ class TeamAPI(GeneralModelAPI):
 
     @staticmethod
     def getTeamModifyLink(**kwargs):
-        return UrlFunctions.getModifiyLink('team', **kwargs)
+        return UrlFunctions.getModifyLink('team', **kwargs)

@@ -22,7 +22,11 @@ class AbstractCustomClass(ImmutableBase, ABC):
         return rowContent
 
     @staticmethod
-    def makeEditDeleteBtn(path, id):
-        editBtn = Button('Edit', 'info', UrlFunctions.generateGETURL(path, {"action": 'edit', "element_id": id}))
-        deleteBtn = Button('Delete', 'danger', UrlFunctions.generateGETURL(path, {"action": 'delete', "element_id": id}))
+    def makeEditDeleteBtn(path, element_id):
+        editBtn = Button(
+            'Edit', 'info', UrlFunctions.generateGETURL(path, {"action": 'edit', "element_id": element_id})
+        )
+        deleteBtn = Button(
+            'Delete', 'danger', UrlFunctions.generateGETURL(path, {"action": 'delete', "element_id": element_id})
+        )
         return [editBtn, deleteBtn]
