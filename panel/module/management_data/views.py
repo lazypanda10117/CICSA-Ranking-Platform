@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from misc.CustomElements import Dispatcher
 from ..base.block.Base import AbstractBlockApp
@@ -19,10 +18,8 @@ def viewDispatch(request, route, param=''):
 
 class ManagementDataView(AbstractBlockApp.AppView):
     # Block App Base View Inherited Functions
-    @staticmethod
-    def home(request):
-        # return super().index('panel.module.management_data.index', ['event'])
-        return render(request, 'platform/index.html')
+    def home(self, request):
+        return super().index('panel.module.management_data.view_dispatch_param', ['custom', 'account'])
 
     def setViewDispatcher(self):
         dispatcher = Dispatcher()

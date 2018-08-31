@@ -10,11 +10,11 @@ def index(request):
 
 
 def viewDispatch(request, route, param=''):
-    return ManagementRankingView.viewDispatch(request, route, param)
+    return ManagementRankingView().viewDispatch(request, route, param)
 
 @csrf_exempt
 def processDispatch(request, route, param=''):
-    return ManagementRankingView.processDispatch(request, route, param)
+    return ManagementRankingView().processDispatch(request, route, param)
 
 
 class ManagementRankingView(AbstractBlockApp.AppView):

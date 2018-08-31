@@ -3,5 +3,6 @@ from ..base.GeneralModelAPI import GeneralModelAPI
 
 
 class EventTypeAPI(GeneralModelAPI):
-    def setBaseClass(self):
+    @staticmethod
+    def getBaseClass():
         return EventType

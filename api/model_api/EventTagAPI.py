@@ -4,7 +4,8 @@ from ..base.GeneralModelAPI import GeneralModelAPI
 
 
 class EventTagAPI(GeneralModelAPI):
-    def setBaseClass(self):
+    @staticmethod
+    def getBaseClass():
         return EventTag
 
     @staticmethod

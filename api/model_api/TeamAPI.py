@@ -4,7 +4,8 @@ from ..base.GeneralModelAPI import GeneralModelAPI
 
 
 class TeamAPI(GeneralModelAPI):
-    def setBaseClass(self):
+    @staticmethod
+    def getBaseClass():
         return Team
 
     @staticmethod

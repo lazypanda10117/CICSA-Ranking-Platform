@@ -4,7 +4,8 @@ from ..base.GeneralModelAPI import GeneralModelAPI
 
 
 class EventTeamAPI(GeneralModelAPI):
-    def setBaseClass(self):
+    @staticmethod
+    def getBaseClass():
         return EventTeam
 
     @staticmethod

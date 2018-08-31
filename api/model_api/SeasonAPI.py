@@ -3,5 +3,6 @@ from ..base.GeneralModelAPI import GeneralModelAPI
 
 
 class SeasonAPI(GeneralModelAPI):
-    def setBaseClass(self):
+    @staticmethod
+    def getBaseClass():
         return Season

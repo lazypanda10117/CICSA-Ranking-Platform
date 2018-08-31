@@ -4,7 +4,8 @@ from ..base.GeneralModelAPI import GeneralModelAPI
 
 
 class SummaryAPI(GeneralModelAPI):
-    def setBaseClass(self):
+    @staticmethod
+    def getBaseClass():
         return Summary
 
     @staticmethod

@@ -3,5 +3,6 @@ from ..base.GeneralModelAPI import GeneralModelAPI
 
 
 class SchoolAPI(GeneralModelAPI):
-    def setBaseClass(self):
+    @staticmethod
+    def getBaseClass():
         return School

@@ -60,12 +60,12 @@ class AuthenticationComponentBase(ABC):
             return self.editAuthenticate()
 
     def authTypeDispatcher(self, objects):
-        if len(objects) == 0:
+        if objects is None:
             return self.NoneAuthenticate(objects)
-        elif len(objects) == 1:
-            return self.SingleAuthenticate(objects)
-        else:
+        elif type(objects) == 'QuerySet':
             return self.BulkAuthenticate(objects)
+        else:
+            return self.SingleAuthenticate(objects)
 
     def getAuthDispatcher(self, objects):
         dispatcher = Dispatcher()

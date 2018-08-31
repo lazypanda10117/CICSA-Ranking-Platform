@@ -5,7 +5,8 @@ from ..model_api import EventActivityAPI, EventTeamAPI, TeamAPI
 
 
 class EventAPI(GeneralModelAPI):
-    def setBaseClass(self):
+    @staticmethod
+    def getBaseClass():
         return Event
 
     def getEventCascadeTeams(self, event_id):

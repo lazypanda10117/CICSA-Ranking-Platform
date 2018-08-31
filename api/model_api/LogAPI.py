@@ -3,5 +3,6 @@ from ..base.GeneralModelAPI import GeneralModelAPI
 
 
 class LogAPI(GeneralModelAPI):
-    def setBaseClass(self):
+    @staticmethod
+    def getBaseClass():
         return Log

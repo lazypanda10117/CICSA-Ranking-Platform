@@ -8,6 +8,7 @@ class AuthenticationBase:
 
     def __getDispatcher(self):
         dispatcher = Dispatcher()
+        dispatcher.add(model.Account.__class__.__name__, self.Account)
         dispatcher.add(model.EventActivity.__class__.__name__, self.EventActivity)
         dispatcher.add(model.Event.__class__.__name__, self.Event)
         dispatcher.add(model.EventTag.__class__.__name__, self.EventTag)

@@ -10,7 +10,6 @@ class ImmutableBase(ABC):
         self.dispatcher = self.setViewDispatcher()
         self.request = request
         self.base_class = base_class
-        self.base_class_name = MiscFunctions.getModelName(self.base_class)
         self.api_table = self.setAPIDispatcher()
         self.validation_table = validation_table
 
@@ -152,11 +151,10 @@ class ImmutableBase(ABC):
             temp_data[key] = value
         return temp_data
 
-    def getTableContent(self, sort_function, **kwargs):
-        api_dispatcher = self.setAPIDispatcher()
+    def getTableContent(self, **kwargs):
         return [
             self.getTableRow(content) for content in sorted(
-                api_dispatcher.get(self.base_class_name).getSelf(**kwargs),
+                self.useAPI(self.base_class).filterSelf(**kwargs),
                 key=lambda q: q.id
             )
         ]

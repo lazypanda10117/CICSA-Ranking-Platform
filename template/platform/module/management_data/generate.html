@@ -1,10 +1,28 @@
-{% if auth == admin %}
-    {% extends 'platform/module/management_data/admin_base.html' %}
-{% elif auth == team %}
-    {% extends 'platform/module/management_data/team_base.html' %}
-{% endif %}
+{% extends template_base %}
 
 {% block 'head' %}
+    <script>
+        function showDropdown(i){
+            var container = document.getElementById("dropdown-container-"+i);
+            if (container.style.display === 'none'){
+                container.style.display = 'block';
+            }else{
+                container.style.display = 'none';
+            }
+        }
+        function redirect(link){
+            window.location.href = link;
+        }
+        function preDropdownClicks(){
+            dropdown_num = 4;
+            for(i = 1; i <= dropdown_num; i++){
+                showDropdown(i);
+            }
+        }
+        function onLoad(){
+            preDropdownClicks();
+        }
+    </script>
     {% if type.form %}
         <script>
             function json_prettify(blob) {

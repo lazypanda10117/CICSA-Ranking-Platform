@@ -5,11 +5,11 @@
     </button>
     <div class="custom-dropdown-container" id="dropdown-container-1">
         <ul>
-            <li><a href="{% url 'adminCustomView' 'event' %}">Event (Logic-less)</a></li>
-            <li><a href="{% url 'adminCustomView' 'summary' %}">Summary</a></li>
-            <li><a href="{% url 'adminCustomView' 'event activity' %}">Event Activity</a></li>
-            <li><a href="{% url 'adminCustomView' 'event tag' %}">Event Tag</a></li>
-            <li><a href="{% url 'adminCustomView' 'event team' %}">Event Team Link</a></li>
+            <li><a href="{% url 'panel.module.management_data.view_dispatch_param' 'custom' 'event' %}">Event (Logic-less)</a></li>
+            <li><a href="{% url 'panel.module.management_data.view_dispatch_param' 'custom' 'summary' %}">Summary</a></li>
+            <li><a href="{% url 'panel.module.management_data.view_dispatch_param' 'custom' 'event activity' %}">Event Activity</a></li>
+            <li><a href="{% url 'panel.module.management_data.view_dispatch_param' 'custom' 'event tag' %}">Event Tag</a></li>
+            <li><a href="{% url 'panel.module.management_data.view_dispatch_param' 'custom' 'event team' %}">Event Team Link</a></li>
         </ul>
     </div>
 
@@ -18,10 +18,10 @@
     </button>
     <div class="custom-dropdown-container" id="dropdown-container-2">
         <ul>
-            <li><a href="{% url 'adminCustomView' 'school' %}">School</a></li>
-            <li><a href="{% url 'adminCustomView' 'team' %}">Team</a></li>
-            <li><a href="{% url 'adminCustomView' 'member' %}">Member</a></li>
-            <li><a href="{% url 'adminCustomView' 'member group' %}">Member Group</a></li>
+            <li><a href="{% url 'panel.module.management_data.view_dispatch_param' 'custom' 'school' %}">School</a></li>
+            <li><a href="{% url 'panel.module.management_data.view_dispatch_param' 'custom' 'team' %}">Team</a></li>
+            <li><a href="{% url 'panel.module.management_data.view_dispatch_param' 'custom' 'member' %}">Member</a></li>
+            <li><a href="{% url 'panel.module.management_data.view_dispatch_param' 'custom' 'member group' %}">Member Group</a></li>
         </ul>
     </div>
 
@@ -30,10 +30,10 @@
     </button>
     <div class="custom-dropdown-container" id="dropdown-container-3">
         <ul>
-            <li><a href="{% url 'adminGeneralView' 'season' %}">Season</a></li>
-            <li><a href="{% url 'adminGeneralView' 'region' %}">Region</a></li>
-            <li><a href="{% url 'adminGeneralView' 'event type' %}">Event Type</a></li>
-            <li><a href="{% url 'adminGeneralView' 'score mapping' %}">Score Map</a></li>
+            <li><a href="{% url 'panel.module.management_data.view_dispatch_param' 'general' 'season' %}">Season</a></li>
+            <li><a href="{% url 'panel.module.management_data.view_dispatch_param' 'general' 'region' %}">Region</a></li>
+            <li><a href="{% url 'panel.module.management_data.view_dispatch_param' 'general' 'event type' %}">Event Type</a></li>
+            <li><a href="{% url 'panel.module.management_data.view_dispatch_param' 'general' 'score mapping' %}">Score Map</a></li>
         </ul>
     </div>
 
@@ -42,8 +42,8 @@
     </button>
     <div class="custom-dropdown-container" id="dropdown-container-4">
         <ul>
-            <li><a href="{% url 'adminCustomView' 'account' %}">Account</a></li>
-            <li><a href="{% url 'adminGeneralView' 'log' %}">Log</a></li>
+            <li><a href="{% url 'panel.module.management_data.view_dispatch_param' 'custom' 'account' %}">Account</a></li>
+            <li><a href="{% url 'panel.module.management_data.view_dispatch_param' 'general' 'log' %}">Log</a></li>
         </ul>
     </div>
 {% endblock %}

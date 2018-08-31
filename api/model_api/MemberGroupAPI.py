@@ -4,7 +4,8 @@ from ..base.GeneralModelAPI import GeneralModelAPI
 
 
 class MemberGroupAPI(GeneralModelAPI):
-    def setBaseClass(self):
+    @staticmethod
+    def getBaseClass():
         return MemberGroup
 
     def getMemberGroupName(self, member_group_id):

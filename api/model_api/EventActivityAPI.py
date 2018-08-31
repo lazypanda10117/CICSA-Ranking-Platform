@@ -4,7 +4,8 @@ from cicsa_ranking.models import EventActivity
 
 
 class EventActivityAPI(GeneralModelAPI):
-    def setBaseClass(self):
+    @staticmethod
+    def getBaseClass():
         return EventActivity
 
     def updateEventActivityState(self, event_activity_id, event_activity_status):

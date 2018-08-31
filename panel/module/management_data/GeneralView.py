@@ -8,33 +8,38 @@ from ..authentication.AuthenticationFactory import AuthenticationFactory
 
 class GeneralView:
     def __init__(self, request):
-        self.view_dispatcher = self.setDispatcher()
-        self.destination = 'generalProcess'
-        self.session_name = 'general_view'
-        self.page_path = 'platform/module/management_data/generate.html'
         self.request = request
         self.permission_obj = AuthenticationFactory(self.request.session['utype']).dispatch()
+        self.view_dispatcher = self.setDispatcher()
+        self.destination = 'general'
+        self.session_name = 'general_view'
+        self.page_path = 'platform/module/management_data/generate.html'
+        self.template_base = self.getTemplateBase()
 
     def setDispatcher(self):
         dispatcher = self.permission_obj().ManagementData().getDataGeneralDispatcher()
         return dispatcher
+
+    def getTemplateBase(self):
+        template_base = self.permission_obj().ManagementData().getTemplateBase()
+        return template_base
 
     def dispatch(self, form_path):
         self.form_path = form_path
 
         def generalViewDisplay():
             def actionView():
-                type = dict(table=True)
+                action_type = dict(table=True)
                 table = Table(currentClass, self.form_path).makeTable()
                 content = [table]
-                return dict(page_title=page_title, type=type, context=content)
+                return dict(page_title=page_title, type=action_type, context=content)
 
             def actionAdd():
                 self.request.session[self.session_name] = MiscFunctions.getViewJSON(action, None)
-                type = dict(form=True)
+                action_type = dict(form=True)
                 content = Form('_add_form', form_path, action, self.destination,
                                self.view_dispatcher.get(self.form_path)["form"]())
-                return dict(page_title=page_title, type=type, context=content)
+                return dict(page_title=page_title, type=action_type, context=content)
 
             def actionEditDelete(choice):
                 choiceDict = {"edit": "_edit_form", "delete": "_delete_form"}
@@ -43,10 +48,10 @@ class GeneralView:
                 else:
                     self.request.session[self.session_name] = MiscFunctions.getViewJSON(action, element_id)
                     element = currentClass.objects.get(pk=int(element_id))
-                    type = dict(form=True)
+                    action_type = dict(form=True)
                     content = Form(choiceDict[choice], form_path, action, self.destination,
                                    self.view_dispatcher.get(self.form_path)["form"](instance=element))
-                    return dict(page_title=page_title, type=type, context=content)
+                    return dict(page_title=page_title, type=action_type, context=content)
 
             def setFunctionDispatcher():
                 dispatcher = Dispatcher()
@@ -68,7 +73,7 @@ class GeneralView:
             return (
                 lambda x: render(
                     self.request, self.page_path, MiscFunctions.updateDict(
-                        x, dict(auth=self.permission_obj().getIdentifier())
+                        x, dict(auth=self.permission_obj().getIdentifier(), template_base=self.template_base)
                     )
                 ) if x else HttpResponse(
                     '{"Response": "Error: Insufficient Parameters"}')
@@ -112,7 +117,7 @@ class GeneralView:
             functionDispatch = setFunctionDispatcher()
             functionDispatch.get(action)()
 
-            return HttpResponseRedirect('general')
+            return HttpResponseRedirect(self.destination)
 
         return AuthFunctions.kickRequest(
             self.request, True, (

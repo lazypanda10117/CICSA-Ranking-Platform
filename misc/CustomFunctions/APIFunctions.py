@@ -4,6 +4,7 @@ from misc.CustomElements import Dispatcher
 
 def getAllModelAPIs():
     return [
+        AccountAPI,
         EventActivityAPI,
         EventAPI,
         EventTagAPI,
@@ -24,5 +25,5 @@ def getAllModelAPIs():
 def getModelAPIDispatcher():
     dispatcher = Dispatcher()
     for api in getAllModelAPIs():
-        dispatcher.add(api().class_name, api)
+        dispatcher.add(api.getBaseClass().__name__, api)
     return dispatcher

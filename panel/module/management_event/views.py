@@ -10,11 +10,12 @@ def index(request):
 
 
 def viewDispatch(request, route, param=''):
-    return ManagementEventView.viewDispatch(request, route, param)
+    return ManagementEventView().viewDispatch(request, route, param)
+
 
 @csrf_exempt
 def processDispatch(request, route, param=''):
-    return ManagementEventView.processDispatch(request, route, param)
+    return ManagementEventView().processDispatch(request, route, param)
 
 
 class ManagementEventView(AbstractBlockApp.AppView):

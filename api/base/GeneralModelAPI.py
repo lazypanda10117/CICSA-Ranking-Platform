@@ -6,12 +6,13 @@ from ..base.AbstractAPI import AbstractAPI
 class GeneralModelAPI(AbstractAPI):
     def __init__(self, request):
         super().__init__(request)
-        self.base = self.setBaseClass()
+        self.base = self.getBaseClass()
         self.class_name = self.base.__class__.__name__
         self.auth_class = self.auth(request).dispatch(self.class_name)
 
+    @staticmethod
     @abstractmethod
-    def setBaseClass(self):
+    def getBaseClass():
         pass;
 
     def verifySelf(self, **kwargs):

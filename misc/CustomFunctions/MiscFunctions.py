@@ -46,4 +46,4 @@ def updateDict(dictionary, new_dictionary):
 
 
 def getModelName(model):
-    return model.__class__.__name__
+    return model.__name__
