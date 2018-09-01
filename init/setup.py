@@ -23,8 +23,8 @@ def executeScriptsFromFile(filename, cu):
 
 
 def main():
-    if os.environ.get('SETUP_STATE') == 'True':
-        dispatcher = {1: 'reset.sql', 2: 'setup.sql'}
+    if os.environ.get('SETUP_STATE') == 'True' or True:
+        dispatcher = {1: 'init/reset.sql', 2: 'init/setup.sql'}
 
         parser = argparse.ArgumentParser()
         parser.add_argument("mode", help="setup mode", type=int)
