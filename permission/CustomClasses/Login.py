@@ -10,6 +10,11 @@ class Login:
         self.request = request
         self.acceptable_type = {"admin", "team"}
 
+    @staticmethod
+    def account_type_mapper(account_type):
+        type_map = dict(admin="admin", school="team")
+        return type_map[account_type]
+
     def login(self):
         post_dict = dict(self.request.POST)
         uemail = RequestFunctions.getSinglePostObj(post_dict, "email")
@@ -23,9 +28,10 @@ class Login:
                 u_salt = u.account_salt
                 verify_pwd = hashlib.sha224((upwd + u_salt).encode("utf-8")).hexdigest()
                 if u_pwd == verify_pwd:
-                    if u.account_type in self.acceptable_type:
+                    account_type = self.account_type_mapper(u.account_type)
+                    if account_type in self.acceptable_type:
                         self.request.session['uid'] = u.id
-                        self.request.session['utype'] = u.account_type
+                        self.request.session['utype'] = account_type
                         LogFunctions.loghelper(self.request, "system",
                                                LogFunctions.logQueryMaker(Account, 'Login', id=u.id))
                         return redirect(reverse('panel.index'))
