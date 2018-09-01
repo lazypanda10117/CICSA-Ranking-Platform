@@ -84,6 +84,6 @@
         {% endfor %}
     {% endif %}
     {% if type.form %}
-        {% include "platform/module/management_data/form.html" with action_destination=context.destination form_action=context.form_action form_id=context.form_id form=context.form special_context=special_context only %}
+        {% include "platform/module/management_data/component/form.html" with action_destination=context.destination form_action=context.form_action form_id=context.form_id form=context.form special_context=special_context only %}
     {% endif %}
 {% endblock %}

@@ -13,7 +13,7 @@ def emptyActionRedirect(request, func):
 
 
 def getModifyLink(tag, **kwargs):
-    return reverse('adminCustomView', args=[tag]) + '?kwargs=' + json.dumps(kwargs)
+    return reverse('panel.module.management_data.view_dispatch_param', args=[tag, 'custom']) + '?kwargs=' + json.dumps(kwargs)
 
 
 def generateGETURL(path, argList):

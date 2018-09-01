@@ -57,7 +57,7 @@ class AccountView(AbstractCustomClass):
             if action == 'delete':
                 account.delete()
         except Exception as e:
-            print({"Error": "Cannot Process " + action.title() + " Request. " + e})
+            print({"Error": "Cannot Process " + action.title() + " Request. " + str(e)})
 
 # View Generating Functions
     # Form Generating Functions
@@ -69,8 +69,8 @@ class AccountView(AbstractCustomClass):
 
             field_data = MiscFunctions.filterDict(
                 self.api_table.get(
-                    MiscFunctions.getModelName(self.base_class))().getSelf(
-                    self.base_class, id=element_id
+                    MiscFunctions.getModelName(self.base_class))(self.request).getSelf(
+                    id=element_id
                 ).__dict__.items(), self.validation_table['base_form_invalid'])
             return field_data
         return None

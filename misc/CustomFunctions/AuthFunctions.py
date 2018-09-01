@@ -18,5 +18,5 @@ def signed_in(request, user_type):
 
 
 def raise404Empty(objects):
-    if len(objects) == 0:
+    if objects is None:
         raise Http404

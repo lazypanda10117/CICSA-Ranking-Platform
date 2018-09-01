@@ -39,7 +39,7 @@ class CustomView:
 
             def loadViewChecker():
                 return loadView(functionDispatch.get(action)) if currentClass(self.request).dispatcher.get(
-                    action) else redirect('panel.module.management_data.view_dispatch_param', 'custom', form_path)
+                    action) else redirect('panel.module.management_data.view_dispatch_param', form_path, 'custom')
 
             def actionView(data):
                 action_type = dict(table=True)

@@ -10,7 +10,7 @@ def index(request):
 
 
 @csrf_exempt
-def viewDispatch(request, route, param=''):
+def viewDispatch(request, param, route):
     dispatcher = ManagementDataView().setViewDispatcher()
     view = dispatcher.get(route)(request)
     return view.dispatch(param)
@@ -19,7 +19,7 @@ def viewDispatch(request, route, param=''):
 class ManagementDataView(AbstractBlockApp.AppView):
     # Block App Base View Inherited Functions
     def home(self, request):
-        return super().index('panel.module.management_data.view_dispatch_param', ['custom', 'account'])
+        return super().index('panel.module.management_data.view_dispatch_param', ['account', 'custom'])
 
     def setViewDispatcher(self):
         dispatcher = Dispatcher()

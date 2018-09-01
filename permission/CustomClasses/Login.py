@@ -8,6 +8,7 @@ from misc.CustomFunctions import AuthFunctions, LogFunctions, ModelFunctions, Re
 class Login:
     def __init__(self, request):
         self.request = request
+        self.acceptable_type = {"admin", "team"}
 
     def login(self):
         post_dict = dict(self.request.POST)
@@ -22,7 +23,7 @@ class Login:
                 u_salt = u.account_salt
                 verify_pwd = hashlib.sha224((upwd + u_salt).encode("utf-8")).hexdigest()
                 if u_pwd == verify_pwd:
-                    if u.account_type == "admin":
+                    if u.account_type in self.acceptable_type:
                         self.request.session['uid'] = u.id
                         self.request.session['utype'] = u.account_type
                         LogFunctions.loghelper(self.request, "system",
