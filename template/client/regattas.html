@@ -1,28 +1,32 @@
 {% block content %}
 	<div class="container mt-3">
 		<h2>Regattas</h2>
-		<table class="table table-hover">
-			<thead>
-				<tr>
-					<th scope="col">Date</th>
-					<th scope="col">Name</th>
-					<th scope="col">Host School</th>
-					<th scope="col">Location</th>
-					<th scope="col">Scoring</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for regatta in regattas %}
-					<tr data-href="{% url '' %}">
-						<td scope="row">{{ regatta.date }}</td>
-						<td>{{ regatta.name }}</td>
-						<td>{{ regatta.host }}</td>
-						<td>{{ regatta.location }}</td>
-						<td>{{ regatta.scoring }}</td>
+		{% if regattas %}
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th scope="col">Date</th>
+						<th scope="col">Name</th>
+						<th scope="col">Host School</th>
+						<th scope="col">Location</th>
+						<th scope="col">Scoring</th>
 					</tr>
-				{% endfor %}
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+					{% for regatta in regattas %}
+						<tr data-href="{% url '' %}">
+							<td scope="row">{{ regatta.date }}</td>
+							<td>{{ regatta.name }}</td>
+							<td>{{ regatta.host }}</td>
+							<td>{{ regatta.location }}</td>
+							<td>{{ regatta.scoring }}</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		{% else %}
+			<p>There are no regattas.</p>
+		{% endif %}
 	</div>
 
 	<script type="text/javascript">

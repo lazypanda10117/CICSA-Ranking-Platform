@@ -17,8 +17,12 @@
 								{{ team.location }}
 							</div>
 						</div>
+					{% empty %}
+						<p>There are no teams for this region.</p>
 					{% endfor %}
 				</li>
+			{% empty %}
+				<p>There are no teams.</p>
 			{% endfor %}
 		</ul>
 	</div>

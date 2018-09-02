@@ -13,45 +13,53 @@
 		</ul>
 
 		<h4>Roster:</h4>
-		<table class="table">
-			<thead>
-				<tr>
-					<th scope="col">Name</th>
-					<th scope="col">Position</th>
-					<th scope="col">Graduating Year</th>
-					<th scope="col">Years Sailing in CICSA</th>
-					<th scope="col">Home Yacht Club</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for person in team.people %}
+		{% if team.people %}
+			<table class="table">
+				<thead>
 					<tr>
-						<td scope="row">{{ person.name }}</th>
-						<td>{{ person.position }}</td>
-						<td>{{ person.grad_year }}</td>
-						<td>{{ person.years_sailing_cicsa }}</td>
-						<td>{{ person.home_club }}</td>
+						<th scope="col">Name</th>
+						<th scope="col">Position</th>
+						<th scope="col">Graduating Year</th>
+						<th scope="col">Years Sailing in CICSA</th>
+						<th scope="col">Home Yacht Club</th>
 					</tr>
-				{% endfor %}
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+					{% for person in team.people %}
+						<tr>
+							<td scope="row">{{ person.name }}</th>
+							<td>{{ person.position }}</td>
+							<td>{{ person.grad_year }}</td>
+							<td>{{ person.years_sailing_cicsa }}</td>
+							<td>{{ person.home_club }}</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		{% else %}
+			<p>This team currently has no members.</p>
+		{% endif %}
 
 		<h4>Team Results:</h4>
-		<table class="table">
-			<thead>
-				<tr>
-					<th scope="col">Event</th>
-					<th scope="col">Position</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for result in team.results %}
+		{% if team.results %}
+			<table class="table">
+				<thead>
 					<tr>
-						<td scope="row">{{ result.event }}</th>
-						<td>{{ result.position }}</td>
+						<th scope="col">Event</th>
+						<th scope="col">Position</th>
 					</tr>
-				{% endfor %}
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+					{% for result in team.results %}
+						<tr>
+							<td scope="row">{{ result.event }}</th>
+							<td>{{ result.position }}</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		{% else %}
+			<p>This team has not participated in any regattas yet.</p>
+		{% endif %}
 	</div>
 {% endblock %}
