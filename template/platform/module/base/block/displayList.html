@@ -1,0 +1,25 @@
+{% extends 'platform/base.html' %}
+{% block 'head' %}
+{% endblock %}
+{% block 'body' %}
+    <div class="row">
+        <div class="col-lg-6">
+            <h2>
+                <pre>{{ page.title }}</pre>
+            </h2>
+        </div>
+        <div class="col-lg-4"></div>
+        {% if page.header.button %}
+            {% with page.header.button as btn %}
+                <div class="col-lg-2" style="">
+                    <a href="{{ btn.link }}" class="btn btn-info" style="margin-top:-5px;">
+                        {{ btn.text }}
+                    </a>
+                </div>
+            {% endwith %}
+        {% endif %}
+    </div>
+    {% for block in page.element_list.blocks %}
+        {% include "platform/module/base/block/displayBlock.html" with context=block only %}
+    {% endfor %}
+{% endblock %}
