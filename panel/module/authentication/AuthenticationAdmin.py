@@ -33,7 +33,7 @@ class AuthenticationAdmin:
             dispatcher.add('event activity', {'class': EventActivityView, 'form': EventActivityForm})
             dispatcher.add('event tag', {'class': EventTagView, 'form': EventTagForm})
             dispatcher.add('event team', {'class': EventTeamView, 'form': EventTeamForm})
-            #dispatcher.add('school', {'class': SchoolView, 'form': SchoolForm})
+            dispatcher.add('school', {'class': SchoolView, 'form': SchoolForm})
             #dispatcher.add('team', {'class': TeamView, 'form': TeamForm})
             #dispatcher.add('member', {'class': MemberView, 'form': MemberForm})
             #dispatcher.add('member group', {'class': MemberGroupView, 'form': MemberGroupForm})

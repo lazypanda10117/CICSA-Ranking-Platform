@@ -8,6 +8,7 @@ from ..base.AbstractAPI import AbstractAPI
 class SearchAPI(AbstractAPI):
     @staticmethod
     def search(model_name, key, term):
+        # add a list of viewable models or just refactor to use api later
         resultList = dict()
         model = apps.get_model(app_label='cicsa_ranking', model_name=model_name)
         keyDict = (lambda x: {} if x is None else json.loads(key))(key)

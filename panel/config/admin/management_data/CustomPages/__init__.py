@@ -5,7 +5,7 @@ from .Event import *
 from .EventActivity import *
 from .EventTag import *
 from .EventTeam import *
-#from .School import *
+from .School import *
 #from .Team import *
 #from .Member import *
 #from .MemberGroup import *
