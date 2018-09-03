@@ -1,0 +1,50 @@
+{% block content %}
+	<div class="container mt-3">
+		<div class="row">
+			<div class="col-lg-4">
+				<h3>Standings</h3>
+				{% if y %}
+					<ol>
+						{% for x in y %}
+							<li>{{ x }}</li>
+						{% endfor %}
+					</ol>
+				{% else %}
+					No Standings
+				{% endif %}
+			</div>
+			<div class="col-lg-8">
+				<h3>Upcoming Regattas</h3>
+				{% if z %}
+					<table class="table">
+						<tbody>
+							{% for y in z %}
+								<tr>
+									{% for x in y %}
+										{% if forloop.first %}
+											<th scope="row">{{ x }}</th>
+										{% else %}
+											<td>{{ x }}</td>
+										{% endif %}
+									{% endfor %}
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				{% else %}
+					No Upcoming Regattas
+				{% endif %}
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<h3>News/Notices</h3>
+				{% for x in y %}
+					<p>{{ x }}</p>
+				{% empty %}
+					No News/Notices
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+{% endblock %}
