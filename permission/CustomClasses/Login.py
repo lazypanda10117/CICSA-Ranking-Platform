@@ -48,6 +48,6 @@ class Login:
                                    LogFunctions.logQueryMaker(Account, 'Logout', id=self.request.session['uid']))
             self.request.session['uid'] = None
             self.request.session['utype'] = None
-            return redirect(reverse('permission.dispatch', args=['view']))
         else:
-            return HttpResponse('{"Response": "Error: Not Logged In"}')
+            print('{"Response": "Error: Not Logged In"}')
+        return redirect(reverse('permission.dispatch', args=['view']))

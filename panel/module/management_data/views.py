@@ -19,7 +19,7 @@ def viewDispatch(request, param, route):
 class ManagementDataView(AbstractBlockApp.AppView):
     # Block App Base View Inherited Functions
     def home(self, request):
-        return super().index('panel.module.management_data.view_dispatch_param', ['account', 'custom'])
+        return super().index('panel.module.management_data.view_dispatch_param', ['event', 'custom'])
 
     def setViewDispatcher(self):
         dispatcher = Dispatcher()

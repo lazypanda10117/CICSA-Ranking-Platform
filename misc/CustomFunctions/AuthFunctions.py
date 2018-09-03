@@ -1,4 +1,3 @@
-import math
 from django.shortcuts import redirect, reverse
 from django.http import Http404
 from .RequestFunctions import sessionChecker
