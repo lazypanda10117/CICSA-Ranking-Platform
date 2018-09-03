@@ -4,14 +4,17 @@ from django.http import Http404
 from .RequestFunctions import sessionChecker
 
 
-# super bad hack
 def kickRequest(request, authenticated, rend):
-    return (lambda x:
-            rend if math.ceil(x+0.5) else (
-                lambda y: redirect(
-                    reverse('permission.dispatch', args=['view'])
-                ) if math.ceil(y+0.5) else redirect('panel.index')
-            )(authenticated*2-1))((authenticated*2-1)*((signed_in(request, 'admin') or signed_in(request, 'team'))*2-1))
+    if signed_in(request, 'admin') or signed_in(request, 'team'):
+        if authenticated:
+            return rend
+        else:
+            return redirect(reverse('panel.index'))
+    else:
+        if authenticated:
+            return redirect(reverse('permission.dispatch', args=['view']))
+        else:
+            return rend
 
 
 def signed_in(request, user_type):

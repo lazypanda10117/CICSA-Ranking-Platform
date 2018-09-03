@@ -1,5 +1,5 @@
 from django.apps import AppConfig
 
 
-class PanelManagementData(AppConfig):
+class PanelManagementDataConfig(AppConfig):
     name = 'panel.module.management_data'

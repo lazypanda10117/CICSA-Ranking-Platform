@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from .functional_api import *
 
 
