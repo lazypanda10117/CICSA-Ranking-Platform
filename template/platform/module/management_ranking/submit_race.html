@@ -1,8 +1,8 @@
-{% extends 'console/header.html' %}
+{% extends 'platform/base.html' %}
 {% block 'head' %}
 {% endblock %}
 {% block 'body' %}
-    <h4><pre>{{ block_title }}</pre></h4>
+    <h4><pre>{{ page.block_title }}</pre></h4>
     <div class="card">
         <div class="card-body">
             <div class="container-fluid row mb-2">
@@ -17,8 +17,8 @@
                 </div>
             </div>
             <hr>
-            <form action="{{ action_destination }}" id="{{ form_id }}" method="post">
-                {% for key, content in contents.items %}
+            <form action="{{ page.action_destination }}" id="{{ page.form_id }}" method="post">
+                {% for key, content in page.contents.items %}
                     <div class="container-fluid row mt-4">
                         <div class="col col-lg-3 offset-lg-1">
                             {{ content.boat_identifier }}

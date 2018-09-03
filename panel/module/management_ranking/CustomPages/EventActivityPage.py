@@ -1,5 +1,5 @@
 from django.shortcuts import reverse
-from api import EventAPI, EventActivityAPI, EventTagAPI
+from api import EventActivityAPI, EventTagAPI
 from ...base.block.CustomPages import AbstractBasePage
 from ...base.block.CustomComponents import BlockObject, BlockSet, PageObject
 
@@ -13,7 +13,7 @@ class EventActivityPage(AbstractBasePage):
             event_activity_dict = map(lambda event_activity: dict(
                 element_text=event_activity.event_activity_name,
                 element_link=reverse(
-                    'panel.module.management_ranking.view_dispatch',
+                    'panel.module.management_ranking.view_dispatch_param',
                     args=['activity ranking', event_activity.id]),
                 elements=[
                     dict(

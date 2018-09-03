@@ -1,6 +1,6 @@
 from django.shortcuts import reverse
 from api import EventAPI, EventActivityAPI, SchoolAPI, TeamAPI
-from ....component import CustomElements
+from panel.component import CustomElements
 from ...base.block.CustomPages import AbstractBasePage
 
 
@@ -18,7 +18,8 @@ class EventActivityRankingPage(AbstractBasePage):
                 'panel.module.management_ranking.process_dispatch_param',
                 args=['activity ranking', int(self.param["id"])]),
             form_id='event_activity_ranking_form',
-            contents=self.genContent())
+            contents=self.genContent()
+        )
 
     def genContent(self):
         def getScoreOptions(school_id):
@@ -37,7 +38,7 @@ class EventActivityRankingPage(AbstractBasePage):
             return options
 
         def getEventSpecificRotation(event_rotation, order, tag):
-            return {key: rotation[order - 1] for key, rotation in event_rotation[tag].items()}
+            return {key: rotation[order - 1] for key, rotation in event_rotation[str(tag)].items()}
 
         def getEventActivityTeams(event_specific_rotation):
             return list(event_specific_rotation.keys())

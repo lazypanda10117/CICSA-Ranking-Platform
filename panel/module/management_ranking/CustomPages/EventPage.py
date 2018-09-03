@@ -12,15 +12,16 @@ class EventPage(AbstractBasePage):
             event_dict = list(map(lambda event: dict(
                 element_text=event.event_name,
                 element_link=reverse(
-                    'panel.module.management_ranking.view_dispatch',
+                    'panel.module.management_ranking.view_dispatch_param',
                     args=['activity', event.id]),
                 elements=[
                     dict(
                         text=change_status_dict[event.event_status],
                         link=reverse(
-                            'managementUpdateEventStatus',
+                            'panel.module.management_ranking.process_dispatch_param',
                             args=[
-                                event.id, change_status_dict[event.event_status]
+                                'activity status',
+                                str(event.id) + '|' + change_status_dict[event.event_status]
                             ]) if event.event_status != 'done' else '#'
                     )
                 ]
@@ -28,7 +29,7 @@ class EventPage(AbstractBasePage):
                              [event for event in events]))
             return BlockObject(status, 'Event', ['Change Status'], event_dict)
         event_api = EventAPI(self.request)
-        return BlockSet().makeBlockSet(genDict('future'), genDict('running'), genDict('Done'))
+        return BlockSet().makeBlockSet(genDict('future'), genDict('running'), genDict('done'))
 
     def render(self):
         return super().renderHelper(PageObject('Events List', self.generateList(), []))

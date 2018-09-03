@@ -6,10 +6,11 @@ from abc import abstractmethod, ABC
 class AbstractBaseProcess(ABC):
     def __init__(self, request, param):
         self.request = request
-        self.param = self.parseParams(param)
+        self.raw_param = param
+        self.param = self.parseParams(self.raw_param)
 
     def parseMatch(self, pattern):
-        match = re.match(pattern, self.param)
+        match = re.match(pattern, self.raw_param)
         if match:
             return match
         else:
