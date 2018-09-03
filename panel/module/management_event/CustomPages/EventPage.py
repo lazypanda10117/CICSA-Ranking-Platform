@@ -27,7 +27,7 @@ class EventPage(AbstractBasePage):
             return BlockObject(status, 'Event', ['Modify'], event_dict)
 
         event_api = EventAPI(self.request)
-        return BlockSet().makeBlockSet(genDict('future'), genDict('running'), genDict('Done'))
+        return BlockSet().makeBlockSet(genDict('future'), genDict('running'), genDict('done'))
 
     def render(self):
         header = dict(
