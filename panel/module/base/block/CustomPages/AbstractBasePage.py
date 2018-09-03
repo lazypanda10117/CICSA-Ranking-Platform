@@ -8,7 +8,8 @@ from misc.CustomFunctions import AuthFunctions
 class AbstractBasePage(ABC):
     def __init__(self, request, param):
         self.request = request
-        self.param = param
+        self.raw_param = param
+        self.param = self.parseParams(self.raw_param)
         self.page_path = self.getPagePath()
 
     @abstractmethod
@@ -20,7 +21,7 @@ class AbstractBasePage(ABC):
         pass
 
     def parseMatch(self, pattern):
-        match = re.match(pattern, self.param)
+        match = re.match(pattern, self.raw_param)
         if match:
             return match
         else:

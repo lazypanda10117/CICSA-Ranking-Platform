@@ -9,12 +9,14 @@
             </h2>
         </div>
         <div class="col-lg-4"></div>
-        {% if header.button %}
-            <div class="col-lg-2" style="">
-                <a href="{{ header.button.link }}" class="btn btn-info" style="margin-top:-5px;">
-                    {{ header.button.text }}
-                </a>
-            </div>
+        {% if page.header.button %}
+            {% with page.header.button as btn %}
+                <div class="col-lg-2" style="">
+                    <a href="{{ btn.link }}" class="btn btn-info" style="margin-top:-5px;">
+                        {{ btn.text }}
+                    </a>
+                </div>
+            {% endwith %}
         {% endif %}
     </div>
     {% for block in page.element_list.blocks %}

@@ -6,7 +6,7 @@ from ...base.block.CustomComponents import BlockObject, BlockSet, PageObject
 class EventActivityDetailPage(AbstractBasePage):
     def generateList(self):
         def genEventTeamDict(activity_id):
-            event_teams = event_team_api.getSelf(event_team_event_activity_id=activity_id)
+            event_teams = event_team_api.filterSelf(event_team_event_activity_id=activity_id)
             event_team_dict = map(lambda event_team: dict(
                 element_text=(lambda x: school_api.getSelf(id=x.team_school).school_name + ' - ' + x.team_name)
                 (team_api.getSelf(id=event_team.event_team_id)),

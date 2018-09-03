@@ -13,7 +13,7 @@ class EventActivityPage(AbstractBasePage):
             event_activity_dict = map(lambda event_activity: dict(
                 element_text=event_activity.event_activity_name,
                 element_link=reverse(
-                    'blackbox.block_app.management_event.view_dispatch',
+                    'panel.module.management_event.view_dispatch_param',
                     args=['activity detail', event_activity.id]),
                 elements=[
                     dict(
@@ -67,8 +67,11 @@ class EventActivityPage(AbstractBasePage):
         team_api = TeamAPI(self.request)
 
         blockset = BlockSet().makeBlockSet(
-            # event_activity_result
-            *[genActivityDict(event_tag) for event_tag in event_tag_api.filterSelf(event_tag_event_id=event_id)],
+            *[
+                genActivityDict(event_tag)
+                for event_tag in
+                event_tag_api.filterSelf(event_tag_event_id=event_id)
+            ],  # event_activity_result
             genTagDict(event_id),  # event_tag_result
             genSummaryDict(event_id),  # event_summary_result
             genTeamDict(event_id)  # event_team_result

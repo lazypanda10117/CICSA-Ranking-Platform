@@ -166,5 +166,6 @@ class Choices:
 
 class DBMap:
     @staticmethod
+    # NOTE: potential error if use API, so will leave this as is right now
     def getMap(query_class, query_id, target_field):
         return MiscFunctions.noneCatcher(target_field, ModelFunctions.getModelObject(query_class, id=query_id).__dict__)

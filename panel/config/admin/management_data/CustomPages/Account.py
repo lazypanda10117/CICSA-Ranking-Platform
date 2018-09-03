@@ -66,12 +66,12 @@ class AccountView(AbstractCustomClass):
         element_id = kwargs.pop('element_id')
         field_data_dispatcher = self.populateDispatcher()
         if field_data_dispatcher.get(action):
-
             field_data = MiscFunctions.filterDict(
-                self.api_table.get(
-                    MiscFunctions.getModelName(self.base_class))(self.request).getSelf(
+                self.useAPI(self.base_class).verifySelf(
                     id=element_id
-                ).__dict__.items(), self.validation_table['base_form_invalid'])
+                ).__dict__.items(),
+                self.validation_table['base_form_invalid']
+            )
             return field_data
         return None
 

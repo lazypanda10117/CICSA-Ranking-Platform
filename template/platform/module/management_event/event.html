@@ -1,10 +1,17 @@
 {% extends 'platform/base.html' %}
+{% block 'head' %}
+    <script>
+        function redirect(link){
+            window.location.href = link;
+        }
+    </script>
+{% endblock %}
 {% block 'body' %}
     <div class="row" style="margin-top: 5%;">
         {% for type in types %}
             <div class="col-md-{{ type_style.width }}">
                 <button type="button" class="btn btn-block btn-info btn-lg"
-                        style="padding-top: 50%; padding-bottom: 50%;" onclick="redirect('{{ type }}');">
+                        style="padding-top: 50%; padding-bottom: 50%;" onclick="redirect('event/{{ type }}');">
                     {{ type|title }}
                 </button>
             </div>

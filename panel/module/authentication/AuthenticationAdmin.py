@@ -26,9 +26,9 @@ class AuthenticationAdmin:
         @staticmethod
         def getDataCustomDispatcher():
             dispatcher = Dispatcher()
-            #dispatcher.add('fleet race', {'class': FleetManagementView, 'form': EventManagementForm})
-            #dispatcher.add('team race', {'class': TeamManagementView, 'form': EventManagementForm})
-            #dispatcher.add('event', {'class': EventView, 'form': EventForm})
+            dispatcher.add('fleet race', {'class': FleetManagementView, 'form': EventManagementForm})
+            dispatcher.add('team race', {'class': TeamManagementView, 'form': EventManagementForm})
+            dispatcher.add('event', {'class': EventView, 'form': EventForm})
             #dispatcher.add('summary', {'class': SummaryView, 'form': SummaryForm})
             #dispatcher.add('event activity', {'class': EventActivityView, 'form': EventActivityForm})
             #dispatcher.add('event tag', {'class': EventTagView, 'form': EventTagForm})

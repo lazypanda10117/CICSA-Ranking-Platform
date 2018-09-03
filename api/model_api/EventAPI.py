@@ -1,7 +1,9 @@
 from cicsa_ranking.models import Event
 from misc.CustomFunctions import AuthFunctions, LogFunctions, UrlFunctions
 from ..base.GeneralModelAPI import GeneralModelAPI
-from ..model_api import EventActivityAPI, EventTeamAPI, TeamAPI
+from .EventActivityAPI import EventActivityAPI
+from .EventTeamAPI import EventTeamAPI
+from .TeamAPI import TeamAPI
 
 
 class EventAPI(GeneralModelAPI):

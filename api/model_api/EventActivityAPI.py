@@ -1,6 +1,6 @@
-from ..base.GeneralModelAPI import GeneralModelAPI
-from misc.CustomFunctions import UrlFunctions
 from cicsa_ranking.models import EventActivity
+from misc.CustomFunctions import UrlFunctions
+from ..base.GeneralModelAPI import GeneralModelAPI
 
 
 class EventActivityAPI(GeneralModelAPI):
