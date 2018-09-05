@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.http import Http404
+from api.model_api import *
 
 
 def home(request):
-    standings = 1  # array of standings
+    standings = []  # array of standings
     regattas = []
     for x in y:
         regatta = dict(
@@ -82,6 +83,9 @@ def regattas(request):
         regattas.append(regatta)
     return render(request, 'client/regattas.html', {'regattas': regattas})
 
+
+def standing(request):
+    pass;
 
 # def regatta(request, regatta_pk):
 # 	return render(request, 'client/regattas.html', {})
