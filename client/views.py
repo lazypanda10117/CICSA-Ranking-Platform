@@ -18,6 +18,14 @@ def home(request):
     return render(request, 'client/home.html', {'standings': standings, 'regattas': regattas, 'all_news': all_news})
 
 
+def scoring(request):
+    #ranking arrays with school
+    #detail scores for each rotation
+    #get data from event_activity
+    #compile data
+    #find current ranking
+    return 0;
+
 def teams(request):
     regions = []
     for x in y:
