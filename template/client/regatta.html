@@ -1,6 +1,6 @@
 {% block content %}
 	<div class="container mt-3">
-		<h2>{{ regatta.name }}</h2>
+		<h2>{{ regatta.event_details.name }}</h2>
 		<ul class="list-group">
 			<li class="list-group-item">
 				{% for i in 123456789 %}
@@ -9,7 +9,7 @@
 							{% cycle 'Name' 'Description' 'Season' 'Host' 'Location' 'Status' 'Start Date' 'End Date' %}:
 						</div>
 						<div class="col">
-							{% cycle regatta.name regatta.description regatta.season regatta.host regatta.location regatta.status regatta.start_date regatta.end_date %}
+							{% cycle regatta.event_details.name regatta.event_details.description regatta.event_details.season regatta.event_details.host regatta.event_details.location regatta.event_details.status regatta.event_details.start_date regatta.event_details.end_date %}
 						</div>
 					</div>
 				{% endfor %}
@@ -25,16 +25,19 @@
 				</tr>
 			</thead>
 			<tbody>
-				{% for school in regatta.schools %}
+				{% for school in regatta.school_current_ranking %}
 					<tr>
-						<td scope="row">{{ school.name }}</td>
+						<td scope="row">{{ school.school_name }}</td>
+						<td>{{ school.score }}</td>
 						<td>{{ school.ranking }}</td>
+						<td>{{ school.note }}</td>
 					</tr>
 				{% endfor %}
 			</tbody>
 		</table>
 
-		{% for fleet in regatta.fleets %}
+		{% comment %}
+		{% for fleet in regatta.event_activity_scoring_detail %}
 			<h4>{{ fleet.title }}</h4>
 			<table class="table table-hover">
 				<thead>
@@ -46,6 +49,34 @@
 					</tr>
 				</thead>
 				{% for team_result in regatta.fleet.team_results%}
+					<tr>
+						<td scope="row">{{ team_result.team_name }}</td>
+						{% for score in team_result.scores %}
+							<td>{{ score }}</td>
+						{% endfor %}
+						<td>{{ team_result.final_score }}</td>
+					</tr>
+				{% endfor %}
+			</table>
+		{% endfor %}
+		{% endcomment %}
+
+		{% for fleet_name, team_results in regatta.event_activity_scoring_detail %}
+			<h4>{{ fleet_name }}</h4>
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th scope="col"></th>
+						{% for team_result in team_results %}
+							{% if forloop.first %}
+								{% for score in team_result.scores %}
+									<th scope="col">{{ forloop.counter }}</th>
+								{% endif %}
+							{% endif %}
+						{% endfor %}
+					</tr>
+				</thead>
+				{% for team_result in team_results %}
 					<tr>
 						<td scope="row">{{ team_result.team_name }}</td>
 						{% for score in team_result.scores %}
