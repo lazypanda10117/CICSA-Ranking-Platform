@@ -1,27 +1,35 @@
 {% block content %}
 	<div class="container mt-3">
+
 		<h2>{{ regatta.event_details.name }}</h2>
-		<ul class="list-group">
-			<li class="list-group-item">
-				{% for i in 123456789 %}
+		<ul class="list-group mb-3">
+			{% for i in "123456789" %}
+				<li class="list-group-item">
 					<div class="row">
 						<div class="col">
-							{% cycle 'Name' 'Description' 'Season' 'Host' 'Location' 'Status' 'Start Date' 'End Date' %}:
+							{% cycle 'Name' 'Description' 'Season' 'Region' 'Host' 'Location' 'Status' 'Start Date' 'End Date' %}:
 						</div>
 						<div class="col">
-							{% cycle regatta.event_details.name regatta.event_details.description regatta.event_details.season regatta.event_details.host regatta.event_details.location regatta.event_details.status regatta.event_details.start_date regatta.event_details.end_date %}
+							{% with details=regatta.event_details %}
+							{% if i == "3" or i == "4" or i = "5" %}
+								<a href="{% cycle details.season.1 details.region.1 details.host.1 %}">{% cycle details.season.0 details.region.0 details.host.0 %}</a>
+							{% else %}
+								{% cycle details.name details.description details.location details.status details.start details.end %}
+							{% endif %}
 						</div>
 					</div>
-				{% endfor %}
-			</li>
+				</li>
+			{% endfor %}
 		</ul>
 
 		<h4>Ranking</h4>
-		<table class="table table-hover">
+		<table class="table table-hover mb-3">
 			<thead>
 				<tr>
 					<th scope="col">School</th>
+					<th scope="col">Score</th>
 					<th scope="col">Ranking</th>
+					<th scope="col">Note</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -61,7 +69,7 @@
 		{% endfor %}
 		{% endcomment %}
 
-		{% for fleet_name, team_results in regatta.event_activity_scoring_detail %}
+		{% for fleet_name, team_results in regatta.event_activity_scoring_detail.items %}
 			<h4>{{ fleet_name }}</h4>
 			<table class="table table-hover">
 				<thead>
@@ -71,7 +79,7 @@
 							{% if forloop.first %}
 								{% for score in team_result.scores %}
 									<th scope="col">{{ forloop.counter }}</th>
-								{% endif %}
+								{% endfor %}
 							{% endif %}
 						{% endfor %}
 					</tr>
