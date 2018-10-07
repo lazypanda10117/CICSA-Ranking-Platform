@@ -6,32 +6,34 @@
         <ul class="list-group mt-4">
             <h5> {{ status }} Regattas </h5>
                 {% if regatta_list %}
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th scope="col">Event Name</th>
-                                <th scope="col">Type</th>
-                                <th scope="col">Status</th>
-                                <th scope="col">Region</th>
-                                <th scope="col">Host</th>
-                                <th scope="col">Start Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for regatta in regatta_list %}
-                                <tr data-href="{{ regatta.event_link }}">
-                                    <td scope="row">{{ regatta.event_name }}</td>
-                                    <td>{{ regatta.event_type }}</td>
-                                    <td>{{ regatta.event_status }}</td>
-                                    <td>{{ regatta.event_region }}</td>
-                                    <td>{{ regatta.event_host }}</td>
-                                    <td>{{ regatta.event_start_date }}</td>
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Event Name</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Region</th>
+                                    <th scope="col">Host</th>
+                                    <th scope="col">Start Date</th>
                                 </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {% for regatta in regatta_list %}
+                                    <tr data-href="{{ regatta.event_link }}">
+                                        <td scope="row">{{ regatta.event_name }}</td>
+                                        <td>{{ regatta.event_type }}</td>
+                                        <td>{{ regatta.event_status }}</td>
+                                        <td>{{ regatta.event_region }}</td>
+                                        <td>{{ regatta.event_host }}</td>
+                                        <td>{{ regatta.event_start_date }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 {% else %}
-                    <p>There are no {{ status }} regattas.</p>
+                   <p>There are no {{ status }} regattas.</p>
                 {% endif %}
             </ul>
         {% endfor %}

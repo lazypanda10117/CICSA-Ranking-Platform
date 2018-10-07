@@ -26,53 +26,57 @@
 		</ul>
 
 		<h4>Ranking</h4>
-		<table class="table table-hover mb-5">
-			<thead>
-				<tr>
-					<th scope="col">School</th>
-					<th scope="col">Score</th>
-					<th scope="col">Ranking</th>
-					<th scope="col">Note</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for school in regatta.school_current_ranking %}
+		<div class="table-responsive mb-5">
+			<table class="table table-hover">
+				<thead>
 					<tr>
-						<td scope="row">{{ school.school_name }}</td>
-						<td>{{ school.score }}</td>
-						<td>{{ school.ranking }}</td>
-						<td>{{ school.note }}</td>
+						<th scope="col">School</th>
+						<th scope="col">Score</th>
+						<th scope="col">Ranking</th>
+						<th scope="col">Note</th>
 					</tr>
-				{% endfor %}
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+					{% for school in regatta.school_current_ranking %}
+						<tr>
+							<td scope="row">{{ school.school_name }}</td>
+							<td>{{ school.score }}</td>
+							<td>{{ school.ranking }}</td>
+							<td>{{ school.note }}</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
 
 		{% for fleet_name, team_results in regatta.event_activity_scoring_detail.items %}
 			<h4>{{ fleet_name }}</h4>
-			<table class="table table-hover {% if not forloop.last %}mb-5{% else %}mb-4{% endif %}">
-				<thead>
-					<tr>
-						<th scope="col"></th>
-						{% for team_result in team_results.values %}
-							{% if forloop.first %}
-								{% for score in team_result.scores %}
-									<th scope="col">{{ forloop.counter }}</th>
-								{% endfor %}
-							{% endif %}
-						{% endfor %}
-						<th scope="col">Total</th>
-					</tr>
-				</thead>
-				{% for team_result in team_results.values %}
-					<tr>
-						<td scope="row">{{ team_result.team_name }}</td>
-						{% for score in team_result.scores %}
-							<td>{% if score == 0 %} # {% else %} {{ score }} {% endif %}</td>
-						{% endfor %}
-						<td>{{ team_result.final_score }}</td>
-					</tr>
-				{% endfor %}
-			</table>
+			<div class="table-responsive {% if not forloop.last %} mb-5 {% else %} mb-4 {% endif %}">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th scope="col"></th>
+							{% for team_result in team_results.values %}
+								{% if forloop.first %}
+									{% for score in team_result.scores %}
+										<th scope="col">{{ forloop.counter }}</th>
+									{% endfor %}
+								{% endif %}
+							{% endfor %}
+							<th scope="col">Total</th>
+						</tr>
+					</thead>
+					{% for team_result in team_results.values %}
+						<tr>
+							<td scope="row">{{ team_result.team_name }}</td>
+							{% for score in team_result.scores %}
+								<td>{% if score == 0 %} # {% else %} {{ score }} {% endif %}</td>
+							{% endfor %}
+							<td>{{ team_result.final_score }}</td>
+						</tr>
+					{% endfor %}
+				</table>
+			</div>
 		{% endfor %}
 
 
