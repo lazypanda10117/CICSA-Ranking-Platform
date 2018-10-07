@@ -62,7 +62,7 @@ class ScoringAPI(GeneralClientAPI):
         try:
             value2 = int(y)
         except ValueError:
-            value2 = scoreStringMapping(x)
+            value2 = scoreStringMapping(y)
 
         return value1 + value2
 

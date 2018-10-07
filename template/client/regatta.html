@@ -67,7 +67,7 @@
 					<tr>
 						<td scope="row">{{ team_result.team_name }}</td>
 						{% for score in team_result.scores %}
-							<td>{{ score }}</td>
+							<td>{% if score == 0 %} # {% else %} {{ score }} {% endif %}</td>
 						{% endfor %}
 						<td>{{ team_result.final_score }}</td>
 					</tr>
