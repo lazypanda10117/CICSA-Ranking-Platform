@@ -1,10 +1,10 @@
+import re
 from functools import reduce
 from misc.CustomFunctions import UrlFunctions, MiscFunctions
 from misc.CustomElements import EquationParser
 from ..base.GeneralClientAPI import GeneralClientAPI
 from ..model_api import EventAPI, EventActivityAPI, SummaryAPI, TeamAPI, EventTypeAPI
 from ..model_api import EventTagAPI, RegionAPI, SchoolAPI, SeasonAPI, ScoreMappingAPI
-
 
 class ScoringAPI(GeneralClientAPI):
     FLEET_RACE = 1
@@ -39,7 +39,7 @@ class ScoringAPI(GeneralClientAPI):
         )
         return result
 
-    def __scoreAdd(self, x, y, event):
+    def __compileScoreMap(self, event):
         def eqtParser(equation_string):
             replace_dict = dict(RACE=event.event_race_number, TEAM=event.event_team_number)
             arithmetic_exp = MiscFunctions.simpleEqtFormatter(equation_string, replace_dict)
@@ -49,26 +49,31 @@ class ScoringAPI(GeneralClientAPI):
                 result = replace_dict['RACE'] + 1
             return result
 
-        def scoreStringMapping(str):
+        def scoreStringMapping():
             score_mappings = ScoreMappingAPI(self.request).filterSelf()
             score_name_map = {score_map.score_name: score_map.score_value for score_map in score_mappings}
-            return eqtParser(score_name_map[str])
+            return {score_name: eqtParser(score_eqt) for score_name, score_eqt in score_name_map.items()}
 
+        return scoreStringMapping()
+
+    def __scoreAdd(self, x, y, score_map):
+        reg = re.compile("[ ]\(\d+\)$")
         try:
             value1 = int(x)
         except ValueError:
-            value1 = scoreStringMapping(x)
-
+            x = x[:reg.search(x).span()[0]]
+            value1 = score_map[x]
         try:
             value2 = int(y)
         except ValueError:
-            value2 = scoreStringMapping(y)
-
+            y= y[:reg.search(y).span()[0]]
+            value2 = score_map[y]
         return value1 + value2
 
     def __buildFleetTable(self, event):
         def __buildFleetScoreTable():
             race_table = dict()
+            event_score_map = self.__compileScoreMap(event)
             for tag_id, tag in zip(event_activity_id_tags, event_activity_name_tags):
                 race_table[tag] = dict()
                 restricted_eas = event_activities.filter(
@@ -80,6 +85,7 @@ class ScoringAPI(GeneralClientAPI):
                         for team, rank in result.items():
                             team_id = int(team)
                             team_name = team_name_link[team_id]
+                            rank = rank if rank not in event_score_map else rank + ' (' + str(event_score_map[rank]) + ')'
                             if team_id not in race_table[tag]:
                                 race_table[tag][team_id] = dict(team_name=team_name, scores=list(), final_score=0)
                             race_table[tag][team_id]["scores"].append(rank)
@@ -92,7 +98,7 @@ class ScoringAPI(GeneralClientAPI):
             for tag in event_activity_name_tags:
                 for team in team_ids[tag]:
                     score = reduce(
-                        (lambda x, y: self.__scoreAdd(x, y, event)),
+                        (lambda x, y: self.__scoreAdd(x, y, event_score_map)),
                         race_table[tag][team]["scores"]
                     )
                     race_table[tag][team]["final_score"] = score
