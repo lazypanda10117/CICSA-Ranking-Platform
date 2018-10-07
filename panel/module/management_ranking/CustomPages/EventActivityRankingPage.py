@@ -40,15 +40,13 @@ class EventActivityRankingPage(AbstractBasePage):
         def getEventSpecificRotation(event_rotation, order, tag):
             return {key: rotation[order - 1] for key, rotation in event_rotation[str(tag)].items()}
 
-        def getEventActivityTeams(event_specific_rotation):
-            return list(event_specific_rotation.keys())
-
-        def getEventActivitySchool(event_activity_teams):
-            return {school_team_tuple[0]: school_team_tuple[1]
-                    for school_team_tuple in [
-                        (lambda x: (school_api.getSelf(id=x.team_school), x))
-                        (team_api.getSelf(id=event_activity_team_id))
-                        for event_activity_team_id in event_activity_teams]}
+        def getEventActivitySchool(event_specific_rotation):
+            event_activity_teams = [i[0] for i in sorted(event_specific_rotation.items(), key=(lambda x: int(x[1])))]
+            result = {school_team_tuple[0]: school_team_tuple[1] for school_team_tuple in [
+                        (lambda x: (school_api.getSelf(id=x.team_school), x))(
+                            team_api.getSelf(id=event_activity_team_id)
+                        )for event_activity_team_id in event_activity_teams]}
+            return result
 
         def compileContent(event_boat_identifiers, event_activity_schools, event_team_number):
             return {str(i + 1): dict(
@@ -73,8 +71,7 @@ class EventActivityRankingPage(AbstractBasePage):
         event_activity_order = event_activity.event_activity_order
         event_activity_result = event_activity.event_activity_result
         event_specific_rotation = getEventSpecificRotation(event_rotation, event_activity_order, event_activity_tag)
-        event_activity_teams = getEventActivityTeams(event_specific_rotation)
-        event_activity_schools = getEventActivitySchool(event_activity_teams)
+        event_activity_schools = getEventActivitySchool(event_specific_rotation)
 
         content = compileContent(event_boat_identifiers, event_activity_schools, event_team_number)
         return content
