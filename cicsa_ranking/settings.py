@@ -105,15 +105,25 @@ if os.environ.get('DATABASE_URL') is not None:
     db_user = db_remote_url.username;
     db_pwd = db_remote_url.password;
     db_port = db_remote_url.port;
-
-DATABASES = {
-    "default": {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': db_name,
-        'USER': db_user,
-        'PORT': db_port
+    DATABASES = {
+        "default": {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': db_name,
+            'USER': db_user,
+            'PASSWORD': db_pwd,
+            'HOST': db_url,
+            'PORT': db_port
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': db_name,
+            'USER': db_user,
+            'PORT': db_port
+        }
+    }
 
 
 # Password validation
