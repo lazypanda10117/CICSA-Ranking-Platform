@@ -1,11 +1,19 @@
 from django.shortcuts import render
-from api.client_api import ScoringAPI
+from api.client_api import ScoringAPI, RegattasAPI
+
+
+def index(request):
+    return render(request, 'client/index.html')
 
 
 def scoring(request, id):
     page_data = ScoringAPI(request).grabPageData(id=id)
     return render(request, 'client/regatta.html', dict(regatta=page_data))
 
+
+def regattas(request):
+    page_data = RegattasAPI(request).grabPageData()
+    return render(request, 'client/regattas.html', dict(regattas=page_data))
 
 # def home(request):
 #     standings = []  # array of standings
