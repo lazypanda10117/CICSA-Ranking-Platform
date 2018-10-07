@@ -45,6 +45,8 @@ class ScoringAPI(GeneralClientAPI):
                 score = team_num + 1
             elif str == "DNF":
                 score = team_num + 1
+            elif str == "DNS":
+                score = team_num + 1
             else:
                 score = team_num + 1
             return score
