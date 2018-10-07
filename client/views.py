@@ -12,7 +12,7 @@ def test(request, param):
 def scoring(request, id):
     page_data = ScoringAPI(request).grabPageData(id=id)
     print(page_data)
-    return render(request, 'client/regatta.html')
+    return render(request, 'client/regatta.html', dict(regatta=page_data))
 
 
 # def home(request):
