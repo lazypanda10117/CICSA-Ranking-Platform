@@ -104,7 +104,7 @@ class ScoringAPI(GeneralClientAPI):
                     for team in team_ids[tag]:
                         ranking_table[team_school_link[team].school_name] += score_table[tag][team]["final_score"]
                 school_ranking_list = [
-                    dict(school_name=school_name, score=data, ranking='#', note='')
+                    dict(school_name=school_name, score=data, ranking='#', note='-')
                     for school_name, data in ranking_table.items()
                 ]
                 school_ranking_list = sorted(school_ranking_list, key=(lambda x: x['score']))
@@ -125,7 +125,7 @@ class ScoringAPI(GeneralClientAPI):
                         school_name=schools.filter(id=summary.summary_event_school).school_name,
                         score=summary.summary_race_score,
                         ranking=  summary.summary_event_ranking + summary.summary_event_override_ranking,
-                        note='*' if summary.summary_event_override_ranking != 0 else ''
+                        note='override' if summary.summary_event_override_ranking != 0 else '-'
 
                     ) for summary in summaries
                 ]

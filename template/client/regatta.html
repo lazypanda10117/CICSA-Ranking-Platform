@@ -1,8 +1,10 @@
+{% extends 'client/index.html' %}
 {% block content %}
 	<div class="container mt-3">
 
-		<h2>{{ regatta.event_details.name }}</h2>
-		<ul class="list-group mb-3">
+		<h1 class="text-center mb-3">{{ regatta.event_details.name }}</h1>
+		<h4>Details</h4>
+		<ul class="list-group mb-5">
 			{% for i in "123456789" %}
 				<li class="list-group-item">
 					<div class="row">
@@ -11,11 +13,12 @@
 						</div>
 						<div class="col">
 							{% with details=regatta.event_details %}
-							{% if i == "3" or i == "4" or i = "5" %}
-								<a href="{% cycle details.season.1 details.region.1 details.host.1 %}">{% cycle details.season.0 details.region.0 details.host.0 %}</a>
-							{% else %}
-								{% cycle details.name details.description details.location details.status details.start details.end %}
-							{% endif %}
+								{% if i == "3" or i == "4" or i == "5" %}
+									<a href="{% cycle details.season.1 details.region.1 details.host.1 %}">{% cycle details.season.0 details.region.0 details.host.0 %}</a>
+								{% else %}
+									{% cycle details.name details.description details.location details.status details.start details.end %}
+								{% endif %}
+							{% endwith %}
 						</div>
 					</div>
 				</li>
@@ -23,7 +26,7 @@
 		</ul>
 
 		<h4>Ranking</h4>
-		<table class="table table-hover mb-3">
+		<table class="table table-hover mb-5">
 			<thead>
 				<tr>
 					<th scope="col">School</th>
@@ -44,47 +47,23 @@
 			</tbody>
 		</table>
 
-		{% comment %}
-		{% for fleet in regatta.event_activity_scoring_detail %}
-			<h4>{{ fleet.title }}</h4>
-			<table class="table table-hover">
-				<thead>
-					<tr>
-						<th scope="col"></th>
-						{% for team_result.scores|length %}
-							<th scope="col">{{ forloop.counter }}</th>
-						{% endfor %}
-					</tr>
-				</thead>
-				{% for team_result in regatta.fleet.team_results%}
-					<tr>
-						<td scope="row">{{ team_result.team_name }}</td>
-						{% for score in team_result.scores %}
-							<td>{{ score }}</td>
-						{% endfor %}
-						<td>{{ team_result.final_score }}</td>
-					</tr>
-				{% endfor %}
-			</table>
-		{% endfor %}
-		{% endcomment %}
-
 		{% for fleet_name, team_results in regatta.event_activity_scoring_detail.items %}
 			<h4>{{ fleet_name }}</h4>
-			<table class="table table-hover">
+			<table class="table table-hover {% if not forloop.last %}mb-5{% else %}mb-4{% endif %}">
 				<thead>
 					<tr>
 						<th scope="col"></th>
-						{% for team_result in team_results %}
+						{% for team_result in team_results.values %}
 							{% if forloop.first %}
 								{% for score in team_result.scores %}
 									<th scope="col">{{ forloop.counter }}</th>
 								{% endfor %}
 							{% endif %}
 						{% endfor %}
+						<th scope="col">Total</th>
 					</tr>
 				</thead>
-				{% for team_result in team_results %}
+				{% for team_result in team_results.values %}
 					<tr>
 						<td scope="row">{{ team_result.team_name }}</td>
 						{% for score in team_result.scores %}
