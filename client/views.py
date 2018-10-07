@@ -1,17 +1,9 @@
 from django.shortcuts import render
-from django.http import Http404, HttpResponse
 from api.client_api import ScoringAPI
-import json
-
-
-def test(request, param):
-    response = ScoringAPI(request).grabPageData(id=param)
-    return HttpResponse(json.dumps(response))
 
 
 def scoring(request, id):
     page_data = ScoringAPI(request).grabPageData(id=id)
-    print(page_data)
     return render(request, 'client/regatta.html', dict(regatta=page_data))
 
 
