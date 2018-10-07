@@ -9,7 +9,7 @@ requests = "*"
 django = "*"
 sqlalchemy = "*"
 django-cors-middleware = "*"
-pyparsing = "2.*"
+pyparsing = "*"
 
 [dev-packages]
 
