@@ -2,5 +2,5 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('home', views.home, name='client.home'),
+    path('scoring/<int:id>', views.scoring, name='client.scoring')
 ]
