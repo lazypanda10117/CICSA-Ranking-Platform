@@ -1,4 +1,5 @@
 from abc import ABC
+from misc.CustomFunctions import MiscFunctions, RequestFunctions
 from ..authentication.AuthenticationFactory import AuthenticationFactory
 
 
@@ -6,4 +7,5 @@ from ..authentication.AuthenticationFactory import AuthenticationFactory
 class AbstractAPI(ABC):
     def __init__(self, request):
         self.request = request
-        self.auth = AuthenticationFactory(self.request.session['utype']).dispatch()
+        utype = self.request.session['utype'] if RequestFunctions.sessionChecker(self.request, ['utype']) else None
+        self.auth = AuthenticationFactory(utype).dispatch()
