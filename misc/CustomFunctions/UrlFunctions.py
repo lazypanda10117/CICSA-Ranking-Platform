@@ -21,4 +21,5 @@ def generateGETURL(path, argList):
 
 
 def getClientViewLink(path, identifier):
-    return reverse(path, identifier);
+    # return reverse(path, identifier);
+    return '#'

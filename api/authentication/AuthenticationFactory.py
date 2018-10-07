@@ -12,6 +12,7 @@ class AuthenticationFactory:
         dispatcher.add('admin', AuthenticationAdmin)
         dispatcher.add('team', AuthenticationTeam)
         dispatcher.add('public', AuthenticationPublic)
+        dispatcher.add(None, AuthenticationPublic)
         return dispatcher
 
     def dispatch(self):
