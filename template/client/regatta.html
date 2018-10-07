@@ -1,30 +1,62 @@
 {% block content %}
 	<div class="container mt-3">
 		<h2>{{ regatta.name }}</h2>
+		<ul class="list-group">
+			<li class="list-group-item">
+				{% for i in 123456789 %}
+					<div class="row">
+						<div class="col">
+							{% cycle 'Name' 'Description' 'Season' 'Host' 'Location' 'Status' 'Start Date' 'End Date' %}:
+						</div>
+						<div class="col">
+							{% cycle regatta.name regatta.description regatta.season regatta.host regatta.location regatta.status regatta.start_date regatta.end_date %}
+						</div>
+					</div>
+				{% endfor %}
+			</li>
+		</ul>
 
-		{% comment %}
+		<h4>Ranking</h4>
 		<table class="table table-hover">
 			<thead>
 				<tr>
-					<th scope="col">Date</th>
-					<th scope="col">Name</th>
-					<th scope="col">Host School</th>
-					<th scope="col">Location</th>
-					<th scope="col">Scoring</th>
+					<th scope="col">School</th>
+					<th scope="col">Ranking</th>
 				</tr>
 			</thead>
 			<tbody>
-				{% for regatta in regattas %}
-					<tr data-href="{% url '' %}">
-						<td scope="row">{{ regatta.date }}</td>
-						<td>{{ regatta.name }}</td>
-						<td>{{ regatta.host }}</td>
-						<td>{{ regatta.location }}</td>
-						<td>{{ regatta.scoring }}</td>
+				{% for school in regatta.schools %}
+					<tr>
+						<td scope="row">{{ school.name }}</td>
+						<td>{{ school.ranking }}</td>
 					</tr>
 				{% endfor %}
 			</tbody>
 		</table>
-		{% endcomment %}
+
+		{% for fleet in regatta.fleets %}
+			<h4>{{ fleet.title }}</h4>
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th scope="col"></th>
+						{% for team_result.scores|length %}
+							<th scope="col">{{ forloop.counter }}</th>
+						{% endfor %}
+					</tr>
+				</thead>
+				{% for team_result in regatta.fleet.team_results%}
+					<tr>
+						<td scope="row">{{ team_result.team_name }}</td>
+						{% for score in team_result.scores %}
+							<td>{{ score }}</td>
+						{% endfor %}
+						<td>{{ team_result.final_score }}</td>
+					</tr>
+				{% endfor %}
+			</table>
+		{% endfor %}
+
+
 	</div>
 {% endblock %}

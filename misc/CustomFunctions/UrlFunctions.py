@@ -18,3 +18,7 @@ def getModifyLink(tag, **kwargs):
 
 def generateGETURL(path, argList):
     return path + '?' + ''.join([arg[0] + '=' + arg[1] + '&' for arg in argList.items()])[:-1]
+
+
+def getClientViewLink(path, identifier):
+    return reverse(path, identifier);

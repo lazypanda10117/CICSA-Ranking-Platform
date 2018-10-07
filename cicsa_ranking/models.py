@@ -65,7 +65,8 @@ class Summary(models.Model):
     summary_event_school = models.IntegerField(default=0)
     summary_event_ranking = models.IntegerField(default=0)
     summary_event_override_ranking = models.IntegerField(default=0)
-    summary_event_score = models.FloatField(default=0)
+    summary_event_race_score = models.IntegerField(default=0)
+    summary_event_league_score = models.FloatField(default=0)
 
 
 class Log(models.Model):
@@ -112,5 +113,21 @@ class Account(models.Model):
     account_linked_id = models.IntegerField(blank=True, null=True)
 
 
-# new model: news and notices
-# new model: score
+# NOTE: use cm_blog as base app
+# class News(models.Model):
+    # news_type = models.CharField(max_length=50)
+    # news_status = models.CharField(max_length=50)  # hidden, active
+    # news_title = models.CharField(max_length=200)
+    # news_content = models.CharField(max_length=1500)
+    # news_last_update_time = models.DateTimeField(auto_now_add=True, blank=True)
+
+
+# NOTE: design problem - compile score or compile at runtime
+class Score(models.Model):
+    score_value = models.IntegerField()
+    score_school = models.IntegerField()
+    score_season = models.IntegerField()
+
+
+class Config(models.Model):
+    config_current_season = models.IntegerField()
