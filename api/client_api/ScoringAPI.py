@@ -1,8 +1,9 @@
 from functools import reduce
-from misc.CustomFunctions import UrlFunctions
+from misc.CustomFunctions import UrlFunctions, MiscFunctions
+from misc.CustomElements import EquationParser
 from ..base.GeneralClientAPI import GeneralClientAPI
 from ..model_api import EventAPI, EventActivityAPI, SummaryAPI, TeamAPI, EventTypeAPI
-from ..model_api import EventTagAPI, RegionAPI, SchoolAPI, SeasonAPI
+from ..model_api import EventTagAPI, RegionAPI, SchoolAPI, SeasonAPI, ScoreMappingAPI
 
 
 class ScoringAPI(GeneralClientAPI):
@@ -38,28 +39,30 @@ class ScoringAPI(GeneralClientAPI):
         )
         return result
 
-    def __scoreAdd(self, x, y, team_num):
-        def scoreStringMapping(str, team_num):
-            # shoud use data from DB later
-            if str == "OCF":
-                score = team_num + 1
-            elif str == "DNF":
-                score = team_num + 1
-            elif str == "DNS":
-                score = team_num + 1
-            else:
-                score = team_num + 1
-            return score
+    def __scoreAdd(self, x, y, event):
+        def eqtParser(equation_string):
+            replace_dict = dict(RACE=event.event_race_number, TEAM=event.event_team_number)
+            arithmetic_exp = MiscFunctions.simpleEqtFormatter(equation_string, replace_dict)
+            try:
+                result = int(EquationParser().eval(arithmetic_exp))
+            except:
+                result = replace_dict['RACE'] + 1
+            return result
+
+        def scoreStringMapping(str):
+            score_mappings = ScoreMappingAPI(self.request).filterSelf()
+            score_name_map = {score_map.score_name: score_map.score_value for score_map in score_mappings}
+            return eqtParser(score_name_map[str])
 
         try:
             value1 = int(x)
         except ValueError:
-            value1 = scoreStringMapping(x, team_num)
+            value1 = scoreStringMapping(x)
 
         try:
             value2 = int(y)
         except ValueError:
-            value2 = scoreStringMapping(x, team_num)
+            value2 = scoreStringMapping(x)
 
         return value1 + value2
 
@@ -89,7 +92,7 @@ class ScoringAPI(GeneralClientAPI):
             for tag in event_activity_name_tags:
                 for team in team_ids[tag]:
                     score = reduce(
-                        (lambda x, y: self.__scoreAdd(x, y, event.event_team_number)),
+                        (lambda x, y: self.__scoreAdd(x, y, event)),
                         race_table[tag][team]["scores"]
                     )
                     race_table[tag][team]["final_score"] = score

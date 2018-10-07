@@ -19,26 +19,28 @@
       <div class="container">
         <a class="navbar-brand" href="#">CICSA Ranking Platform</a>
         <ul class="navbar-nav">
+          {% comment %}
           <li class="nav-item active">
             <a class="nav-link" href="#">League Ranking <span class="sr-only">(current)</span></a>
           </li>
+          {% endcomment %}
           <li class="nav-item">
             <a class="nav-link" href="#">Event</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">School</a>
+            <a class="nav-link disabled" href="#">School</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Team</a>
+            <a class="nav-link disabled" href="#">Team</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Season</a>
+            <a class="nav-link disabled" href="#">Season</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Region</a>
+            <a class="nav-link disabled" href="#">Region</a>
           </li>
           <li class="nav-item" style="padding-left: 20px;">
-            <a class="btn btn-primary" href="#">Sign In</a>
+            <a class="btn btn-primary" href="/panel">Sign In</a>
           </li>
         </ul>
       </div>
@@ -51,7 +53,7 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-6 h-100 text-center text-lg-left my-auto">
-            <p class="text-muted small mb-4 mb-lg-0">This site is licensed under a MIT License.   |   <a href="#">Terms of Use</a> </p>
+            <p class="text-muted small mb-4 mb-lg-0"><a href="#">Terms of Use</a> </p>
           </div>
           <div class="col-lg-6 h-100 text-center text-lg-right my-auto">
             <ul class="list-inline mb-0">

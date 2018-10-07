@@ -14,9 +14,9 @@ INSERT INTO cicsa_ranking_region (region_name) VALUES ('Other East Territories')
 INSERT INTO cicsa_ranking_region (region_name) VALUES ('Ontario');
 INSERT INTO cicsa_ranking_region (region_name) VALUES ('Quebec');
 INSERT INTO cicsa_ranking_region (region_name) VALUES ('Maritime Provinces');
-INSERT INTO cicsa_ranking_scoremapping (score_name, score_value) VALUES ('OCF', -10);
-INSERT INTO cicsa_ranking_scoremapping (score_name, score_value) VALUES ('DNF', -10);
-INSERT INTO cicsa_ranking_scoremapping (score_name, score_value) VALUES ('DNS', -10);
+INSERT INTO cicsa_ranking_scoremapping (score_name, score_value) VALUES ('OCF', 'TEAM+1');
+INSERT INTO cicsa_ranking_scoremapping (score_name, score_value) VALUES ('DNF', 'TEAM+1');
+INSERT INTO cicsa_ranking_scoremapping (score_name, score_value) VALUES ('DNS', 'TEAM+1');
 INSERT INTO cicsa_ranking_school (school_name, school_region, school_status, school_season_score, school_default_team_name) VALUES ('UBC', 1, 'active', 0, 'False Red');
 INSERT INTO cicsa_ranking_school (school_name, school_region, school_status, school_season_score, school_default_team_name) VALUES ('University of Waterloo', 1, 'active', 0, 'Gold and Black');
 INSERT INTO cicsa_ranking_school (school_name, school_region, school_status, school_season_score, school_default_team_name) VALUES ('University of Toronto', 1, 'active', 0, 'True Blue');

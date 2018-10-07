@@ -42,7 +42,7 @@ class Season(models.Model):
 
 class ScoreMapping(models.Model):
     score_name = models.CharField(max_length=200)
-    score_value = models.IntegerField(default=0)
+    score_value = models.CharField(default="RACE+1", max_length=100)
 
 
 class EventType(models.Model):

@@ -47,3 +47,10 @@ def updateDict(dictionary, new_dictionary):
 
 def getModelName(model):
     return model.__name__
+
+
+def simpleEqtFormatter(equation, replace_dict):
+    result = equation
+    for key, replace_val in replace_dict.items():
+        result = result.replace(key, str(replace_val))
+    return result
