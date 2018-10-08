@@ -33,4 +33,4 @@ class EventAPI(GeneralModelAPI):
 
     @staticmethod
     def getEventModifyLink(event_type, **kwargs):
-        return UrlFunctions.getModifyLink(event_type, **kwargs)
+        return UrlFunctions.getModifyLink(event_type, **kwargs) + '&base=event_mgmt'

@@ -35,7 +35,7 @@ class EventPage(AbstractBasePage):
                 link=reverse(
                     'panel.module.management_data.view_dispatch_param',
                     args=[self.param["type"], 'custom']
-                )+'?action=add',
+                )+'?action=add&base=event_mgmt',
                 text='Add Event'
             )
         )

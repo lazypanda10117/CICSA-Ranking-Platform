@@ -95,6 +95,7 @@ class ScoringAPI(GeneralClientAPI):
                             if team not in race_table[tag]:
                                 race_table[tag][team] = dict(team_name=team_name, scores=list(), final_score=0)
                             race_table[tag][team]["scores"].append(0)
+
             for tag in event_activity_name_tags:
                 for team in team_ids[tag]:
                     score = reduce(
@@ -102,6 +103,23 @@ class ScoringAPI(GeneralClientAPI):
                         race_table[tag][team]["scores"]
                     )
                     race_table[tag][team]["final_score"] = score
+
+            for tag in event_activity_name_tags:
+                temp_table = sorted(race_table[tag].items(), key=lambda x: x[1]["final_score"])
+                race_table[tag] = {data[0]: data[1] for data in temp_table}
+
+            for tag in event_activity_name_tags:
+                prevRanking = 1
+                prevScore = 0
+                for index, team in enumerate(race_table[tag]):
+                    if race_table[tag][team]["final_score"] == 0:
+                        race_table[tag][team]["rank"] = '#'
+                    else:
+                        if race_table[tag][team]["final_score"] > prevScore:
+                             prevRanking = index + 1
+                             prevScore = race_table[tag][team]["final_score"]
+                        race_table[tag][team]["rank"] = prevRanking
+
             return race_table
 
         def __buildFleetRankingTable():

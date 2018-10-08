@@ -10,4 +10,4 @@ class TeamAPI(GeneralModelAPI):
 
     @staticmethod
     def getTeamModifyLink(**kwargs):
-        return UrlFunctions.getModifyLink('team', **kwargs)
+        return UrlFunctions.getModifyLink('team', **kwargs) + '&base=event_mgmt'

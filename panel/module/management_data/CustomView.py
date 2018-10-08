@@ -21,7 +21,13 @@ class CustomView:
         return dispatcher
 
     def getTemplateBase(self):
-        template_base = self.permission_obj().ManagementData().getTemplateBase()
+        template = self.request.GET.get('base', 'data')
+        if template=='data':
+            template_base = self.permission_obj().ManagementData().getTemplateBase()
+        elif template=='event_mgmt':
+            template_base = 'platform/base.html'
+        else:
+            template_base = self.permission_obj().ManagementData().getTemplateBase()
         return template_base
 
     def dispatch(self, form_path):

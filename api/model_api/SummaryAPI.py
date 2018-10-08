@@ -10,4 +10,4 @@ class SummaryAPI(GeneralModelAPI):
 
     @staticmethod
     def getEventSummaryModifiyLink(**kwargs):
-        return UrlFunctions.getModifyLink('summary', **kwargs)
+        return UrlFunctions.getModifyLink('summary', **kwargs) + '&base=event_mgmt'
