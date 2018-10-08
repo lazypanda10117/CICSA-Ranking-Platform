@@ -158,6 +158,8 @@ class ScoringPageAPI(GeneralClientAPI):
                         school_ranking_list[index]['base_ranking'] = prevRanking
             else:
                 summaries = list(SummaryAPI(self.request).filterSelf(summary_event_parent=event.id))
+                for summary in summaries:
+                    print(summary.summary_event_override_ranking)
                 school_ranking_list = [
                     dict(
                         school_id=summary.summary_event_school,
@@ -170,6 +172,7 @@ class ScoringPageAPI(GeneralClientAPI):
                         note='override' if summary.summary_event_override_ranking != 0 else '-'
                     ) for index, summary in enumerate(summaries)
                 ]
+            school_ranking_list = sorted(school_ranking_list, key=(lambda x: x['ranking']))
             # loop to check if entry needs override
             for index, school_ranking_data in enumerate(school_ranking_list):
                 duplicates = sum(
@@ -216,7 +219,7 @@ class ScoringPageAPI(GeneralClientAPI):
         event = self.getEventDetails(event_id)
         event_type = self.__getEventType(event)
         event_details = self.buildEventDetailsDict(event)
-        event_table = self.__buildDataTable(event)
+        event_table = self.buildDataTable(event)
         page_data = dict(
             event_type=event_type,
             event_details=event_details,

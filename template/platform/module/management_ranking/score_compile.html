@@ -26,15 +26,18 @@
                     <div class="container-fluid row mt-4">
                         <div class="col col-lg-3 offset-lg-1">
                             {{ content.school_name }}
+                            <input type="text" name="school_id_{{ forloop.counter }}" value="{{ content.school_id }}" hidden>
                         </div>
                         <div class="col col-lg-2">
                             {{ content.score }}
+                            <input type="text" name="score_{{ forloop.counter }}" value="{{ content.score }}" hidden>
                         </div>
                         <div class="col col-lg-2">
                             {{ content.ranking }}
+                            <input type="text" name="ranking_{{ forloop.counter }}" value="{{ content.ranking }}" hidden>
                         </div>
                         <div class="col col-lg-auto">
-                            <select class="custom-select" name="{{ content.school_id }}">
+                            <select class="custom-select" name="override_ranking_{{ forloop.counter }}" required>
                                 <option disabled selected value> -- Select an option -- </option>
                                 {% for value, data in content.options.items %}
                                     <option {{ data.disabled }} {{ data.selected }} value="{{ value }}">{{ data.text }}</option>

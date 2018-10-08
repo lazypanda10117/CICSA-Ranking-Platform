@@ -1,6 +1,5 @@
 from django.shortcuts import reverse
-from api import ScoringPageAPI, EventAPI, EventActivityAPI, SchoolAPI, TeamAPI
-from panel.component import CustomElements
+from api import ScoringPageAPI, EventAPI
 from ...base.block.CustomPages import AbstractBasePage
 
 
@@ -25,18 +24,25 @@ class ScoreCompilingPage(AbstractBasePage):
     def genContent(self):
         def genOptions(data):
             options =  dict()
-            for i in range(sum((1 if result['base_ranking'] == data['base_ranking'] else 0) for result in ranking_list)):
-                options[i] = dict(
-                        disabled=''if data['need_override'] else 'disabled',
-                        selected=''if data['need_override'] else 'selected',
-                        text=i if data['need_override'] else data['override_ranking']
-                )
+            if event.event_status != "done":
+                for i in range(sum((1 if result['base_ranking'] == data['base_ranking'] else 0) for result in ranking_list)):
+                    options[i] = dict(
+                            disabled=''if data['need_override'] else 'disabled',
+                            selected=''if data['need_override'] else 'selected',
+                            text=i if data['need_override'] else data['override_ranking']
+                    )
+            else:
+                for i in range(sum((1 if result['base_ranking'] == data['base_ranking'] else 0) for result in ranking_list)):
+                    options[i] = dict(
+                            disabled=''if data['need_override'] else 'disabled',
+                            selected='selected' if (i == int(data['override_ranking']) or not data['need_override']) else '',
+                            text=i if data['need_override'] else data['override_ranking']
+                    )
             return options
 
         content = dict()
-        event_activity_id = int(self.param["id"])
-        event_activity = EventActivityAPI(self.request).getSelf(id=event_activity_id)
-        event = EventAPI(self.request).getSelf(id=int(event_activity.event_activity_event_parent))
+        event_id = int(self.param["id"])
+        event = EventAPI(self.request).getSelf(id=event_id)
         ranking_list = ScoringPageAPI(self.request).buildDataTable(event)['ranking']
         for index, data in enumerate(ranking_list):
             content[index] = dict(
