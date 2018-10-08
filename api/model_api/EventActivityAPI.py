@@ -18,6 +18,12 @@ class EventActivityAPI(GeneralModelAPI):
         event_activity.event_activity_result = event_activity_result
         event_activity.save()
 
+    def addEventActivity(self, event_id):
+        pass
+
+    def deleteEventActivity(self, event_activity_id):
+        pass
+
     @staticmethod
     def getEventActivityModifyLink(**kwargs):
         return UrlFunctions.getModifyLink('event activity', **kwargs) + '&base=event_mgmt'

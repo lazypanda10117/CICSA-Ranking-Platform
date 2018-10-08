@@ -3,7 +3,7 @@ from ..base.GeneralClientAPI import GeneralClientAPI
 from ..model_api import EventAPI, EventTypeAPI, RegionAPI, SchoolAPI
 
 
-class RegattasAPI(GeneralClientAPI):
+class SeasonPageAPI(GeneralClientAPI):
     def grabPageData(self, **kwargs):
         def genEventTable(status):
             events = EventAPI(self.request).filterSelf(event_status=status).order_by('event_start_date')
@@ -23,5 +23,3 @@ class RegattasAPI(GeneralClientAPI):
             Done=genEventTable("done")
         )
         return page_data
-
-

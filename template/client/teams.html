@@ -1,28 +1,29 @@
+{% extends 'client/index.html' %}
 {% block content %}
-	<div class="container mt-3">
-		<h2>Teams</h2>
-		<ul class="list-group">
+	<div class="container mt-4 mb-4">
+		<h2>Schools (Work in Progress)</h2>
+		<ul class="list-group mt-3">
 			{% for region in regions %}
 				<li class="list-group-item">
 					<h4>{{ region.name }}</h4>
-					{% for team in region.teams %}
+					{% for school in region.schools %}
 						<div class="row">
 							<div class="col">
-								{{ team.university }}
+								{{ school.university }}
 							</div>
 							<div class="col">
-								{{ team.mascot }}
+								{{ school.mascot }}
 							</div>
 							<div class="col">
-								{{ team.location }}
+								{{ school.location }}
 							</div>
 						</div>
 					{% empty %}
-						<p>There are no teams for this region.</p>
+						<p>There are no school for this region.</p>
 					{% endfor %}
 				</li>
 			{% empty %}
-				<p>There are no teams.</p>
+				<p>There are no schools.</p>
 			{% endfor %}
 		</ul>
 	</div>

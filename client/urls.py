@@ -4,5 +4,8 @@ from . import views
 urlpatterns = [
     path('', views.index, name='client.index'),
     path('scoring/<int:id>', views.scoring, name='client.scoring'),
-    path('regattas', views.regattas, name='client.regattas')
+    path('rotation/<int:id>', views.rotation, name='client.rotation'),
+    path('events', views.regattas, name='client.regattas'),
+    path('schools', views.schools, name='client.schools')
+
 ]

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from api.client_api import ScoringAPI, RegattasAPI
+from api.client_api import ScoringPageAPI, RegattasPageAPI, SchoolPageAPI, SchoolsPageAPI, SeasonPageAPI, RotationPageAPI, RegionPageAPI
 
 
 def index(request):
@@ -7,13 +7,28 @@ def index(request):
 
 
 def scoring(request, id):
-    page_data = ScoringAPI(request).grabPageData(id=id)
+    page_data = ScoringPageAPI(request).grabPageData(id=id)
     return render(request, 'client/regatta.html', dict(regatta=page_data))
 
 
+def rotation(request, id):
+    page_data = RotationPageAPI(request).grabPageData(id=id)
+    return render(request, 'client/rotation.html', dict(regatta=page_data))
+
+
 def regattas(request):
-    page_data = RegattasAPI(request).grabPageData()
+    page_data = RegattasPageAPI(request).grabPageData()
     return render(request, 'client/regattas.html', dict(regattas=page_data))
+
+
+def schools(request):
+    page_data = SchoolsPageAPI(request).grabPageData()
+    return render(request, 'client/teams.html', dict(regions=page_data))
+
+
+def school(request):
+    page_data = SchoolPageAPI(request).grabPageData()
+    return render(request, 'client/team.html', dict(school=page_data))
 
 # def home(request):
 #     standings = []  # array of standings

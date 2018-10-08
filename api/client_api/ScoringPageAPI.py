@@ -1,25 +1,29 @@
 import re
 from functools import reduce
+from django.shortcuts import reverse
 from misc.CustomFunctions import UrlFunctions, MiscFunctions
 from misc.CustomElements import EquationParser
 from ..base.GeneralClientAPI import GeneralClientAPI
 from ..model_api import EventAPI, EventActivityAPI, SummaryAPI, TeamAPI, EventTypeAPI
 from ..model_api import EventTagAPI, RegionAPI, SchoolAPI, SeasonAPI, ScoreMappingAPI
 
-class ScoringAPI(GeneralClientAPI):
+
+class ScoringPageAPI(GeneralClientAPI):
     FLEET_RACE = 1
     TEAM_RACE = 2
 
-    def __getEventDetails(self, event_id):
+    def getEventDetails(self, event_id):
         return EventAPI(self.request).getSelf(id=event_id)
 
     def __getEventType(self, event):
         return EventTypeAPI(self.request).getSelf(id=event.event_type).event_type_name
 
-    def __buildEventDetailsDict(self, event):
+    def buildEventDetailsDict(self, event):
         result = dict(
             name=event.event_name,
             description=event.event_description,
+            scoring=('Scoring Page', reverse('client.scoring', args=[event.id])),
+            rotation=('Rotation Page', reverse('client.rotation', args=[event.id])),
             season=(
                 SeasonAPI(self.request).getSelf(id=event.event_season).season_name,
                 UrlFunctions.getClientViewLink('season', event.event_season)
@@ -191,9 +195,9 @@ class ScoringAPI(GeneralClientAPI):
 
     def grabPageData(self, **kwargs):
         event_id = kwargs['id']
-        event = self.__getEventDetails(event_id)
+        event = self.getEventDetails(event_id)
         event_type = self.__getEventType(event)
-        event_details = self.__buildEventDetailsDict(event)
+        event_details = self.buildEventDetailsDict(event)
         event_table = self.__buildDataTable(event)
         page_data = dict(
             event_type=event_type,
