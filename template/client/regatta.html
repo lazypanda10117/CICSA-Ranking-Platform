@@ -55,7 +55,8 @@
 				<table class="table table-hover">
 					<thead>
 						<tr>
-							<th scope="col"></th>
+							<th scope="col">Rank</th>
+							<th scope="col">Team</th>
 							{% for team_result in team_results.values %}
 								{% if forloop.first %}
 									{% for score in team_result.scores %}
@@ -68,7 +69,8 @@
 					</thead>
 					{% for team_result in team_results.values %}
 						<tr>
-							<td scope="row">{{ team_result.team_name }}</td>
+							<td scope="row">{{ forloop.counter }}</td>
+							<td>{{ team_result.team_name }}</td>
 							{% for score in team_result.scores %}
 								<td>{% if score == 0 %} # {% else %} {{ score }} {% endif %}</td>
 							{% endfor %}
