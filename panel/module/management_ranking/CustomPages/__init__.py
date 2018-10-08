@@ -1,3 +1,4 @@
 from .EventPage import EventPage
 from .EventActivityPage import EventActivityPage
 from .EventActivityRankingPage import EventActivityRankingPage
+from .ScoreCompilingPage import ScoreCompilingPage

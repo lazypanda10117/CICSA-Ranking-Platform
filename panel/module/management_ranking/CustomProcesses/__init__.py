@@ -1,2 +1,3 @@
 from .EventActivityRankingProcess import EventActivityRankingProcess
 from .UpdateEventStatusProcess import UpdateEventStatusProcess
+from .ScoreCompilingProcess import ScoreCompilingProcess

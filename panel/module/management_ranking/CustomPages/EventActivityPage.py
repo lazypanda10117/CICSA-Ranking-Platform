@@ -35,7 +35,16 @@ class EventActivityPage(AbstractBasePage):
         return blockset
 
     def render(self):
-        return super().renderHelper(PageObject('Event Activities List', self.generateList(), []))
+        external = dict(
+            button=dict(
+                link=reverse(
+                    'panel.module.management_ranking.view_dispatch_param',
+                    args=['compiler', self.param['id']]
+                ),
+                text='Compile Event'
+            )
+        )
+        return super().renderHelper(PageObject('Event Activities List', self.generateList(), [], external))
 
     def parseParams(self, param):
         match = super().parseMatch('\d+')

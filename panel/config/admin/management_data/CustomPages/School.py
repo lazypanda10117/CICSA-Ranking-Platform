@@ -14,7 +14,7 @@ class SchoolView(AbstractCustomClass):
         self.validation_table = {
             'base_table_invalid': {'_state'},
             'base_form_invalid': {'_state', 'id'},
-            'account_invalid': {'_state', 'id', 'account_type', 'account_salt', 'account_status', 'account_linked_id'}
+            'account_invalid': {'_state', 'id', 'account_type', 'account_password', 'account_salt', 'account_status', 'account_linked_id'}
         }
         super().__init__(request, self.base_class, self.validation_table)
 

@@ -1,8 +1,8 @@
 from django.views.decorators.csrf import csrf_exempt
 from misc.CustomElements import Dispatcher
 from ..base.block.Base import AbstractBlockApp
-from .CustomPages import EventPage, EventActivityPage, EventActivityRankingPage
-from .CustomProcesses import UpdateEventStatusProcess, EventActivityRankingProcess
+from .CustomPages import EventPage, EventActivityPage, EventActivityRankingPage, ScoreCompilingPage
+from .CustomProcesses import UpdateEventStatusProcess, EventActivityRankingProcess, ScoreCompilingProcess
 
 
 def index(request):
@@ -27,10 +27,12 @@ class ManagementRankingView(AbstractBlockApp.AppView):
         dispatcher.add('event', EventPage)
         dispatcher.add('activity', EventActivityPage)
         dispatcher.add('activity ranking', EventActivityRankingPage)
+        dispatcher.add('compiler', ScoreCompilingPage)
         return dispatcher
 
     def setProcessDispatcher(self):
         dispatcher = Dispatcher()
         dispatcher.add('activity status', UpdateEventStatusProcess)
         dispatcher.add('activity ranking', EventActivityRankingProcess)
+        dispatcher.add('compiler', ScoreCompilingProcess)
         return dispatcher

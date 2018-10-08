@@ -130,13 +130,21 @@ class ScoringPageAPI(GeneralClientAPI):
             if event.event_status != "done":
                 ranking_table = dict()
                 for school in schools:
-                    ranking_table[school.school_name] = 0
+                    ranking_table[school.id] = 0
                 for tag in event_activity_name_tags:
                     for team in team_ids[tag]:
-                        ranking_table[team_school_link[team].school_name] += score_table[tag][team]["final_score"]
+                        ranking_table[team_school_link[team].id] += score_table[tag][team]["final_score"]
                 school_ranking_list = [
-                    dict(school_name=school_name, score=data, ranking='#', note='-')
-                    for school_name, data in ranking_table.items()
+                    dict(
+                        school_id=school_id,
+                        school_name=schools.get(id=school_id).school_name,
+                        score=data,
+                        ranking='#',
+                        base_ranking='#',
+                        override_ranking=0,
+                        need_override=False,
+                        note='-'
+                    ) for school_id, data in ranking_table.items()
                 ]
                 school_ranking_list = sorted(school_ranking_list, key=(lambda x: x['score']))
                 prevRanking = 1
@@ -146,20 +154,29 @@ class ScoringPageAPI(GeneralClientAPI):
                         if school_ranking_data['score'] > prevScore:
                             prevRanking = index + 1
                             prevScore = school_ranking_data['score']
-                            school_ranking_list[index]['ranking'] = prevRanking
-                        else:
-                            school_ranking_list[index]['ranking'] = prevRanking
+                        school_ranking_list[index]['ranking'] = prevRanking
+                        school_ranking_list[index]['base_ranking'] = prevRanking
             else:
-                summaries = SummaryAPI(self.request).filterSelf(summary_event_parent=event.id)
+                summaries = list(SummaryAPI(self.request).filterSelf(summary_event_parent=event.id))
                 school_ranking_list = [
                     dict(
-                        school_name=schools.filter(id=summary.summary_event_school).school_name,
-                        score=summary.summary_race_score,
-                        ranking=  summary.summary_event_ranking + summary.summary_event_override_ranking,
+                        school_id=summary.summary_event_school,
+                        school_name=schools.get(id=summary.summary_event_school).school_name,
+                        score=summary.summary_event_race_score,
+                        ranking=summary.summary_event_ranking + summary.summary_event_override_ranking,
+                        base_ranking=summary.summary_event_ranking,
+                        override_ranking=summary.summary_event_override_ranking,
+                        need_override=True if summary.summary_event_override_ranking != 0 else False,
                         note='override' if summary.summary_event_override_ranking != 0 else '-'
-
-                    ) for summary in summaries
+                    ) for index, summary in enumerate(summaries)
                 ]
+            # loop to check if entry needs override
+            for index, school_ranking_data in enumerate(school_ranking_list):
+                duplicates = sum(
+                    (1 if result['base_ranking'] == school_ranking_data['base_ranking'] else 0) for result in
+                    school_ranking_list)
+                if duplicates > 1:
+                    school_ranking_list[index]['need_override'] = True
             return school_ranking_list
 
         event_activities = EventActivityAPI(self.request).filterSelf(event_activity_event_parent=event.id)
@@ -185,7 +202,7 @@ class ScoringPageAPI(GeneralClientAPI):
         rank_table = __buildFleetRankingTable()
         return dict(ranking=rank_table, score=score_table)
 
-    def __buildDataTable(self, event):
+    def buildDataTable(self, event):
         event_type_name = EventTypeAPI(self.request).getSelf(id=event.event_type).event_type_name
         if event_type_name == self.FLEET_RACE:
             return self.__buildFleetTable(event)

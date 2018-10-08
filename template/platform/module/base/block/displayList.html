@@ -22,4 +22,13 @@
     {% for block in page.element_list.blocks %}
         {% include "platform/module/base/block/displayBlock.html" with context=block only %}
     {% endfor %}
+    {% if page.external.button %}
+        {% with page.external.button as btn %}
+            <div class="col-lg-10 offset-lg-1">
+                <a href="{{ btn.link }}" class="btn btn-lg btn-info" style="width: 100%">
+                    {{ btn.text }}
+                </a>
+            </div>
+        {% endwith %}
+    {% endif %}
 {% endblock %}

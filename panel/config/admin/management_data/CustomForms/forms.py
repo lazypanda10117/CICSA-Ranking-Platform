@@ -175,7 +175,8 @@ class SummaryForm(forms.Form):
     summary_event_school = forms.ChoiceField(choices=[])
     summary_event_ranking = forms.IntegerField(initial=0)
     summary_event_override_ranking = forms.IntegerField(initial=0)
-    summary_event_score = forms.FloatField(initial=0.0)
+    summary_race_score = forms.IntegerField(initial=0)
+    summary_league_score = forms.FloatField(initial=0.0)
 
 
 class EventTeamForm(forms.Form):

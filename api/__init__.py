@@ -1,3 +1,12 @@
+# Importing APIs From ClientAPI
+from .client_api import RegattasPageAPI
+from .client_api import RegionPageAPI
+from .client_api import RotationPageAPI
+from .client_api import SchoolPageAPI
+from .client_api import SchoolsPageAPI
+from .client_api import ScoringPageAPI
+from .client_api import SeasonPageAPI
+
 # Importing APIs From FunctionAPI
 from .functional_api import SearchAPI
 
