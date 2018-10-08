@@ -9,8 +9,8 @@ from ..model_api import EventTagAPI, RegionAPI, SchoolAPI, SeasonAPI, ScoreMappi
 
 
 class ScoringPageAPI(GeneralClientAPI):
-    FLEET_RACE = 1
-    TEAM_RACE = 2
+    FLEET_RACE = 'fleet race'
+    TEAM_RACE = 'team race'
 
     def getEventDetails(self, event_id):
         return EventAPI(self.request).getSelf(id=event_id)
@@ -186,9 +186,10 @@ class ScoringPageAPI(GeneralClientAPI):
         return dict(ranking=rank_table, score=score_table)
 
     def __buildDataTable(self, event):
-        if event.event_type == self.FLEET_RACE:
+        event_type_name = EventTypeAPI(self.request).getSelf(id=event.event_type).event_type_name
+        if event_type_name == self.FLEET_RACE:
             return self.__buildFleetTable(event)
-        elif event.event_type == self.TEAM_RACE:
+        elif event_type_name == self.TEAM_RACE:
             pass
         else:
             pass
