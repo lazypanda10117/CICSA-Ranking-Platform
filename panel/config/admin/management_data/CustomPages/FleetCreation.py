@@ -163,11 +163,9 @@ class FleetManagementView(EventManagementView):
         def delete(key):
             event_api = self.useAPI(self.base_class)
             event_activity_api = self.useAPI(self.assoc_class_activity)
-            event = event_api.getEvent(id=key)
+            event = event_api.getSelf(id=key)
             event_activities = event_api.getEventActivities(event_activity_event_parent=event.id)
-            print(event_activities)
             event_summaries = event_api.getEventSummaries(summary_event_parent=event.id)
-            print(event_summaries)
 
             event_tags = event_api.getEventTags(event_tag_event_id=event.id)
             event_teams = event_api.getEventCascadeTeams(event.id)

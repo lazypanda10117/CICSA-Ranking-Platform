@@ -34,7 +34,8 @@ class SummaryView(AbstractCustomClass):
             summary.summary_event_ranking = RequestFunctions.getSinglePostObj(post_dict, 'summary_event_ranking')
             summary.summary_event_override_ranking = RequestFunctions.getSinglePostObj(
                 post_dict, 'summary_event_override_ranking')
-            summary.summary_event_score = RequestFunctions.getSinglePostObj(post_dict, 'summary_event_score')
+            summary.summary_event_race_score = RequestFunctions.getSinglePostObj(post_dict, 'summary_race_score')
+            summary.summary_event_league_score = RequestFunctions.getSinglePostObj(post_dict, 'summary_league_score')
 
             if not action == 'delete':
                 summary.save()

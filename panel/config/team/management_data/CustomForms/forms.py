@@ -41,6 +41,7 @@ class AccountForm(forms.Form):
         self.field_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('field_data', self.data))
         self.choice_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('choice_data', self.data))
         for key, value in self.choice_data.items():
+            value = (('', '-- Select an option --'),) + value
             self.fields[key] = forms.ChoiceField(choices=value)
         for key, value in self.field_data.items():
             self.fields[key].initial = value
@@ -59,6 +60,8 @@ class SchoolForm(forms.Form):
         self.field_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('field_data', self.data))
         self.choice_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('choice_data', self.data))
         for key, value in self.choice_data.items():
+            value = (('', '-- Select an option --'),) + value
+            print(value)
             self.fields[key] = forms.ChoiceField(choices=value)
         for key, value in self.field_data.items():
             self.fields[key].initial = value
@@ -79,6 +82,7 @@ class TeamForm(forms.Form):
         self.field_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('field_data', self.data))
         self.choice_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('choice_data', self.data))
         for key, value in self.choice_data.items():
+            value = (('', '-- Select an option --'),) + value
             self.fields[key] = forms.ChoiceField(choices=value)
         for key, value in self.field_data.items():
             self.fields[key].initial = value
@@ -95,6 +99,7 @@ class MemberForm(forms.Form):
         self.field_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('field_data', self.data))
         self.choice_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('choice_data', self.data))
         for key, value in self.choice_data.items():
+            value = (('', '-- Select an option --'),) + value
             self.fields[key] = forms.ChoiceField(choices=value)
         for key, value in self.field_data.items():
             self.fields[key].initial = value
@@ -112,6 +117,7 @@ class MemberGroupForm(forms.Form):
         self.field_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('field_data', self.data))
         self.choice_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('choice_data', self.data))
         for key, value in self.choice_data.items():
+            value = (('', '-- Select an option --'),) + value
             self.fields[key] = forms.ChoiceField(choices=value)
         for key, value in self.field_data.items():
             self.fields[key].initial = value
@@ -130,6 +136,7 @@ class EventManagementForm(forms.Form):
         for key, value in self.multi_choice_data.items():
             self.fields[key] = forms.MultipleChoiceField(choices=value, widget=forms.CheckboxSelectMultiple)
         for key, value in self.choice_data.items():
+            value = (('', '-- Select an option --'),) + value
             self.fields[key] = forms.ChoiceField(choices=value)
         for key, value in self.field_data.items():
             self.fields[key].initial = value
@@ -160,6 +167,7 @@ class SummaryForm(forms.Form):
         self.field_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('field_data', self.data))
         self.choice_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('choice_data', self.data))
         for key, value in self.choice_data.items():
+            value = (('', '-- Select an option --'),) + value
             self.fields[key] = forms.ChoiceField(choices=value)
         for key, value in self.field_data.items():
             self.fields[key].initial = value
@@ -167,7 +175,8 @@ class SummaryForm(forms.Form):
     summary_event_school = forms.ChoiceField(choices=[])
     summary_event_ranking = forms.IntegerField(initial=0)
     summary_event_override_ranking = forms.IntegerField(initial=0)
-    summary_event_score = forms.FloatField(initial=0.0)
+    summary_race_score = forms.IntegerField(initial=0)
+    summary_league_score = forms.FloatField(initial=0.0)
 
 
 class EventTeamForm(forms.Form):
@@ -177,6 +186,7 @@ class EventTeamForm(forms.Form):
         self.field_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('field_data', self.data))
         self.choice_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('choice_data', self.data))
         for key, value in self.choice_data.items():
+            value = (('', '-- Select an option --'),) + value
             self.fields[key] = forms.ChoiceField(choices=value)
         for key, value in self.field_data.items():
             self.fields[key].initial = value
@@ -192,6 +202,7 @@ class EventTagForm(forms.Form):
         self.field_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('field_data', self.data))
         self.choice_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('choice_data', self.data))
         for key, value in self.choice_data.items():
+            value = (('', '-- Select an option --'),) + value
             self.fields[key] = forms.ChoiceField(choices=value)
         for key, value in self.field_data.items():
             self.fields[key].initial = value
@@ -206,6 +217,7 @@ class EventActivityForm(forms.Form):
         self.field_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('field_data', self.data))
         self.choice_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('choice_data', self.data))
         for key, value in self.choice_data.items():
+            value = (('', '-- Select an option --'),) + value
             self.fields[key] = forms.ChoiceField(choices=value)
         for key, value in self.field_data.items():
             self.fields[key].initial = value
