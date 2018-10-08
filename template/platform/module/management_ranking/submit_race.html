@@ -28,6 +28,7 @@
                         </div>
                         <div class="col col-lg-auto">
                             <select class="custom-select" name="{{ content.event_activity_team }}">
+                                <option disabled selected value> -- Select an option -- </option>
                                 {% for value, data in content.options.items %}
                                     <option {{ data.selected }} value="{{ value }}">{{ data.text }}</option>
                                 {% endfor %}

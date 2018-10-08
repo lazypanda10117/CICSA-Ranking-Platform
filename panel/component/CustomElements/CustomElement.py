@@ -105,7 +105,9 @@ class Choices:
 
     @staticmethod
     def getSchoolChoices():
-        SCHOOL_CHOICES = tuple([(value.id, value.school_name) for value in ModelFunctions.filterModelObject(School)])
+        SCHOOL_CHOICES = tuple([
+            (value.id, value.school_name) for value in ModelFunctions.filterModelObject(School).order_by('school_name')
+        ])
         return SCHOOL_CHOICES
 
     @staticmethod
