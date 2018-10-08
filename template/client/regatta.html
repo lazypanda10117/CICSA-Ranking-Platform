@@ -69,7 +69,7 @@
 					</thead>
 					{% for team_result in team_results.values %}
 						<tr>
-							<td scope="row">{{ forloop.counter }}</td>
+							<td scope="row">{{ team_result.rank }}</td>
 							<td>{{ team_result.team_name }}</td>
 							{% for score in team_result.scores %}
 								<td>{% if score == 0 %} # {% else %} {{ score }} {% endif %}</td>
