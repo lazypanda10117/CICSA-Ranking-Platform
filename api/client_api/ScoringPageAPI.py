@@ -19,6 +19,7 @@ class ScoringPageAPI(GeneralClientAPI):
         return EventTypeAPI(self.request).getSelf(id=event.event_type).event_type_name
 
     def buildEventDetailsDict(self, event):
+        status_map = {'future': "Future Regattas", 'running': "Ongoing Regattas", 'done': "Completed Regattas"}
         result = dict(
             name=event.event_name,
             description=event.event_description,
@@ -37,7 +38,7 @@ class ScoringPageAPI(GeneralClientAPI):
                 UrlFunctions.getClientViewLink('host', event.event_host)
             ),
             location=event.event_location,
-            status=event.event_status,
+            status=status_map[event.event_status],
             start=event.event_start_date.strftime("%Y-%m-%d"),
             end=event.event_end_date.strftime("%Y-%m-%d")
         )
@@ -169,7 +170,7 @@ class ScoringPageAPI(GeneralClientAPI):
                         base_ranking=summary.summary_event_ranking,
                         override_ranking=summary.summary_event_override_ranking,
                         need_override=True if summary.summary_event_override_ranking != 0 else False,
-                        note='override' if summary.summary_event_override_ranking != 0 else '-'
+                        note='Tie-breaker' if summary.summary_event_override_ranking != 0 else '-'
                     ) for index, summary in enumerate(summaries)
                 ]
             school_ranking_list = sorted(school_ranking_list, key=(lambda x: x['ranking']))
