@@ -14,8 +14,9 @@ class RegattasPageAPI(GeneralClientAPI):
                 event_status=event.event_status,
                 event_region=RegionAPI(self.request).getSelf(id=event.event_region).region_name,
                 event_host=SchoolAPI(self.request).getSelf(id=event.event_host).school_name,
-                event_start_date=event.event_start_date.strftime("%Y-%m-%d")
+                event_start_date=event.event_start_date.strftime("%B %d, %Y")
             ), list(events)))
+            event_dict = sorted(event_dict, key=(lambda x: x['event_start_date']))
             return event_dict
         page_data = dict(
             Running=genEventTable("running"),

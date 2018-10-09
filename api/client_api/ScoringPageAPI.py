@@ -19,7 +19,7 @@ class ScoringPageAPI(GeneralClientAPI):
         return EventTypeAPI(self.request).getSelf(id=event.event_type).event_type_name
 
     def buildEventDetailsDict(self, event):
-        status_map = {'future': "Future Regattas", 'running': "Ongoing Regattas", 'done': "Completed Regattas"}
+        status_map = {'future': "Future Events", 'running': "Ongoing Events", 'done': "Completed Events"}
         result = dict(
             name=event.event_name,
             description=event.event_description,
@@ -39,8 +39,8 @@ class ScoringPageAPI(GeneralClientAPI):
             ),
             location=event.event_location,
             status=status_map[event.event_status],
-            start=event.event_start_date.strftime("%Y-%m-%d"),
-            end=event.event_end_date.strftime("%Y-%m-%d")
+            start=event.event_start_date.strftime("%B %d, %Y"),
+            end=event.event_end_date.strftime("%B %d, %Y")
         )
         return result
 

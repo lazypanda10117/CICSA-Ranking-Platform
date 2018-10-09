@@ -33,18 +33,18 @@
 			<table class="table table-hover">
 				<thead>
 					<tr>
+						<th scope="col">Rank</th>
 						<th scope="col">School</th>
 						<th scope="col">Score</th>
-						<th scope="col">Ranking</th>
 						<th scope="col">Note</th>
 					</tr>
 				</thead>
 				<tbody>
 					{% for school in regatta.school_current_ranking %}
 						<tr>
-							<td scope="row">{{ school.school_name }}</td>
+							<td scope="row">{{ school.ranking }}</td>
+							<td>{{ school.school_name }}</td>
 							<td>{{ school.score }}</td>
-							<td>{{ school.ranking }}</td>
 							<td>{{ school.note }}</td>
 						</tr>
 					{% endfor %}
