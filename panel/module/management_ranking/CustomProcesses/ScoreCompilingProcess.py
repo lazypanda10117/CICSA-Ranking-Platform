@@ -13,7 +13,6 @@ class ScoreCompilingProcess(AbstractBaseProcess):
             school_id = int(RequestFunctions.getSinglePostObj(post_dict, 'school_id_'+str(i)))
             score = int(RequestFunctions.getSinglePostObj(post_dict, 'score_'+str(i)))
             ranking = int(RequestFunctions.getSinglePostObj(post_dict, 'ranking_'+str(i)))
-            print(RequestFunctions.getSinglePostObj(post_dict, 'override_ranking_'+str(i)))
             override_ranking = int(RequestFunctions.getSinglePostObj(post_dict, 'override_ranking_'+str(i)))
             summary_id = related_summaries.get(summary_event_school=school_id).id
             result = dict(ranking=ranking, override_ranking=override_ranking, race_score=score)

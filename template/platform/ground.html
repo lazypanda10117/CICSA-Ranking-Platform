@@ -17,6 +17,7 @@
     <script src="{% static 'js/viewFunctions.js' %}"></script>
     {% block 'head' %}
     {% endblock %}
+
 </head>
 <body onload="onLoad();">
 <div id="wrapper" class="toggled">
@@ -32,11 +33,22 @@
     </div>
     <div id="page-content-wrapper">
         <div class="container-fluid">
+            <div class="mb-3">
+                <a href="#menu-popup" id="menu-popup">
+                    <i class="fa fa-bars fa-2x"></i>
+                </a>
+            </div>
+
             {% block 'body' %}
             {% endblock %}
         </div>
     </div>
-
 </div>
+<script>
+    $("#menu-popup").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+</script>
 </body>
 </html>

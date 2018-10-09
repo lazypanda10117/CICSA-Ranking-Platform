@@ -159,8 +159,6 @@ class ScoringPageAPI(GeneralClientAPI):
                         school_ranking_list[index]['base_ranking'] = prevRanking
             else:
                 summaries = list(SummaryAPI(self.request).filterSelf(summary_event_parent=event.id))
-                for summary in summaries:
-                    print(summary.summary_event_override_ranking)
                 school_ranking_list = [
                     dict(
                         school_id=summary.summary_event_school,
