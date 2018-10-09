@@ -7,7 +7,7 @@ class EventView(EventManagementView):
     def __init__(self, request):
         super().__init__(request)
         self.validation_table = {
-            'base_table_invalid': {'_state'},
+            'base_table_invalid': {'_state', 'event_rotation_detail'},
             'base_form_invalid': {'_state', 'id', 'event_school_ids', 'event_team_number', 'event_create_time'},
         }
         
