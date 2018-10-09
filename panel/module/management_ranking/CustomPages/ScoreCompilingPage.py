@@ -27,14 +27,14 @@ class ScoreCompilingPage(AbstractBasePage):
             if event.event_status != "done":
                 for i in range(sum((1 if result['base_ranking'] == data['base_ranking'] else 0) for result in ranking_list)):
                     options[i] = dict(
-                            disabled=''if data['need_override'] else 'disabled',
+                            disabled='',
                             selected=''if data['need_override'] else 'selected',
                             text=i if data['need_override'] else data['override_ranking']
                     )
             else:
                 for i in range(sum((1 if result['base_ranking'] == data['base_ranking'] else 0) for result in ranking_list)):
                     options[i] = dict(
-                            disabled=''if data['need_override'] else 'disabled',
+                            disabled='',
                             selected='selected' if (i == int(data['override_ranking']) or not data['need_override']) else '',
                             text=i if data['need_override'] else data['override_ranking']
                     )
