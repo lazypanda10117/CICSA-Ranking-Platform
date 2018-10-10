@@ -107,7 +107,7 @@ class ScoringPageAPI(GeneralClientAPI):
                         (lambda x, y: self.__scoreAdd(x, y, event_score_map)),
                         race_table[tag][team]["scores"]
                     )
-                    race_table[tag][team]["final_score"] = score
+                    race_table[tag][team]["final_score"] = int(score)
 
             for tag in event_activity_name_tags:
                 temp_table = sorted(race_table[tag].items(), key=lambda x: x[1]["final_score"])
