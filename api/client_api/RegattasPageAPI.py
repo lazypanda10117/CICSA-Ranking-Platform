@@ -17,7 +17,7 @@ class RegattasPageAPI(GeneralClientAPI):
                 event_start_date=event.event_start_date.strftime("%B %d, %Y"),
                 event_start_date_num=int(event.event_start_date.strftime("%Y%m%d"))
             ), list(events)))
-            event_dict = sorted(event_dict, key=(lambda x: x['event_start_date_num']))
+            event_dict = sorted(event_dict, key=(lambda x: x['event_start_date_num']), reverse=True)
             return event_dict
         page_data = dict(
             Running=genEventTable("running"),
