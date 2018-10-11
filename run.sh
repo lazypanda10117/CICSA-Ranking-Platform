@@ -27,4 +27,4 @@ done
 python3 init/setup.py 1
 python3 manage.py migrate
 python3 init/setup.py 2
-python3 manage.py runserver 0.0.0.0:$PORT
+python3 manage.py runserver --insecure 0.0.0.0:$PORT
