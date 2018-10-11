@@ -26,8 +26,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'hm*m-^7l7m3ogup&2tz+kvavp)8rice!30$kh$(8)u5%c)n!d_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-if os.environ.get('DATABASE_URL') is None:
-    DEBUG = True
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1','sailing-dinosaurs-system.herokuapp.com']
 
