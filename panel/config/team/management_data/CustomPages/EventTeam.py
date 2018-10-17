@@ -72,7 +72,7 @@ class EventTeamView(AbstractCustomClass):
         db_map = dict()
         event_activity = self.useAPI(self.assoc_class_event_activity).getSelf(id=data['event_team_event_activity_id'])
         event_parent = self.useAPI(self.assoc_class_event).getSelf(id=event_activity.event_activity_event_parent)
-        db_map['event_team_event_activity_id'] = event_parent.event_name + ' - ' + event_activity.event_activity_name
+        db_map['event_team_event_activity_id'] = event_parent.event_name + ' - ' + event_activity.event_activity_name if event_parent is not None else 'Link Broken'
         db_map['event_team_id'] = DBMap().getMap(self.assoc_class_team, data['event_team_id'], 'team_name')
         db_map['event_team_member_group_id'] = (
             lambda x: 'Unlinked' if x is None else

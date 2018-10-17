@@ -10,7 +10,7 @@ class EventManagementView(AbstractCustomClass):
     def __init__(self, request):
         self.base_class = Event
         self.validation_table = {
-            'base_table_invalid': {'_state', 'event_rotation_detail'},
+            'base_table_invalid': {'_state', 'id', 'event_rotation_detail', 'event_school_ids', 'event_create_time'},
             'base_form_invalid': {'_state', 'id', 'event_team_number', 'event_school_ids',
                                   'event_rotation_detail', 'event_create_time'},
         }
@@ -70,8 +70,27 @@ class EventManagementView(AbstractCustomClass):
         return super().getTableContent(**{**arg_dict, **kwargs})
 
     def getTableSpecificHeader(self):
+        replace_dict = dict(
+            event_name='Event',
+            event_description='Description',
+            event_status="Status",
+            event_type='Type',
+            event_host='Host',
+            event_location='Location',
+            event_season='Season',
+            event_region='Region',
+            event_boat_rotation_name='Sail Numbers',
+            event_race_number='Number of Races',
+            event_team_number='Number of Teams',
+            event_date='Date'
+        )
         base_header = [field.name for field in self.base_class._meta.get_fields()
                        if field.name not in self.validation_table['base_table_invalid']]
+        base_header.remove('event_start_date')
+        base_header.remove('event_end_date')
+        base_header.append('event_date')
+        for index, header in enumerate(base_header):
+            base_header[index] = replace_dict[header] if header in replace_dict else header
         additional_header = []
         return base_header + additional_header
 
@@ -80,6 +99,12 @@ class EventManagementView(AbstractCustomClass):
             self.useAPI(self.base_class).getSelf(id=content.id).__dict__.items(),
             self.validation_table['base_table_invalid']
         )
+        start_date = field_data['event_start_date']
+        end_date = field_data['event_end_date']
+        date = str(start_date) + ' to ' + str(end_date)
+        del field_data['event_start_date']
+        del field_data['event_end_date']
+        field_data['date'] = date
         field_data = self.updateChoiceAsValue(field_data, self.getChoiceData())
         field_data = self.serializeJSONListData(['event_school_ids', 'event_rotation_detail'], field_data)
         field_data = MiscFunctions.grabValueAsList(field_data)

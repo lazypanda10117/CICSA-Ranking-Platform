@@ -1,5 +1,6 @@
 from cicsa_ranking.models import EventActivity, EventTeam, EventTag, School, Season, Summary, Team
 from .EventManagement import EventManagementView
+from panel.component.CustomElements import Table
 from misc.CustomFunctions import MiscFunctions, RequestFunctions, LogFunctions
 
 
@@ -27,16 +28,25 @@ class EventView(EventManagementView):
         return 'all'
 
     def getTableHeader(self):
-        return self.getTableSpecificHeader() + ["edit", "delete"]
+        return self.getTableSpecificHeader() + ["edit"]  # don't have delete in header
 
     def getTableRow(self, content):
         rowContent = dict()
         rowContent["db_content"] = self.getTableRowContent(content)
-        rowContent["button"] = self.makeEditDeleteBtn('custom', str(content.id))
+        rowContent["button"] = [self.makeEditDeleteBtn('custom', str(content.id))[0]]  # no delete button
         return rowContent
+
+    def grabTableData(self, form_path):
+        tableHeader = self.getTableHeader()
+        tableContent = self.getTableContent(**self.getFilterTerms())
+        table = Table(self.base_class, form_path).makeStaticTables(tableHeader, tableContent)
+        return [table]
 
     def abstractFormProcess(self, action, **kwargs):
         try:
+            if not action == 'edit':
+                raise Exception('Trying to ' + action + ' event in Logic-less Event Data Management Panel')
+
             post_dict = dict(self.request.POST)
 
             event_type = RequestFunctions.getSinglePostObj(post_dict, 'event_type')
@@ -80,16 +90,13 @@ class EventView(EventManagementView):
             event_creation.event_rotation_detail = event_rotation_detail
             event_creation.save()
 
-            if not action == 'delete':
+            if not action == 'edit':
                 event_creation.save()
 
             LogFunctions.loghelper(
                 self.request, 'admin', LogFunctions.logQueryMaker(
                     self.base_class, action.title(), id=event_creation.id)
             )
-
-            if action == 'delete':
-                event_creation.delete()
 
         except Exception as e:
             print({"Error": "Cannot Process " + action.title() + " Request."})
