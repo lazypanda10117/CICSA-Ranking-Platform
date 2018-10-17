@@ -65,9 +65,9 @@ class EventManagementView(AbstractCustomClass):
         return None
 
     # Table Generating Functions
-    def getTableContent(self, **kwargs):
+    def getTableContent(self, range_terms, **kwargs):
         arg_dict = {} if self.form_path == 'all' else {"event_type": self.event_types[self.form_path]}
-        return super().getTableContent(**{**arg_dict, **kwargs})
+        return super().getTableContent(range_terms, **{**arg_dict, **kwargs})
 
     def getTableSpecificHeader(self):
         replace_dict = dict(
