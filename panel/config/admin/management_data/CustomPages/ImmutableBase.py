@@ -43,7 +43,28 @@ class ImmutableBase(ABC):
             return kwargs
         return {}
 
-# View Process Functions
+    def getRangeTerms(self):
+        get_dict = self.request.GET
+        range_start = RequestFunctions.getMultiplePostObj(get_dict, 'start')
+        range_end = RequestFunctions.getMultiplePostObj(get_dict, 'end')
+
+        try:
+            range_start = (int(range_start)-1 if int(range_start)-1 >= 0 else 0)
+        except Exception:
+            range_start = 0
+
+        try:
+            range_end = (int(range_end) if int(range_end) >= 0 else 0)
+        except Exception:
+            range_end = 0
+
+        if range_end <= range_start:
+            range_start = 0
+            range_end = None
+
+        return range_start, range_end
+
+    # View Process Functions
     @abstractmethod
     def abstractFormProcess(self, action, **kwargs):
         pass
@@ -151,17 +172,23 @@ class ImmutableBase(ABC):
             temp_data[key] = value
         return temp_data
 
-    def getTableContent(self, **kwargs):
-        return [
-            self.getTableRow(content) for content in sorted(
+    def getTableContent(self, range_terms=(0, 10), **kwargs):
+        result = sorted(
                 self.useAPI(self.base_class).filterSelf(**kwargs),
                 key=lambda q: q.id
             )
+        result_length = len(result)
+        return [
+            self.getTableRow(content) for content in
+            result[
+                range_terms[0]:
+                (range_terms[1] if ((range_terms[1] is not None) and (range_terms[1] < result_length)) else result_length)
+            ]
         ]
 
     def grabTableData(self, form_path):
         tableHeader = self.getTableHeader()
-        tableContent = self.getTableContent(**self.getFilterTerms())
+        tableContent = self.getTableContent(self.getRangeTerms(), **self.getFilterTerms())
         table = Table(self.base_class, form_path).makeCustomTables(tableHeader, tableContent)
         return [table]
 

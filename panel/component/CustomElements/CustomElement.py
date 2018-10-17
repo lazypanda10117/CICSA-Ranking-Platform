@@ -30,6 +30,12 @@ class Table:
         self.tableContent = tableContent
         return self
 
+    def makeStaticTables(self, tableHeader, tableContent):
+        self.tableElement = None
+        self.tableHeader = tableHeader
+        self.tableContent = tableContent
+        return self
+
     @staticmethod
     def getTableElement(process):
         def makeAddBtn(path):
