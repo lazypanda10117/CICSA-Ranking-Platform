@@ -131,9 +131,9 @@ class Choices:
     @staticmethod
     def getEventStatusChoices():
         EVENT_STATUS_CHOICES = (
-            ("future", "Future"),
-            ("done", "Done"),
-            ("running", "Running")
+            ("future", "Future Event"),
+            ("running", "Ongoing Event"),
+            ("done", "Completed Event")
         )
         return EVENT_STATUS_CHOICES
 

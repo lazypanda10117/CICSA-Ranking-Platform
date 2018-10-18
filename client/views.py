@@ -3,7 +3,8 @@ from api.client_api import ScoringPageAPI, RegattasPageAPI, SchoolPageAPI, Schoo
 
 
 def index(request):
-    return render(request, 'client/index.html')
+    # return render(request, 'client/index.html')
+    return regattas(request)
 
 
 def scoring(request, id):
