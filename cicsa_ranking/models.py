@@ -69,6 +69,12 @@ class Summary(models.Model):
     summary_event_league_score = models.FloatField(default=0)
 
 
+class Score(models.Model):
+    score_value = models.IntegerField()
+    score_school = models.IntegerField()
+    score_season = models.IntegerField()
+
+
 class Log(models.Model):
     log_creator = models.IntegerField()  # if sql, then system (-1), else user id
     log_content = JSONField()
@@ -113,20 +119,24 @@ class Account(models.Model):
     account_linked_id = models.IntegerField(blank=True, null=True)
 
 
-# NOTE: use cm_blog as base app
-# class News(models.Model):
-    # news_type = models.CharField(max_length=50)
-    # news_status = models.CharField(max_length=50)  # hidden, active
-    # news_title = models.CharField(max_length=200)
-    # news_content = models.CharField(max_length=1500)
-    # news_last_update_time = models.DateTimeField(auto_now_add=True, blank=True)
+class NewsPost(models.Model):
+    post_title = models.CharField(max_length=200)
+    post_content = models.CharField(max_length=3000)
+    post_claps = models.IntegerField()
+    post_owner = models.IntegerField()
+    post_create_time = models.DateTimeField('Post Date')
 
 
-# NOTE: design problem - compile score or compile at runtime
-class Score(models.Model):
-    score_value = models.IntegerField()
-    score_school = models.IntegerField()
-    score_season = models.IntegerField()
+class NewsComment(models.Model):
+    comment_owner = models.IntegerField()
+    post_id = models.IntegerField()
+    comment_content = models.CharField(max_length=1000)
+    comment_create_time = models.DateTimeField('Comment Date')
+
+
+class NewsClap(models.Model):
+    clapper_id = models.IntegerField()
+    post_id = models.IntegerField()
 
 
 class Config(models.Model):

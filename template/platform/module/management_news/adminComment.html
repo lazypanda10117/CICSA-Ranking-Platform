@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Simple Blog App">
+    <meta name="author" content="Jeffrey Kam">
+
+    <title>Simple Blog App</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        function getBaseURL(){
+          var getUrl = window.location;
+          return getUrl.protocol + "//" + getUrl.host;
+        }
+
+        function toggleSidebar(){
+            $("#wrapper").toggleClass("toggled");
+        }
+
+        function deleteComment(cid){
+            $.ajax({
+                type: 'DELETE',
+                crossOrigin: true,
+                url: getBaseURL() + "/comments/", 
+                data: { 'id' : cid },
+                dataType: "json",
+                success: function(result){
+                  console.log(result);
+                },
+                error: function(err){
+                  console.log(err);
+                }
+            });
+            setTimeout(function(){location.reload();}, 700);
+        }
+    </script>
+    <style type="text/css">
+        body {
+          overflow-x: hidden;
+        }
+
+        #wrapper {
+          padding-left: 0;
+          -webkit-transition: all 0.5s ease;
+          -moz-transition: all 0.5s ease;
+          -o-transition: all 0.5s ease;
+          transition: all 0.5s ease;
+        }
+
+        #wrapper.toggled {
+          padding-left: 250px;
+        }
+
+        #sidebar-wrapper {
+          z-index: 1000;
+          position: fixed;
+          left: 250px;
+          width: 0;
+          height: 100%;
+          margin-left: -250px;
+          overflow-y: auto;
+          background: #000;
+          -webkit-transition: all 0.5s ease;
+          -moz-transition: all 0.5s ease;
+          -o-transition: all 0.5s ease;
+          transition: all 0.5s ease;
+        }
+
+        #wrapper.toggled #sidebar-wrapper {
+          width: 250px;
+        }
+
+        #page-content-wrapper {
+          width: 100%;
+          position: absolute;
+          padding: 15px;
+        }
+
+        #wrapper.toggled #page-content-wrapper {
+          position: absolute;
+          margin-right: -250px;
+        }
+
+
+        /* Sidebar Styles */
+
+        .sidebar-nav {
+          position: absolute;
+          top: 0;
+          width: 250px;
+          margin: 0;
+          padding: 0;
+          list-style: none;
+        }
+
+        .sidebar-nav li {
+          text-indent: 20px;
+          line-height: 40px;
+        }
+
+        .sidebar-nav li a {
+          display: block;
+          text-decoration: none;
+          color: #999999;
+        }
+
+        .sidebar-nav li a:hover {
+          text-decoration: none;
+          color: #fff;
+          background: rgba(255, 255, 255, 0.2);
+        }
+
+        .sidebar-nav li a:active, .sidebar-nav li a:focus {
+          text-decoration: none;
+        }
+
+        .sidebar-nav>.sidebar-brand {
+          height: 65px;
+          font-size: 18px;
+          line-height: 60px;
+        }
+
+        .sidebar-nav>.sidebar-brand a {
+          color: #999999;
+        }
+
+        .sidebar-nav>.sidebar-brand a:hover {
+          color: #fff;
+          background: none;
+        }
+
+        @media(min-width:768px) {
+          #wrapper {
+            padding-left: 0;
+          }
+          #wrapper.toggled {
+            padding-left: 250px;
+          }
+          #sidebar-wrapper {
+            width: 0;
+          }
+          #wrapper.toggled #sidebar-wrapper {
+            width: 250px;
+          }
+          #page-content-wrapper {
+            padding: 20px;
+            position: relative;
+          }
+          #wrapper.toggled #page-content-wrapper {
+            position: relative;
+            margin-right: 0;
+          }
+        }
+    </style>
+</head>
+
+<body onload="toggleSidebar()">
+    <div id="wrapper" toggled="true">
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a href="../posts/">
+                        Simple Blog App
+                    </a>
+                </li>
+                <li>
+                    <a href="../admin/?posts=True">Posts</a>
+                </li>
+                <li>
+                    <a href="#">Comments</a>
+                </li>
+                <li>
+                    <a href="../logout/">Logout</a>
+                </li>
+            </ul>
+        </div>
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>Comment_id</th>
+                    <th>Comment</th>
+                    <th>Post_id</th>
+                    <th>Created_at</th>
+                    <th>Delete</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for comment in comments %}
+                      <tr>
+                        <th scope="row">{{comment.id}}</th>
+                        <td>{{comment.comment_content}}</td>
+                        <td>{{comment.post_id}}</td>
+                        <td>{{comment.comment_create_time}}</td>
+                        <td><button type="button" class="btn btn-danger" name="deleteBtn{{comment.id}}" onclick="deleteComment({{comment.id}})">Delete</button></td>
+                      </tr>
+                    {% endfor %}
+                </tbody>
+              </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

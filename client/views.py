@@ -1,9 +1,8 @@
 from django.shortcuts import render
-from api.client_api import ScoringPageAPI, RegattasPageAPI, SchoolPageAPI, SchoolsPageAPI, SeasonPageAPI, RotationPageAPI, RegionPageAPI
+from api.client_api import ScoringPageAPI, RegattasPageAPI, SchoolPageAPI, SchoolsPageAPI, SeasonPageAPI, NewsPageAPI, RotationPageAPI, RegionPageAPI
 
 
 def index(request):
-    # return render(request, 'client/index.html')
     return regattas(request)
 
 
@@ -30,6 +29,11 @@ def schools(request):
 def school(request):
     page_data = SchoolPageAPI(request).grabPageData()
     return render(request, 'client/team.html', dict(school=page_data))
+
+
+def news(request):
+    page_data = NewsPageAPI(request).grabPageData()
+    return render(request, 'client/news/allPosts.html', dict(news=page_data))
 
 # def home(request):
 #     standings = []  # array of standings
