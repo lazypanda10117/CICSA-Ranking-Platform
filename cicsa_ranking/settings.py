@@ -28,7 +28,7 @@ SECRET_KEY = 'hm*m-^7l7m3ogup&2tz+kvavp)8rice!30$kh$(8)u5%c)n!d_'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','sailing-dinosaurs-system.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'scores.cicsailing.ca', 'sailing-dinosaurs-system.herokuapp.com']
 
 SILENCED_SYSTEM_CHECKS = ["fields.W161"]
 
