@@ -8,6 +8,11 @@
     <meta name="author" content="Jeffrey Kam">
     <title>CISCA Ranking Platform</title>
     <link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
+    <style>
+      .navbar{
+        box-shadow: 0 5px 11px 0 rgba(50,50,50,0.08);
+      }
+    </style>
     <link rel="stylesheet" href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}">
     <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
@@ -24,9 +29,9 @@
   </head>
 
   <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light static-top">
+    <nav class="navbar navbar-expand-lg navbar-light static-top">
       <div class="container">
-        <a class="navbar-brand" href="{% url 'client.index' %}"><img src="{% static 'img/login/CICSA_Logo.png' %}" style="margin: auto; width: 50px;"></a>
+        <a class="navbar-brand" href="{% url 'client.index' %}"><img src="{% static 'img/login/CICSA_Logo.png' %}" style="margin: auto; height:62px; width: 62px;"></a>
         <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navigation-collapse" aria-controls="navigation-collapse" aria-expanded="false" aria-label="Expand Navigation Menu">
             <span class="navbar-toggler-icon"></span>
         </button>
