@@ -1,13 +1,7 @@
-**/migrations/**
-!**/migrations
-!**/migrations/__init__.py
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
-
-.idea/
 
 # C extensions
 *.so
@@ -108,3 +102,12 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# PyCharm IDE Related Files
+.idea/
+
+# Migration Scripts Related Files
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py
+.gitsecret/keys/random_seed

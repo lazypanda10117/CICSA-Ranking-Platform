@@ -1,6 +1,0 @@
-requests
-psycopg2
-django
-sqlalchemy
-django-cors-middleware
-pyparsing

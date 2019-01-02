@@ -10,6 +10,7 @@ django = "*"
 sqlalchemy = "*"
 django-cors-middleware = "*"
 pyparsing = "*"
+gunicorn = "*"
 
 [dev-packages]
 

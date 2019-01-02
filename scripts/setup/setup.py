@@ -6,11 +6,15 @@ from sqlalchemy.engine.url import make_url
 
 def executeScriptsFromFile(filename, cu):
     fd = open(filename, 'r')
+
     print('Reading Setup SQL Queries File')
+
     sql_file = fd.read()
     fd.close()
     sql_commands = sql_file.split(';')
+
     print('Start Applying Setup SQL Queries')
+
     for command in sql_commands:
         try:
             if not command == '':
@@ -19,12 +23,16 @@ def executeScriptsFromFile(filename, cu):
                 continue
         except psycopg2.OperationalError as msg:
             print("Command skipped: " + str(msg))
+
     print('Finish Applying Setup SQL Queries')
 
 
-def main():
+def setup():
     if os.environ.get('SETUP_STATE') == 'True':
-        dispatcher = {1: 'init/reset.sql', 2: 'init/setup.sql'}
+        dispatcher = {
+            1: 'scripts/setup/queries/reset.sql',
+            2: 'scripts/setup/queries/setup.sql'
+        }
 
         parser = argparse.ArgumentParser()
         parser.add_argument("mode", help="setup mode", type=int)
@@ -46,12 +54,15 @@ def main():
 
         conn_string = "dbname=%s user=%s password=%s host=%s port=%s" % (db_name, db_user, db_pwd, db_url, db_port)
         conn = psycopg2.connect(conn_string)
+
         print('Postgres Connection Created')
+
         conn.autocommit = True
         cursor = conn.cursor()
         executeScriptsFromFile(dispatcher[args.mode], cursor)
         conn.close()
+
         print('Postgres Connection Closed')
 
 
-main()
+setup()
