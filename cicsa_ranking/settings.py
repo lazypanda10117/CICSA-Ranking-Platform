@@ -95,11 +95,11 @@ WSGI_APPLICATION = 'cicsa_ranking.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-user = os.environ.get("DB_USER", "")
-password = os.environ.get("DB_PASS", "")
-host = os.environ.get("DB_HOST", "")
-port = os.environ.get("DB_PORT", "")
-name = os.environ.get("DB_NAME", "")
+user = os.environ.get("DB_USER", "robot")
+password = os.environ.get("DB_PASS", "rootpwd")
+host = os.environ.get("DB_HOST", "localhost")
+port = os.environ.get("DB_PORT", "5432")
+name = os.environ.get("DB_NAME", "ranking")
 
 postgresURL = os.environ.get("DATABASE_URL", "None")
 

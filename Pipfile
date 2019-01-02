@@ -5,12 +5,14 @@ name = "pypi"
 
 [packages]
 requests = "*"
-psycopg2 = "*"
-django = "*"
 sqlalchemy = "*"
 django-cors-middleware = "*"
 pyparsing = "*"
 gunicorn = "*"
+"psycopg2-binary" = "*"
+django = "==2.0"
+"psycopg2" = "==2.7.3.2"
+django-dotenv = "*"
 
 [dev-packages]
 

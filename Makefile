@@ -2,6 +2,7 @@
 ENV = 1 # 0 for production, 1 for development
 DB_VOL_NAME = postgres.data
 STACK_NAME = $(shell basename $$PWD)
+APP_NAME =  cicsa_ranking
 
 ## Use git-secret.
 SECRETS = true
@@ -50,10 +51,14 @@ install:
 	@pipenv install --dev
 
 dev-run:
-	@echo "Starting Django server (Development) ..."
-	@python3 manage.py runserver --insecure 0.0.0.0:$PORT
+	@echo "Starting Django server (Development LOCAL) ..."
+	@python3 manage.py runserver
+
+dev-run-server:
+	@echo "Starting Django server (Development SERVER) ..."
+	@python3 manage.py runserver 0.0.0.0:$PORT
 
 prod-run:
 	@echo "Starting Django server (Production) ..."
-	@gunicorn app:app --preload
+	@gunicorn ${APP_NAME}.wsgi
 

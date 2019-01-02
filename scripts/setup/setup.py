@@ -28,7 +28,7 @@ def executeScriptsFromFile(filename, cu):
 
 
 def setup():
-    if os.environ.get('SETUP_STATE') == 'True':
+    if os.environ.get('SETUP_STATE') == 'TRUE':
         dispatcher = {
             1: 'scripts/setup/queries/reset.sql',
             2: 'scripts/setup/queries/setup.sql'
@@ -38,21 +38,27 @@ def setup():
         parser.add_argument("mode", help="setup mode", type=int)
         args = parser.parse_args()
 
-        db_url = 'localhost'
-        db_name = 'ranking'
-        db_user = 'lazypanda'
-        db_pwd = ''
-        db_port = '5432'
+        user = os.environ.get("DB_USER", "robot")
+        password = os.environ.get("DB_PASS", "rootpwd")
+        host = os.environ.get("DB_HOST", "localhost")
+        port = os.environ.get("DB_PORT", "5432")
+        name = os.environ.get("DB_NAME", "ranking")
 
-        if os.environ.get('DATABASE_URL') is not None:
-            db_remote_url = make_url(os.environ.get('DATABASE_URL'))
-            db_url = db_remote_url.host
-            db_name = db_remote_url.database
-            db_user = db_remote_url.username
-            db_pwd = db_remote_url.password
-            db_port = db_remote_url.port
+        postgresURL = os.environ.get("DATABASE_URL", "None")
 
-        conn_string = "dbname=%s user=%s password=%s host=%s port=%s" % (db_name, db_user, db_pwd, db_url, db_port)
+        if postgresURL == "None":
+            postgresURL = "postgresql://%s:%s@%s:%s/%s" % (
+                user, password, host, port, name
+            )
+
+        db_url = make_url(postgresURL)
+        db_host = db_url.host
+        db_name = db_url.database
+        db_user = db_url.username
+        db_pwd = db_url.password
+        db_port = db_url.port
+
+        conn_string = "dbname=%s user=%s password=%s host=%s port=%s" % (db_name, db_user, db_pwd, db_host, db_port)
         conn = psycopg2.connect(conn_string)
 
         print('Postgres Connection Created')
