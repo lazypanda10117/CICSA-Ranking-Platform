@@ -56,7 +56,7 @@ dev-run:
 
 dev-run-server:
 	@echo "Starting Django server (Development SERVER) ..."
-	@python3 manage.py runserver 0.0.0.0:$PORT
+	@python3 manage.py runserver --insecure 0.0.0.0:$$PORT
 
 prod-run:
 	@echo "Starting Django server (Production) ..."
