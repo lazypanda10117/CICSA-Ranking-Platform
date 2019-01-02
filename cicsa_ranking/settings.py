@@ -28,7 +28,11 @@ SECRET_KEY = 'hm*m-^7l7m3ogup&2tz+kvavp)8rice!30$kh$(8)u5%c)n!d_'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'scores.cicsailing.ca', 'sailing-dinosaurs-system.herokuapp.com']
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'scores.cicsailing.ca',
+    'sailing-dinosaurs-system.herokuapp.com'
+]
 
 SILENCED_SYSTEM_CHECKS = ["fields.W161"]
 
@@ -91,40 +95,36 @@ WSGI_APPLICATION = 'cicsa_ranking.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-db_remote_url = None;
-db_url = 'localhost'
-db_name = 'ranking'
-db_user = 'lazypanda'
-db_pwd = ''
-db_port = '5432'
+user = os.environ.get("DB_USER", "")
+password = os.environ.get("DB_PASS", "")
+host = os.environ.get("DB_HOST", "")
+port = os.environ.get("DB_PORT", "")
+name = os.environ.get("DB_NAME", "")
 
-if os.environ.get('DATABASE_URL') is not None:
-    db_remote_url = make_url(os.environ.get('DATABASE_URL'));
-    db_url = db_remote_url.host;
-    db_name = db_remote_url.database;
-    db_user = db_remote_url.username;
-    db_pwd = db_remote_url.password;
-    db_port = db_remote_url.port;
-    DATABASES = {
-        "default": {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': db_name,
-            'USER': db_user,
-            'PASSWORD': db_pwd,
-            'HOST': db_url,
-            'PORT': db_port
-        }
-    }
-else:
-    DATABASES = {
-        "default": {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': db_name,
-            'USER': db_user,
-            'PORT': db_port
-        }
-    }
+postgresURL = os.environ.get("DATABASE_URL", "None")
 
+if postgresURL == "None" :
+    postgresURL = "postgresql://%s:%s@%s:%s/%s" % (
+        user, password, host, port, name
+    )
+
+db_url = make_url(postgresURL)
+db_host = db_url.host
+db_name = db_url.database
+db_user = db_url.username
+db_pwd = db_url.password
+db_port = db_url.port
+
+DATABASES = {
+    "default": {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': db_name,
+        'USER': db_user,
+        'PASSWORD': db_pwd,
+        'HOST': db_host,
+        'PORT': db_port
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
