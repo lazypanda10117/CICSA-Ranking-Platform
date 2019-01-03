@@ -2,9 +2,16 @@
 import os
 import sys
 import dotenv
+import warnings
+
+warnings.filterwarnings("ignore", category=UserWarning)
 
 if __name__ == "__main__":
-    dotenv.read_dotenv(override=True)
+    try:
+        dotenv.read_dotenv(override=True)
+    except:
+        print("This System is not Using Dotenv Files.")
+
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "cicsa_ranking.settings")
     try:
         from django.core.management import execute_from_command_line
