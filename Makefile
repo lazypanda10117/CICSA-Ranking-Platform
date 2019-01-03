@@ -60,5 +60,5 @@ dev-run-server:
 
 prod-run:
 	@echo "Starting Django server (Production) ..."
-	@gunicorn ${APP_NAME}.wsgi
+	@./scripts/prod_execute.sh ${APP_NAME}
 
