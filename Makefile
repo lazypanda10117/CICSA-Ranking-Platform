@@ -50,6 +50,14 @@ install:
 	@echo "Installing dependencies using 'pipenv'..."
 	@pipenv install --dev
 
+setup-env:
+	@echo "Setting Up Initial Environment"
+	@./scripts/setup/setup.sh
+
+serve:
+	@echo "Starting Project"
+	@./scripts/compile.sh
+
 dev-run:
 	@echo "Starting Django server (Development LOCAL) ..."
 	@python3 manage.py runserver
