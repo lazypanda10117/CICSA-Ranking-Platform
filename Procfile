@@ -1,1 +1,1 @@
-web: bash ./scripts/compile.sh
+web: bash make serve

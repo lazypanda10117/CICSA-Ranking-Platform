@@ -26,5 +26,12 @@ then
     then
         export BUILD_TYPE="${BUILD_TYPE// }"
     fi
+    DEBUG_MODE=$(grep DEBUG_MODE .env | cut -d '=' -f 2-)
+    DJANGO_SECRET_KEY=$(grep DEBUG_MODE .env | cut -d '=' -f 2-)
+    if [[ ! -z "${DEBUG_MODE// }"  ]] && [[ ! -z "${DJANGO_SECRET_KEY// }" ]];
+    then
+        export DEBUG_MODE="${DEBUG_MODE// }"
+        export DJANGO_SECRET_KEY="${DJANGO_SECRET_KEY// }"
+    fi
 fi
 gunicorn ${APP_NAME}.wsgi

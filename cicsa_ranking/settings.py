@@ -22,16 +22,29 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'hm*m-^7l7m3ogup&2tz+kvavp)8rice!30$kh$(8)u5%c)n!d_'
+# OS Variables
+# Django
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "")
+# Postgres
+user = os.environ.get("DB_USER", "robot")
+password = os.environ.get("DB_PASS", "rootpwd")
+host = os.environ.get("DB_HOST", "localhost")
+port = os.environ.get("DB_PORT", "5432")
+name = os.environ.get("DB_NAME", "ranking")
+postgresURL = os.environ.get("DATABASE_URL", "None")
+# Settings
+debugMode = os.environ.get("DEBUG_MODE", "TRUE")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True if debugMode == "TRUE" else False
+
+print("DEBUG:   " + str(DEBUG))
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'scores.cicsailing.ca',
-    'sailing-dinosaurs-system.herokuapp.com'
+    'sailing-dinosaurs-system.herokuapp.com',
+    'sailing-dino-testing.herokuapp.com'
 ]
 
 SILENCED_SYSTEM_CHECKS = ["fields.W161"]
@@ -96,14 +109,6 @@ WSGI_APPLICATION = 'cicsa_ranking.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
-
-user = os.environ.get("DB_USER", "robot")
-password = os.environ.get("DB_PASS", "rootpwd")
-host = os.environ.get("DB_HOST", "localhost")
-port = os.environ.get("DB_PORT", "5432")
-name = os.environ.get("DB_NAME", "ranking")
-
-postgresURL = os.environ.get("DATABASE_URL", "None")
 
 if postgresURL == "None" :
     postgresURL = "postgresql://%s:%s@%s:%s/%s" % (
