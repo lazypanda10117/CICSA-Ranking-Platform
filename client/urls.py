@@ -6,6 +6,6 @@ urlpatterns = [
     path('scoring/<int:id>', views.scoring, name='client.scoring'),
     path('rotation/<int:id>', views.rotation, name='client.rotation'),
     path('events', views.regattas, name='client.regattas'),
-    path('schools', views.schools, name='client.schools')
-
+    path('schools', views.schools, name='client.schools'),
+    path('seasons', views.seasons, name='client.seasons')
 ]

@@ -1,0 +1,59 @@
+{% extends 'client/index.html' %}
+{% block content %}
+	<div class="container mt-4 mb-4">
+		<h2>Seasons</h2>
+		<ul class="list-group mt-3">
+			{% for season_title, season_list in seasons.items %}
+				<ul class="list-group mt-4">
+					{% if season_list %}
+					<div class="table-responsive">
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									<th scope="col">Season Name</th>
+								</tr>
+							</thead>
+
+                            {% for season in season_list %}
+                                <tbody>
+                                    <tr data-href="{{ season.season_link }}">
+                                        <td scope="row">
+                                            {{ season.season_name }}
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    <p>There is no data for season.</p>
+                                </tbody>
+							{% endfor %}
+						</table>
+					</div>
+					{% endif %}
+				</ul>
+				{% empty %}
+				<p>There is no data for season.</p>
+			{% endfor %}
+		</ul>
+	</div>
+
+    <script type="text/javascript">
+		window.onload = function() {
+			$(document).ready(function() {
+				// from https://stackoverflow.com/a/29129307
+				$(function(){
+					$('.table tr[data-href]').each(function(){
+						$(this).css('cursor','pointer').hover(
+							function(){
+								$(this).addClass('active');
+							},
+							function(){
+								$(this).removeClass('active');
+							}).click( function(){
+								document.location = $(this).attr('data-href');
+							}
+						);
+					});
+				});
+			});
+		};
+	</script>
+{% endblock %}
