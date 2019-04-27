@@ -38,8 +38,6 @@ debugMode = os.environ.get("DEBUG_MODE", "TRUE")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True if debugMode == "TRUE" else False
 
-print("DEBUG:   " + str(DEBUG))
-
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'scores.cicsailing.ca',
