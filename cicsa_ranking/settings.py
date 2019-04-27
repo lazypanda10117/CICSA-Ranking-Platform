@@ -24,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # OS Variables
 # Django
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "")
+djangoSecretKey = os.environ.get("DJANGO_SECRET_KEY", "")
 # Postgres
 user = os.environ.get("DB_USER", "robot")
 password = os.environ.get("DB_PASS", "rootpwd")
@@ -32,11 +32,15 @@ host = os.environ.get("DB_HOST", "localhost")
 port = os.environ.get("DB_PORT", "5432")
 name = os.environ.get("DB_NAME", "ranking")
 postgresURL = os.environ.get("DATABASE_URL", "None")
+postgresURLTEST = os.environ.get("DATABASE_URL_TEST", "None")
 # Settings
-debugMode = os.environ.get("DEBUG_MODE", "TRUE")
+debugMode = os.environ.get("DEBUG_MODE", "FALSE")
+useTestDB = os.environ.get("USE_TEST_DB", "FALSE")
 
 # SECURITY WARNING: don't run with debug turned on in production!
+SECRET_KEY = djangoSecretKey
 DEBUG = True if debugMode == "TRUE" else False
+USE_TEST_DB = True if os.environ.get("USE_TEST_DB", "FALSE") == "TRUE" else False
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
@@ -107,11 +111,18 @@ WSGI_APPLICATION = 'cicsa_ranking.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
-
-if postgresURL == "None" :
-    postgresURL = "postgresql://%s:%s@%s:%s/%s" % (
-        user, password, host, port, name
-    )
+if USE_TEST_DB:
+    if postgresURLTEST == "None" :
+        postgresURL = "postgresql://%s:%s@%s:%s/%s" % (
+            user, password, host, port, name
+        )
+    else:
+        postgresURL = postgresURLTEST
+else:
+    if postgresURL == "None" :
+        postgresURL = "postgresql://%s:%s@%s:%s/%s" % (
+            user, password, host, port, name
+        )
 
 db_url = make_url(postgresURL)
 db_host = db_url.host
