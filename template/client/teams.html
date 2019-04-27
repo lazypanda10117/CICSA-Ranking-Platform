@@ -1,29 +1,50 @@
 {% extends 'client/index.html' %}
 {% block content %}
 	<div class="container mt-4 mb-4">
-		<h2>Schools (Work in Progress)</h2>
+		<h2>Schools</h2>
 		<ul class="list-group mt-3">
-			{% for region in regions %}
-				<li class="list-group-item">
-					<h4>{{ region.name }}</h4>
-					{% for school in region.schools %}
-						<div class="row">
-							<div class="col">
-								{{ school.university }}
-							</div>
-							<div class="col">
-								{{ school.mascot }}
-							</div>
-							<div class="col">
-								{{ school.location }}
-							</div>
-						</div>
-					{% empty %}
-						<p>There are no school for this region.</p>
-					{% endfor %}
-				</li>
-			{% empty %}
-				<p>There are no schools.</p>
+			{% for region, school_list in regions.items %}
+				<ul class="list-group mt-4">
+					<h5> {{ region }} </h5>
+					{% if school_list %}
+					<div class="table-responsive">
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									<th scope="col">School Name</th>
+									<th scope="col">Team Name</th>
+									<th scope="col">Status</th>
+									<th scope="col">School Season Score</th>
+									<th scope="col">Details</th>
+								</tr>
+							</thead>
+							{% for school in school_list %}
+								<tbody>
+									<td scope="row">
+										{{ school.school_name }}
+									</td>
+									<td>
+										{{ school.school_team_name }}
+									</td>
+									<td>
+										{{ school.school_status }}
+									</td>
+									<td>
+										{{ school.school_season_score }}
+									</td>
+									<td>
+										<a class="btn btn-outline-info" href="{{ school.school_link }}" role="button" aria-disabled="true">Details</a>
+									</td>
+									{% empty %}
+									<p>There is no school for this region.</p>
+								</tbody>
+							{% endfor %}
+						</table>
+					</div>
+					{% endif %}
+				</ul>
+				{% empty %}
+				<p>There is no data for school.</p>
 			{% endfor %}
 		</ul>
 	</div>

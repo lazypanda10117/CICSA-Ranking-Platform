@@ -31,6 +31,11 @@ def school(request):
     return render(request, 'client/team.html', dict(school=page_data))
 
 
+def seasons(request):
+    page_data = SeasonPageAPI(request).grabPageData()
+    return render(request, 'client/seasons.html', dict(seasons=page_data))
+
+
 def news(request):
     page_data = NewsPageAPI(request).grabPageData()
     return render(request, 'client/news/allPosts.html', dict(news=page_data))
