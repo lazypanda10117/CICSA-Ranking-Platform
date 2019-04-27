@@ -12,6 +12,7 @@ gunicorn = "*"
 "psycopg2-binary" = "*"
 django = ">=2.1.6"
 "psycopg2" = "==2.7.3.2"
+urllib3 = ">=1.24.2"
 django-dotenv = "*"
 whitenoise = "*"
 
