@@ -3,6 +3,7 @@ APP_NAME=$@
 if [[ -f .env ]];
 then
     DATABASE_URL=$(grep DATABASE_URL .env | cut -d '=' -f 2-)
+
     if [[ ! -z "${DATABASE_URL// }"  ]];
     then
         export DATABASE_URL="${DATABASE_URL// }"
@@ -21,10 +22,27 @@ then
             export DB_PASS="${DB_PASS// }"
         fi
     fi
+
     BUILD_TYPE=$(grep BUILD_TYPE .env | cut -d '=' -f 2-)
     if [[ ! -z "${BUILD_TYPE// }"  ]];
     then
         export BUILD_TYPE="${BUILD_TYPE// }"
+    fi
+
+    DEBUG_MODE=$(grep DEBUG_MODE .env | cut -d '=' -f 2-)
+    DJANGO_SECRET_KEY=$(grep DEBUG_MODE .env | cut -d '=' -f 2-)
+    if [[ ! -z "${DEBUG_MODE// }"  ]] && [[ ! -z "${DJANGO_SECRET_KEY// }" ]];
+    then
+        export DEBUG_MODE="${DEBUG_MODE// }"
+        export DJANGO_SECRET_KEY="${DJANGO_SECRET_KEY// }"
+    fi
+
+    DATABASE_URL_TEST=$(grep DATABASE_URL_TEST .env | cut -d '=' -f 2-)
+    USE_TEST_DB=$(grep USE_TEST_DB .env | cut -d '=' -f 2-)
+    if [[ ! -z "${USE_TEST_DB// }"  ]] && [[ ! -z "${DATABASE_URL_TEST// }" ]];
+    then
+        export USE_TEST_DB="${USE_TEST_DB// }"
+        export DATABASE_URL_TEST="${DATABASE_URL_TEST// }"
     fi
 fi
 gunicorn ${APP_NAME}.wsgi
