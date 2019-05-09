@@ -1,4 +1,4 @@
-# CICSA RANKING PLATFORM
+# CICSA Ranking and Scoring Platform
 
 This is an online scoring/ranking platform for Canadian Intercollegiate Sailing Association (CICSA). Link to the ranking platform: http://scores.cicsailing.ca
 
