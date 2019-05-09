@@ -4,7 +4,7 @@ narr=($ndir)
 darr=()
 for d in ${narr[*]}
 do
-    [[ $d =~ (static|misc|init|template|api|news|scripts) ]] && darr+=($d)
+    [[ $d =~ (static|misc|init|template|api|scripts) ]] && darr+=($d)
 done
 
 for n in ${darr[*]}
