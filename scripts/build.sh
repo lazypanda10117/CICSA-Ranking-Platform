@@ -14,7 +14,7 @@ fi
 if [[ ! -z "${BUILD_TYPE}" ]] && [[ ! -z "${BUILD_LOC}" ]];
 then
     echo "Build Type: ${BUILD_TYPE} "
-    echo "Building In ${BUILD_TYPE} Mode On ${BUILD_LOC}"
+    echo "Build Location: ${BUILD_LOC}"
 
     if [[ ${BUILD_TYPE} = "DEV" ]];
     then

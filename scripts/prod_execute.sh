@@ -44,5 +44,21 @@ then
         export USE_TEST_DB="${USE_TEST_DB// }"
         export DATABASE_URL_TEST="${DATABASE_URL_TEST// }"
     fi
+
+    printf "\n"
+    printf "Exported Database Configurations: \n\n"
+    printf "Database Host: $DB_HOST \n"
+    printf "Database Name: $DB_NAME \n"
+    printf "Database Port: $DB_PORT \n"
+    printf "Database User: $DB_USER \n"
+    printf "Database Access URL: $DATABASE_URL \n\n"
+
+    printf "Exported Build Script Configurations: \n\n"
+    printf "Build Type: $BUILD_TYPE \n"
+    printf "Debug Mode: $DEBUG_MODE \n"
+    printf "Django Secret Key: $DJANGO_SECRET_KEY \n"
+    printf "Use Testing Database: $USE_TEST_DB \n"
+    printf "Testing Database URL: $DATABASE_URL_TEST \n\n"
 fi
+
 gunicorn ${APP_NAME}.wsgi

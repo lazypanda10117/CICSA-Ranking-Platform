@@ -7,13 +7,11 @@ class ModulePermission:
         )
         self.module_base_redirect_route = ''
 
-
     def __checkModulePermission(self, route):
         return True
-
 
     def rerouteRequest(self, route):
         if self.__checkModulePermission(route):
             return route
-        else
+        else:
             return self.module_base_redirect_route
