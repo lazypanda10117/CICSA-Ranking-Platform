@@ -1,6 +1,6 @@
 from misc.CustomElements import Dispatcher
-from ...config.admin.management_data.CustomPages import *
-from ...config.admin.management_data.CustomForms import *
+from panel.config.admin.management_data.CustomPages import *
+from panel.config.admin.management_data.CustomForms import *
 
 
 class AuthenticationAdmin:

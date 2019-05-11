@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from misc.CustomElements import Dispatcher
 from misc.CustomFunctions import AuthFunctions, LogFunctions, MiscFunctions
 from ...component.CustomElements import Form, Table
-from ..authentication.AuthenticationFactory import AuthenticationFactory
+from panel.module.management_data.authentication import AuthenticationFactory
 
 
 class GeneralView:

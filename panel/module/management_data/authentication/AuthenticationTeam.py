@@ -1,6 +1,6 @@
 from misc.CustomElements import Dispatcher
-from ...config.team.management_data.CustomPages import *
-from ...config.team.management_data.CustomForms import *
+from panel.config.team.management_data.CustomPages import *
+from panel.config.team.management_data.CustomForms import *
 
 
 class AuthenticationTeam:
