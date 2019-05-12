@@ -1,3 +1,3 @@
 class TestEvent():
-    def test_events(self, db_session):
+    def test_events(self):
         assert True
