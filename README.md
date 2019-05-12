@@ -1,8 +1,11 @@
-# Sailing-Dinosaurs-System
-CISCA Project:
+# CICSA Ranking and Scoring Platform
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4e95f1b905ea4af19cfe1e884a6fc6da)](https://www.codacy.com/app/jeffreykam0415/CICSA-Ranking-Platform?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=lazypanda10117/CICSA-Ranking-Platform&amp;utm_campaign=Badge_Grade)
+[![CircleCI](https://circleci.com/gh/lazypanda10117/CICSA-Ranking-Platform.svg?style=svg)](https://circleci.com/gh/lazypanda10117/CICSA-Ranking-Platform)
+
+This is an online scoring/ranking platform for Canadian Intercollegiate Sailing Association (CICSA). Link to the ranking platform: http://scores.cicsailing.ca
 
 
-Building an online scoring/ranking platform for Canadian Intercollegiate Sailing Association (CICSA). http://www.cicsailing.ca/
+The ```develop``` branch is automatically deployed on Heroku to this address following every commit: https://sailing-dino-testing.herokuapp.com/
 
-
-The web app is automatically deployed on Heroku to this address following every commit: https://sailing-dinosaurs-system.herokuapp.com/ and http://scores.cicsailing.ca
+The ```master``` branch is automatically deployed on Heroku to this address following every commit: https://sailing-dinosaurs-system.herokuapp.com/

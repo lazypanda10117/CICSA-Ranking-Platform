@@ -38,8 +38,16 @@
   <body>
     <nav class="navbar navbar-expand-lg navbar-light static-top">
       <div class="container">
-        <a class="" href="{% url 'client.index' %}"><img src="{% static 'img/login/CICSA_Logo.png' %}" style="margin: auto; height:62px; width: 62px;"></a>
-        <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navigation-collapse" aria-controls="navigation-collapse" aria-expanded="false" aria-label="Expand Navigation Menu">
+        <a class="" href="{% url 'client.index' %}">
+          <img src="{% static 'img/login/CICSA_Logo.png' %}" style="margin: auto; height:62px; width: 62px;">
+        </a>
+        <button
+                class="navbar-toggler collapsed"
+                type="button" data-toggle="collapse"
+                data-target="#navigation-collapse"
+                aria-controls="navigation-collapse"
+                aria-expanded="false"
+                aria-label="Expand Navigation Menu">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div id="navigation-collapse" class="collapse navbar-collapse">
@@ -51,7 +59,7 @@
               <a class="nav-link" href="{% url 'client.schools' %}">School</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link disabled" href="#">Season</a>
+              <a class="nav-link" href="{% url 'client.seasons' %}">Season</a>
             </li>
             <li class="nav-item">
               <a class="nav-link disabled" href="#">League Ranking</a>
@@ -92,7 +100,7 @@
                 </a>
               </li>
               <li  class="list-inline-item mr-3">
-                <a href="https://github.com/lazypanda10117/">
+                <a href="https://github.com/lazypanda10117/CICSA-Ranking-Platform">
                   <i class="fa fa-github fa fa-fw"></i>
                 </a>
               </li>

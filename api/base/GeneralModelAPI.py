@@ -28,3 +28,11 @@ class GeneralModelAPI(AbstractAPI):
     def filterSelf(self, **kwargs):
         result = ModelFunctions.filterModelObject(self.base, **kwargs)
         return self.auth_class(self.request).authenticate('view', result)
+
+    def excludeSelf(self, **kwargs):
+        result = ModelFunctions.excludeModelObject(self.base, **kwargs)
+        return self.auth_class(self.request).authenticate('view', result)
+
+    def getAll(self):
+        result = ModelFunctions.filterModelObject(self.base)
+        return self.auth_class(self.request).authenticate('view', result)
