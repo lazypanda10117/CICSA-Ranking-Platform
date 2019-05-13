@@ -33,9 +33,11 @@ port = os.environ.get("DB_PORT", "5432")
 name = os.environ.get("DB_NAME", "ranking")
 postgresURL = os.environ.get("DATABASE_URL", "None")
 postgresURLTEST = os.environ.get("DATABASE_URL_TEST", "None")
+
 # Settings
 debugMode = os.environ.get("DEBUG_MODE", "FALSE")
 useTestDB = os.environ.get("USE_TEST_DB", "FALSE")
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 SECRET_KEY = djangoSecretKey
@@ -124,6 +126,7 @@ else:
             user, password, host, port, name
         )
 
+
 db_url = make_url(postgresURL)
 db_host = db_url.host
 db_name = db_url.database
@@ -141,6 +144,8 @@ DATABASES = {
         'PORT': db_port
     }
 }
+
+print("Database Configurations: " + str(DATABASES))
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators

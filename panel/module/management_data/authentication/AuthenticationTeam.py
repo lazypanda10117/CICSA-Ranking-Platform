@@ -1,9 +1,9 @@
 from misc.CustomElements import Dispatcher
-from ...config.admin.management_data.CustomPages import *
-from ...config.admin.management_data.CustomForms import *
+from panel.config.team.management_data.CustomPages import *
+from panel.config.team.management_data.CustomForms import *
 
 
-class AuthenticationAdmin:
+class AuthenticationTeam:
     @staticmethod
     def getIdentifier():
         return 'admin'
@@ -11,7 +11,7 @@ class AuthenticationAdmin:
     class ManagementData:
         @staticmethod
         def getTemplateBase():
-            return 'platform/module/management_data/admin_base.html'
+            return 'platform/module/management_data/team_base.html'
 
         @staticmethod
         def getDataGeneralDispatcher():

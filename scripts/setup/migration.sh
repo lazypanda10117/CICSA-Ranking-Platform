@@ -2,10 +2,15 @@
 ndir="*/"
 narr=($ndir)
 darr=()
+
+echo "Setting up Ignored-Directories Vector"
+
 for d in ${narr[*]}
 do
     [[ $d =~ (static|misc|init|template|api|scripts) ]] && darr+=($d)
 done
+
+echo "Building Migration Directories"
 
 for n in ${darr[*]}
 do
@@ -16,7 +21,11 @@ do
     touch $initPath 2>/dev/null
 done
 
+echo "Making Migrations through Django Migration Manager"
+
 python3 manage.py makemigrations
+
+echo "Deleting Migration Directories after Use"
 
 for d in ${darr[*]}
 do
