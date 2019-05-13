@@ -22,9 +22,8 @@ class AbstractBlockApp(ABC):
             args = [] if args is None else args
             return redirect(reverse(path, args=args))
 
-        @staticmethod
-        def authenticateModule(request, module, callback):
-            return ModulePermission(request).redirectRequest(module, callback)
+        def authenticateModule(self, request, callback):
+            return ModulePermission(request).redirectRequest(self.getBaseAppName(), callback)
 
         def viewDispatch(self, request, dispatch_path, param=''):
             dispatcher = self.setViewDispatcher()

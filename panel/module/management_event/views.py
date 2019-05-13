@@ -6,20 +6,28 @@ from .CustomProcesses import EventChoiceProcess
 
 
 def index(request):
-    return ManagementEventView().home()
+    return ManagementEventView().authenticateModule(
+        request,
+        ManagementEventView().home())
 
 
 def viewDispatch(request, route, param=''):
-    return ManagementEventView().viewDispatch(request, route, param)
+    return ManagementEventView().authenticateModule(
+        request,
+        ManagementEventView().viewDispatch(request, route, param))
 
 
 @csrf_exempt
 def processDispatch(request, route, param=''):
-    return ManagementEventView().processDispatch(request, route, param)
+    return ManagementEventView().authenticateModule(
+        request,
+        ManagementEventView().processDispatch(request, route, param))
 
 
 class ManagementEventView(AbstractBlockApp.AppView):
     # Block App Base View Inherited Functions
+    def getBaseAppName(self):
+        return "AdminEventModule"
 
     def home(self):
         return super().index('panel.module.management_event.view_dispatch', ['choice'])

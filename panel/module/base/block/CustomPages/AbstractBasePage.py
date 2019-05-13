@@ -16,10 +16,6 @@ class AbstractBasePage(ABC):
     def render(self):
         pass
 
-    def renderPage(self):
-        # TODO: some virtual function here to redirect failed authentication
-        return self.render()
-
     @abstractmethod
     def parseParams(self, param):
         pass
