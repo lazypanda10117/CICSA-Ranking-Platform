@@ -6,19 +6,26 @@ from .GeneralView import GeneralView
 
 
 def index(request):
-    return ManagementDataView().home(request)
+    return ManagementDataView().authenticateModule(
+        request,
+        ManagementDataView().home())
 
 
 @csrf_exempt
 def viewDispatch(request, param, route):
     dispatcher = ManagementDataView().setViewDispatcher()
     view = dispatcher.get(route)(request)
-    return view.dispatch(param)
+    return ManagementDataView().authenticateModule(
+        request,
+        view.dispatch(param))
 
 
 class ManagementDataView(AbstractBlockApp.AppView):
     # Block App Base View Inherited Functions
-    def home(self, request):
+    def getBaseAppName(self):
+        return "DataModule"
+
+    def home(self):
         return super().index('panel.module.management_data.view_dispatch_param', ['event', 'custom'])
 
     def setViewDispatcher(self):
