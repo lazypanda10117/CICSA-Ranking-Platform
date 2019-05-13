@@ -15,7 +15,7 @@ class ModulePermission:
                 NewsModule=True
             ),
             Team=dict(
-                DataModule=True,
+                DataModule=False,
                 AdminEventModule=False,
                 RankingModule=True,
                 NewsModule=False
@@ -23,10 +23,14 @@ class ModulePermission:
         )
 
     def __checkModulePermission(self, module):
-        return self.allowed_modules.get(self.authentication_meta.getAuthType()).get(module) or False
+        auth_type = self.authentication_meta.getAuthType()
+        if auth_type in self.allowed_modules:
+            if module in self.allowed_modules.get(auth_type):
+                return self.allowed_modules.get(auth_type).get(module)
+        return False
 
     def redirectRequest(self, module, callback):
         if self.__checkModulePermission(module):
-            return callback()
+            return callback
         else:
             return redirect(reverse(self.module_base_redirect_route))

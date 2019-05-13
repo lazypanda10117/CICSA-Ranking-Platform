@@ -1,1 +1,1 @@
-from .module_permission import ModulePermission
+from .ModulePermission import ModulePermission

@@ -6,19 +6,29 @@ from .CustomProcesses import UpdateEventStatusProcess, EventActivityRankingProce
 
 
 def index(request):
-    return ManagementRankingView().home()
+    return ManagementRankingView().authenticateModule(
+        request,
+        ManagementRankingView().home())
 
 
 def viewDispatch(request, route, param=''):
-    return ManagementRankingView().viewDispatch(request, route, param)
+    return ManagementRankingView().authenticateModule(
+        request,
+        ManagementRankingView().viewDispatch(request, route, param))
+
 
 @csrf_exempt
 def processDispatch(request, route, param=''):
-    return ManagementRankingView().processDispatch(request, route, param)
+    return ManagementRankingView().authenticateModule(
+        request,
+        ManagementRankingView().processDispatch(request, route, param))
 
 
 class ManagementRankingView(AbstractBlockApp.AppView):
     # Block App Base View Inherited Functions
+    def getBaseAppName(self):
+        return "RankingModule"
+
     def home(self):
         return super().index('panel.module.management_ranking.view_dispatch', ['event'])
 
