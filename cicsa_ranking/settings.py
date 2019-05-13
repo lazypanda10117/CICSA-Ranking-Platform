@@ -25,6 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # OS Variables
 # Django
 djangoSecretKey = os.environ.get("DJANGO_SECRET_KEY", "")
+
 # Postgres
 user = os.environ.get("DB_USER", "robot")
 password = os.environ.get("DB_PASS", "rootpwd")
@@ -43,6 +44,8 @@ useTestDB = os.environ.get("USE_TEST_DB", "FALSE")
 SECRET_KEY = djangoSecretKey
 DEBUG = True if debugMode == "TRUE" else False
 USE_TEST_DB = True if os.environ.get("USE_TEST_DB", "FALSE") == "TRUE" else False
+COMPRESS_ENABLED = os.environ.get('COMPRESS_ENABLED', False)
+
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
