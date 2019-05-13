@@ -32,7 +32,7 @@ host = os.environ.get("DB_HOST", "localhost")
 port = os.environ.get("DB_PORT", "5432")
 name = os.environ.get("DB_NAME", "ranking")
 postgresURL = os.environ.get("DATABASE_URL", "None")
-postgresURLTEST = os.environ.get("DATABASE_URL_TEST", "None")
+postgresTESTURL = os.environ.get("DATABASE_TEST_URL", "None")
 
 # Settings
 debugMode = os.environ.get("DEBUG_MODE", "FALSE")
@@ -114,12 +114,12 @@ WSGI_APPLICATION = 'cicsa_ranking.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 if USE_TEST_DB:
-    if postgresURLTEST == "None" :
+    if postgresTESTURL == "None" :
         postgresURL = "postgresql://%s:%s@%s:%s/%s" % (
             user, password, host, port, name
         )
     else:
-        postgresURL = postgresURLTEST
+        postgresURL = postgresTESTURL
 else:
     if postgresURL == "None" :
         postgresURL = "postgresql://%s:%s@%s:%s/%s" % (
