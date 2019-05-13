@@ -1,0 +1,1 @@
+from .module_permission import ModulePermission

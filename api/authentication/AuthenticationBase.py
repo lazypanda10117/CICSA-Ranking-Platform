@@ -1,3 +1,4 @@
+from abc import abstractmethod
 from cicsa_ranking import models as model
 from misc.CustomElements import Dispatcher
 
@@ -5,6 +6,10 @@ from misc.CustomElements import Dispatcher
 class AuthenticationBase:
     def __init__(self, request):
         self.request = request
+
+    @abstractmethod
+    def getAuthenticationType(self):
+        pass
 
     def __getDispatcher(self):
         dispatcher = Dispatcher()
