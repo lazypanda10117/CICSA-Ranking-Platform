@@ -8,7 +8,7 @@ class AuthenticationFactory:
 
     @staticmethod
     def getDispatcher():
-        dispatcher = Dispatcher();
+        dispatcher = Dispatcher()
         dispatcher.add('admin', AuthenticationAdmin)
         dispatcher.add('team', AuthenticationTeam)
         dispatcher.add('public', AuthenticationPublic)
