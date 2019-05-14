@@ -111,3 +111,7 @@ venv.bak/
 !**/migrations
 !**/migrations/__init__.py
 .gitsecret/keys/random_seed
+
+
+# Ignore staticfiles
+staticfiles/**
