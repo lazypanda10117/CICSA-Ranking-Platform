@@ -1,0 +1,46 @@
+{
+  "addons": [
+    "heroku-postgresql",
+    "heroku-redis"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/python"
+    }
+  ],
+  "env": {
+    "BUILD_LOC": {
+      "required": true
+    },
+    "BUILD_TYPE": {
+      "required": true
+    },
+    "DATABASE_URL_TEST": {
+      "required": true
+    },
+    "DEBUG_MODE": {
+      "required": true
+    },
+    "DJANGO_SECRET_KEY": {
+      "required": true
+    },
+    "REDIS_URL": {
+      "required": true
+    },
+    "SETUP_STATE": {
+      "required": true
+    },
+    "USE_TEST_DB": {
+      "required": true
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "name": "CICSA-Ranking-Platform",
+  "scripts": {
+  },
+  "stack": "heroku-18"
+}
