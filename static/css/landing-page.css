@@ -16,3 +16,16 @@ footer.footer {
   padding-top: 1rem;
   padding-bottom: 1rem;
 }
+
+.navbar{
+    box-shadow: 0 5px 11px 0 rgba(50,50,50,0.08);
+}
+
+.navbar-light .navbar-toggler{
+    color: rgba(0,0,0,0.7);
+    border-color: rgba(128,128,128,0.2);
+}
+
+.navbar-toggler:focus, .navbar-toggler:hover{
+    background-color: rgb(230,230,230);
+}

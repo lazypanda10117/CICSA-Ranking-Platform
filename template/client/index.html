@@ -1,39 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
   <head>
     {% load static %}
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="CISCA Ranking Platform">
-    <meta name="author" content="Jeffrey Kam">
-    <title>CISCA Ranking Platform</title>
-    <link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
-    <style>
-      .navbar{
-        box-shadow: 0 5px 11px 0 rgba(50,50,50,0.08);
-      }
-      .navbar-light .navbar-toggler{
-        color: rgba(0,0,0,0.7);
-        border-color: rgba(128,128,128,0.2);
-      }
-      .navbar-toggler:focus, .navbar-toggler:hover{
-        background-color: rgb(230,230,230);
-      }
-    </style>
-    <link rel="stylesheet" href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}">
-    <script src="{% static 'vendor/jquery/jquery-3.4.1.min.js' %}"></script>
-    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+    {% include "common/common_meta.html" %}
+    {% include "common/common_favicon.html" %}
+    {% include "common/common_css.html" %}
+    {% include "common/common_js.html" %}
+
+    <!-- In-hosue customized CSS -->
     <link rel="stylesheet" href="{% static 'css/landing-page.css' %}">
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-127387198-1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag('js', new Date());
-      gtag('config', 'UA-127387198-1');
-    </script>
   </head>
 
   <body>
@@ -110,6 +87,6 @@
         </div>
       </div>
     </footer>
-
   </body>
+
 </html>

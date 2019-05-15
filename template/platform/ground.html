@@ -1,66 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    {% load static %}
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="CISCA Ranking Platform">
-    <meta name="author" content="Jeffrey Kam">
-    <title>CISCA Admin</title>
-    <link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}">
-    <script src="{% static 'vendor/jquery/jquery-3.4.1.min.js' %}"></script>
-    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
-    <link href="{% static 'css/simple-sidebar.css' %}" rel="stylesheet">
-    <script src="{% static 'js/viewFunctions.js' %}"></script>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-127387198-1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
 
-      gtag('config', 'UA-127387198-1');
-    </script>
+    <head>
+        {% load static %}
 
-    {% block 'head' %}
-    {% endblock %}
+        {% include "common/common_meta.html" %}
+        {% include "common/common_favicon.html" %}
+        {% include "common/common_css.html" %}
+        {% include "common/common_js.html" %}
 
-</head>
-<body onload="onLoad();">
-<div id="wrapper" class="toggled">
-    <div id="sidebar-wrapper">
-        <div class="sidebar-nav">
-            <li class="sidebar-brand">
-                <a href="{% url 'panel.index' %}">Management Panel</a>
-            </li>
-            {% block 'navigation' %}
-            {% endblock %}
-            <li><a href="{% url 'permission.dispatch' route='logout' %}">Logout</a></li>
-            <br>
-            <li style="color:#e0e0e0">Version 0.1</li>
-        </div>
-    </div>
-    <div id="page-content-wrapper">
-        <div class="container-fluid">
-            <div class="mb-3">
-                <a href="#menu-popup" id="menu-popup">
-                    <i class="fa fa-bars fa-2x"></i>
-                </a>
+        <!-- In-hosue customized CSS -->
+        <link href="{% static 'css/simple-sidebar.css' %}" rel="stylesheet">
+
+        <!-- In-house Customized Javascript Libraries -->
+        <script src="{% static 'js/viewFunctions.js' %}"></script>
+
+        {% block 'head' %}
+        {% endblock %}
+    </head>
+
+    <body>
+        <div id="wrapper" class="toggled">
+            <div id="sidebar-wrapper">
+                <div class="sidebar-nav">
+                    <li class="sidebar-brand">
+                        <a href="{% url 'panel.index' %}">Management Panel</a>
+                    </li>
+                    {% block 'navigation' %}
+                    {% endblock %}
+                    <li><a href="{% url 'permission.dispatch' route='logout' %}">Logout</a></li>
+                    <br>
+                    <li style="color:#e0e0e0">Version 0.1</li>
+                </div>
             </div>
+            <div id="page-content-wrapper">
+                <div class="container-fluid">
+                    <div class="mb-3">
+                        <a href="#menu-popup" id="menu-popup">
+                            <i class="fa fa-bars fa-2x"></i>
+                        </a>
+                    </div>
 
-            {% block 'body' %}
-            {% endblock %}
+                    {% block 'body' %}
+                    {% endblock %}
+                </div>
+            </div>
         </div>
-    </div>
-</div>
-<script>
-    $("#menu-popup").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-    });
-</script>
-</body>
+        <script>
+            $("#menu-popup").click(function(e) {
+                e.preventDefault();
+                $("#wrapper").toggleClass("toggled");
+            });
+        </script>
+    </body>
+
 </html>
