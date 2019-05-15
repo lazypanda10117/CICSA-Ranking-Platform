@@ -1,45 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    {% load static %}
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="CISCA Ranking Platform">
-    <meta name="author" content="Jeffrey Kam">
-    <title>CISCA Ranking Platform</title>
-    <link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}">
-    <script src="{% static 'vendor/jquery/jquery-3.4.1.min.js' %}"></script>
-    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="{% static 'css/login.css' %}">
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-127387198-1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
 
-      gtag('config', 'UA-127387198-1');
-    </script>
-</head>
-<body onload="">
-<div class="wrapper">
-<div class="login-form">
-    <form action="login" method="post">
-        <div class="avatar"><img src="{% static 'img/login/CICSA_Logo.png' %}" style="margin:auto; width: 100%;"></div>
-        <h4 class="modal-title">Admin Login</h4>
-        <div class="form-group">
-            <input type="text" class="form-control" name="email" placeholder="Email" required="required">
+    <head>
+        {% load static %}
+
+        {% include "common/common_meta.html" %}
+        {% include "common/common_favicon.html" %}
+        {% include "common/common_css.html" %}
+        {% include "common/common_js.html" %}
+
+        <!-- In-hosue customized CSS -->
+        <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    </head>
+
+    <body onload="">
+        <div class="wrapper">
+            <div class="login-form">
+                <form action="login" method="post">
+                    <div class="avatar"><img src="{% static 'img/login/CICSA_Logo.png' %}" style="margin:auto; width: 100%;"></div>
+                    <h4 class="modal-title">Admin Login</h4>
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="email" placeholder="Email" required="required">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" name="password" placeholder="Password" required="required">
+                    </div>
+                    <input type="submit" class="btn btn-primary btn-block btn-lg" value="Login">
+                </form>
+                <div class="text-center small">Any Questions? <a href="#">Contact Here</a></div>
+            </div>
         </div>
-        <div class="form-group">
-            <input type="password" class="form-control" name="password" placeholder="Password" required="required">
-        </div>
-        <input type="submit" class="btn btn-primary btn-block btn-lg" value="Login">
-    </form>
-    <div class="text-center small">Any Questions? <a href="#">Contact Here</a></div>
-</div>
-</div>
-</body>
+    </body>
+
 </html>                                		                            
