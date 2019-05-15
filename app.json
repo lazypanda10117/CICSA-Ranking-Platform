@@ -15,7 +15,7 @@
     "BUILD_TYPE": {
       "required": true
     },
-    "DATABASE_URL_TEST": {
+    "DATABASE_TEST_URL": {
       "required": true
     },
     "DEBUG_MODE": {
