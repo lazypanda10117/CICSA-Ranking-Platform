@@ -24,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # OS Variables
 # Django
-djangoSecretKey = os.environ.get("DJANGO_SECRET_KEY", "")
+djangoSecretKey = os.environ.get("DJANGO_SECRET_KEY", "some_random_key_that_will_not_be_used")
 
 # Postgres
 user = os.environ.get("DB_USER", "robot")
@@ -38,20 +38,21 @@ postgresTESTURL = os.environ.get("DATABASE_TEST_URL", "None")
 # Settings
 debugMode = os.environ.get("DEBUG_MODE", "FALSE")
 useTestDB = os.environ.get("USE_TEST_DB", "FALSE")
-
+compressEnabled = os.environ.get("COMPRESS_ENABLED", "FALSE")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 SECRET_KEY = djangoSecretKey
 DEBUG = True if debugMode == "TRUE" else False
-USE_TEST_DB = True if os.environ.get("USE_TEST_DB", "FALSE") == "TRUE" else False
-COMPRESS_ENABLED = os.environ.get('COMPRESS_ENABLED', False)
+USE_TEST_DB = True if useTestDB == "TRUE" else False
+COMPRESS_ENABLED = True if  compressEnabled == "TRUE" else False
 
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'scores.cicsailing.ca',
-    'sailing-dinosaurs-system.herokuapp.com',
-    'sailing-dino-testing.herokuapp.com'
+    '.herokuapp.com'
+    # 'sailing-dinosaurs-system.herokuapp.com',
+    # 'sailing-dino-testing.herokuapp.com',
 ]
 
 SILENCED_SYSTEM_CHECKS = ["fields.W161"]
@@ -148,7 +149,10 @@ DATABASES = {
     }
 }
 
-print("Database Configurations: " + str(DATABASES))
+print("Database Configurations:")
+for key, val in DATABASES["default"].items():
+    if key not in ["PASSWORD"]:
+        print(key, val)
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
