@@ -1,34 +1,71 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     {% load static %}
+
+    <!-- Meta information -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="CISCA Ranking Platform">
     <meta name="author" content="Jeffrey Kam">
+
+    <!-- Favicon Related Imports -->
+    <link rel="shortcut icon" href="{% static 'img/favicon/favicon.ico' %}">
+	<link rel="icon" sizes="16x16 32x32 64x64" href="{% static 'img/favicon/favicon.ico' %}">
+	<link rel="icon" type="image/png" sizes="196x196" href="{% static 'img/favicon/favicon-192.png' %}">
+	<link rel="icon" type="image/png" sizes="160x160" href="{% static 'img/favicon/favicon-160.png' %}">
+	<link rel="icon" type="image/png" sizes="96x96" href="{% static 'img/favicon/favicon-96.png' %}">
+	<link rel="icon" type="image/png" sizes="64x64" href="{% static 'img/favicon/favicon-64.png' %}">
+	<link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon/favicon-32.png' %}">
+	<link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicon/favicon-16.png' %}">
+	<link rel="apple-touch-icon" href="{% static 'img/favicon/favicon-57.png' %}">
+	<link rel="apple-touch-icon" sizes="114x114" href="/favicon-114.png' %}">
+	<link rel="apple-touch-icon" sizes="72x72" href="{% static 'img/favicon/favicon-72.png' %}">
+	<link rel="apple-touch-icon" sizes="144x144" href="{% static 'img/favicon/favicon-144.png' %}">
+	<link rel="apple-touch-icon" sizes="60x60" href="{% static 'img/favicon/favicon-60.png' %}">
+	<link rel="apple-touch-icon" sizes="120x120" href="{% static 'img/favicon/favicon-120.png' %}">
+	<link rel="apple-touch-icon" sizes="76x76" href="{% static 'img/favicon/favicon-76.png' %}">
+	<link rel="apple-touch-icon" sizes="152x152" href="{% static 'img/favicon/favicon-152.png' %}">
+	<link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/favicon/favicon-180.png' %}">
+	<meta name="msapplication-TileColor" content="#FFFFFF">
+	<meta name="msapplication-TileImage" content="{% static 'img/favicon/favicon-144.png' %}">
+	<meta name="msapplication-config" content="{% static 'img/favicon/browserconfig.xml' %}">
+
     <title>CISCA Admin</title>
+
+    <!-- 3rd Party Framework CSS -->
     <link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}">
-    <script src="{% static 'vendor/jquery/jquery-3.4.1.min.js' %}"></script>
-    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- 3rd Party Font Style CSS -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+
+    <!-- In-hosue customized CSS -->
     <link href="{% static 'css/simple-sidebar.css' %}" rel="stylesheet">
-    <script src="{% static 'js/viewFunctions.js' %}"></script>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+    <!-- 3rd Party Analytics Javascript Libraries -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-127387198-1"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'UA-127387198-1');
     </script>
+
+    <!-- 3rd Party Framework Javascript Libraries -->
+    <script src="{% static 'vendor/jquery/jquery-3.4.1.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- In-house Customized Javascript Libraries -->
+    <script src="{% static 'js/viewFunctions.js' %}"></script>
 
     {% block 'head' %}
     {% endblock %}
 
 </head>
+
 <body onload="onLoad();">
 <div id="wrapper" class="toggled">
     <div id="sidebar-wrapper">
