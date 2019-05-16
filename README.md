@@ -4,9 +4,9 @@
 [![Build Status](https://travis-ci.org/lazypanda10117/CICSA-Ranking-Platform.svg?branch=master)](https://travis-ci.org/lazypanda10117/CICSA-Ranking-Platform)
 
 
-This is an [Online Scoring/Ranking Platform](http://scores.cicsailing.ca) for Canadian Intercollegiate Sailing Association \([CICSA](http://www.cicsailing.ca/)\).
+This is an online regatta scoring/ranking platform for Canadian Intercollegiate Sailing Association \([CICSA](http://www.cicsailing.ca/)\). Link to the ranking platform: [http://scores.cicsailing.ca](http://scores.cicsailing.ca).
 
 
-The ```develop``` branch is automatically deployed to [staging](https://sailing-dino-testing.herokuapp.com/) on Heroku to this address following every commit 
+The ```develop``` branch is automatically deployed to [staging](https://sailing-dino-testing.herokuapp.com/) on Heroku following every commit 
 
-The ```master``` branch is automatically deployed to [production](http://scores.cicsailing.ca) on Heroku to this address following every commit 
+The ```master``` branch is automatically deployed to [production](http://scores.cicsailing.ca) on Heroku following every commit 
