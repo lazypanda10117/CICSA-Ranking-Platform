@@ -16,10 +16,15 @@
         <script src="{% static 'js/viewFunctions.js' %}"></script>
 
         {% block 'head' %}
+            <script>
+                function onLoad() {
+                    // dummy onLoad function
+                }
+            </script>
         {% endblock %}
     </head>
 
-    <body>
+    <body onload="onLoad();">
         <div id="wrapper" class="toggled">
             <div id="sidebar-wrapper">
                 <div class="sidebar-nav">
