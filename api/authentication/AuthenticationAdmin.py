@@ -6,7 +6,7 @@ from .AuthenticantionComponentBase import AuthenticationComponentBase
 class AuthenticationAdmin(AuthenticationBase):
 
     def getAuthenticationType(self):
-        return 'Admin'
+        return 'admin'
 
     class Account(AuthenticationComponentBase):
         def setBaseModelClass(self):

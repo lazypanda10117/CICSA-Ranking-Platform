@@ -33,11 +33,11 @@ host = os.environ.get("DB_HOST", "localhost")
 port = os.environ.get("DB_PORT", "5432")
 name = os.environ.get("DB_NAME", "ranking")
 postgresURL = os.environ.get("DATABASE_URL", "None")
-postgresTESTURL = os.environ.get("DATABASE_TEST_URL", "None")
+postgresTESTURL = os.environ.get("DATABASE_TEST_URL", "postgres://rvrwungzlszlna:4b2ef3fd92609bc967fb67b46797bb053d5f838e531508480eebf810fb802e18@ec2-54-204-2-26.compute-1.amazonaws.com:5432/d7lnt211athrkq")
 
 # Settings
-debugMode = os.environ.get("DEBUG_MODE", "FALSE")
-useTestDB = os.environ.get("USE_TEST_DB", "FALSE")
+debugMode = os.environ.get("DEBUG_MODE", "TRUE")
+useTestDB = os.environ.get("USE_TEST_DB", "TRUE")
 compressEnabled = os.environ.get("COMPRESS_ENABLED", "FALSE")
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -48,9 +48,11 @@ COMPRESS_ENABLED = True if  compressEnabled == "TRUE" else False
 
 
 ALLOWED_HOSTS = [
+    'localhost',
     '127.0.0.1',
     'scores.cicsailing.ca',
-    '.herokuapp.com'
+    '.herokuapp.com',
+    '.gitpod.io'
     # 'sailing-dinosaurs-system.herokuapp.com',
     # 'sailing-dino-testing.herokuapp.com',
 ]

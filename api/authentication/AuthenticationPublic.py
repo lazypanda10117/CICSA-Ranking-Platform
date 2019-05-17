@@ -6,7 +6,7 @@ from .AuthenticantionComponentBase import AuthenticationComponentBase
 class AuthenticationPublic(AuthenticationBase):
 
     def getAuthenticationType(self):
-        return 'Public'
+        return 'public'
 
     class Account(AuthenticationComponentBase):
         def setBaseModelClass(self):
