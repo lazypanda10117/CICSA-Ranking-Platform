@@ -3,6 +3,7 @@ from misc.CustomElements import Dispatcher
 from ..base.block.Base import AbstractBlockApp
 from .CustomPages import EventPage, EventActivityPage, EventActivityDetailPage, EventChoicePage
 from .CustomProcesses import EventChoiceProcess
+from panel.module.ModuleRegistry import ModuleRegistry
 
 
 def index(request):
@@ -27,7 +28,7 @@ def processDispatch(request, route, param=''):
 class ManagementEventView(AbstractBlockApp.AppView):
     # Block App Base View Inherited Functions
     def getBaseAppName(self):
-        return "AdminEventModule"
+        return ModuleRegistry.MANAGEMENT_EVENT
 
     def home(self):
         return super().index('panel.module.management_event.view_dispatch', ['choice'])

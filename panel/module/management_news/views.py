@@ -1,6 +1,7 @@
 from django.views.decorators.csrf import csrf_exempt
 from misc.CustomElements import Dispatcher
 from ..base.block.Base import AbstractBlockApp
+from panel.module.ModuleRegistry import ModuleRegistry
 
 
 def index(request):
@@ -25,7 +26,7 @@ def processDispatch(request, route, param=''):
 class ManagementNewsView(AbstractBlockApp.AppView):
     # Block App Base View Inherited Functions
     def getBaseAppName(self):
-        return "NewsModule"
+        return ModuleRegistry.MANAGEMENT_NEWS
 
     def home(self):
         return super().index('panel.module.management_news.view_dispatch', ['choice'])
