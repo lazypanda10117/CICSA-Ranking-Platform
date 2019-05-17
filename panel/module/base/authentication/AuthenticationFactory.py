@@ -1,5 +1,5 @@
 from misc.CustomElements import Dispatcher
-from ..authentication import AuthenticationAdmin, AuthenticationTeam
+from panel.module.base.authentication import AuthenticationAdmin, AuthenticationTeam
 
 
 class AuthenticationFactory:

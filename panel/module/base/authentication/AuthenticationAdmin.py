@@ -1,12 +1,23 @@
 from misc.CustomElements import Dispatcher
 from panel.config.admin.management_data.CustomPages import *
 from panel.config.admin.management_data.CustomForms import *
+from panel.module.ModuleRegistry import ModuleRegistry
 
 
 class AuthenticationAdmin:
     @staticmethod
     def getIdentifier():
         return 'admin'
+
+    @staticmethod
+    def getAllowedModules():
+        allowedModules = [
+            ModuleRegistry.MANAGEMENT_DATA,
+            ModuleRegistry.MANAGEMENT_EVENT,
+            ModuleRegistry.MANAGEMENT_RANKING,
+            ModuleRegistry.MANAGEMENT_NEWS
+        ]
+        return allowedModules
 
     class ManagementData:
         @staticmethod
