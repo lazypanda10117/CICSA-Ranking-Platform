@@ -3,6 +3,7 @@ from misc.CustomElements import Dispatcher
 from ..base.block.Base import AbstractBlockApp
 from .CustomPages import EventPage, EventActivityPage, EventActivityRankingPage, ScoreCompilingPage
 from .CustomProcesses import UpdateEventStatusProcess, EventActivityRankingProcess, ScoreCompilingProcess
+from panel.module.ModuleRegistry import ModuleRegistry
 
 
 def index(request):
@@ -27,7 +28,7 @@ def processDispatch(request, route, param=''):
 class ManagementRankingView(AbstractBlockApp.AppView):
     # Block App Base View Inherited Functions
     def getBaseAppName(self):
-        return "RankingModule"
+        return ModuleRegistry.MANAGEMENT_RANKING
 
     def home(self):
         return super().index('panel.module.management_ranking.view_dispatch', ['event'])
