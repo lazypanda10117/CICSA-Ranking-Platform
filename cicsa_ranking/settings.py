@@ -50,8 +50,9 @@ COMPRESS_ENABLED = True if  compressEnabled == "TRUE" else False
 ALLOWED_HOSTS = [
     '127.0.0.1',
     'scores.cicsailing.ca',
-    'sailing-dinosaurs-system.herokuapp.com',
-    'sailing-dino-testing.herokuapp.com'
+    '.herokuapp.com'
+    # 'sailing-dinosaurs-system.herokuapp.com',
+    # 'sailing-dino-testing.herokuapp.com',
 ]
 
 SILENCED_SYSTEM_CHECKS = ["fields.W161"]
