@@ -106,12 +106,14 @@ venv.bak/
 # PyCharm IDE Related Files
 .idea/
 
+# GitPod Online IDE Related Files
+.theia/
+
 # Migration Scripts Related Files
 **/migrations/**
 !**/migrations
 !**/migrations/__init__.py
 .gitsecret/keys/random_seed
-
 
 # Ignore staticfiles
 staticfiles/**
