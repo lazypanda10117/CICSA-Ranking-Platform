@@ -120,11 +120,14 @@ class Account(models.Model):
 
 
 class NewsPost(models.Model):
+    NEWS_POST_PINNED = 0
+    NEWS_POST_ACTIVE = 1
+    NEWS_POST_ARCHIVED = 2
     news_post_title = models.CharField(max_length=200)
     news_post_content = models.CharField(max_length=3000, blank=True)
-    news_post_claps = models.IntegerField(default=0)
+    news_post_bumps = models.IntegerField(default=0)
     news_post_owner = models.IntegerField()
-    news_post_status = models.CharField(max_length=50)  # pinned, active, archived
+    news_post_status = models.IntegerField()  # status from above
     news_post_create_time = models.DateTimeField('Post Date', auto_now_add=True, blank=True)
 
 
@@ -135,10 +138,10 @@ class NewsComment(models.Model):
     news_comment_create_time = models.DateTimeField('Comment Date', auto_now_add=True, blank=True)
 
 
-class NewsClap(models.Model):
-    news_clap_clapper_id = models.IntegerField()
-    news_clap_post_id = models.IntegerField()
-
+class NewsBump(models.Model):
+    news_bump_bumpper_id = models.IntegerField()
+    news_bump_post_id = models.IntegerField()
+    news_bump_create_time = models.DateTimeField('Bump Date', auto_now_add=True, blank=True)
 
 class Config(models.Model):
     config_current_season = models.IntegerField()
