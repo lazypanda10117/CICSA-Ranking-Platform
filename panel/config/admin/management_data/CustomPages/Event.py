@@ -93,8 +93,8 @@ class EventView(EventManagementView):
             if not action == 'edit':
                 event_creation.save()
 
-            LogFunctions.loghelper(
-                self.request, 'admin', LogFunctions.logQueryMaker(
+            LogFunctions.generateLog(
+                self.request, 'admin', LogFunctions.makeLogQuery(
                     self.base_class, action.title(), id=event_creation.id)
             )
 

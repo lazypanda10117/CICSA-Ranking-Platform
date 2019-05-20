@@ -16,7 +16,7 @@ class SummaryAPI(GeneralModelAPI):
         summary.summary_event_race_score = result['race_score']
         summary.summary_event_league_score = 0.0
         summary.save()
-        LogFunctions.loghelper(self.request, 'admin', LogFunctions.logQueryMaker(Summary, 'Edit', id=summary.id))
+        LogFunctions.generateLog(self.request, 'admin', LogFunctions.makeLogQuery(Summary, 'Edit', id=summary.id))
 
 
     @staticmethod
