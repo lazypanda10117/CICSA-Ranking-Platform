@@ -143,5 +143,6 @@ class NewsBump(models.Model):
     news_bump_post_id = models.IntegerField()
     news_bump_create_time = models.DateTimeField('Bump Date', auto_now_add=True, blank=True)
 
+
 class Config(models.Model):
     config_current_season = models.IntegerField()
