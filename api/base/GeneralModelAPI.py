@@ -43,7 +43,6 @@ class GeneralModelAPI(AbstractAPI):
             AuthFunctions.raise404Empty(result)
             return result
         else:
-            # raise PermissionError("No Permission to Add Object into " + self.class_name)
             AuthFunctions.raise404Empty()
 
     def deleteSelf(self, **kwargs):
