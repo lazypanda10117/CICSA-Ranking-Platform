@@ -14,7 +14,7 @@ def getAllModelAPIs():
         LogAPI,
         MemberAPI,
         MemberGroupAPI,
-        NewsClapAPI,
+        NewsBumpAPI,
         NewsCommentAPI,
         NewsPostAPI,
         RegionAPI,

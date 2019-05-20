@@ -8,7 +8,7 @@ from .EventTypeAPI import EventTypeAPI
 from .LogAPI import LogAPI
 from .MemberAPI import MemberAPI
 from .MemberGroupAPI import MemberGroupAPI
-from .NewsClapAPI import NewsClapAPI
+from .NewsBumpAPI import NewsBumpAPI
 from .NewsCommentAPI import NewsCommentAPI
 from .NewsPostAPI import NewsPostAPI
 from .RegionAPI import RegionAPI
