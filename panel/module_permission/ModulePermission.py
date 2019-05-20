@@ -1,5 +1,5 @@
 from django.shortcuts import reverse, redirect
-from api.authentication_api.AuthenticationMetaAPI import AuthenticationMetaAPI
+from api.authentication_api import AuthenticationMetaAPI
 from panel.module.base.authentication.AuthenticationFactory import AuthenticationFactory
 
 

@@ -1,11 +1,11 @@
 from abc import abstractmethod
-from api.base.AbstractAPI import AbstractAPI
+from api.base import AbstractCoreAPI
 from misc.CustomFunctions import AuthFunctions
 from misc.CustomFunctions import LogFunctions
 from misc.CustomFunctions import ModelFunctions
 
 
-class GeneralModelAPI(AbstractAPI):
+class GeneralModelAPI(AbstractCoreAPI):
     def __init__(self, request):
         super().__init__(request)
         self.base = self.getBaseClass()

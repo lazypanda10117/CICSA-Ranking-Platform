@@ -1,9 +1,9 @@
-from api.base.AbstractAPI import AbstractAPI
 from cicsa_ranking.models import Config, NewsBump, NewsComment, NewsPost
 from misc.CustomFunctions import APIFunctions
+from api.base import AbstractCoreAPI
 
 
-class NewsAPI(AbstractAPI):
+class NewsAPI(AbstractCoreAPI):
     def __init__(self, request):
         super().__init__(request)
         self.admin_ids = self.__applyAPI(Config).getAdminIDs()

@@ -1,8 +1,8 @@
-from api.base.AbstractAPI import AbstractAPI
+from api.base import AbstractRequestAPI
 from misc.CustomFunctions import RequestFunctions
 
 
-class AuthenticationMetaAPI(AbstractAPI):
+class AuthenticationMetaAPI(AbstractRequestAPI):
     def getAuthType(self):
         return self.auth(self.request).getAuthenticationType()
 
