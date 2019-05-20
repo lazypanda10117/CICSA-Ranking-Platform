@@ -1,5 +1,6 @@
 from api.model_api import *
 from misc.CustomElements import Dispatcher
+from misc.CustomFunctions import MiscFunctions
 
 
 def getAllModelAPIs():
@@ -13,6 +14,9 @@ def getAllModelAPIs():
         LogAPI,
         MemberAPI,
         MemberGroupAPI,
+        NewsClapAPI,
+        NewsCommentAPI,
+        NewsPostAPI,
         RegionAPI,
         SchoolAPI,
         ScoreMappingAPI,
@@ -27,3 +31,7 @@ def getModelAPIDispatcher():
     for api in getAllModelAPIs():
         dispatcher.add(api.getBaseClass().__name__, api)
     return dispatcher
+
+
+def applyModelAPI(model, request):
+    return getModelAPIDispatcher().get(MiscFunctions.getModelName(model))(request)

@@ -13,7 +13,7 @@ class GeneralModelAPI(AbstractAPI):
     @staticmethod
     @abstractmethod
     def getBaseClass():
-        pass;
+        pass
 
     def verifySelf(self, **kwargs):
         result = ModelFunctions.getModelObject(self.base, **kwargs)
@@ -36,3 +36,18 @@ class GeneralModelAPI(AbstractAPI):
     def getAll(self):
         result = ModelFunctions.filterModelObject(self.base)
         return self.auth_class(self.request).authenticate('view', result)
+
+    def addSelf(self, obj):
+        if isinstance(obj, self.base):
+            result = self.auth_class(self.request).authenticate('add', obj)
+            AuthFunctions.raise404Empty(result)
+            return result
+        else:
+            # raise PermissionError("No Permission to Add Object into " + self.class_name)
+            AuthFunctions.raise404Empty()
+
+    def deleteSelf(self, **kwargs):
+        result = ModelFunctions.getModelObject(self.base, **kwargs)
+        result = self.auth_class(self.request).authenticate('delete', result)
+        AuthFunctions.raise404Empty(result)
+        return result

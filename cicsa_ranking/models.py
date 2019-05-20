@@ -120,23 +120,24 @@ class Account(models.Model):
 
 
 class NewsPost(models.Model):
-    post_title = models.CharField(max_length=200)
-    post_content = models.CharField(max_length=3000)
-    post_claps = models.IntegerField()
-    post_owner = models.IntegerField()
-    post_create_time = models.DateTimeField('Post Date')
+    news_post_title = models.CharField(max_length=200)
+    news_post_content = models.CharField(max_length=3000)
+    news_post_claps = models.IntegerField()
+    news_post_owner = models.IntegerField()
+    news_post_status = models.CharField(max_length=50) # pinned, active, archived
+    news_post_create_time = models.DateTimeField('Post Date')
 
 
 class NewsComment(models.Model):
-    comment_owner = models.IntegerField()
-    post_id = models.IntegerField()
-    comment_content = models.CharField(max_length=1000)
-    comment_create_time = models.DateTimeField('Comment Date')
+    news_comment_owner = models.IntegerField()
+    news_comment_post_id = models.IntegerField()
+    news_comment_content = models.CharField(max_length=1000)
+    news_comment_create_time = models.DateTimeField('Comment Date')
 
 
 class NewsClap(models.Model):
-    clapper_id = models.IntegerField()
-    post_id = models.IntegerField()
+    news_clap_clapper_id = models.IntegerField()
+    news_clap_post_id = models.IntegerField()
 
 
 class Config(models.Model):
