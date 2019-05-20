@@ -1,6 +1,7 @@
 import json
 from django.http import HttpResponse
 from api.base.AbstractAPI import AbstractAPI
+from api.authentication_api import AuthenticationMetaAPI
 # from api.model_api import ConfigAPI
 # from api.model_api import NewsPostAPI
 # from api.model_api import NewsCommentAPI
@@ -46,13 +47,32 @@ class NewsAPI(AbstractAPI):
         news = self.__applyAPI(NewsPost).verifySelf(id=news_id)
         if news.news_post_status == 'archived':
             raise PermissionError("This news is already archived")
-        else
+        else:
             news.news_post_status = 'archived'
             news.save()
 
+    def pinNews(self, news_id):
+        news = self.__applyAPI(NewsPost).verifySelf(id=news_id)
+        if news.news_post_status == 'pinned':
+            raise PermissionError("This news is already pinned")
+        else:
+            news.news_post_status = 'pinned'
+            news.save()
+
+    def restoreNews(self, news_id):
+        news = self.__applyAPI(NewsPost).verifySelf(id=news_id)
+        if news.news_post_status in ['archived', 'pinned']:
+            news.news_post_status = 'active'
+            news.save()
+        else:
+            raise PermissionError("This news is not restorable")
+
     def addNews(self):
-        news =
-        pass
+        news = NewsPost()
+        news.news_post_status = "active"
+        news.news_post_owner = self.context.authID
+
+
 
     def deleteNews(self):
         pass

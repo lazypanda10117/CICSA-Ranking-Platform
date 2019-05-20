@@ -124,7 +124,7 @@ class NewsPost(models.Model):
     news_post_content = models.CharField(max_length=3000, blank=True)
     news_post_claps = models.IntegerField(default=0)
     news_post_owner = models.IntegerField()
-    news_post_status = models.CharField(max_length=50) # pinned, active, archived
+    news_post_status = models.CharField(max_length=50)  # pinned, active, archived
     news_post_create_time = models.DateTimeField('Post Date', auto_now_add=True, blank=True)
 
 
