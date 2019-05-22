@@ -33,7 +33,7 @@ class ManagementNewsView(AbstractBlockApp.AppView):
         return ModuleRegistry.MANAGEMENT_NEWS
 
     def home(self):
-        return super().index('panel.module.management_news.view_dispatch', ['choice'])
+        return super().index('panel.module.management_news.view_dispatch', ['post'])
 
     def setViewDispatcher(self):
         dispatcher = Dispatcher()

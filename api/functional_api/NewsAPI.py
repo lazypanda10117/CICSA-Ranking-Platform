@@ -12,6 +12,10 @@ class NewsAPI(AbstractCoreAPI):
     def __applyAPI(self, model):
         return APIFunctions.applyModelAPI(model, self.request)
 
+    def __checkAdminPermission(self, action):
+        if not self.context.authType == 'admin':
+            raise PermissionError("You do not have sufficient permission to perform action {}".format(action))
+
     # News Functions
     def getRecentNewsPreviews(self, history=5):
         recent_news = self.getRecentNews(history=history)
@@ -41,6 +45,7 @@ class NewsAPI(AbstractCoreAPI):
         return news
 
     def archiveNews(self, news_id):
+        self.__checkAdminPermission('archive news')
         news = self.__applyAPI(NewsPost).verifySelf(id=news_id)
         if news.news_post_status == NewsPost.NEWS_POST_ARCHIVED:
             raise PermissionError("This news is already archived")
@@ -48,6 +53,7 @@ class NewsAPI(AbstractCoreAPI):
             news.update(news_post_status=NewsPost.NEWS_POST_ARCHIVED)
 
     def pinNews(self, news_id):
+        self.__checkAdminPermission('pin news')
         news = self.__applyAPI(NewsPost).verifySelf(id=news_id)
         if news.news_post_status == NewsPost.NEWS_POST_PINNED:
             raise PermissionError("This news is already pinned")
@@ -55,6 +61,7 @@ class NewsAPI(AbstractCoreAPI):
             news.update(news_post_status=NewsPost.NEWS_POST_PINNED)
 
     def restoreNews(self, news_id):
+        self.__checkAdminPermission('restore news')
         news = self.__applyAPI(NewsPost).verifySelf(id=news_id)
         if news.news_post_status in [NewsPost.NEWS_POST_ARCHIVED, NewsPost.NEWS_POST_PINNED]:
             news.update(news_post_status=NewsPost.NEWS_POST_ACTIVE)
@@ -62,6 +69,7 @@ class NewsAPI(AbstractCoreAPI):
             raise PermissionError("This news is not restorable")
 
     def addNews(self, news_title, news_content):
+        self.__checkAdminPermission("add news")
         news = NewsPost()
         news.news_post_title = news_title
         news.news_post_content = news_content
@@ -70,7 +78,16 @@ class NewsAPI(AbstractCoreAPI):
         news = self.__applyAPI(NewsPost).addSelf(news)
         news.save()
 
+    def editNews(self, news_id, news_title, news_content):
+        self.__checkAdminPermission("add news")
+        news = self.getNews(news_id)
+        news.news_post_title = news_title
+        news.news_post_content = news_content
+        news = self.__applyAPI(NewsPost).verifySelf(news)
+        news.save()
+
     def deleteNews(self, news_id):
+        self.__checkAdminPermission("delete news")
         news = self.__applyAPI(NewsPost).deleteSelf(id=news_id)
         news.delete()
 
@@ -88,6 +105,7 @@ class NewsAPI(AbstractCoreAPI):
         comment.save()
 
     def deleteComment(self, comment_id):
+        self.__checkAdminPermission("delete comment")
         comment = self.__applyAPI(NewsComment).deleteSelf(id=comment_id)
         comment.delete()
 
