@@ -23,6 +23,7 @@ class CommentPage(AbstractBasePage):
             return BlockObject('Comments', 'Comment', [], comment_dict)
 
         news_id = self.param.get("id", None)
+        news_id = None if news_id == 'all' else news_id
         news_api = NewsAPI(self.request)
         return BlockSet().makeBlockSet(genCommentDict(news_id))
 
@@ -30,6 +31,6 @@ class CommentPage(AbstractBasePage):
         return super().renderHelper(PageObject('Comment Management', self.generateList(), []))
 
     def parseParams(self, param):
-        match = super().parseMatch('\d+')
+        match = super().parseMatch('(\d+|all)')
         param = dict(id=param)
         return param
