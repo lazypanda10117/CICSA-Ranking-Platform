@@ -1,62 +1,57 @@
 {% extends 'platform/ground.html' %}
 {% block 'head' %}
     <script>
-        function getBaseURL(){
-          var getUrl = window.location;
-          return getUrl.protocol + "//" + getUrl.host;
+        function onLoad() {
+
         }
 
-        function toggleSidebar(){
-            $("#wrapper").toggleClass("toggled");
-        }
-
-        function deletePost(pid){
+        function deletePost(news_id) {
             $.ajax({
                 type: 'DELETE',
                 crossOrigin: true,
-                url: getBaseURL() + "/posts/",
-                data: { 'id' : pid },
+                url: "{% url 'panel.module.management_news.process_dispatch_param' 'post' 'delete' %}",
+                data: { 'id' : news_id },
                 dataType: "json",
-                success: function(result){
+                success: function(result) {
                   console.log(result);
                 },
-                error: function(err){
+                error: function(err) {
                   console.log(err);
                 }
             });
             setTimeout(function(){location.reload();}, 700);
         }
 
-        function addPost(){
-          titleVal = document.getElementById("titleInput").value;
-          textVal = document.getElementById("contentInput").value;
+        function addPost() {
+          news_title = document.getElementById("news_title").value;
+          news_content = document.getElementById("news_content").value;
           $.ajax({
                 type: 'POST',
                 crossOrigin: true,
-                url: getBaseURL() + "/posts/",
-                data: { 'title' : titleVal, 'content': textVal},
+                url: "{% url 'panel.module.management_news.process_dispatch_param' 'post' 'add' %}",
+                data: { 'news_title' : news_title, 'news_content': news_content},
                 dataType: "json",
-                success: function(result){
+                success: function(result) {
                   console.log(result);
                 },
-                error: function(err){
+                error: function(err) {
                   console.log(err);
                 }
             });
             setTimeout(function(){location.reload();}, 700);
         }
 
-        function deleteComment(cid){
+        function deleteComment(cid) {
             $.ajax({
                 type: 'DELETE',
                 crossOrigin: true,
-                url: getBaseURL() + "/comments/",
+                url: "{% url 'panel.module.management_news.process_dispatch_param' 'comment' 'delete' %}",
                 data: { 'id' : cid },
                 dataType: "json",
-                success: function(result){
+                success: function(result) {
                   console.log(result);
                 },
-                error: function(err){
+                error: function(err) {
                   console.log(err);
                 }
             });
@@ -67,5 +62,5 @@
 
 {% block 'navigation' %}
     <li><a href="{% url 'panel.module.management_news.view_dispatch' 'post' %}">Post Management</a></li>
-    <li><a href="{% url 'panel.module.management_news.view_dispatch' 'comment' %}">Comment Management</a></li>
+    <li><a href="{% url 'panel.module.management_news.view_dispatch_param' 'comment' 'all' %}">Comment Management</a></li>
 {% endblock %}

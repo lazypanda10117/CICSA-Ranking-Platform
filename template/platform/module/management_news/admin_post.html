@@ -1,48 +1,24 @@
 {% extends 'platform/module/management_news/news_base.html' %}
 {% block 'body' %}
     <div class="container-fluid">
-        <h2>News Post Management</h2>
+        <h2>{{ page.title }}</h2>
         <hr>
         <div class="d-inline">
             <p>
-                <pre>All News Posts</pre>
+                <pre>{{ page.header }}</pre>
                 <button type="button"
                         class="btn btn-outline-success"
                         style="float:right; margin-top: -45px;"
-                        name="addBtn{{post.id}}"
+                        name="addNewsButton"
                         data-toggle='modal'
                         data-target='#addPostModal'>
                     Add Post
                 </button>
             </p>
         </div>
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                <th>Post ID</th>
-                <th>Title</th>
-                <th>Content</th>
-                <th>Bumps</th>
-                <th>Created Time</th>
-                <th>Edit</th>
-                <th>Delete</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for post in posts %}
-                <tr>
-                    <th scope="row">{{post.id}}</th>
-                    <!-- Prehaps add link to the post later -->
-                    <td>{{post.post_title}}</td>
-                    <td>N/A</td>
-                    <td>{{post.post_bumps}}</td>
-                    <td>{{post.post_create_time}}</td>
-                    <td><button type="button" class="btn btn-danger" name="editBtn{{post.id}}" onclick="editPost({{post.id}})">Edit</button></td>
-                    <td><button type="button" class="btn btn-danger" name="deleteBtn{{post.id}}" onclick="deletePost({{post.id}})">Delete</button></td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        {% for block in page.element_list.blocks %}
+            {% include "platform/module/base/block/displayBlockTable.html" with context=block only %}
+        {% endfor %}
     </div>
     <!-- Modal -->
     <div class="modal fade" id="addPostModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -57,11 +33,11 @@
         <div class="modal-body">
             <div class="form-group">
                 <label for="postTitle">Title</label>
-                <input type="text" class="form-control" id="titleInput" name="titleInput" placeholder="Title Here">
+                <input type="text" class="form-control" id="news_title" name="news_title" placeholder="Put a title for your news here">
             </div>
             <div class="form-group">
                 <label for="postContents">Contents</label>
-                <textarea class="form-control" id="contentInput" name="contentInput" rows="8" placeholder="Contents Here"></textarea>
+                <textarea class="form-control" id="news_content" name="news_content" rows="8" placeholder="Put some contents for your news here"></textarea>
             </div>
             <br><br>
             <button type="submit" class="btn btn-info" onclick="addPost()">Add Post</button>
