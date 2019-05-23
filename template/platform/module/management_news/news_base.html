@@ -1,0 +1,71 @@
+{% extends 'platform/ground.html' %}
+{% block 'head' %}
+    <script>
+        function getBaseURL(){
+          var getUrl = window.location;
+          return getUrl.protocol + "//" + getUrl.host;
+        }
+
+        function toggleSidebar(){
+            $("#wrapper").toggleClass("toggled");
+        }
+
+        function deletePost(pid){
+            $.ajax({
+                type: 'DELETE',
+                crossOrigin: true,
+                url: getBaseURL() + "/posts/",
+                data: { 'id' : pid },
+                dataType: "json",
+                success: function(result){
+                  console.log(result);
+                },
+                error: function(err){
+                  console.log(err);
+                }
+            });
+            setTimeout(function(){location.reload();}, 700);
+        }
+
+        function addPost(){
+          titleVal = document.getElementById("titleInput").value;
+          textVal = document.getElementById("contentInput").value;
+          $.ajax({
+                type: 'POST',
+                crossOrigin: true,
+                url: getBaseURL() + "/posts/",
+                data: { 'title' : titleVal, 'content': textVal},
+                dataType: "json",
+                success: function(result){
+                  console.log(result);
+                },
+                error: function(err){
+                  console.log(err);
+                }
+            });
+            setTimeout(function(){location.reload();}, 700);
+        }
+
+        function deleteComment(cid){
+            $.ajax({
+                type: 'DELETE',
+                crossOrigin: true,
+                url: getBaseURL() + "/comments/",
+                data: { 'id' : cid },
+                dataType: "json",
+                success: function(result){
+                  console.log(result);
+                },
+                error: function(err){
+                  console.log(err);
+                }
+            });
+            setTimeout(function(){location.reload();}, 700);
+        }
+    </script>
+{% endblock %}
+
+{% block 'navigation' %}
+    <li><a href="{% url 'panel.module.management_news.view_dispatch' 'post' %}">Post Management</a></li>
+    <li><a href="{% url 'panel.module.management_event.index' 'comment' %}">Comment Management</a></li>
+{% endblock %}
