@@ -33,15 +33,14 @@ class NewsAPI(AbstractCoreAPI):
         print(recent_news)
         return recent_news
 
-    def getAllNews(self, news_filter=None):
+    def getNews(self, news_filter=None):
         if news_filter is None:
-            all_news = self.__applyAPI(NewsPost).getAll()
+            return self.__applyAPI(NewsPost).getAll()
         else:
-            all_news = self.__applyAPI(NewsPost).filterSelf(news_post_status=news_filter)
-        return all_news
+            return self.__applyAPI(NewsPost).filterSelf(**news_filter)
 
-    def getNews(self, news_id):
-        news = self.__applyAPI(NewsPost).getSelf(id=news_id)
+    def getNewsById(self, news_id):
+        news = self.getNews(dict(id=news_id))
         return news
 
     def archiveNews(self, news_id):
@@ -92,8 +91,14 @@ class NewsAPI(AbstractCoreAPI):
         news.delete()
 
     # Comment Functions
-    def getComments(self, news_id):
-        comments = self.__applyAPI(NewsComment).filterSelf(news_comment_post_id=news_id)
+    def getComments(self, comment_filter=None):
+        if comment_filter is None:
+            return self.__applyAPI(NewsComment).getAll()
+        else:
+            return self.__applyAPI(NewsComment).filterSelf(**comment_filter)
+
+    def getCommentsById(self, news_id):
+        comments = self.getComments(dict(news_comment_post_id=news_id))
         return comments
 
     def replyComment(self, news_id, comment_content):
