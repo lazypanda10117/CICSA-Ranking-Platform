@@ -1,25 +1,15 @@
 {% extends 'platform/module/management_news/news_base.html' %}
 {% block 'body' %}
-    <table class="table table-hover">
-        <thead>
-            <tr>
-            <th>Comment_id</th>
-            <th>Comment</th>
-            <th>Post_id</th>
-            <th>Created_at</th>
-            <th>Delete</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for comment in comments %}
-                <tr>
-                <th scope="row">{{comment.id}}</th>
-                <td>{{comment.comment_content}}</td>
-                <td>{{comment.post_id}}</td>
-                <td>{{comment.comment_create_time}}</td>
-                <td><button type="button" class="btn btn-danger" name="deleteBtn{{comment.id}}" onclick="deleteComment({{comment.id}})">Delete</button></td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="container-fluid">
+        <h2>{{ page.title }}</h2>
+        <hr>
+        <div class="d-inline">
+            <p>
+                <pre>{{ page.header }}</pre>
+            </p>
+        </div>
+        {% for block in page.element_list.blocks %}
+            {% include "platform/module/base/block/displayBlockTable.html" with context=block only %}
+        {% endfor %}
+    </div>
 {% endblock %}
