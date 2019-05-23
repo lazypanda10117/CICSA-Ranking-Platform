@@ -9,18 +9,24 @@ class CommentPage(AbstractBasePage):
 
     def generateList(self):
         def genCommentDict(news_id):
-            comments = news_api.getComments(news_id).order_by('-news_comment_create_time')
+            comments = news_api.getCommentsById(news_id).order_by('-news_comment_create_time')
             comment_dict = map(lambda comment: dict(
                 comment_id=comment.id,
+                # should truncate content for preview
+                comment_content=comment.news_comment_content,
                 # should get the name here
                 comment_owner=comment.news_comment_owner,
                 # should get the title here
                 comment_post_id=comment.news_comment_post_id,
-                # should truncate content for preview
-                comment_content=comment.news_comment_content,
-                comment_create_time=comment.news_comment_create_time
+                comment_create_time=comment.news_comment_create_time,
+                comment_delete_btn='<button type="button" class="btn btn-danger" name="deleteBtn{}" '
+                                   'onclick="deleteComment({})">Delete</button>'.format(comment.id, comment.id)
             ), [comment for comment in comments])
-            return BlockObject('Comments', 'Comment', [], comment_dict)
+            return BlockObject(
+                "",
+                "",
+                ["Comment ID", "Comment", "Commented By", "Post ID", "Created Time", "Delete"],
+                comment_dict)
 
         news_id = self.param.get("id", None)
         news_id = None if news_id == 'all' else news_id
@@ -28,7 +34,7 @@ class CommentPage(AbstractBasePage):
         return BlockSet().makeBlockSet(genCommentDict(news_id))
 
     def render(self):
-        return super().renderHelper(PageObject('Comment Management', self.generateList(), []))
+        return super().renderHelper(PageObject('Comment Management', self.generateList(), 'Comments'))
 
     def parseParams(self, param):
         match = super().parseMatch('(\d+|all)')

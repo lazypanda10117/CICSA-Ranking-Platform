@@ -16,8 +16,8 @@ class CommentProcess(AbstractBaseProcess):
 
         return redirect(
             reverse(
-                'panel.module.management_news.view_dispatch',
-                args=['comment']
+                'panel.module.management_news.view_dispatch_param',
+                args=['comment', 'all']
             )
         )
 
