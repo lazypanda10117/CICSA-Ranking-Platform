@@ -9,7 +9,7 @@ class CommentPage(AbstractBasePage):
 
     def generateList(self):
         def genCommentDict(news_id):
-            comments = news_api.getComments(news_id).order_by('-news_post_create_time')
+            comments = news_api.getComments(news_id).order_by('-news_comment_create_time')
             comment_dict = map(lambda comment: dict(
                 comment_id=comment.id,
                 # should get the name here

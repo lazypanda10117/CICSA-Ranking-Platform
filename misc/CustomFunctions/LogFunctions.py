@@ -9,7 +9,7 @@ def generateLog(request, log_type, message):
 
 
 def makeLogQuery(model_name, log_type, **kwargs):
-    makeLogQueryFromObject(model_name, log_type, getModelObject(model_name, **kwargs))
+    return makeLogQueryFromObject(model_name, log_type, getModelObject(model_name, **kwargs))
 
 
 def makeLogQueryFromObject(model_name, log_type, obj):

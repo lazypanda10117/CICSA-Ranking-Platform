@@ -6,6 +6,7 @@ from misc.CustomFunctions import MiscFunctions
 def getAllModelAPIs():
     return [
         AccountAPI,
+        ConfigAPI,
         EventActivityAPI,
         EventAPI,
         EventTagAPI,

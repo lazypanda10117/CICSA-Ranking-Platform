@@ -1,8 +1,21 @@
 {% extends 'platform/module/management_news/news_base.html' %}
 {% block 'body' %}
     <div class="container-fluid">
-        <button type="button" class="btn btn-info" name="addBtn{{post.id}}" data-toggle='modal' data-target='#addPostModal'>Add Post</button>
-        <br><br>
+        <h2>News Post Management</h2>
+        <hr>
+        <div class="d-inline">
+            <p>
+                <pre>All News Posts</pre>
+                <button type="button"
+                        class="btn btn-outline-success"
+                        style="float:right; margin-top: -45px;"
+                        name="addBtn{{post.id}}"
+                        data-toggle='modal'
+                        data-target='#addPostModal'>
+                    Add Post
+                </button>
+            </p>
+        </div>
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -10,7 +23,7 @@
                 <th>Title</th>
                 <th>Content</th>
                 <th>Bumps</th>
-                <th>Created_at</th>
+                <th>Created Time</th>
                 <th>Edit</th>
                 <th>Delete</th>
                 </tr>
