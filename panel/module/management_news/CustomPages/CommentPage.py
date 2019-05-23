@@ -19,7 +19,7 @@ class CommentPage(AbstractBasePage):
                 # should get the title here
                 comment_post_id=comment.news_comment_post_id,
                 comment_create_time=comment.news_comment_create_time,
-                comment_delete_btn='<button type="button" class="btn btn-danger" name="deleteBtn{}" '
+                comment_delete_btn='<button type="button" class="btn btn-outline-danger" name="deleteBtn{}" '
                                    'onclick="deleteComment({})">Delete</button>'.format(comment.id, comment.id)
             ), [comment for comment in comments])
             return BlockObject(
