@@ -3,7 +3,7 @@ from panel.module.base.block.CustomComponents import BlockObject, BlockSet, Page
 from api.functional_api import NewsAPI
 
 
-class PostPage(AbstractBasePage):
+class CommentPage(AbstractBasePage):
     def getPagePath(self):
         return 'platform/module/management_news/admin_comment.html'
 
