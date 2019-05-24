@@ -72,7 +72,7 @@ class NewsAPI(AbstractCoreAPI):
         news = NewsPost()
         news.news_post_title = news_title
         news.news_post_content = news_content
-        news.news_post_status = NewsPost.NEWS_POST_ARCHIVED
+        news.news_post_status = NewsPost.NEWS_POST_ACTIVE
         news.news_post_owner = self.context.authID
         news = self.__applyAPI(NewsPost).addSelf(news)
         news.save()
