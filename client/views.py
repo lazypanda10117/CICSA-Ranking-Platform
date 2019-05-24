@@ -38,7 +38,7 @@ def seasons(request):
 
 def news(request):
     page_data = NewsPageAPI(request).grabPageData()
-    return render(request, 'client/news/allPosts.html', dict(news=page_data))
+    return render(request, 'client/news.html', dict(news=page_data))
 
 # def home(request):
 #     standings = []  # array of standings
