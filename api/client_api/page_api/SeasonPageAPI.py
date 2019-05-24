@@ -1,6 +1,6 @@
 from django.shortcuts import reverse
-from ..base.GeneralClientAPI import GeneralClientAPI
-from ..model_api import SeasonAPI
+from api.base.GeneralClientAPI import GeneralClientAPI
+from api.model_api import SeasonAPI
 
 
 class SeasonPageAPI(GeneralClientAPI):

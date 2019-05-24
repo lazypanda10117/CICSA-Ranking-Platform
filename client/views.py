@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from api.client_api import *
-
+from api.client_api.page_api import *
+from api.client_api.process_api import *
 
 def index(request):
     return regattas(request)

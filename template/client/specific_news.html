@@ -1,59 +1,81 @@
 {% extends 'client/index.html' %}
+
+{% block head %}
+    function bumpPost(pid){
+        $.ajax({
+            type: 'GET',
+            crossOrigin: true,
+            url: getBaseURL() + "/posts/",
+            data: { 'id' : pid, 'clap' : 'True' },
+            dataType: "json",
+            success: function(result){
+              console.log(result);
+            },
+            error: function(err){
+              console.log(err);
+            }
+        });
+        setTimeout(function(){location.reload();}, 700);
+    }
+{% endblock %}
+
 {% block content %}
     <!-- Page Content -->
     <div class="container">
         <div class="row">
             <div class="col-lg-8">
-                {% for post in posts %}
-                <h1 class="mt-4">{{post.post_title}}</h1>
-                <p class="lead">
-                    by <a href="../users/{{post.post_owner}}/posts">{{name}}</a>
-                </p>
-                <hr>
-                <div style="display: inline;">
-                    Posted on {{post.post_create_time}}&nbsp; &nbsp; | &nbsp; &nbsp;Claps: {{post.post_claps}}
-                    {% if signedIn == True %}
-                    <button style="float: right; margin-top: -7px;" type="button" class="btn btn-outline-info"
-                            onclick="clapPost({{post.id}})">
-                        Clap
-                    </button>
-                    {% endif %}
-                </div>
-                <hr>
-                <p class="lead">
-                    {{post.post_content}}
-                </p>
-                <hr>
-                <!-- if login show this, otherwise no -->
-                {% if signedIn == True %}
-                <div class="card my-4">
-                    <h5 class="card-header">Leave a Comment:</h5>
-                    <div class="card-body">
-                        <form action="../comments/" method="post">
-                            <div class="form-group">
-                                <input type="hidden" name="post_id" value="{{post.id}}">
-                                <input type="textarea" class="form-control" name="comment" id="comment_box"
-                                       placeholder="Type your comments here.">
-                            </div>
-                            <input type="submit" class="btn btn-primary" name="comment_btn" value="Submit">
-                        </form>
+                {% for specific_news in news %}
+                    <h1 class="mt-4">{{ specific_news.news_post_title }}</h1>
+                    <p class="lead">
+                        by <a href="../users/{{ specific_news.news_post_owner }}/posts">{{ specific_news.news_post_owner_name }}</a>
+                    </p>
+                    <hr>
+                    <div style="display: inline;">
+                        Posted on {{ specific_news.news_post_create_time }}&nbsp; &nbsp; | &nbsp; &nbsp; Bumps: {{ specific_news.news_post_bumps }}
+                        {% if authenticated == True %}
+                            <button style="float: right; margin-top: -7px;" type="button" class="btn btn-outline-info"
+                                    onclick="bumpPost({{ specific_news.id }})">
+                                Bump
+                            </button>
+                        {% endif %}
                     </div>
-                </div>
-                {% endif %}
+                    <hr>
 
-                {% for comment in comments %}
-                <div class="media mb-4">
-                    <div class="media-body">
-                        <h5 class="mt-0">
-                            <a href="../users/{{comment.comment_owner}}/posts/">
-                                {{comment.comment_owner_name}}
-                            </a>
-                        </h5>
-                        <h6>Posted: {{comment.comment_create_time}}</h6>
-                        {{comment.comment_content}}
-                    </div>
-                </div>
-                {% endfor %}
+                    <p class="lead">
+                        {{ specific_news.news_post_content }}
+                    </p>
+                    <hr>
+
+                    <!-- if login show this, otherwise no -->
+                    {% if authenticated == True %}
+                        <div class="card my-4">
+                            <h5 class="card-header">Leave a Comment:</h5>
+                            <div class="card-body">
+                                <form action="{% url %}" method="post">
+                                    <div class="form-group">
+                                        <input type="hidden" name="post_id" value="{{ specific_news.id }}">
+                                        <input type="textarea" class="form-control" name="comment" id="comment_box"
+                                               placeholder="Type your comments here.">
+                                    </div>
+                                    <input type="submit" class="btn btn-primary" name="comment_btn" value="Submit">
+                                </form>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% for comment in comments %}
+                        <div class="media mb-4">
+                            <div class="media-body">
+                                <h5 class="mt-0">
+                                    {{ comment.comment_owner_name }}
+                                </h5>
+                                <h6>
+                                    Posted: {{ comment.comment_create_time }}
+                                </h6>
+                                {{ comment.comment_content }}
+                            </div>
+                        </div>
+                    {% endfor %}
 
                 {% endfor %}
             </div>
