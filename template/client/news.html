@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-12">
                 <h2 class="my-4">All News</h2>
-                {% for news_status, news_list in news.items %}
+                {% for news_status, news_list in page_data.items %}
                     {% if news_list %}
                         <h4> {{ news_status }} News </h4>
                         {% for individual_news in news_list %}

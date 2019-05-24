@@ -1,22 +1,24 @@
 {% extends 'client/index.html' %}
 
 {% block head %}
-    function bumpPost(pid){
-        $.ajax({
-            type: 'GET',
-            crossOrigin: true,
-            url: getBaseURL() + "/posts/",
-            data: { 'id' : pid, 'clap' : 'True' },
-            dataType: "json",
-            success: function(result){
-              console.log(result);
-            },
-            error: function(err){
-              console.log(err);
-            }
-        });
-        setTimeout(function(){location.reload();}, 700);
-    }
+    <script>
+        function bumpPost(pid){
+            $.ajax({
+                type: 'GET',
+                crossOrigin: true,
+                url: getBaseURL() + "/posts/",
+                data: { 'id' : pid, 'clap' : 'True' },
+                dataType: "json",
+                success: function(result){
+                console.log(result);
+                },
+                error: function(err){
+                console.log(err);
+                }
+            });
+            setTimeout(function(){location.reload();}, 700);
+        }
+    </script>
 {% endblock %}
 
 {% block content %}
@@ -24,7 +26,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8">
-                {% for specific_news in news %}
+                {% for specific_news in page_data %}
                     <h1 class="mt-4">{{ specific_news.news_post_title }}</h1>
                     <p class="lead">
                         by <a href="../users/{{ specific_news.news_post_owner }}/posts">{{ specific_news.news_post_owner_name }}</a>
