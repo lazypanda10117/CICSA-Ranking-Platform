@@ -1,9 +1,48 @@
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
+
+from misc.CustomElements import Dispatcher
 from api.client_api.page_api import *
 from api.client_api.process_api import *
+from client.CustomPages import GenericCustomPage
 
 def index(request):
-    return regattas(request)
+    return viewDispatch(request, "regattas")
+
+
+def viewDispatch(request, route, param=''):
+    return ClientView().viewDispatch(request, route, param)
+
+
+@csrf_exempt
+def processDispatch(request, route, param=''):
+    return ClientView().processDispatch(request, route, param)
+
+class ClientView():
+    def setViewDispatcher(self):
+        dispatcher = Dispatcher()
+        dispatcher.add('scoring', GenericCustomPage)
+        dispatcher.add('rotation', GenericCustomPage)
+        dispatcher.add('regattas', GenericCustomPage)
+        dispatcher.add('schools', GenericCustomPage)
+        dispatcher.add('seasons', GenericCustomPage)
+        dispatcher.add('news', GenericCustomPage)
+        dispatcher.add('specific_news', GenericCustomPage)
+        return dispatcher
+
+    def setProcessDispatcher(self):
+        dispatcher = Dispatcher()
+        return dispatcher
+
+    def viewDispatch(self, request, dispatch_path, param=''):
+        dispatcher = self.setViewDispatcher()
+        page = dispatcher.get(dispatch_path)(request, dispatch_path, param)
+        return page.render()
+
+    def processDispatch(self, request, dispatch_path, param=''):
+        dispatcher = self.setProcessDispatcher()
+        page = dispatcher.get(dispatch_path)(request, dispatch_path, param)
+        return page.process()
 
 
 def scoring(request, id):
@@ -24,11 +63,6 @@ def regattas(request):
 def schools(request):
     page_data = SchoolsPageAPI(request).grabPageData()
     return render(request, 'client/teams.html', dict(regions=page_data))
-
-
-def school(request):
-    page_data = SchoolPageAPI(request).grabPageData()
-    return render(request, 'client/team.html', dict(school=page_data))
 
 
 def seasons(request):

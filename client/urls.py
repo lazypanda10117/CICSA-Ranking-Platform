@@ -3,11 +3,9 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='client.index'),
-    path('scoring/<int:id>', views.scoring, name='client.scoring'),
-    path('rotation/<int:id>', views.rotation, name='client.rotation'),
-    path('events', views.regattas, name='client.regattas'),
-    path('schools', views.schools, name='client.schools'),
-    path('seasons', views.seasons, name='client.seasons'),
-    path('news', views.news, name='client.news'),
-    path('specific_news', views.specific_news, name='client.specific_news')
+    path('<str:route>', views.viewDispatch, name='client.view_dispatch'),
+    path('<str:route>/process', views.processDispatch, name='client.process_dispatch'),
+    path('<str:route>/<str:param>', views.viewDispatch, name='client.view_dispatch_param'),
+    path('<str:route>/process/<str:param>', views.processDispatch,
+         name='client.process_dispatch_param'),
 ]

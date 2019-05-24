@@ -1,0 +1,1 @@
+from .SpecificNewsProcess import SpecificNewsProcess
