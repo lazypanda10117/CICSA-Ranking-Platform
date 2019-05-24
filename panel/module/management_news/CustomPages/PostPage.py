@@ -22,6 +22,7 @@ class PostPage(AbstractBasePage):
                     ), MiscFunctions.truncateText(post.news_post_title, 50)),
                 news_post_content=MiscFunctions.truncateText(post.news_post_content, 50),
                 news_post_bumps=post.news_post_bumps,
+                news_post_status=post.news_post_status,
                 news_post_create_time=post.news_post_create_time.strftime("%Y-%m-%d %H:%M:%S"),
                 news_post_edit_btn='<button type="button" class="btn btn-outline-info" name="editBtn{}" '
                                    'onclick="editPost({})">Edit</button>'.format(post.id, post.id),
@@ -31,7 +32,7 @@ class PostPage(AbstractBasePage):
             return BlockObject(
                 "",
                 "",
-                ["Post ID", "Title", "Content", "Bumps", "Created Time", "Edit", "Delete"],
+                ["Post ID", "Title", "Content", "Bumps", "Status", "Created Time", "Edit", "Delete"],
                 news_post_dict)
 
         news_api = NewsAPI(self.request)
