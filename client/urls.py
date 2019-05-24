@@ -8,5 +8,6 @@ urlpatterns = [
     path('events', views.regattas, name='client.regattas'),
     path('schools', views.schools, name='client.schools'),
     path('seasons', views.seasons, name='client.seasons'),
-    path('news', views.news, name='client.news')
+    path('news', views.news, name='client.news'),
+    path('specific_news', views.specific_news, name='client.specific_news')
 ]

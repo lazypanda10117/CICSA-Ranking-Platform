@@ -6,3 +6,4 @@ from .SeasonPageAPI import SeasonPageAPI
 from .RegionPageAPI import RegionPageAPI
 from .RotationPageAPI import RotationPageAPI
 from .NewsPageAPI import NewsPageAPI
+from .SpecificNewsPageAPI import SpecificNewsPageAPI

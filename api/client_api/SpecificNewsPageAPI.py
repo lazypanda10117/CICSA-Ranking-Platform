@@ -4,7 +4,7 @@ from api.base.GeneralClientAPI import GeneralClientAPI
 from api.functional_api import NewsAPI
 
 
-class NewsPageAPI(GeneralClientAPI):
+class SpecificNewsPageAPI(GeneralClientAPI):
     def grabPageData(self, **kwargs):
         def genNewsTable(news_status):
             news_partition = NewsAPI(self.request).getNews(
