@@ -6,7 +6,7 @@ from api.model_api import AccountAPI
 class SpecificNewsPageAPI(GeneralClientAPI):
     def grabPageData(self, **kwargs):
         def genComments(news_id):
-            comments = news_api.getCommentsById(news_id)
+            comments = news_api.getCommentsById(news_id).order_by("-news_comment_create_time")
             comments_info = list(map(lambda comment: dict(
                 news_comment_owner=comment.news_comment_owner,
                 news_comment_owner_name=AccountAPI(self.request).getAssociatedNameById(comment.news_comment_owner),
