@@ -7,7 +7,7 @@
 
         function deletePost(news_id) {
             $.ajax({
-                type: 'DELETE',
+                type: 'POST',
                 crossOrigin: true,
                 url: "{% url 'panel.module.management_news.process_dispatch_param' 'post' 'delete' %}",
                 data: { 'id' : news_id },
@@ -43,7 +43,7 @@
 
         function deleteComment(cid) {
             $.ajax({
-                type: 'DELETE',
+                type: 'POST',
                 crossOrigin: true,
                 url: "{% url 'panel.module.management_news.process_dispatch_param' 'comment' 'delete' %}",
                 data: { 'id' : cid },
