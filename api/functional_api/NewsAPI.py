@@ -119,7 +119,7 @@ class NewsAPI(AbstractCoreAPI):
         if self.context.authType == "public":
             return False
         else:
-            return self.hasBumped(news_id)
+            return not self.hasBumped(news_id)
 
     def hasBumped(self, news_id):
         bump = self.__applyAPI(NewsBump).getSelf(news_bump_post_id=news_id, news_bump_bumpper_id=self.context.authID)
@@ -135,7 +135,8 @@ class NewsAPI(AbstractCoreAPI):
                 bump.news_bump_bumpper_id = self.context.authID
                 bump.news_bump_post_id = news_id
                 bump.save()
-                news.update(news_post_bumps=news.news_post_bumps + 1)
+                news.news_post_bumps = news.news_post_bumps + 1
+                news.save()
         else:
             raise PermissionError("The news you are bumping does not exist")
 
@@ -148,7 +149,8 @@ class NewsAPI(AbstractCoreAPI):
                     news_bump_bumpper_id=self.context.authID
                 )
                 bump.delete()
-                news.update(news_post_bumps=news.news_post_bumps - 1)
+                news.news_post_bumps = news.news_post_bumps - 1
+                news.save()
             else:
                 raise PermissionError("You cannot un-bump a news whe you have not bumped it previously.")
 

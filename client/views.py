@@ -2,6 +2,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from misc.CustomElements import Dispatcher
 from client.CustomPages import GenericCustomPage
+from client.CustomProcesses import SpecificNewsProcess
 
 
 def index(request):
@@ -31,6 +32,7 @@ class ClientView():
 
     def setProcessDispatcher(self):
         dispatcher = Dispatcher()
+        dispatcher.add('news', SpecificNewsProcess)
         return dispatcher
 
     def viewDispatch(self, request, dispatch_path, param=''):
@@ -40,5 +42,5 @@ class ClientView():
 
     def processDispatch(self, request, dispatch_path, param=''):
         dispatcher = self.setProcessDispatcher()
-        page = dispatcher.get(dispatch_path)(request, dispatch_path, param)
+        page = dispatcher.get(dispatch_path)(request, param)
         return page.process()
