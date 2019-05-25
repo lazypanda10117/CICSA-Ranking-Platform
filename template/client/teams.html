@@ -3,7 +3,7 @@
 	<div class="container mt-4 mb-4">
 		<h2>Schools</h2>
 		<ul class="list-group mt-3">
-			{% for region, school_list in regions.items %}
+			{% for region, school_list in page_data.items %}
 				<ul class="list-group mt-4">
 					<h5> {{ region }} </h5>
 					{% if school_list %}

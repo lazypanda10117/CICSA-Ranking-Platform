@@ -94,8 +94,8 @@ class FleetManagementView(EventManagementView):
                 event_tag.event_tag_name = tag
                 event_tag.save()
                 race_tag_dict[tag] = event_tag.id
-                LogFunctions.loghelper(self.request, 'admin',
-                                       LogFunctions.logQueryMaker(
+                LogFunctions.generateLog(self.request, 'admin',
+                                         LogFunctions.makeLogQuery(
                                            self.assoc_class_tag, action.title(), id=event_tag.id))
 
             for school_id in event_school:
@@ -106,8 +106,8 @@ class FleetManagementView(EventManagementView):
                 summary.summary_event_parent = event_creation.id
                 summary.summary_event_school = school_id
                 summary.save()
-                LogFunctions.loghelper(self.request, 'admin',
-                                       LogFunctions.logQueryMaker(
+                LogFunctions.generateLog(self.request, 'admin',
+                                         LogFunctions.makeLogQuery(
                                            self.assoc_class_summary, action.title(), id=summary.id))
                 # team generation
                 for index, suffix in enumerate(self.event_team_name_suffix):
@@ -121,8 +121,8 @@ class FleetManagementView(EventManagementView):
                     if self.event_race_tag[index] not in team_activity_dict:
                         team_activity_dict[self.event_race_tag[index]] = []
                     team_activity_dict[self.event_race_tag[index]].append(team.id)
-                    LogFunctions.loghelper(self.request, 'admin',
-                                           LogFunctions.logQueryMaker(
+                    LogFunctions.generateLog(self.request, 'admin',
+                                             LogFunctions.makeLogQuery(
                                                self.assoc_class_team, action.title(), id=team.id))
             for tag, tag_id in race_tag_dict.items():
                 for race in range(event_creation.event_race_number):
@@ -137,8 +137,8 @@ class FleetManagementView(EventManagementView):
                     event_activity.event_activity_type = self.event_activity_type
                     event_activity.event_activity_status = "future"
                     event_activity.save()
-                    LogFunctions.loghelper(self.request, 'admin',
-                                           LogFunctions.logQueryMaker(
+                    LogFunctions.generateLog(self.request, 'admin',
+                                             LogFunctions.makeLogQuery(
                                                self.assoc_class_activity, action.title(), id=event_activity.id))
                     for team_id in team_activity_dict[tag]:
                         # event team link generation
@@ -146,15 +146,15 @@ class FleetManagementView(EventManagementView):
                         event_team.event_team_event_activity_id = event_activity.id
                         event_team.event_team_id = team_id
                         event_team.save()
-                        LogFunctions.loghelper(self.request, 'admin',
-                                               LogFunctions.logQueryMaker(
+                        LogFunctions.generateLog(self.request, 'admin',
+                                                 LogFunctions.makeLogQuery(
                                                    self.assoc_class_team_link, action.title(), id=event_team.id))
 
             event_creation.event_rotation_detail = self.__rotationGenerator(
                 race_tag_dict, team_activity_dict, event_creation.event_race_number, event_creation.event_team_number)
             event_creation.save()
-            LogFunctions.loghelper(self.request, 'admin',
-                                   LogFunctions.logQueryMaker(self.base_class, action.title(), id=event_creation.id))
+            LogFunctions.generateLog(self.request, 'admin',
+                                     LogFunctions.makeLogQuery(self.base_class, action.title(), id=event_creation.id))
 
         def edit(key):
             delete(key)
@@ -176,32 +176,32 @@ class FleetManagementView(EventManagementView):
                                 for activity in event_activities]
 
             for team in event_teams:
-                LogFunctions.loghelper(self.request, 'admin',
-                                       LogFunctions.logQueryMaker(self.assoc_class_team, action.title(), id=team.id))
+                LogFunctions.generateLog(self.request, 'admin',
+                                         LogFunctions.makeLogQuery(self.assoc_class_team, action.title(), id=team.id))
                 team.delete()
             for tag in event_tags:
-                LogFunctions.loghelper(self.request, 'admin',
-                                       LogFunctions.logQueryMaker(self.assoc_class_tag, action.title(), id=tag.id))
+                LogFunctions.generateLog(self.request, 'admin',
+                                         LogFunctions.makeLogQuery(self.assoc_class_tag, action.title(), id=tag.id))
                 tag.delete()
             for summary in event_summaries:
-                LogFunctions.loghelper(self.request, 'admin',
-                                       LogFunctions.logQueryMaker(
+                LogFunctions.generateLog(self.request, 'admin',
+                                         LogFunctions.makeLogQuery(
                                            self.assoc_class_summary, action.title(), id=summary.id))
                 summary.delete()
 
             for activity in event_activities:
-                LogFunctions.loghelper(self.request, 'admin',
-                                       LogFunctions.logQueryMaker(
+                LogFunctions.generateLog(self.request, 'admin',
+                                         LogFunctions.makeLogQuery(
                                            self.assoc_class_activity, action.title(), id=activity.id))
                 activity.delete()
             for team_links in event_team_links:
                 for team_link in team_links:
-                    LogFunctions.loghelper(self.request, 'admin',
-                                           LogFunctions.logQueryMaker(
+                    LogFunctions.generateLog(self.request, 'admin',
+                                             LogFunctions.makeLogQuery(
                                                self.assoc_class_team_link, action.title(), id=team_link.id))
                     team_link.delete()
-            LogFunctions.loghelper(self.request, 'admin',
-                                   LogFunctions.logQueryMaker(self.base_class, action.title(), id=event.id))
+            LogFunctions.generateLog(self.request, 'admin',
+                                     LogFunctions.makeLogQuery(self.base_class, action.title(), id=event.id))
             event.delete()
 
         try:

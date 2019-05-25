@@ -48,8 +48,8 @@ class AccountView(AbstractCustomClass):
             if not action == 'delete':
                 account.save()
 
-            LogFunctions.loghelper(
-                self.request, 'admin', LogFunctions.logQueryMaker(
+            LogFunctions.generateLog(
+                self.request, 'admin', LogFunctions.makeLogQuery(
                     self.base_class, action.title(), id=account.id
                 )
             )

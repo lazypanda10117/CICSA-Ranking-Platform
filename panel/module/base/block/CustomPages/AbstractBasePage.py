@@ -25,7 +25,7 @@ class AbstractBasePage(ABC):
         if match:
             return match
         else:
-            raise Http404
+            raise Http404("Page parameters parsing engine failed to recognize provided path")
 
     @staticmethod
     def getPagePath():

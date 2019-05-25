@@ -36,8 +36,8 @@ class EventTagView(AbstractCustomClass):
             if not action == 'delete':
                 event_tag.save()
 
-            LogFunctions.loghelper(
-                self.request, 'admin', LogFunctions.logQueryMaker(
+            LogFunctions.generateLog(
+                self.request, 'admin', LogFunctions.makeLogQuery(
                     self.base_class, action.title(), id=event_tag.id))
 
             if action == 'delete':

@@ -1,8 +1,33 @@
 {% extends 'client/index.html' %}
+
+{% block head %}
+	<script type="text/javascript">
+		window.onload = function() {
+			$(document).ready(function() {
+				// from https://stackoverflow.com/a/29129307
+				$(function(){
+					$('.table tr[data-href]').each(function(){
+						$(this).css('cursor','pointer').hover(
+							function(){
+								$(this).addClass('active');
+							},
+							function(){
+								$(this).removeClass('active');
+							}).click( function(){
+								document.location = $(this).attr('data-href');
+							}
+						);
+					});
+				});
+			});
+		};
+	</script>
+{% endblock %}
+
 {% block content %}
 	<div class="container mt-3">
 		<h2>Regatta List</h2>
-        {% for status, regatta_list in regattas.items %}
+        {% for status, regatta_list in page_data.items %}
         <ul class="list-group mt-4">
             <h5> {{ status }} Events </h5>
                 {% if regatta_list %}
@@ -38,26 +63,4 @@
             </ul>
         {% endfor %}
 	</div>
-
-	<script type="text/javascript">
-		window.onload = function() {
-			$(document).ready(function() {
-				// from https://stackoverflow.com/a/29129307
-				$(function(){
-					$('.table tr[data-href]').each(function(){
-						$(this).css('cursor','pointer').hover(
-							function(){
-								$(this).addClass('active');
-							},
-							function(){
-								$(this).removeClass('active');
-							}).click( function(){
-								document.location = $(this).attr('data-href');
-							}
-						);
-					});
-				});
-			});
-		};
-	</script>
 {% endblock %}
