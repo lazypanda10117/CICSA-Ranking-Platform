@@ -34,8 +34,8 @@ class MemberView(AbstractCustomClass):
             if not action == 'delete':
                 member.save()
 
-            LogFunctions.loghelper(
-                self.request, 'admin', LogFunctions.logQueryMaker(self.base_class, action.title(), id=member.id))
+            LogFunctions.generateLog(
+                self.request, 'admin', LogFunctions.makeLogQuery(self.base_class, action.title(), id=member.id))
 
             if action == 'delete':
                 member.delete()

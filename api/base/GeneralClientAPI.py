@@ -1,8 +1,8 @@
 from abc import abstractmethod
-from ..base.AbstractAPI import AbstractAPI
+from api.base import AbstractCoreAPI
 
 
-class GeneralClientAPI(AbstractAPI):
+class GeneralClientAPI(AbstractCoreAPI):
     @abstractmethod
     def grabPageData(self, **kwargs):
         pass

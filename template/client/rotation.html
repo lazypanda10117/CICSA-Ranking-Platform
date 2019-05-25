@@ -2,7 +2,7 @@
 {% block content %}
 	<div class="container mt-3">
 
-		<h1 class="text-center mb-3">{{ regatta.event_details.name }}</h1>
+		<h1 class="text-center mb-3">{{ page_data.event_details.name }}</h1>
 
 		<h4>Details</h4>
 		<ul class="list-group mb-5">
@@ -13,7 +13,7 @@
 							{% cycle 'Name' 'Description' 'Scoring' 'Rotation' 'Season' 'Region' 'Host' 'Location' 'Status' 'Start Date' 'End Date' %}:
 						</div>
 						<div class="col">
-							{% with details=regatta.event_details %}
+							{% with details=page_data.event_details %}
 								{% if i == "3" or i == "4" or i == "5" or i == "6" or i == "7" %}
 									<a href="{% cycle details.scoring.1 details.rotation.1 details.season.1 details.region.1 details.host.1 %}">
 										{% cycle details.scoring.0 details.rotation.0 details.season.0 details.region.0 details.host.0 %}
@@ -29,7 +29,7 @@
 		</ul>
 
         <h4>Rotation</h4>
-        {% for fleet_name, teams in regatta.rotation_details.items %}
+        {% for fleet_name, teams in page_data.rotation_details.items %}
 			<h5>{{ fleet_name }}</h5>
 			<div class="table-responsive {% if not forloop.last %} mb-5 {% else %} mb-4 {% endif %}">
 				<table class="table table-hover">

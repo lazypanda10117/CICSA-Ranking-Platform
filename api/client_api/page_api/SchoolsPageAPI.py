@@ -1,6 +1,6 @@
 from django.shortcuts import reverse
-from ..base.GeneralClientAPI import GeneralClientAPI
-from ..model_api import EventAPI, EventTypeAPI, RegionAPI, SchoolAPI
+from api.base.GeneralClientAPI import GeneralClientAPI
+from api.model_api import EventAPI, EventTypeAPI, RegionAPI, SchoolAPI
 
 
 class SchoolsPageAPI(GeneralClientAPI):

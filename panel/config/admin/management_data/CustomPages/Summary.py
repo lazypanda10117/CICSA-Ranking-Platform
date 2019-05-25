@@ -40,8 +40,8 @@ class SummaryView(AbstractCustomClass):
             if not action == 'delete':
                 summary.save()
 
-            LogFunctions.loghelper(
-                self.request, 'admin', LogFunctions.logQueryMaker(self.base_class, action.title(), id=summary.id))
+            LogFunctions.generateLog(
+                self.request, 'admin', LogFunctions.makeLogQuery(self.base_class, action.title(), id=summary.id))
 
             if action == 'delete':
                 summary.delete()

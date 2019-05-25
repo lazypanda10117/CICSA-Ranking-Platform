@@ -1,6 +1,6 @@
 from django.shortcuts import reverse
-from ..base.GeneralClientAPI import GeneralClientAPI
-from ..model_api import EventAPI, EventTypeAPI, RegionAPI, SchoolAPI
+from api.base.GeneralClientAPI import GeneralClientAPI
+from api.model_api import EventAPI, EventTypeAPI, RegionAPI, SchoolAPI
 
 
 class RegattasPageAPI(GeneralClientAPI):
@@ -10,7 +10,7 @@ class RegattasPageAPI(GeneralClientAPI):
             events = EventAPI(self.request).filterSelf(event_status=status).order_by('event_start_date')
             event_dict = list(map(lambda event: dict(
                 event_name=event.event_name,
-                event_link=reverse('client.scoring', args=[event.id]),
+                event_link=reverse('client.view_dispatch_param', args=["scoring", event.id]),
                 event_type=EventTypeAPI(self.request).getSelf(id=event.event_type).event_type_name,
                 event_status=status_map[event.event_status] if event.event_status in status_map else event.event_status,
                 event_region=RegionAPI(self.request).getSelf(id=event.event_region).region_name,

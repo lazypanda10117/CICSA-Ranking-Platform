@@ -47,6 +47,6 @@ class EventActivityPage(AbstractBasePage):
         return super().renderHelper(PageObject('Event Activities List', self.generateList(), [], external))
 
     def parseParams(self, param):
-        match = super().parseMatch('\d+')
+        super().parseMatch('\d+')
         param = dict(id=param)
         return param

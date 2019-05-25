@@ -34,8 +34,8 @@ class TeamView(AbstractCustomClass):
             if not action == 'delete':
                 team.save()
 
-            LogFunctions.loghelper(
-                self.request, 'admin', LogFunctions.logQueryMaker(
+            LogFunctions.generateLog(
+                self.request, 'admin', LogFunctions.makeLogQuery(
                     self.base_class, action.title(), id=team.id))
 
             if action == 'delete':

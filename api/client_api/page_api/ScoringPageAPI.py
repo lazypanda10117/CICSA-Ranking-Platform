@@ -3,9 +3,9 @@ from functools import reduce
 from django.shortcuts import reverse
 from misc.CustomFunctions import UrlFunctions, MiscFunctions
 from misc.CustomElements import EquationParser
-from ..base.GeneralClientAPI import GeneralClientAPI
-from ..model_api import EventAPI, EventActivityAPI, SummaryAPI, TeamAPI, EventTypeAPI
-from ..model_api import EventTagAPI, RegionAPI, SchoolAPI, SeasonAPI, ScoreMappingAPI
+from api.base.GeneralClientAPI import GeneralClientAPI
+from api.model_api import EventAPI, EventActivityAPI, SummaryAPI, TeamAPI, EventTypeAPI
+from api.model_api import EventTagAPI, RegionAPI, SchoolAPI, SeasonAPI, ScoreMappingAPI
 
 
 class ScoringPageAPI(GeneralClientAPI):
@@ -23,8 +23,8 @@ class ScoringPageAPI(GeneralClientAPI):
         result = dict(
             name=event.event_name,
             description=event.event_description,
-            scoring=('Scoring Page', reverse('client.scoring', args=[event.id])),
-            rotation=('Rotation Page', reverse('client.rotation', args=[event.id])),
+            scoring=('Scoring Page', reverse('client.view_dispatch_param', args=['scoring', event.id])),
+            rotation=('Rotation Page', reverse('client.view_dispatch_param', args=['rotation', event.id])),
             season=(
                 SeasonAPI(self.request).getSelf(id=event.event_season).season_name,
                 UrlFunctions.getClientViewLink('season', event.event_season)

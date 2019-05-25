@@ -1,3 +1,5 @@
+# DEPRECATED MIGRATION SCRIPT
+
 #!/usr/bin/env bash
 ndir="*/"
 narr=($ndir)

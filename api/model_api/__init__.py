@@ -1,5 +1,6 @@
 from .AccountAPI import AccountAPI
 from .EventActivityAPI import EventActivityAPI
+from .ConfigAPI import ConfigAPI
 from .EventAPI import EventAPI
 from .EventTagAPI import EventTagAPI
 from .EventTeamAPI import EventTeamAPI
@@ -7,6 +8,9 @@ from .EventTypeAPI import EventTypeAPI
 from .LogAPI import LogAPI
 from .MemberAPI import MemberAPI
 from .MemberGroupAPI import MemberGroupAPI
+from .NewsBumpAPI import NewsBumpAPI
+from .NewsCommentAPI import NewsCommentAPI
+from .NewsPostAPI import NewsPostAPI
 from .RegionAPI import RegionAPI
 from .SchoolAPI import SchoolAPI
 from .ScoreMappingAPI import ScoreMappingAPI

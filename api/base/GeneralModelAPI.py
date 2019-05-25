@@ -1,9 +1,11 @@
 from abc import abstractmethod
-from misc.CustomFunctions import ModelFunctions, AuthFunctions
-from ..base.AbstractAPI import AbstractAPI
+from api.base import AbstractCoreAPI
+from misc.CustomFunctions import AuthFunctions
+from misc.CustomFunctions import LogFunctions
+from misc.CustomFunctions import ModelFunctions
 
 
-class GeneralModelAPI(AbstractAPI):
+class GeneralModelAPI(AbstractCoreAPI):
     def __init__(self, request):
         super().__init__(request)
         self.base = self.getBaseClass()
@@ -13,12 +15,32 @@ class GeneralModelAPI(AbstractAPI):
     @staticmethod
     @abstractmethod
     def getBaseClass():
-        pass;
+        pass
 
     def verifySelf(self, **kwargs):
         result = ModelFunctions.getModelObject(self.base, **kwargs)
         result = self.auth_class(self.request).authenticate('edit', result)
         AuthFunctions.raise404Empty(result)
+        LogFunctions.generateLog(self.request, self.context.authType,
+                                 LogFunctions.makeLogQueryFromObject(self.base, 'edit', result))
+        return result
+
+    def addSelf(self, obj):
+        if isinstance(obj, self.base):
+            result = self.auth_class(self.request).authenticate('add', obj)
+            AuthFunctions.raise404Empty(result)
+            LogFunctions.generateLog(self.request, self.context.authType,
+                                     LogFunctions.makeLogQueryFromObject(self.base, 'add', result))
+            return result
+        else:
+            AuthFunctions.raise404Empty()
+
+    def deleteSelf(self, **kwargs):
+        result = ModelFunctions.getModelObject(self.base, **kwargs)
+        result = self.auth_class(self.request).authenticate('delete', result)
+        AuthFunctions.raise404Empty(result)
+        LogFunctions.generateLog(self.request, self.context.authType,
+                                 LogFunctions.makeLogQueryFromObject(self.base, 'delete', result))
         return result
 
     def getSelf(self, **kwargs):

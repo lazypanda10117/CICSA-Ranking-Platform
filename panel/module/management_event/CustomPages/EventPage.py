@@ -42,6 +42,6 @@ class EventPage(AbstractBasePage):
         return super().renderHelper(PageObject('Events List', self.generateList(), header))
 
     def parseParams(self, param):
-        match = super().parseMatch('.+\s.+')
+        super().parseMatch('\s+')
         param = dict(type=param)
         return param
