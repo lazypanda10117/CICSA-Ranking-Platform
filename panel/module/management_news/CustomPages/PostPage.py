@@ -42,6 +42,6 @@ class PostPage(AbstractBasePage):
         return super().renderHelper(PageObject('Post Management', self.generateList(), 'Posts'))
 
     def parseParams(self, param):
-        match = super().parseMatch('')
+        super().parseMatch('')
         param = None
         return param

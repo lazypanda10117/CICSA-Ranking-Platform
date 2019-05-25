@@ -77,6 +77,6 @@ class EventActivityRankingPage(AbstractBasePage):
         return content
 
     def parseParams(self, param):
-        match = super().parseMatch('\d+')
+        super().parseMatch('\d+')
         param = dict(id=param)
         return param

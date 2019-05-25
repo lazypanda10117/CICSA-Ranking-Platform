@@ -37,6 +37,6 @@ class CommentPage(AbstractBasePage):
         return super().renderHelper(PageObject('Comment Management', self.generateList(), 'Comments'))
 
     def parseParams(self, param):
-        match = super().parseMatch('(\d+|all)')
+        super().parseMatch('(\d+|all)')
         param = dict(id=param)
         return param
