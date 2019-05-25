@@ -34,7 +34,7 @@ class GenericCustomPage():
             raise Http404("Page parameters parsing engine failed to recognize provided path")
 
     def parseParams(self, param):
-        self.parseMatch('\d+')
+        self.parseMatch('^(\s*|\d+)$')
         if param:
             param = dict(id=param)
         else:

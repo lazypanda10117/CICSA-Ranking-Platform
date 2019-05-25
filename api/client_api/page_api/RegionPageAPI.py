@@ -9,7 +9,7 @@ class RegionPageAPI(GeneralClientAPI):
             events = EventAPI(self.request).filterSelf(event_status=status).order_by('event_start_date')
             event_dict = list(map(lambda event: dict(
                 event_name=event.event_name,
-                event_link=reverse('client.scoring', args=[event.id]),
+                event_link=reverse('client.view_dispatch_param', args=['scoring', event.id]),
                 event_type=EventTypeAPI(self.request).getSelf(id=event.event_type).event_type_name,
                 event_status=event.event_status,
                 event_region=RegionAPI(self.request).getSelf(id=event.event_region).region_name,

@@ -1,3 +1,2 @@
-from api.client_api.page_api.NewsPageAPI import NewsPageAPI
-from api.client_api.page_api.SpecificNewsPageAPI import SpecificNewsPageAPI
-from api.client_api.process_api.SpecificNewsProcessAPI import SpecificNewsProcessAPI
+from api.client_api.page_api import *
+from api.client_api.process_api import *

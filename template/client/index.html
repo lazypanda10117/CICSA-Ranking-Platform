@@ -34,16 +34,16 @@
         <div id="navigation-collapse" class="collapse navbar-collapse">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'client.regattas' %}">Event</a>
+              <a class="nav-link" href="{% url 'client.view_dispatch' 'regattas' %}">Event</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'client.schools' %}">School</a>
+              <a class="nav-link" href="{% url 'client.view_dispatch' 'schools' %}">School</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'client.seasons' %}">Season</a>
+              <a class="nav-link" href="{% url 'client.view_dispatch' 'seasons' %}">Season</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'client.news' %}">News</a>
+              <a class="nav-link" href="{% url 'client.view_dispatch' 'news' %}">News</a>
             </li>
             <li class="nav-item">
               <a class="nav-link disabled" href="#">League Ranking</a>
