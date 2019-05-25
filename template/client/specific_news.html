@@ -2,12 +2,12 @@
 
 {% block head %}
     <script>
-        function bumpPost(pid){
+        function bumpPost(pid, direction){
             $.ajax({
-                type: 'GET',
+                type: 'POST',
                 crossOrigin: true,
-                url: getBaseURL() + "/posts/",
-                data: { 'id' : pid, 'clap' : 'True' },
+                url: "{% url 'client.process_dispatch_param' 'news' 'bump' %}",
+                data: { 'id' : pid, 'bump' : direction },
                 dataType: "json",
                 success: function(result){
                 console.log(result);
@@ -29,16 +29,24 @@
                 {% for specific_news in page_data.specific_news %}
                     <h1 class="mt-4">{{ specific_news.news_post_title }}</h1>
                     <p class="lead">
-                        by <a href="../users/{{ specific_news.news_post_owner }}/posts">{{ specific_news.news_post_owner_name }}</a>
+                        by {{ specific_news.news_post_owner_name }}
                     </p>
                     <hr>
                     <div style="display: inline;">
                         Posted on {{ specific_news.news_post_create_time }}&nbsp; &nbsp; | &nbsp; &nbsp; Bumps: {{ specific_news.news_post_bumps }}
                         {% if page_data.authenticated == True %}
-                            <button style="float: right; margin-top: -7px;" type="button" class="btn btn-outline-info"
-                                    onclick="bumpPost({{ specific_news.news_id }})">
-                                Bump
-                            </button>
+                            {% if specific_news.news_post_can_bump == True %}
+                                <button style="float: right; margin-top: -7px;" type="button" class="btn btn-info"
+                                        onclick="bumpPost({{ specific_news.news_id }}, 'up')">
+                                    Bump
+                                </button>
+                            {% endif %}
+                            {% if specific_news.news_post_can_bump == False %}
+                                <button style="float: right; margin-top: -7px;" type="button" class="btn btn-danger"
+                                        onclick="bumpPost({{ specific_news.news_id }}, 'down')">
+                                    Unbump
+                                </button>
+                            {% endif %}
                         {% endif %}
                     </div>
                     <hr>
@@ -53,13 +61,22 @@
                         <div class="card my-4">
                             <h5 class="card-header">Leave a Comment:</h5>
                             <div class="card-body">
-                                <form action="url here" method="post">
-                                    <div class="form-group">
-                                        <input type="hidden" name="post_id" value="{{ specific_news.id }}">
-                                        <input type="textarea" class="form-control" name="comment" id="comment_box"
-                                               placeholder="Type your comments here.">
+                                <form action="{% url 'client.process_dispatch_param' 'news' 'comment' %}" method="post">
+                                    <div class="form-group row">
+                                        <div class="col-lg-10">
+                                            <input type="hidden" name="id" value="{{ specific_news.news_id }}">
+                                            <input
+                                                    type="textarea"
+                                                    class="form-control"
+                                                    name="comment_content"
+                                                    id="comment_content"
+                                                    placeholder="Type your comments here."
+                                            >
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <input type="submit" class="btn btn-outline-success" name="comment_btn" value="Submit">
+                                        </div>
                                     </div>
-                                    <input type="submit" class="btn btn-primary" name="comment_btn" value="Submit">
                                 </form>
                             </div>
                         </div>
