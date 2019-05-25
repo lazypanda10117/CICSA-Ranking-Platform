@@ -16,4 +16,5 @@ class AccountAPI(GeneralModelAPI):
             associated_school = SchoolAPI(self.request).getSelf(id=account.account_linked_id)
             return associated_school.school_name
         else:
+            print(account.account_type)
             return "Anonymous"
