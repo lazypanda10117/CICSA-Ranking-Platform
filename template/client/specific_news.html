@@ -25,8 +25,8 @@
     <!-- Page Content -->
     <div class="container">
         <div class="row">
-            <div class="col-lg-8">
-                {% for specific_news in page_data %}
+            <div class="col-lg-12">
+                {% for specific_news in page_data.specific_news %}
                     <h1 class="mt-4">{{ specific_news.news_post_title }}</h1>
                     <p class="lead">
                         by <a href="../users/{{ specific_news.news_post_owner }}/posts">{{ specific_news.news_post_owner_name }}</a>
@@ -34,9 +34,9 @@
                     <hr>
                     <div style="display: inline;">
                         Posted on {{ specific_news.news_post_create_time }}&nbsp; &nbsp; | &nbsp; &nbsp; Bumps: {{ specific_news.news_post_bumps }}
-                        {% if authenticated == True %}
+                        {% if page_data.authenticated == True %}
                             <button style="float: right; margin-top: -7px;" type="button" class="btn btn-outline-info"
-                                    onclick="bumpPost({{ specific_news.id }})">
+                                    onclick="bumpPost({{ specific_news.news_id }})">
                                 Bump
                             </button>
                         {% endif %}
@@ -49,11 +49,11 @@
                     <hr>
 
                     <!-- if login show this, otherwise no -->
-                    {% if authenticated == True %}
+                    {% if page_data.authenticated == True %}
                         <div class="card my-4">
                             <h5 class="card-header">Leave a Comment:</h5>
                             <div class="card-body">
-                                <form action="{% url %}" method="post">
+                                <form action="url here" method="post">
                                     <div class="form-group">
                                         <input type="hidden" name="post_id" value="{{ specific_news.id }}">
                                         <input type="textarea" class="form-control" name="comment" id="comment_box"
@@ -65,16 +65,16 @@
                         </div>
                     {% endif %}
 
-                    {% for comment in comments %}
+                    {% for comment in specific_news.comments %}
                         <div class="media mb-4">
                             <div class="media-body">
                                 <h5 class="mt-0">
-                                    {{ comment.comment_owner_name }}
+                                    {{ comment.news_comment_owner_name }}
                                 </h5>
                                 <h6>
-                                    Posted: {{ comment.comment_create_time }}
+                                    Posted: {{ comment.news_comment_create_time }}
                                 </h6>
-                                {{ comment.comment_content }}
+                                {{ comment.news_comment_content }}
                             </div>
                         </div>
                     {% endfor %}
