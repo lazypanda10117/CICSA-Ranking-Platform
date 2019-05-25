@@ -1,10 +1,8 @@
-from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
 from misc.CustomElements import Dispatcher
-from api.client_api.page_api import *
-from api.client_api.process_api import *
 from client.CustomPages import GenericCustomPage
+
 
 def index(request):
     return viewDispatch(request, "regattas")
@@ -17,6 +15,7 @@ def viewDispatch(request, route, param=''):
 @csrf_exempt
 def processDispatch(request, route, param=''):
     return ClientView().processDispatch(request, route, param)
+
 
 class ClientView():
     def setViewDispatcher(self):
