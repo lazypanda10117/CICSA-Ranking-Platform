@@ -2,7 +2,7 @@ import hashlib
 from django.shortcuts import redirect, reverse
 from django.http import HttpResponse
 from cicsa_ranking.models import *
-from misc.CustomFunctions import AuthFunctions, LogFunctions, ModelFunctions, RequestFunctions
+from misc.CustomFunctions import LogFunctions, ModelFunctions, RequestFunctions
 
 
 class Login:
@@ -43,11 +43,12 @@ class Login:
             return HttpResponse('{"Response": "Error: Insufficient Parameters."}')
 
     def logout(self):
-        if AuthFunctions.sessionChecker(self.request, 'uid', 'utype'):
+        if RequestFunctions.sessionChecker(self.request, 'uid', 'utype'):
             LogFunctions.generateLog(self.request, "system",
                                      LogFunctions.makeLogQuery(Account, 'Logout', id=self.request.session['uid']))
             self.request.session['uid'] = None
             self.request.session['utype'] = None
         else:
             print('{"Response": "Error: Not Logged In"}')
+        print("Redirecting outward")
         return redirect(reverse('permission.dispatch', args=['view']))
