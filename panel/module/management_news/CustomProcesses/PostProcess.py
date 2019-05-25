@@ -30,7 +30,7 @@ class PostProcess(AbstractBaseProcess):
         )
 
     def parseParams(self, param):
-        match = super().parseMatch('(add|edit|delete)')
+        super().parseMatch('(add|edit|delete)')
         param = dict(
             action=param
         )
