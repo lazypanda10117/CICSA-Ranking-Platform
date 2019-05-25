@@ -112,7 +112,7 @@ class Member(models.Model):
 
 class Account(models.Model):
     ACCOUNT_ADMIN = "admin"
-    ACCOUNT_SCHOOL = "team"
+    ACCOUNT_SCHOOL = "school"
     account_type = models.CharField(max_length=50)  # school, admin
     account_email = models.EmailField()
     account_salt = models.CharField(max_length=200)
