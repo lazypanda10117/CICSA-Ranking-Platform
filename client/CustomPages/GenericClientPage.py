@@ -24,6 +24,7 @@ class GenericCustomPage():
         dispatcher.add('seasons', dict(page_api=SeasonPageAPI, template_path='client/seasons.html'))
         dispatcher.add('news', dict(page_api=NewsPageAPI, template_path='client/news.html'))
         dispatcher.add('specific_news', dict(page_api=SpecificNewsPageAPI, template_path='client/specific_news.html'))
+        dispatcher.add('league', dict(page_api=SpecificNewsPageAPI, template_path='client/specific_news.html'))
         return dispatcher
 
     def parseMatch(self, pattern):

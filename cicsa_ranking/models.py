@@ -3,10 +3,20 @@ from django.db import models
 
 
 class Event(models.Model):
+    EVENT_CLASS_RANK_A = 0
+    EVENT_CLASS_RANK_B = 1
+
+    EVENT_NAME_FINAL_RACE = ["Fleet Race National"]
+
+    EVENT_STATUS_PENDING = "pending"
+    EVENT_STATUS_RUNNING = "running"
+    EVENT_STATUS_DONE = "done"
+
     event_name = models.CharField(max_length=200)
     event_description = models.CharField(max_length=1500)
     event_status = models.CharField(max_length=50)  # pending, running, done
     event_type = models.IntegerField()
+    event_class = models.IntegerField(default=EVENT_CLASS_RANK_A)
     event_host = models.IntegerField()
     event_location = models.CharField(max_length=1000)
     event_season = models.IntegerField()
