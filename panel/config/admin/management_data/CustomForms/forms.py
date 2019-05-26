@@ -1,6 +1,6 @@
 from django import forms
 from django.utils import timezone
-from cicsa_ranking.models import Season, Region, EventType, ScoreMapping, Log
+from cicsa_ranking.models import Season, Region, EventType, Score, ScoreMapping, Log
 from misc.CustomFunctions import MiscFunctions
 
 
@@ -23,6 +23,12 @@ class EventTypeForm(forms.ModelForm):
 
 
 class ScoreMappingForm(forms.ModelForm):
+    class Meta:
+        model = ScoreMapping
+        fields = '__all__'
+
+
+class ScoreForm(forms.ModelForm):
     class Meta:
         model = ScoreMapping
         fields = '__all__'
