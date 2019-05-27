@@ -81,6 +81,7 @@ class Summary(models.Model):
 
 class Score(models.Model):
     score_value = models.IntegerField()
+    score_override_value = models.IntegerField(default=0)
     score_school = models.IntegerField()
     score_season = models.IntegerField()
 
