@@ -31,4 +31,3 @@ class SchoolAPI(GeneralModelAPI):
                     event_status=Event.EVENT_STATUS_DONE,
                     event_school_ids_contains=[school_id]
                 ).exclude(event_name__in=Event.EVENT_NAME_FINAL_RACE)
-

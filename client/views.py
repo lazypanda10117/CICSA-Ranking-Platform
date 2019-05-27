@@ -28,6 +28,7 @@ class ClientView():
         dispatcher.add('seasons', GenericCustomPage)
         dispatcher.add('news', GenericCustomPage)
         dispatcher.add('specific_news', GenericCustomPage)
+        dispatcher.add('school_details', GenericCustomPage)
         return dispatcher
 
     def setProcessDispatcher(self):
