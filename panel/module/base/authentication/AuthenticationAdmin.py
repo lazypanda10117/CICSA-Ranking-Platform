@@ -34,6 +34,7 @@ class AuthenticationAdmin:
             dispatcher.add('score mapping', {'class': ScoreMapping, 'form': ScoreMappingForm})
             dispatcher.add('score', {'class': Score, 'form': ScoreForm})
             dispatcher.add('log', {'class': Log, 'form': LogForm})
+            dispatcher.add('config', {'class': Config, 'form': ConfigForm})
             return dispatcher
 
         @staticmethod
