@@ -92,7 +92,7 @@ class NewsAPI(AbstractCoreAPI):
 
     # Comment Functions
     def getComments(self, comment_filter=None):
-        if comment_filter is None:
+        if comment_filter.get("news_comment_post_id") is None:
             return self.__applyAPI(NewsComment).getAll()
         else:
             return self.__applyAPI(NewsComment).filterSelf(**comment_filter)
