@@ -17,7 +17,19 @@ class SchoolDetailsPageAPI(GeneralClientAPI):
 
         def getSchoolParticipatedEvents(school_id, season): # or gen?
             events = school_api.getParticipatedEvents(school_id, season=season)
-            return events
+            school = school_api.getSelf(id=school_id)
+            region_api = RegionAPI(self.request)
+            region = region_api.getSelf(id=school.school_region)
+            rank = "Twice"
+            link = "https://channels.vlive.tv/EDBF/home"
+            return [dict(
+                name=event.event_name,
+                region=region.region_name,
+                start_date=event.event_start_date,
+                rank=rank,
+                link=link,
+            )
+            for event in events]
 
         school_id = kwargs.get("id")
         school_api = SchoolAPI(self.request)
