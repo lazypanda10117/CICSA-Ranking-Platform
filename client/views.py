@@ -1,7 +1,7 @@
 from django.views.decorators.csrf import csrf_exempt
 
 from misc.CustomElements import Dispatcher
-from client.CustomPages import GenericCustomPage
+from client.CustomPages import GenericClientPage
 from client.CustomProcesses import SpecificNewsProcess
 
 
@@ -21,13 +21,14 @@ def processDispatch(request, route, param=''):
 class ClientView():
     def setViewDispatcher(self):
         dispatcher = Dispatcher()
-        dispatcher.add('scoring', GenericCustomPage)
-        dispatcher.add('rotation', GenericCustomPage)
-        dispatcher.add('regattas', GenericCustomPage)
-        dispatcher.add('schools', GenericCustomPage)
-        dispatcher.add('seasons', GenericCustomPage)
-        dispatcher.add('news', GenericCustomPage)
-        dispatcher.add('specific_news', GenericCustomPage)
+        dispatcher.add('scoring', GenericClientPage)
+        dispatcher.add('rotation', GenericClientPage)
+        dispatcher.add('regattas', GenericClientPage)
+        dispatcher.add('schools', GenericClientPage)
+        dispatcher.add('seasons', GenericClientPage)
+        dispatcher.add('news', GenericClientPage)
+        dispatcher.add('specific_news', GenericClientPage)
+        dispatcher.add('league', GenericClientPage)
         return dispatcher
 
     def setProcessDispatcher(self):
