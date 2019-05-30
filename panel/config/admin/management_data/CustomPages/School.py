@@ -51,7 +51,6 @@ class SchoolView(AbstractCustomClass):
             school.school_name = RequestFunctions.getSinglePostObj(post_dict, 'school_name')
             school.school_region = RequestFunctions.getSinglePostObj(post_dict, 'school_region')
             school.school_status = RequestFunctions.getSinglePostObj(post_dict, 'school_status')
-            school.school_season_score = RequestFunctions.getSinglePostObj(post_dict, 'school_season_score')
             school.school_default_team_name = RequestFunctions.getSinglePostObj(post_dict, 'school_default_team_name')
             if not action == 'delete':
                 school.save()

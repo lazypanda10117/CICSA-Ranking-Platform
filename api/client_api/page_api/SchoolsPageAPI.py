@@ -11,7 +11,6 @@ class SchoolsPageAPI(GeneralClientAPI):
                 school_name=school.school_name,
                 school_team_name=school.school_default_team_name,
                 school_status=school.school_status,
-                school_season_score=school.school_season_score,
                 school_link='#'
             ), list(schools)))
             return school_dict

@@ -81,7 +81,7 @@ class Summary(models.Model):
 
 
 class Score(models.Model):
-    score_value = models.IntegerField()
+    score_value = models.IntegerField(default=0)
     score_override_value = models.IntegerField(default=0)
     score_school = models.IntegerField()
     score_season = models.IntegerField()
@@ -98,7 +98,6 @@ class School(models.Model):
     school_name = models.CharField(max_length=200)
     school_region = models.IntegerField()
     school_status = models.CharField(max_length=50)
-    school_season_score = models.FloatField()
     school_default_team_name = models.CharField(max_length=200, default='')
 
 

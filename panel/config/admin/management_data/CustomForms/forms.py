@@ -57,7 +57,6 @@ class SchoolForm(CustomForm):
     school_name = forms.CharField(max_length=200)
     school_region = forms.ChoiceField(choices=[])
     school_status = forms.ChoiceField(choices=[])
-    school_season_score = forms.FloatField(initial=0)
     school_default_team_name = forms.CharField(max_length=200)
     account_email = forms.EmailField()
     account_password = forms.CharField(max_length=200)
@@ -107,6 +106,7 @@ class SummaryForm(CustomForm):
     summary_event_override_ranking = forms.IntegerField(initial=0)
     summary_event_race_score = forms.IntegerField(initial=0)
     summary_event_league_score = forms.FloatField(initial=0.0)
+    summary_event_override_league_score = forms.FloatField(initial=0.0)
 
 
 class EventTeamForm(CustomForm):
