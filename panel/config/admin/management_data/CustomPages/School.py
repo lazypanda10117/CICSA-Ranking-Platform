@@ -14,7 +14,7 @@ class SchoolView(AbstractCustomClass):
         self.validation_table = {
             'base_table_invalid': {'_state'},
             'base_form_invalid': {'_state', 'id'},
-            'account_invalid': {'_state', 'id', 'account_type', 'account_password', 'account_salt', 'account_status', 'account_linked_id'}
+            'account_invalid': {'_state', 'id', 'account_type', 'account_salt', 'account_status', 'account_linked_id'}
         }
         super().__init__(request, self.base_class, self.validation_table)
 
@@ -114,20 +114,22 @@ class SchoolView(AbstractCustomClass):
         return [
                    field.name for field in self.base_class._meta.get_fields()
                    if field.name not in self.validation_table['base_table_invalid']
-               ] + ["account_email", "account_password"]
+               ] + ["account_email"]
 
     def getTableRowContent(self, content):
         base_data = MiscFunctions.filterDict(self.useAPI(self.base_class).getSelf(id=content.id).
                                              __dict__.items(), self.validation_table['base_table_invalid'])
         base_data = self.updateChoiceAsValue(base_data, self.getChoiceData())
         base_data = MiscFunctions.grabValueAsList(base_data)
+        invalid_table = self.validation_table['account_invalid']
+        invalid_table.add('account_password')
         try:
             account_data = MiscFunctions.grabValueAsList(
                 MiscFunctions.filterDict(
                     self.useAPI(self.assoc_class_account).getSelf(account_linked_id=content.id).
-                    __dict__.items(), self.validation_table['account_invalid']))
+                    __dict__.items(), invalid_table))
         except Exception:
-            account_data = MiscFunctions.grabValueAsList({'account_email': '', 'account_password': ''})
+            account_data = MiscFunctions.grabValueAsList({'account_email': ''})
 
         field_data = base_data + account_data
         return field_data
