@@ -77,6 +77,7 @@ class Summary(models.Model):
     summary_event_override_ranking = models.IntegerField(default=0)
     summary_event_race_score = models.IntegerField(default=0)
     summary_event_league_score = models.FloatField(default=0)
+    summary_event_override_league_score = models.FloatField(default=0)
 
 
 class Score(models.Model):
