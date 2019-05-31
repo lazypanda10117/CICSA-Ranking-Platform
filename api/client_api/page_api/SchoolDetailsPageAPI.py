@@ -28,8 +28,7 @@ class SchoolDetailsPageAPI(GeneralClientAPI):
                 region=region.region_name,
                 start_date=event.event_start_date,
                 rank=rank,
-                #link=reverse('client.view_dispatch_param', args=["scoring", event.id]),
-                link=link,
+                link=reverse('client.view_dispatch_param', args=["scoring", event.id]),
             ) for event in events]
 
         school_id = kwargs.get("id")
