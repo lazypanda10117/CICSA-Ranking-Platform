@@ -1,0 +1,38 @@
+{% extends 'client/index.html' %}
+
+{% block content %}
+	<div class="container mt-4 mb-4">
+		<h2>Seasons</h2>
+		<ul class="list-group mt-3">
+			{% for league_title, league_list in page_data.items %}
+				<ul class="list-group mt-4">
+					{% if league_list %}
+					<div class="table-responsive">
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									<th scope="col">{{ league_title }}</th>
+								</tr>
+							</thead>
+
+                            {% for league_ranking in league_list %}
+                                <tbody>
+                                    <tr data-href="{{ league_ranking.league_school_link }}">
+                                        <td scope="row">
+                                            {{ league_ranking.league_school_name }}
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    <p>There is no data for this league.</p>
+                                </tbody>
+							{% endfor %}
+						</table>
+					</div>
+					{% endif %}
+				</ul>
+				{% empty %}
+				<p>There is no data for this league.</p>
+			{% endfor %}
+		</ul>
+	</div>
+{% endblock %}

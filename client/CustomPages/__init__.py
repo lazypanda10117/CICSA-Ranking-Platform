@@ -1,1 +1,1 @@
-from .GenericClientPage import GenericCustomPage
+from .GenericClientPage import GenericClientPage
