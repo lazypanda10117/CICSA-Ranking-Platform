@@ -1,6 +1,6 @@
 from django.shortcuts import reverse
 from api.base.GeneralClientAPI import GeneralClientAPI
-from api.model_api import ConfigAPI, RegionAPI, SchoolAPI
+from api.model_api import ConfigAPI, RegionAPI, SchoolAPI, SummaryAPI
 
 class SchoolDetailsPageAPI(GeneralClientAPI):
     def grabPageData(self, **kwargs):
@@ -21,15 +21,18 @@ class SchoolDetailsPageAPI(GeneralClientAPI):
             school = school_api.getSelf(id=school_id)
             region_api = RegionAPI(self.request)
             region = region_api.getSelf(id=school.school_region)
-            rank = "Twice"
-            link = "https://channels.vlive.tv/EDBF/home"
-            return [dict(
-                name=event.event_name,
-                region=region.region_name,
-                start_date=event.event_start_date,
-                rank=rank,
-                link=reverse('client.view_dispatch_param', args=["scoring", event.id]),
-            ) for event in events]
+            summary_api = SummaryAPI(self.request)
+            result = []
+            for event in events:
+                summary = summary_api.getSelf(summary_event_parent=event.id, summary_event_school=school_id)
+                result.append(dict(
+                    name=event.event_name,
+                    region=region.region_name,
+                    start_date=event.event_start_date,
+                    rank=summary.summary_event_ranking, # TODO: need some override thing?
+                    link=reverse('client.view_dispatch_param', args=["scoring", event.id]),
+                ))
+            return result
 
         school_id = kwargs.get("id")
         school_api = SchoolAPI(self.request)
