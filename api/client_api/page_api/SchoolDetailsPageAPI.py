@@ -1,3 +1,4 @@
+from django.shortcuts import reverse
 from api.base.GeneralClientAPI import GeneralClientAPI
 from api.model_api import ConfigAPI, RegionAPI, SchoolAPI
 
@@ -27,9 +28,9 @@ class SchoolDetailsPageAPI(GeneralClientAPI):
                 region=region.region_name,
                 start_date=event.event_start_date,
                 rank=rank,
+                #link=reverse('client.view_dispatch_param', args=["scoring", event.id]),
                 link=link,
-            )
-            for event in events]
+            ) for event in events]
 
         school_id = kwargs.get("id")
         school_api = SchoolAPI(self.request)
