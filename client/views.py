@@ -21,16 +21,6 @@ def processDispatch(request, route, param=''):
 class ClientView():
     def setViewDispatcher(self):
         dispatcher = Dispatcher()
-<<<<<<< HEAD
-        dispatcher.add('scoring', GenericCustomPage)
-        dispatcher.add('rotation', GenericCustomPage)
-        dispatcher.add('regattas', GenericCustomPage)
-        dispatcher.add('schools', GenericCustomPage)
-        dispatcher.add('seasons', GenericCustomPage)
-        dispatcher.add('news', GenericCustomPage)
-        dispatcher.add('specific_news', GenericCustomPage)
-        dispatcher.add('school_details', GenericCustomPage)
-=======
         dispatcher.add('scoring', GenericClientPage)
         dispatcher.add('rotation', GenericClientPage)
         dispatcher.add('regattas', GenericClientPage)
@@ -39,7 +29,6 @@ class ClientView():
         dispatcher.add('news', GenericClientPage)
         dispatcher.add('specific_news', GenericClientPage)
         dispatcher.add('league', GenericClientPage)
->>>>>>> 482e81a7c930a0150f88f417248854e459a565a2
         return dispatcher
 
     def setProcessDispatcher(self):

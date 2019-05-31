@@ -23,12 +23,8 @@ class GenericClientPage():
         dispatcher.add('seasons', dict(page_api=SeasonPageAPI, template_path='client/seasons.html'))
         dispatcher.add('news', dict(page_api=NewsPageAPI, template_path='client/news.html'))
         dispatcher.add('specific_news', dict(page_api=SpecificNewsPageAPI, template_path='client/specific_news.html'))
-<<<<<<< HEAD
-        dispatcher.add('league', dict(page_api=SpecificNewsPageAPI, template_path='client/specific_news.html'))
-        dispatcher.add('school_details', dict(page_api=SchoolDetailsPageAPI, template_path='client/school_details.html'))
-=======
         dispatcher.add('league', dict(page_api=LeaguePageAPI, template_path='client/league.html'))
->>>>>>> 482e81a7c930a0150f88f417248854e459a565a2
+        dispatcher.add('school_details', dict(page_api=SchoolDetailsPageAPI, template_path='client/school_details.html'))
         return dispatcher
 
     def parseMatch(self, pattern):
