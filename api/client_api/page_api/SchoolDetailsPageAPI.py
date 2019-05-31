@@ -24,12 +24,12 @@ class SchoolDetailsPageAPI(GeneralClientAPI):
             summary_api = SummaryAPI(self.request)
             result = []
             for event in events:
-                summary = summary_api.getSelf(summary_event_parent=event.id, summary_event_school=school_id)
+                rank = summary_api.getSummaryRankingBySchool(event.id, school_id)
                 result.append(dict(
                     name=event.event_name,
                     region=region.region_name,
                     start_date=event.event_start_date,
-                    rank=summary.summary_event_ranking, # TODO: need some override thing?
+                    rank=rank,
                     link=reverse('client.view_dispatch_param', args=["scoring", event.id]),
                 ))
             return result
