@@ -7,7 +7,10 @@ from .client_api import SchoolsPageAPI
 from .client_api import ScoringPageAPI
 from .client_api import SeasonPageAPI
 
-# Importing APIs From FunctionAPI
+# Importing APIs From AuthenticationAPI
+from .authentication_api import AuthenticationMetaAPI
+
+# Importing APIs From FunctionalAPI
 from .functional_api import SearchAPI
 
 # Importing APIs From ModelAPI
@@ -20,6 +23,9 @@ from .model_api import EventTypeAPI
 from .model_api import LogAPI
 from .model_api import MemberAPI
 from .model_api import MemberGroupAPI
+from .model_api import NewsBumpAPI
+from .model_api import NewsCommentAPI
+from .model_api import NewsPostAPI
 from .model_api import RegionAPI
 from .model_api import SchoolAPI
 from .model_api import ScoreMappingAPI

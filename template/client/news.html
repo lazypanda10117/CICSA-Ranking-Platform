@@ -1,0 +1,36 @@
+{% extends 'client/index.html' %}
+{% block content %}
+    <!-- Page Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="my-4">All News</h2>
+                {% for news_status, news_list in page_data.items %}
+                    {% if news_list %}
+                        <h4> {{ news_status }} News </h4>
+                        {% for individual_news in news_list %}
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <a href="{{ individual_news.news_post_link }}">
+                                            {{ individual_news.news_post_title }}
+                                        </a>
+                                    </h5>
+                                    <div class="text-muted" style="display: inline;">
+                                        Posted by {{ individual_news.news_post_owner_name }}
+                                        on {{ individual_news.news_post_create_time }}
+                                        <p style="float: right;">Bumps: {{ individual_news.news_post_bumps }}</p>
+                                    </div>
+                                    <p class="card-text mt-3">
+                                        {{ individual_news.news_post_content }}
+                                    </p>
+                                </div>
+
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

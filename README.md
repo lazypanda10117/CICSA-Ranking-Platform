@@ -7,4 +7,4 @@ This is an online regatta scoring/ranking platform for Canadian Intercollegiate 
 
 The ```develop``` branch is automatically deployed to [staging](https://sailing-dino-testing.herokuapp.com/) on Heroku following every commit 
 
-The ```master``` branch is automatically deployed to [production](http://scores.cicsailing.ca) on Heroku following every commit 
+The ```production``` branch is automatically deployed to [production](http://scores.cicsailing.ca) on Heroku following every commit 

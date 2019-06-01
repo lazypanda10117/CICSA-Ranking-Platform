@@ -11,6 +11,6 @@ class EventChoiceProcess(AbstractBaseProcess):
         )
 
     def parseParams(self, param):
-        match = super().parseMatch('\s+')
+        super().parseMatch('\w+')
         param = dict(type=param)
         return param

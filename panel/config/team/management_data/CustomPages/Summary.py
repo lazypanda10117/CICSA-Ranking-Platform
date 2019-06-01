@@ -36,12 +36,13 @@ class SummaryView(AbstractCustomClass):
                 post_dict, 'summary_event_override_ranking')
             summary.summary_event_race_score = RequestFunctions.getSinglePostObj(post_dict, 'summary_race_score')
             summary.summary_event_league_score = RequestFunctions.getSinglePostObj(post_dict, 'summary_league_score')
+            summary.summary_event_override_league_score = RequestFunctions.getSinglePostObj(post_dict, 'summary_event_override_league_score')
 
             if not action == 'delete':
                 summary.save()
 
-            LogFunctions.loghelper(
-                self.request, 'admin', LogFunctions.logQueryMaker(self.base_class, action.title(), id=summary.id))
+            LogFunctions.generateLog(
+                self.request, 'admin', LogFunctions.makeLogQuery(self.base_class, action.title(), id=summary.id))
 
             if action == 'delete':
                 summary.delete()

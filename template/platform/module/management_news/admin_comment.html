@@ -1,0 +1,15 @@
+{% extends 'platform/module/management_news/news_base.html' %}
+{% block 'body' %}
+    <div class="container-fluid">
+        <h2>{{ page.title }}</h2>
+        <hr>
+        <div class="d-inline">
+            <p>
+                <pre>{{ page.header }}</pre>
+            </p>
+        </div>
+        {% for block in page.element_list.blocks %}
+            {% include "platform/module/base/block/displayBlockTable.html" with context=block only %}
+        {% endfor %}
+    </div>
+{% endblock %}

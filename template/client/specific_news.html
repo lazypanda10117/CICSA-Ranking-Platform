@@ -1,0 +1,103 @@
+{% extends 'client/index.html' %}
+
+{% block head %}
+    <script>
+        function bumpPost(pid, direction){
+            $.ajax({
+                type: 'POST',
+                crossOrigin: true,
+                url: "{% url 'client.process_dispatch_param' 'news' 'bump' %}",
+                data: { 'id' : pid, 'bump' : direction },
+                dataType: "json",
+                success: function(result){
+                console.log(result);
+                },
+                error: function(err){
+                console.log(err);
+                }
+            });
+            setTimeout(function(){location.reload();}, 700);
+        }
+    </script>
+{% endblock %}
+
+{% block content %}
+    <!-- Page Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                {% for specific_news in page_data.specific_news %}
+                    <h1 class="mt-4">{{ specific_news.news_post_title }}</h1>
+                    <p class="lead">
+                        by {{ specific_news.news_post_owner_name }}
+                    </p>
+                    <hr>
+                    <div style="display: inline;">
+                        Posted on {{ specific_news.news_post_create_time }}&nbsp; &nbsp; | &nbsp; &nbsp; Bumps: {{ specific_news.news_post_bumps }}
+                        {% if page_data.authenticated == True %}
+                            {% if specific_news.news_post_can_bump == True %}
+                                <button style="float: right; margin-top: -7px;" type="button" class="btn btn-info"
+                                        onclick="bumpPost({{ specific_news.news_id }}, 'up')">
+                                    Bump
+                                </button>
+                            {% endif %}
+                            {% if specific_news.news_post_can_bump == False %}
+                                <button style="float: right; margin-top: -7px;" type="button" class="btn btn-danger"
+                                        onclick="bumpPost({{ specific_news.news_id }}, 'down')">
+                                    Unbump
+                                </button>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                    <hr>
+
+                    <p class="lead">
+                        {{ specific_news.news_post_content }}
+                    </p>
+                    <hr>
+
+                    <!-- if login show this, otherwise no -->
+                    {% if page_data.authenticated == True %}
+                        <div class="card my-4">
+                            <h5 class="card-header">Leave a Comment:</h5>
+                            <div class="card-body">
+                                <form action="{% url 'client.process_dispatch_param' 'news' 'comment' %}" method="post">
+                                    <div class="form-group row">
+                                        <div class="col-lg-10">
+                                            <input type="hidden" name="id" value="{{ specific_news.news_id }}">
+                                            <input
+                                                    type="textarea"
+                                                    class="form-control"
+                                                    name="comment_content"
+                                                    id="comment_content"
+                                                    placeholder="Type your comments here."
+                                            >
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <input type="submit" class="btn btn-outline-success" name="comment_btn" value="Submit">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% for comment in specific_news.comments %}
+                        <div class="media mb-4">
+                            <div class="media-body">
+                                <h5 class="mt-0">
+                                    {{ comment.news_comment_owner_name }}
+                                </h5>
+                                <h6>
+                                    Posted: {{ comment.news_comment_create_time }}
+                                </h6>
+                                {{ comment.news_comment_content }}
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

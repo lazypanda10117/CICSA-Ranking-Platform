@@ -38,10 +38,10 @@ class AuthenticationComponentBase(ABC):
             return []
 
         def addAuthenticate(self):
-            return self.editAuthenticate()
+            return []
 
         def deleteAuthenticate(self):
-            return self.editAuthenticate()
+            return []
 
     class SingleAuthenticate:
         def __init__(self, objects):
@@ -54,10 +54,10 @@ class AuthenticationComponentBase(ABC):
             return self.objects
 
         def addAuthenticate(self):
-            return self.editAuthenticate()
+            return self.objects
 
         def deleteAuthenticate(self):
-            return self.editAuthenticate()
+            return self.objects
 
     def authTypeDispatcher(self, objects):
         if objects is None:

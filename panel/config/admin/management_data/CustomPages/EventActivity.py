@@ -57,8 +57,8 @@ class EventActivityView(AbstractCustomClass):
             event_activity.event_activity_status = RequestFunctions.getSinglePostObj(post_dict, 'event_activity_status')
             event_activity.save()
 
-            LogFunctions.loghelper(
-                self.request, 'admin', LogFunctions.logQueryMaker(
+            LogFunctions.generateLog(
+                self.request, 'admin', LogFunctions.makeLogQuery(
                     self.base_class, action.title(), id=event_activity.id))
 
             teams = event_api.getEventCascadeTeams(event_activity.event_activity_event_parent)
@@ -68,8 +68,8 @@ class EventActivityView(AbstractCustomClass):
                 event_team.event_team_event_activity_id = event_activity.id
                 event_team.event_team_id = team.id
                 event_team.save()
-                LogFunctions.loghelper(
-                    self.request, 'admin', LogFunctions.logQueryMaker(
+                LogFunctions.generateLog(
+                    self.request, 'admin', LogFunctions.makeLogQuery(
                         self.assoc_class_team_link, action.title(), id=event_team.id))
 
             event = event_api.getSelf(id=event_activity.event_activity_event_parent)
@@ -84,8 +84,8 @@ class EventActivityView(AbstractCustomClass):
                 new_rotation = self.__teamRotationUpdater()
             event.event_rotation_detail = new_rotation
             event.save()
-            LogFunctions.loghelper(
-                self.request, 'admin', LogFunctions.logQueryMaker(
+            LogFunctions.generateLog(
+                self.request, 'admin', LogFunctions.makeLogQuery(
                     self.assoc_class_event, action.title(), id=event.id))
 
         def edit(key):
@@ -102,8 +102,8 @@ class EventActivityView(AbstractCustomClass):
             event_activity.event_activity_note = RequestFunctions.getSinglePostObj(post_dict, 'event_activity_note')
             event_activity.event_activity_status = RequestFunctions.getSinglePostObj(post_dict, 'event_activity_status')
             event_activity.save()
-            LogFunctions.loghelper(
-                self.request, 'admin', LogFunctions.logQueryMaker(
+            LogFunctions.generateLog(
+                self.request, 'admin', LogFunctions.makeLogQuery(
                     self.base_class, action.title(), id=event_activity.id))
 
         def delete(key):
@@ -114,12 +114,12 @@ class EventActivityView(AbstractCustomClass):
             ).filterSelf(event_team_event_activity_id=event_activity.id)
 
             for event_team_link in event_team_links:
-                LogFunctions.loghelper(
-                    self.request, 'admin', LogFunctions.logQueryMaker(
+                LogFunctions.generateLog(
+                    self.request, 'admin', LogFunctions.makeLogQuery(
                         self.assoc_class_team_link, action.title(), id=event_team_link.id))
                 event_team_link.delete()
-            LogFunctions.loghelper(
-                self.request, 'admin', LogFunctions.logQueryMaker(
+            LogFunctions.generateLog(
+                self.request, 'admin', LogFunctions.makeLogQuery(
                     self.base_class, action.title(), id=event_activity.id))
             event_activity.delete()
 
@@ -135,8 +135,8 @@ class EventActivityView(AbstractCustomClass):
                 new_rotation = self.__teamRotationUpdater()
             event.event_rotation_detail = new_rotation
             event.save()
-            LogFunctions.loghelper(
-                self.request, 'admin', LogFunctions.logQueryMaker(
+            LogFunctions.generateLog(
+                self.request, 'admin', LogFunctions.makeLogQuery(
                     self.assoc_class_event, action.title(), id=event.id))
 
         try:

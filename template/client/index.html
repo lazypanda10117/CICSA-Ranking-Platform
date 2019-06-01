@@ -11,6 +11,9 @@
 
     <!-- In-hosue customized CSS -->
     <link rel="stylesheet" href="{% static 'css/landing-page.css' %}">
+
+    {% block head %}
+    {% endblock %}
   </head>
 
   <body>
@@ -31,22 +34,22 @@
         <div id="navigation-collapse" class="collapse navbar-collapse">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'client.regattas' %}">Event</a>
+              <a class="nav-link" href="{% url 'client.view_dispatch' 'regattas' %}">Event</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'client.schools' %}">School</a>
+              <a class="nav-link" href="{% url 'client.view_dispatch' 'schools' %}">School</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'client.seasons' %}">Season</a>
+              <a class="nav-link" href="{% url 'client.view_dispatch' 'seasons' %}">Season</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'client.view_dispatch' 'news' %}">News</a>
             </li>
             <li class="nav-item">
               <a class="nav-link disabled" href="#">League Ranking</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link disabled" href="#">News <span class="sr-only">(current)</span></a>
-            </li>
             <li class="nav-item" style="padding-top:6px">
-              <a class="badge badge-info" href="{% url 'panel.index' %}">Sign In</a>
+              <a class="badge badge-info" href="{% url 'panel.index' %}">Panel</a>
             </li>
           </ul>
         </div>
@@ -63,7 +66,7 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-6 h-100 text-center text-lg-left my-auto">
-            <p class="text-muted small mb-4 mb-lg-0">Version 0.1</p>
+            <p class="text-muted small mb-4 mb-lg-0">Version 0.2</p>
           </div>
           <div class="col-lg-6 h-100 text-center text-lg-right my-auto">
             <ul class="list-inline mb-0">

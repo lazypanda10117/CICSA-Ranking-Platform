@@ -1,9 +1,34 @@
 {% extends 'client/index.html' %}
+
+{% block head %}
+    <script type="text/javascript">
+		window.onload = function() {
+			$(document).ready(function() {
+				// from https://stackoverflow.com/a/29129307
+				$(function(){
+					$('.table tr[data-href]').each(function(){
+						$(this).css('cursor','pointer').hover(
+							function(){
+								$(this).addClass('active');
+							},
+							function(){
+								$(this).removeClass('active');
+							}).click( function(){
+								document.location = $(this).attr('data-href');
+							}
+						);
+					});
+				});
+			});
+		};
+	</script>
+{% endblock %}
+
 {% block content %}
 	<div class="container mt-4 mb-4">
 		<h2>Seasons</h2>
 		<ul class="list-group mt-3">
-			{% for season_title, season_list in seasons.items %}
+			{% for season_title, season_list in page_data.items %}
 				<ul class="list-group mt-4">
 					{% if season_list %}
 					<div class="table-responsive">
@@ -34,26 +59,4 @@
 			{% endfor %}
 		</ul>
 	</div>
-
-    <script type="text/javascript">
-		window.onload = function() {
-			$(document).ready(function() {
-				// from https://stackoverflow.com/a/29129307
-				$(function(){
-					$('.table tr[data-href]').each(function(){
-						$(this).css('cursor','pointer').hover(
-							function(){
-								$(this).addClass('active');
-							},
-							function(){
-								$(this).removeClass('active');
-							}).click( function(){
-								document.location = $(this).attr('data-href');
-							}
-						);
-					});
-				});
-			});
-		};
-	</script>
 {% endblock %}

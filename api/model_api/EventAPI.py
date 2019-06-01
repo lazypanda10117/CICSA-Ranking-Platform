@@ -29,7 +29,7 @@ class EventAPI(GeneralModelAPI):
         AuthFunctions.raise404Empty(event)
         event.event_status = event_status
         event.save()
-        LogFunctions.loghelper(self.request, 'admin', LogFunctions.logQueryMaker(Event, 'Edit', id=event.id))
+        LogFunctions.generateLog(self.request, 'admin', LogFunctions.makeLogQuery(Event, 'Edit', id=event.id))
 
     @staticmethod
     def getEventModifyLink(event_type, **kwargs):

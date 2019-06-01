@@ -2,7 +2,7 @@ import hashlib
 from django.shortcuts import redirect, reverse
 from django.http import HttpResponse
 from cicsa_ranking.models import *
-from misc.CustomFunctions import AuthFunctions, LogFunctions, ModelFunctions, RequestFunctions
+from misc.CustomFunctions import LogFunctions, ModelFunctions, RequestFunctions
 
 
 class Login:
@@ -32,8 +32,8 @@ class Login:
                     if account_type in self.acceptable_type:
                         self.request.session['uid'] = u.id
                         self.request.session['utype'] = account_type
-                        LogFunctions.loghelper(self.request, "system",
-                                               LogFunctions.logQueryMaker(Account, 'Login', id=u.id))
+                        LogFunctions.generateLog(self.request, "system",
+                                                 LogFunctions.makeLogQuery(Account, 'Login', id=u.id))
                         return redirect(reverse('panel.index'))
                     else:
                         return HttpResponse('{"Response": "Error: Insufficient Permission"}')
@@ -43,11 +43,12 @@ class Login:
             return HttpResponse('{"Response": "Error: Insufficient Parameters."}')
 
     def logout(self):
-        if AuthFunctions.sessionChecker(self.request, 'uid', 'utype'):
-            LogFunctions.loghelper(self.request, "system",
-                                   LogFunctions.logQueryMaker(Account, 'Logout', id=self.request.session['uid']))
+        if RequestFunctions.sessionChecker(self.request, 'uid', 'utype'):
+            LogFunctions.generateLog(self.request, "system",
+                                     LogFunctions.makeLogQuery(Account, 'Logout', id=self.request.session['uid']))
             self.request.session['uid'] = None
             self.request.session['utype'] = None
         else:
             print('{"Response": "Error: Not Logged In"}')
+        print("Redirecting outward")
         return redirect(reverse('permission.dispatch', args=['view']))

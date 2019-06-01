@@ -1,4 +1,6 @@
 import json
+from django import forms
+
 from cicsa_ranking.models import *
 from misc.CustomFunctions import MiscFunctions, ModelFunctions, UrlFunctions
 
@@ -73,6 +75,25 @@ class Form:
 
     def getFormID(self, form_string):
         return form_string + self.form_path
+
+
+class CustomForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super().__init__()
+        self.data = kwargs.get('data')
+        self.field_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('field_data', self.data))
+        self.choice_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('choice_data', self.data))
+        self.multi_choice_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('multi_choice_data', self.data))
+        for key, value in self.multi_choice_data.items():
+            if key in self.fields:
+                self.fields[key] = forms.MultipleChoiceField(choices=value, widget=forms.CheckboxSelectMultiple)
+        for key, value in self.choice_data.items():
+            if key in self.fields:
+                value = (('', '-- Select an option --'),) + value
+                self.fields[key] = forms.ChoiceField(choices=value)
+        for key, value in self.field_data.items():
+            if key in self.fields:
+                self.fields[key].initial = value
 
 
 class SearchElement:

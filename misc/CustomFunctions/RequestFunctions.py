@@ -10,9 +10,15 @@ def getMultiplePostObj(post_dict, name):
     return MiscFunctions.noneCatcher(name, post_dict)
 
 
-@csrf_exempt
 def sessionChecker(request, *args):
     for arg in args:
         if not (arg in request.session) or request.session[arg] is None:
             return False
     return True
+
+
+def sessionGetter(request, key):
+    if key in request.session:
+        return request.session.get(key)
+    else:
+        return None

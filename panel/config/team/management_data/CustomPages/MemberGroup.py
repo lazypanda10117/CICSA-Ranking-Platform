@@ -44,8 +44,8 @@ class MemberGroupView(AbstractCustomClass):
 
             member_group.save()
 
-            LogFunctions.loghelper(
-                self.request, 'admin', LogFunctions.logQueryMaker(
+            LogFunctions.generateLog(
+                self.request, 'admin', LogFunctions.makeLogQuery(
                     self.base_class, action.title(), id=member_group.id))
 
             if action == 'delete':

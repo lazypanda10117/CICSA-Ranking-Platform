@@ -51,13 +51,12 @@ class SchoolView(AbstractCustomClass):
             school.school_name = RequestFunctions.getSinglePostObj(post_dict, 'school_name')
             school.school_region = RequestFunctions.getSinglePostObj(post_dict, 'school_region')
             school.school_status = RequestFunctions.getSinglePostObj(post_dict, 'school_status')
-            school.school_season_score = RequestFunctions.getSinglePostObj(post_dict, 'school_season_score')
             school.school_default_team_name = RequestFunctions.getSinglePostObj(post_dict, 'school_default_team_name')
             if not action == 'delete':
                 school.save()
 
-            LogFunctions.loghelper(
-                self.request, 'admin', LogFunctions.logQueryMaker(
+            LogFunctions.generateLog(
+                self.request, 'admin', LogFunctions.makeLogQuery(
                     self.base_class, action.title(), id=school.id))
             school_account.account_email = RequestFunctions.getSinglePostObj(post_dict, 'account_email')
             school_account.account_status = RequestFunctions.getSinglePostObj(post_dict, 'school_status')
@@ -65,8 +64,8 @@ class SchoolView(AbstractCustomClass):
             if not action == 'delete':
                 school_account.save()
 
-            LogFunctions.loghelper(
-                self.request, 'admin', LogFunctions.logQueryMaker(
+            LogFunctions.generateLog(
+                self.request, 'admin', LogFunctions.makeLogQuery(
                     Account, action.title(), id=school_account.id))
 
             if action == 'delete':

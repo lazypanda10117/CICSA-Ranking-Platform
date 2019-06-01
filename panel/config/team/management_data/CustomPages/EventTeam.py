@@ -41,8 +41,8 @@ class EventTeamView(AbstractCustomClass):
             if not action == 'delete':
                 event_team.save()
 
-            LogFunctions.loghelper(
-                self.request, 'admin', LogFunctions.logQueryMaker(
+            LogFunctions.generateLog(
+                self.request, 'admin', LogFunctions.makeLogQuery(
                     self.base_class, action.title(), id=event_team.id))
 
             if action == 'delete':

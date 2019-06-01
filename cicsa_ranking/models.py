@@ -3,10 +3,20 @@ from django.db import models
 
 
 class Event(models.Model):
+    EVENT_CLASS_RANK_A = 0
+    EVENT_CLASS_RANK_B = 1
+
+    EVENT_NAME_FINAL_RACE = ["Fleet Race National"]
+
+    EVENT_STATUS_PENDING = "pending"
+    EVENT_STATUS_RUNNING = "running"
+    EVENT_STATUS_DONE = "done"
+
     event_name = models.CharField(max_length=200)
     event_description = models.CharField(max_length=1500)
     event_status = models.CharField(max_length=50)  # pending, running, done
     event_type = models.IntegerField()
+    event_class = models.IntegerField(default=EVENT_CLASS_RANK_A)
     event_host = models.IntegerField()
     event_location = models.CharField(max_length=1000)
     event_season = models.IntegerField()
@@ -67,10 +77,12 @@ class Summary(models.Model):
     summary_event_override_ranking = models.IntegerField(default=0)
     summary_event_race_score = models.IntegerField(default=0)
     summary_event_league_score = models.FloatField(default=0)
+    summary_event_override_league_score = models.FloatField(default=0)
 
 
 class Score(models.Model):
-    score_value = models.IntegerField()
+    score_value = models.IntegerField(default=0)
+    score_override_value = models.IntegerField(default=0)
     score_school = models.IntegerField()
     score_season = models.IntegerField()
 
@@ -86,7 +98,6 @@ class School(models.Model):
     school_name = models.CharField(max_length=200)
     school_region = models.IntegerField()
     school_status = models.CharField(max_length=50)
-    school_season_score = models.FloatField()
     school_default_team_name = models.CharField(max_length=200, default='')
 
 
@@ -111,6 +122,8 @@ class Member(models.Model):
 
 
 class Account(models.Model):
+    ACCOUNT_ADMIN = "admin"
+    ACCOUNT_SCHOOL = "school"
     account_type = models.CharField(max_length=50)  # school, admin
     account_email = models.EmailField()
     account_salt = models.CharField(max_length=200)
@@ -120,23 +133,28 @@ class Account(models.Model):
 
 
 class NewsPost(models.Model):
-    post_title = models.CharField(max_length=200)
-    post_content = models.CharField(max_length=3000)
-    post_claps = models.IntegerField()
-    post_owner = models.IntegerField()
-    post_create_time = models.DateTimeField('Post Date')
+    NEWS_POST_PINNED = 0
+    NEWS_POST_ACTIVE = 1
+    NEWS_POST_ARCHIVED = 2
+    news_post_title = models.CharField(max_length=200)
+    news_post_content = models.CharField(max_length=3000, blank=True)
+    news_post_bumps = models.IntegerField(default=0)
+    news_post_owner = models.IntegerField()
+    news_post_status = models.IntegerField()  # status from above
+    news_post_create_time = models.DateTimeField('Post Date', auto_now_add=True, blank=True)
 
 
 class NewsComment(models.Model):
-    comment_owner = models.IntegerField()
-    post_id = models.IntegerField()
-    comment_content = models.CharField(max_length=1000)
-    comment_create_time = models.DateTimeField('Comment Date')
+    news_comment_owner = models.IntegerField()
+    news_comment_post_id = models.IntegerField()
+    news_comment_content = models.CharField(max_length=1000, blank=True)
+    news_comment_create_time = models.DateTimeField('Comment Date', auto_now_add=True, blank=True)
 
 
-class NewsClap(models.Model):
-    clapper_id = models.IntegerField()
-    post_id = models.IntegerField()
+class NewsBump(models.Model):
+    news_bump_bumpper_id = models.IntegerField()
+    news_bump_post_id = models.IntegerField()
+    news_bump_create_time = models.DateTimeField('Bump Date', auto_now_add=True, blank=True)
 
 
 class Config(models.Model):

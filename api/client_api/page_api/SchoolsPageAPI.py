@@ -1,6 +1,6 @@
 from django.shortcuts import reverse
-from ..base.GeneralClientAPI import GeneralClientAPI
-from ..model_api import EventAPI, EventTypeAPI, RegionAPI, SchoolAPI
+from api.base.GeneralClientAPI import GeneralClientAPI
+from api.model_api import EventAPI, EventTypeAPI, RegionAPI, SchoolAPI
 
 
 class SchoolsPageAPI(GeneralClientAPI):
@@ -11,8 +11,7 @@ class SchoolsPageAPI(GeneralClientAPI):
                 school_name=school.school_name,
                 school_team_name=school.school_default_team_name,
                 school_status=school.school_status,
-                school_season_score=school.school_season_score,
-                school_link='#'
+                school_link=reverse('client.view_dispatch_param', args=["school_details", school.id])
             ), list(schools)))
             return school_dict
 

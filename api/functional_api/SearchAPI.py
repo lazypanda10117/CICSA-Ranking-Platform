@@ -2,10 +2,10 @@ import json
 from django.apps import apps
 from django.http import HttpResponse
 from misc.CustomFunctions import ModelFunctions
-from ..base.AbstractAPI import AbstractAPI
+from api.base import AbstractCoreAPI
 
 
-class SearchAPI(AbstractAPI):
+class SearchAPI(AbstractCoreAPI):
     @staticmethod
     def search(model_name, key, term):
         # add a list of viewable models or just refactor to use api later

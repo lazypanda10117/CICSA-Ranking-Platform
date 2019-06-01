@@ -10,13 +10,7 @@ class ImmutableBase(ABC):
         self.dispatcher = self.setViewDispatcher()
         self.request = request
         self.base_class = base_class
-        self.api_table = self.setAPIDispatcher()
         self.validation_table = validation_table
-
-    @staticmethod
-    def setAPIDispatcher():
-        dispatcher = APIFunctions.getModelAPIDispatcher()
-        return dispatcher
 
     @staticmethod
     def setViewDispatcher():
@@ -194,4 +188,4 @@ class ImmutableBase(ABC):
 
 # Useful Functions
     def useAPI(self, model):
-        return self.api_table.get(MiscFunctions.getModelName(model))(self.request)
+        return APIFunctions.applyModelAPI(model, self.request)
