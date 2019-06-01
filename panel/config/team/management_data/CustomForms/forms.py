@@ -1,7 +1,8 @@
 from django import forms
 from django.utils import timezone
-from cicsa_ranking.models import Season, Region, EventType, ScoreMapping, Log
-from misc.CustomFunctions import MiscFunctions
+
+from cicsa_ranking.models import Season, Region, EventType, Score, ScoreMapping, Log
+from panel.component.CustomElements import CustomForm
 
 
 class SeasonForm(forms.ModelForm):
@@ -28,24 +29,23 @@ class ScoreMappingForm(forms.ModelForm):
         fields = '__all__'
 
 
+class ScoreForm(forms.ModelForm):
+    class Meta:
+        model = Score
+        fields = '__all__'
+
+
 class LogForm(forms.ModelForm):
     class Meta:
         model = Log
         fields = '__all__'
 
 
-class AccountForm(forms.Form):
-    def __init__(self, *args, **kwargs):
-        super().__init__()
-        self.data = kwargs.pop('data', None)
-        self.field_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('field_data', self.data))
-        self.choice_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('choice_data', self.data))
-        for key, value in self.choice_data.items():
-            value = (('', '-- Select an option --'),) + value
-            self.fields[key] = forms.ChoiceField(choices=value)
-        for key, value in self.field_data.items():
-            self.fields[key].initial = value
+class ConfigForm(CustomForm):
+    config_current_season = forms.ChoiceField(choices=[])
 
+
+class AccountForm(CustomForm):
     account_type = forms.ChoiceField(choices=[])
     account_email = forms.EmailField()
     account_password = forms.CharField(max_length=200)
@@ -53,94 +53,34 @@ class AccountForm(forms.Form):
     account_linked_id = forms.IntegerField(initial=-1)
 
 
-class SchoolForm(forms.Form):
-    def __init__(self, *args, **kwargs):
-        super().__init__()
-        self.data = kwargs.pop('data', None)
-        self.field_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('field_data', self.data))
-        self.choice_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('choice_data', self.data))
-        for key, value in self.choice_data.items():
-            value = (('', '-- Select an option --'),) + value
-            print(value)
-            self.fields[key] = forms.ChoiceField(choices=value)
-        for key, value in self.field_data.items():
-            self.fields[key].initial = value
-
+class SchoolForm(CustomForm):
     school_name = forms.CharField(max_length=200)
     school_region = forms.ChoiceField(choices=[])
     school_status = forms.ChoiceField(choices=[])
-    school_season_score = forms.FloatField(initial=0)
     school_default_team_name = forms.CharField(max_length=200)
     account_email = forms.EmailField()
     account_password = forms.CharField(max_length=200)
 
 
-class TeamForm(forms.Form):
-    def __init__(self, *args, **kwargs):
-        super().__init__()
-        self.data = kwargs.pop('data', None)
-        self.field_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('field_data', self.data))
-        self.choice_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('choice_data', self.data))
-        for key, value in self.choice_data.items():
-            value = (('', '-- Select an option --'),) + value
-            self.fields[key] = forms.ChoiceField(choices=value)
-        for key, value in self.field_data.items():
-            self.fields[key].initial = value
-
+class TeamForm(CustomForm):
     team_name = forms.CharField(max_length=200)
     team_school = forms.ChoiceField(choices=[])
     team_status = forms.ChoiceField(choices=[])
 
 
-class MemberForm(forms.Form):
-    def __init__(self, *args, **kwargs):
-        super().__init__()
-        self.data = kwargs.pop('data', None)
-        self.field_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('field_data', self.data))
-        self.choice_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('choice_data', self.data))
-        for key, value in self.choice_data.items():
-            value = (('', '-- Select an option --'),) + value
-            self.fields[key] = forms.ChoiceField(choices=value)
-        for key, value in self.field_data.items():
-            self.fields[key].initial = value
-
+class MemberForm(CustomForm):
     member_name = forms.CharField(max_length=200)
     member_school = forms.ChoiceField(choices=[])
     member_email = forms.EmailField(required=False)
     member_status = forms.ChoiceField(choices=[])
 
 
-class MemberGroupForm(forms.Form):
-    def __init__(self, *args, **kwargs):
-        super().__init__()
-        self.data = kwargs.pop('data', None)
-        self.field_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('field_data', self.data))
-        self.choice_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('choice_data', self.data))
-        for key, value in self.choice_data.items():
-            value = (('', '-- Select an option --'),) + value
-            self.fields[key] = forms.ChoiceField(choices=value)
-        for key, value in self.field_data.items():
-            self.fields[key].initial = value
-
+class MemberGroupForm(CustomForm):
     member_group_name = forms.CharField(max_length=200)
     member_group_school = forms.ChoiceField(choices=[])
 
 
-class EventManagementForm(forms.Form):
-    def __init__(self, *args, **kwargs):
-        super().__init__()
-        self.data = kwargs.pop('data', None)
-        self.field_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('field_data', self.data))
-        self.choice_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('choice_data', self.data))
-        self.multi_choice_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('multi_choice_data', self.data))
-        for key, value in self.multi_choice_data.items():
-            self.fields[key] = forms.MultipleChoiceField(choices=value, widget=forms.CheckboxSelectMultiple)
-        for key, value in self.choice_data.items():
-            value = (('', '-- Select an option --'),) + value
-            self.fields[key] = forms.ChoiceField(choices=value)
-        for key, value in self.field_data.items():
-            self.fields[key].initial = value
-
+class EventManagementForm(CustomForm):
     event_type = forms.ChoiceField(choices=[])
     event_name = forms.CharField(max_length=200)
     event_status = forms.ChoiceField(choices=[])
@@ -160,68 +100,25 @@ class EventForm(EventManagementForm):
     event_rotation_detail = forms.CharField(max_length=5000, widget=forms.Textarea)
 
 
-class SummaryForm(forms.Form):
-    def __init__(self, *args, **kwargs):
-        super().__init__()
-        self.data = kwargs.pop('data', None)
-        self.field_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('field_data', self.data))
-        self.choice_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('choice_data', self.data))
-        for key, value in self.choice_data.items():
-            value = (('', '-- Select an option --'),) + value
-            self.fields[key] = forms.ChoiceField(choices=value)
-        for key, value in self.field_data.items():
-            self.fields[key].initial = value
-
+class SummaryForm(CustomForm):
     summary_event_school = forms.ChoiceField(choices=[])
     summary_event_ranking = forms.IntegerField(initial=0)
     summary_event_override_ranking = forms.IntegerField(initial=0)
-    summary_race_score = forms.IntegerField(initial=0)
-    summary_league_score = forms.FloatField(initial=0.0)
+    summary_event_race_score = forms.IntegerField(initial=0)
+    summary_event_league_score = forms.FloatField(initial=0.0)
+    summary_event_override_league_score = forms.FloatField(initial=0.0)
 
 
-class EventTeamForm(forms.Form):
-    def __init__(self, *args, **kwargs):
-        super().__init__()
-        self.data = kwargs.pop('data', None)
-        self.field_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('field_data', self.data))
-        self.choice_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('choice_data', self.data))
-        for key, value in self.choice_data.items():
-            value = (('', '-- Select an option --'),) + value
-            self.fields[key] = forms.ChoiceField(choices=value)
-        for key, value in self.field_data.items():
-            self.fields[key].initial = value
-
+class EventTeamForm(CustomForm):
     event_team_id = forms.IntegerField()
     event_team_event_activity_id = forms.IntegerField()
 
 
-class EventTagForm(forms.Form):
-    def __init__(self, *args, **kwargs):
-        super().__init__()
-        self.data = kwargs.pop('data', None)
-        self.field_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('field_data', self.data))
-        self.choice_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('choice_data', self.data))
-        for key, value in self.choice_data.items():
-            value = (('', '-- Select an option --'),) + value
-            self.fields[key] = forms.ChoiceField(choices=value)
-        for key, value in self.field_data.items():
-            self.fields[key].initial = value
-
+class EventTagForm(CustomForm):
     event_tag_name = forms.CharField(max_length=200)
 
 
-class EventActivityForm(forms.Form):
-    def __init__(self, *args, **kwargs):
-        super().__init__()
-        self.data = kwargs.pop('data', None)
-        self.field_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('field_data', self.data))
-        self.choice_data = (lambda x: x if x else {})(MiscFunctions.noneCatcher('choice_data', self.data))
-        for key, value in self.choice_data.items():
-            value = (('', '-- Select an option --'),) + value
-            self.fields[key] = forms.ChoiceField(choices=value)
-        for key, value in self.field_data.items():
-            self.fields[key].initial = value
-
+class EventActivityForm(CustomForm):
     event_activity_name = forms.CharField(max_length=100)
     event_activity_order = forms.IntegerField(initial=1)
     event_activity_result = forms.CharField(max_length=1500, widget=forms.Textarea, required=False)  # json

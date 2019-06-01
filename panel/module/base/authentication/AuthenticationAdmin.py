@@ -1,4 +1,5 @@
 from misc.CustomElements import Dispatcher
+from cicsa_ranking.models import *
 from panel.config.admin.management_data.CustomPages import *
 from panel.config.admin.management_data.CustomForms import *
 from panel.module.ModuleRegistry import ModuleRegistry
@@ -31,7 +32,9 @@ class AuthenticationAdmin:
             dispatcher.add('region', {'class': Region, 'form': RegionForm})
             dispatcher.add('event type', {'class': EventType, 'form': EventTypeForm})
             dispatcher.add('score mapping', {'class': ScoreMapping, 'form': ScoreMappingForm})
+            dispatcher.add('score', {'class': Score, 'form': ScoreForm})
             dispatcher.add('log', {'class': Log, 'form': LogForm})
+            dispatcher.add('config', {'class': Config, 'form': ConfigForm})
             return dispatcher
 
         @staticmethod

@@ -12,7 +12,7 @@ class UpdateEventStatusProcess(AbstractBaseProcess):
         return redirect(reverse('panel.module.management_ranking.view_dispatch', args=['event']))
 
     def parseParams(self, param):
-        super().parseMatch('\d+,\s+')
+        super().parseMatch('\d+,\w+')
         params = param.split(',')
         param = dict(
             id=params[0],

@@ -4,10 +4,9 @@ from django.http import Http404
 
 from misc.CustomElements import Dispatcher
 from api.client_api.page_api import *
-from api.client_api.process_api import *
 
 
-class GenericCustomPage():
+class GenericClientPage():
     def __init__(self, request, path, param):
         self.request = request
         self.path = path
@@ -24,6 +23,8 @@ class GenericCustomPage():
         dispatcher.add('seasons', dict(page_api=SeasonPageAPI, template_path='client/seasons.html'))
         dispatcher.add('news', dict(page_api=NewsPageAPI, template_path='client/news.html'))
         dispatcher.add('specific_news', dict(page_api=SpecificNewsPageAPI, template_path='client/specific_news.html'))
+        dispatcher.add('league', dict(page_api=LeaguePageAPI, template_path='client/league.html'))
+        dispatcher.add('school_details', dict(page_api=SchoolDetailsPageAPI, template_path='client/school_details.html'))
         return dispatcher
 
     def parseMatch(self, pattern):
