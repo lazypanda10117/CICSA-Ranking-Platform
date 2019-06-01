@@ -6,18 +6,20 @@ from api.model_api import SchoolAPI, EventAPI, SummaryAPI, ConfigAPI
 
 
 class LeagueScoringAPI(AbstractCoreAPI):
-    LEAGUE_SCORE_AVERAGE_COUNT = 3
+    def __init__(self, request, season=None):
+        super().__init__(request)
+        self.current_configuration = ConfigAPI(self.request).getAll()[0]
+        self.current_season = self.current_configuration.config_current_season
+        self.season = self.current_season if season is None else season
 
     # TODO: Not supporting getting history league scores yet
     def getCurrentLeagueScoreBySchool(self, school_id):
-        current_configuration = ConfigAPI(self.request).getAll()[0]
-        current_season = current_configuration.config_current_season
         school = SchoolAPI(self.request).getSelf(id=school_id)
-        events = SchoolAPI(self.request).getParticipatedNormalEvents(school_id, Event.EVENT_STATUS_DONE, current_season)
+        events = SchoolAPI(self.request).getParticipatedNormalEvents(school_id, Event.EVENT_STATUS_DONE, self.season)
         # TODO: Optimize the current n x m queries ;_;
         scores = sorted([self.getScoreForEventBySchool(event, school) for event in events], reverse=True)
         average_score = self.getAverageScore(scores, school.school_region)
-        final_race_score = self.getFinalRaceScore(school, current_season)
+        final_race_score = self.getFinalRaceScore(school, self.season)
         total_score = average_score + final_race_score
         return total_score
 
@@ -57,3 +59,21 @@ class LeagueScoringAPI(AbstractCoreAPI):
             return self.getScoreForEvent(final_ranking, final_event.event_team_number, final_event.event_class)
         else:
             return 0
+
+    # All the functions below corresponds to a specific season (defined by self.season above)
+    def setNormalOverrideSummaryScores(self, school, score_dict):
+        pass
+
+    def setNormalOverrideLeagueScore(self, school, score_tuple):
+        pass
+
+    # Returns either the normal or the overrride score of the summary for the event
+    def getCompiledScoreForEvent(self, event, school):
+        pass
+
+    # Returns either the normal or the overrride score of the score for the school
+    def getFinalLeagueScore(self, school):
+        pass
+
+    def getFinalLeagueScores(self):
+        pass
