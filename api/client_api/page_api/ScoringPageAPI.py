@@ -35,7 +35,7 @@ class ScoringPageAPI(GeneralClientAPI):
             ),
             host=(
                 SchoolAPI(self.request).getSelf(id=event.event_host).school_name,
-                UrlFunctions.getClientViewLink('school', event.event_host)
+                UrlFunctions.getClientViewLink('school_details', event.event_host)
             ),
             location=event.event_location,
             status=status_map[event.event_status],
