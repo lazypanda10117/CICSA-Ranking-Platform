@@ -28,6 +28,7 @@ class ClientView():
         dispatcher.add('seasons', GenericClientPage)
         dispatcher.add('news', GenericClientPage)
         dispatcher.add('specific_news', GenericClientPage)
+        dispatcher.add('school_details', GenericClientPage)
         dispatcher.add('league', GenericClientPage)
         return dispatcher
 

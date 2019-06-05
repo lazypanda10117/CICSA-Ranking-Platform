@@ -13,6 +13,7 @@ from .NewsCommentAPI import NewsCommentAPI
 from .NewsPostAPI import NewsPostAPI
 from .RegionAPI import RegionAPI
 from .SchoolAPI import SchoolAPI
+from .ScoreAPI import ScoreAPI
 from .ScoreMappingAPI import ScoreMappingAPI
 from .SeasonAPI import SeasonAPI
 from .SummaryAPI import SummaryAPI
