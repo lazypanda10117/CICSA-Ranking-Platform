@@ -20,6 +20,6 @@ def generateGETURL(path, argList):
     return path + '?' + ''.join([arg[0] + '=' + arg[1] + '&' for arg in argList.items()])[:-1]
 
 
-def getClientViewLink(path, identifier):
+def getClientViewLink(path, identifier = None):
     # TODO: return reverse(path, identifier);
-    return '#'
+    return reverse('client.view_dispatch', args=[path]) if identifier is None else reverse('client.view_dispatch_param', args=[path, identifier])
