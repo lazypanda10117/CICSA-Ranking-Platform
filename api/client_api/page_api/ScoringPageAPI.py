@@ -29,10 +29,14 @@ class ScoringPageAPI(GeneralClientAPI):
                 SeasonAPI(self.request).getSelf(id=event.event_season).season_name,
                 UrlFunctions.getClientViewLink('seasons')
             ),
-            region=(
-                RegionAPI(self.request).getSelf(id=event.event_region).region_name,
-                UrlFunctions.getClientViewLink('schools')
-            ),
+            region=(lambda region_name: (region_name, "{}#{}".format(
+                        UrlFunctions.getClientViewLink('schools'), 
+                        region_name
+                    )))(
+                        RegionAPI(self.request).getSelf(
+                            id=event.event_region
+                        ).region_name,
+                    ),
             host=(
                 SchoolAPI(self.request).getSelf(id=event.event_host).school_name,
                 UrlFunctions.getClientViewLink('school_details', event.event_host)
