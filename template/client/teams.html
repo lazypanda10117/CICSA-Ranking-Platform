@@ -5,43 +5,45 @@
 		<ul class="list-group mt-3">
 			{% for region, school_list in page_data.items %}
 				<ul class="list-group mt-4">
-					<h5> {{ region }} </h5>
-					{% if school_list %}
-					<div class="table-responsive">
-						<table class="table table-hover">
-							<thead>
-								<tr>
-									<th scope="col">School Name</th>
-									<th scope="col">Team Name</th>
-									<th scope="col">Status</th>
-									<th scope="col">School Season Score</th>
-									<th scope="col">Details</th>
-								</tr>
-							</thead>
-							{% for school in school_list %}
-								<tbody>
-									<td scope="row">
-										{{ school.school_name }}
-									</td>
-									<td>
-										{{ school.school_team_name }}
-									</td>
-									<td>
-										{{ school.school_status }}
-									</td>
-									<td>
-										{{ school.school_season_score }}
-									</td>
-									<td>
-										<a class="btn btn-outline-info" href="{{ school.school_link }}" role="button" aria-disabled="true">Details</a>
-									</td>
-									{% empty %}
-									<p>There is no school for this region.</p>
-								</tbody>
-							{% endfor %}
-						</table>
+					<div id="{{ region }}">
+						<h5> {{ region }} </h5>
+						{% if school_list %}
+						<div class="table-responsive">
+							<table class="table table-hover">
+								<thead>
+									<tr>
+										<th scope="col">School Name</th>
+										<th scope="col">Team Name</th>
+										<th scope="col">Status</th>
+										<th scope="col">School Season Score</th>
+										<th scope="col">Details</th>
+									</tr>
+								</thead>
+								{% for school in school_list %}
+									<tbody>
+										<td scope="row">
+											{{ school.school_name }}
+										</td>
+										<td>
+											{{ school.school_team_name }}
+										</td>
+										<td>
+											{{ school.school_status }}
+										</td>
+										<td>
+											{{ school.school_season_score }}
+										</td>
+										<td>
+											<a class="btn btn-outline-info" href="{{ school.school_link }}" role="button" aria-disabled="true">Details</a>
+										</td>
+										{% empty %}
+										<p>There is no school for this region.</p>
+									</tbody>
+								{% endfor %}
+							</table>
+						</div>
+						{% endif %}
 					</div>
-					{% endif %}
 				</ul>
 				{% empty %}
 				<p>There is no data for school.</p>
