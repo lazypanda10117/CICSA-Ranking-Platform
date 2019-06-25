@@ -2,6 +2,21 @@ from django.contrib.postgres.fields import JSONField, ArrayField
 from django.db import models
 
 
+# We can toggle the object to be archived or not
+class ArchivableModel(models.Model):
+    archived = models.BooleanField(default=False)
+
+    class Meta:
+        abstract = True
+
+# We can have the same object but tied to a different season
+class HasHistoryModel(models.Model):
+    season = models.ForeignKey("Season", on_delete=models.CASCADE)
+
+    class Meta:
+        abstract = True
+
+
 class Event(models.Model):
     EVENT_CLASS_RANK_A = 0
     EVENT_CLASS_RANK_B = 1
