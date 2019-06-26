@@ -1,7 +1,7 @@
 from django.views.decorators.csrf import csrf_exempt
 from misc.CustomElements import Dispatcher
 from ..base.block.Base import AbstractBlockApp
-from .CustomPages import EventPage, EventActivityPage, EventActivityDetailPage, EventChoicePage
+from .CustomPages import LeagueRankingPage, EventActivityPage, EventActivityDetailPage, EventChoicePage
 from .CustomProcesses import EventChoiceProcess
 from panel.module.ModuleRegistry import ModuleRegistry
 
@@ -36,7 +36,7 @@ class ManagementEventView(AbstractBlockApp.AppView):
     def setViewDispatcher(self):
         dispatcher = Dispatcher()
         dispatcher.add('choice', EventChoicePage)
-        dispatcher.add('event', EventPage)
+        dispatcher.add('event', LeagueRankingPage)
         dispatcher.add('activity', EventActivityPage)
         dispatcher.add('activity detail', EventActivityDetailPage)
         return dispatcher
