@@ -1,5 +1,6 @@
 from misc.CustomElements import Dispatcher
 from ..authentication import AuthenticationAdmin, AuthenticationTeam, AuthenticationPublic
+from .AuthenticationConstants import AuthenticationType
 
 
 class AuthenticationFactory:
@@ -9,9 +10,9 @@ class AuthenticationFactory:
     @staticmethod
     def getDispatcher():
         dispatcher = Dispatcher()
-        dispatcher.add('admin', AuthenticationAdmin)
-        dispatcher.add('team', AuthenticationTeam)
-        dispatcher.add('public', AuthenticationPublic)
+        dispatcher.add(AuthenticationType.ADMIN, AuthenticationAdmin)
+        dispatcher.add(AuthenticationType.TEAM, AuthenticationTeam)
+        dispatcher.add(AuthenticationType.PUBLIC, AuthenticationPublic)
         dispatcher.add(None, AuthenticationPublic)
         return dispatcher
 
