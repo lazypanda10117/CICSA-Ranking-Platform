@@ -7,22 +7,16 @@ from panel.module.ModuleRegistry import ModuleRegistry
 
 
 def index(request):
-    return ManagementRankingView().authenticateModule(
-        request,
-        ManagementRankingView().home())
+    return ManagementRankingView().home(request)
 
 
 def viewDispatch(request, route, param=''):
-    return ManagementRankingView().authenticateModule(
-        request,
-        ManagementRankingView().viewDispatch(request, route, param))
+    return ManagementRankingView().viewDispatch(request, route, param)
 
 
 @csrf_exempt
 def processDispatch(request, route, param=''):
-    return ManagementRankingView().authenticateModule(
-        request,
-        ManagementRankingView().processDispatch(request, route, param))
+    return ManagementRankingView().processDispatch(request, route, param)
 
 
 class ManagementRankingView(AbstractBlockApp.AppView):
@@ -30,8 +24,8 @@ class ManagementRankingView(AbstractBlockApp.AppView):
     def getBaseAppName(self):
         return ModuleRegistry.MANAGEMENT_RANKING
 
-    def home(self):
-        return super().index('panel.module.management_ranking.view_dispatch', ['event'])
+    def home(self, request):
+        return super().index(request, 'panel.module.management_ranking.view_dispatch', ['event'])
 
     def setViewDispatcher(self):
         dispatcher = Dispatcher()

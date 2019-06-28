@@ -1,6 +1,6 @@
 from django.shortcuts import reverse, redirect
 from abc import abstractmethod, ABC
-from ....module_permission import ModulePermission
+from panel.module_permission import ModulePermission
 
 
 class AbstractBlockApp(ABC):
@@ -31,7 +31,8 @@ class AbstractBlockApp(ABC):
             return page.render()
 
         def processDispatch(self, request, dispatch_path, param=''):
-            self.__authenticateModule(request=request, failure=Exception("Insufficient Permission to Access Module Process"))
+            self.__authenticateModule(request=request,
+                                      failure=Exception("Insufficient Permission to Access Module Process"))
             dispatcher = self.setProcessDispatcher()
             page = dispatcher.get(dispatch_path)(request, param)
             return page.process()

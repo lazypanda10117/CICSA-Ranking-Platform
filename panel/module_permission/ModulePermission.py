@@ -4,6 +4,7 @@ from api.authentication_api import AuthenticationMetaAPI
 from api.authentication import AuthenticationGuardType
 from api.authentication import AuthenticationGuard
 
+
 class ModulePermission:
     def __init__(self, request):
         self.module_request = request
@@ -17,7 +18,7 @@ class ModulePermission:
         return module in self.alowed_modules
 
     def verifyRequest(self, module, callback, failure):
-        AuthenticationGuard(AuthenticationGuardType.LOGIN_GUARD, request).guard()
+        AuthenticationGuard(AuthenticationGuardType.LOGIN_GUARD, self.module_request).guard()
         if self.__checkModulePermission(module):
             return callback
         else:

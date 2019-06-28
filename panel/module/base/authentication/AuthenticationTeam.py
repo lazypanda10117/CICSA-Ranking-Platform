@@ -2,7 +2,7 @@ from misc.CustomElements import Dispatcher
 from panel.config.team.management_data.CustomPages import *
 from panel.config.team.management_data.CustomForms import *
 from panel.module.ModuleRegistry import ModuleRegistry
-from api.authentication.AuthenticationType import AuthenticationType
+from api.authentication import AuthenticationType
 
 
 class AuthenticationTeam:
