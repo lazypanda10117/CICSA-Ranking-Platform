@@ -35,6 +35,7 @@ class LeagueScoringAPI(AbstractCoreAPI):
         num_school_in_region = SchoolAPI(self.request).filterSelf(school_region=region).count()
         num_race = len(scores)
 
+        # Specific region has different race num average
         if num_school_in_region in [1, 2]:
             base_average_race_num = 1
         elif num_school_in_region >= 3:

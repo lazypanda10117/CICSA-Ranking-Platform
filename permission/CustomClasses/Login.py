@@ -1,6 +1,8 @@
 import hashlib
 from django.shortcuts import redirect, reverse
 from django.http import HttpResponse
+
+from api.model_api import ConfigAPI
 from cicsa_ranking.models import *
 from misc.CustomFunctions import LogFunctions, ModelFunctions, RequestFunctions
 
@@ -30,8 +32,12 @@ class Login:
                 if u_pwd == verify_pwd:
                     account_type = self.account_type_mapper(u.account_type)
                     if account_type in self.acceptable_type:
+                        current_configuration = ConfigAPI(self.request).getAll()[0]
                         self.request.session['uid'] = u.id
                         self.request.session['utype'] = account_type
+                        self.request.session['panel_config'] = dict(
+                            season=current_configuration.config_current_season
+                        )
                         LogFunctions.generateLog(self.request, "system",
                                                  LogFunctions.makeLogQuery(Account, 'Login', id=u.id))
                         return redirect(reverse('panel.index'))
@@ -48,7 +54,7 @@ class Login:
                                      LogFunctions.makeLogQuery(Account, 'Logout', id=self.request.session['uid']))
             self.request.session['uid'] = None
             self.request.session['utype'] = None
+            self.request.session.clear()
         else:
             print('{"Response": "Error: Not Logged In"}')
-        print("Redirecting outward")
         return redirect(reverse('permission.dispatch', args=['view']))

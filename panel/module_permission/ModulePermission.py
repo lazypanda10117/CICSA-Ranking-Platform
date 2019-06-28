@@ -1,7 +1,8 @@
 from django.shortcuts import reverse, redirect
-from api.authentication_api import AuthenticationMetaAPI
 from panel.module.base.authentication.AuthenticationFactory import AuthenticationFactory
-
+from api.authentication_api import AuthenticationMetaAPI
+from api.authentication import AuthenticationGuardType
+from api.authentication import AuthenticationGuard
 
 class ModulePermission:
     def __init__(self, request):
@@ -15,8 +16,9 @@ class ModulePermission:
     def __checkModulePermission(self, module):
         return module in self.alowed_modules
 
-    def redirectRequest(self, module, callback):
+    def verifyRequest(self, module, callback, failure):
+        AuthenticationGuard(AuthenticationGuardType.LOGIN_GUARD, request).guard()
         if self.__checkModulePermission(module):
             return callback
         else:
-            return redirect(reverse(self.module_base_redirect_route))
+            return failure if failure else redirect(reverse(self.module_base_redirect_route))

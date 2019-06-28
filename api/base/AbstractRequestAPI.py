@@ -3,6 +3,8 @@ from misc.CustomFunctions import RequestFunctions
 from api.authentication.AuthenticationFactory import AuthenticationFactory
 
 
+# This is the only unguarded Core Fundemental API 
+# because the information it retrieves is public information
 class AbstractRequestAPI(ABC):
     def __init__(self, request):
         self.request = request

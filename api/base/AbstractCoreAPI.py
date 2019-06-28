@@ -1,13 +1,16 @@
 from attrdict import AttrDict
 from api.base import AbstractRequestAPI
+from api.authentication import AuthenticationGuardType 
+from api.authentication import AuthenticationGuard
 from api.authentication_api import AuthenticationMetaAPI
 
 
 class AbstractCoreAPI(AbstractRequestAPI):
-    def __init__(self, request):
+    def __init__(self, request, permission=AuthenticationGuardType.ADMIN_TEAM_GUARD):
         super().__init__(request)
         self.request = request
         self.context = self.__setContext()
+        AuthenticationGuard(permission, self.request, self.context).guard()
 
     def __setContext(self):
         auth_meta = AuthenticationMetaAPI(self.request)
