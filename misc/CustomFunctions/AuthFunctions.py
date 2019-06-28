@@ -1,19 +1,31 @@
 from django.shortcuts import redirect, reverse
 from django.http import Http404
+from functools import reduce
+
 from misc.CustomFunctions import RequestFunctions
+from api.authentication import AuthenticationType 
 
 
-def kickRequest(request, authenticated, rend):
-    if signed_in(request, 'admin') or signed_in(request, 'team'):
-        if authenticated:
-            return rend
+# By default, it blocks unauthenticated access and does nothing if the request is valid
+# If it is an api request and it fails, it will raise an error
+def kickRequest(request, authenticated=True, rend=None, api=False, allowed_types=[AuthenticationType.ADMIN, AuthenticationType.TEAM]):
+    kickResult = rend
+    isValidRequest = False
+    if reduce((lambda x, y: x or y), [signed_in(t) for t in allowed_types]):
+        if not authenticated:
+            kickResult = redirect(reverse('panel.index'))
         else:
-            return redirect(reverse('panel.index'))
+            isValidRequest = True
     else:
         if authenticated:
-            return redirect(reverse('permission.dispatch', args=['view']))
+            kickResult = redirect(reverse('permission.dispatch', args=['view']))
         else:
-            return rend
+            isValidRequest = True
+    
+    if isValidRequest:
+        return kickResult
+    
+    return Exception("Insufficient Permission to Use API") if api else kickResult
 
 
 def signed_in(request, user_type):
