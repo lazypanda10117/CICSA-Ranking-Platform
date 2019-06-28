@@ -7,7 +7,7 @@ from panel.module.ModuleRegistry import ModuleRegistry
 
 
 def index(request):
-    return ManagementEventView().home()
+    return ManagementEventView().home(request)
 
 
 def viewDispatch(request, route, param=''):
@@ -24,8 +24,8 @@ class ManagementEventView(AbstractBlockApp.AppView):
     def getBaseAppName(self):
         return ModuleRegistry.MANAGEMENT_EVENT
 
-    def home(self):
-        return super().index('panel.module.management_event.view_dispatch', ['choice'])
+    def home(self, request):
+        return super().index(request, 'panel.module.management_event.view_dispatch', ['choice'])
 
     def setViewDispatcher(self):
         dispatcher = Dispatcher()
