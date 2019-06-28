@@ -9,7 +9,7 @@ from panel.module.ModuleRegistry import ModuleRegistry
 
 
 def index(request):
-    return ManagementNewsView().home()
+    return ManagementNewsView().home(request)
 
 
 def viewDispatch(request, route, param=''):
@@ -26,8 +26,8 @@ class ManagementNewsView(AbstractBlockApp.AppView):
     def getBaseAppName(self):
         return ModuleRegistry.MANAGEMENT_NEWS
 
-    def home(self):
-        return super().index('panel.module.management_news.view_dispatch', ['post'])
+    def home(self, request):
+        return super().index(request, 'panel.module.management_news.view_dispatch', ['post'])
 
     def setViewDispatcher(self):
         dispatcher = Dispatcher()
