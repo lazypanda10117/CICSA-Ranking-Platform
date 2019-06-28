@@ -9,7 +9,7 @@ class AuthenticationGuard:
 		self.context = context
 		self.permission = permission
 
-	def guard():
+	def guard(self):
 		if self.permission == AuthenticationGuardType.ADMIN_GUARD:
 			allowed_types = [AuthenticationType.ADMIN]
 		elif self.permission == AuthenticationGuardType.TEAM_GUARD:
