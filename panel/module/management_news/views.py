@@ -9,22 +9,16 @@ from panel.module.ModuleRegistry import ModuleRegistry
 
 
 def index(request):
-    return ManagementNewsView().authenticateModule(
-        request,
-        ManagementNewsView().home())
+    return ManagementNewsView().home()
 
 
 def viewDispatch(request, route, param=''):
-    return ManagementNewsView().authenticateModule(
-        request,
-        ManagementNewsView().viewDispatch(request, route, param))
+    return ManagementNewsView().viewDispatch(request, route, param)
 
 
 @csrf_exempt
 def processDispatch(request, route, param=''):
-    return ManagementNewsView().authenticateModule(
-        request,
-        ManagementNewsView().processDispatch(request, route, param))
+    return ManagementNewsView().processDispatch(request, route, param)
 
 
 class ManagementNewsView(AbstractBlockApp.AppView):

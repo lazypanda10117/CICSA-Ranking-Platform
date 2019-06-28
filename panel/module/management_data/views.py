@@ -7,18 +7,14 @@ from panel.module.ModuleRegistry import ModuleRegistry
 
 
 def index(request):
-    return ManagementDataView().authenticateModule(
-        request,
-        ManagementDataView().home())
+    return ModulePermission(request).verifyRequest(self.getBaseAppName(), ManagementDataView().home(), None)
 
 
 @csrf_exempt
 def viewDispatch(request, param, route):
     dispatcher = ManagementDataView().setViewDispatcher()
     view = dispatcher.get(route)(request)
-    return ManagementDataView().authenticateModule(
-        request,
-        view.dispatch(param))
+    return ModulePermission(request).verifyRequest(self.getBaseAppName(), view.dispatch(param), None)
 
 
 class ManagementDataView(AbstractBlockApp.AppView):
