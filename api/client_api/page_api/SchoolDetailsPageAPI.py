@@ -1,4 +1,5 @@
 from django.shortcuts import reverse
+from misc.CustomFunctions import UrlFunctions
 from api.base.GeneralClientAPI import GeneralClientAPI
 from api.model_api import ConfigAPI, RegionAPI, SchoolAPI, ScoreAPI, SummaryAPI
 
@@ -13,8 +14,14 @@ class SchoolDetailsPageAPI(GeneralClientAPI):
             season_score = score_api.getSeasonScoreValue(school_id, season_id)
             return dict(
                 school_name=school.school_name,
-                school_region=region.region_name,
-                school_status=school.school_status,
+                school_region=(
+                    region.region_name, 
+                    "{}#{}".format(
+                        UrlFunctions.getClientViewLink('schools'), 
+                        region.region_name
+                    )
+                ),
+                school_status=school.school_status.capitalize(),
                 school_season_score=(season_score if season_score != -1 else "-")
             )
 

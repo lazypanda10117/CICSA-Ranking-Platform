@@ -57,4 +57,4 @@ def simpleEqtFormatter(equation, replace_dict):
 
 
 def truncateText(text, length=150):
-    return text if len(text) < length else text[:150] + "..."
+    return text if len(text) < length else text[:length] + "..."

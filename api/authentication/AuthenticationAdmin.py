@@ -1,12 +1,13 @@
 from cicsa_ranking import models as model
-from .AuthenticationBase import AuthenticationBase
-from .AuthenticantionComponentBase import AuthenticationComponentBase
+from api.authentication import AuthenticationType
+from api.authentication.AuthenticationBase import AuthenticationBase
+from api.authentication.AuthenticantionComponentBase import AuthenticationComponentBase
 
 
 class AuthenticationAdmin(AuthenticationBase):
 
     def getAuthenticationType(self):
-        return 'admin'
+        return AuthenticationType.ADMIN
 
     class Account(AuthenticationComponentBase):
         def setBaseModelClass(self):
