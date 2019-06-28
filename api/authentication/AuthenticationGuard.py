@@ -1,6 +1,4 @@
 from misc.CustomFunctions import AuthFunctions
-from api.authentication import AuthenticationType
-from api.authentication import AuthenticationGuardType
 
 
 class AuthenticationGuard:
@@ -10,6 +8,9 @@ class AuthenticationGuard:
 		self.permission = permission
 
 	def guard(self):
+		from api.authentication import AuthenticationType
+		from api.authentication import AuthenticationGuardType
+
 		if self.permission == AuthenticationGuardType.ADMIN_GUARD:
 			allowed_types = [AuthenticationType.ADMIN]
 		elif self.permission == AuthenticationGuardType.TEAM_GUARD:

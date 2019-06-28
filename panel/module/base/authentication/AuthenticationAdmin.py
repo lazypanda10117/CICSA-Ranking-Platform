@@ -3,7 +3,7 @@ from cicsa_ranking.models import *
 from panel.config.admin.management_data.CustomPages import *
 from panel.config.admin.management_data.CustomForms import *
 from panel.module.ModuleRegistry import ModuleRegistry
-from api.authentication.AuthenticationType import AuthenticationType
+from api.authentication import AuthenticationType
 
 
 class AuthenticationAdmin:
