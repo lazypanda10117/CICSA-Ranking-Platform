@@ -2,7 +2,6 @@ import re
 from django.shortcuts import render
 from django.http import Http404
 from abc import abstractmethod, ABC
-from misc.CustomFunctions import AuthFunctions
 
 
 class AbstractBasePage(ABC):
@@ -32,5 +31,4 @@ class AbstractBasePage(ABC):
         return 'platform/module/base/block/displayList.html'
 
     def renderHelper(self, page_object):
-        return AuthFunctions.kickRequest(self.request, True,
-                                         render(self.request, self.page_path, dict(page=page_object)))
+        return render(self.request, self.page_path, dict(page=page_object))

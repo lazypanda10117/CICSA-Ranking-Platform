@@ -5,7 +5,7 @@ from ...base.block.CustomPages import AbstractBasePage
 from ...base.block.CustomComponents import BlockObject, BlockSet, PageObject
 
 
-class EventPage(AbstractBasePage):
+class LeagueRankingPage(AbstractBasePage):
     def generateList(self):
         event_type = dict((y, x) for x, y in Choices().getEventTypeChoices())[self.param["type"]]
 

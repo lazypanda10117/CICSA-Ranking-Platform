@@ -7,22 +7,16 @@ from panel.module.ModuleRegistry import ModuleRegistry
 
 
 def index(request):
-    return ManagementEventView().authenticateModule(
-        request,
-        ManagementEventView().home())
+    return ManagementEventView().home(request)
 
 
 def viewDispatch(request, route, param=''):
-    return ManagementEventView().authenticateModule(
-        request,
-        ManagementEventView().viewDispatch(request, route, param))
+    return ManagementEventView().viewDispatch(request, route, param)
 
 
 @csrf_exempt
 def processDispatch(request, route, param=''):
-    return ManagementEventView().authenticateModule(
-        request,
-        ManagementEventView().processDispatch(request, route, param))
+    return ManagementEventView().processDispatch(request, route, param)
 
 
 class ManagementEventView(AbstractBlockApp.AppView):
@@ -30,8 +24,8 @@ class ManagementEventView(AbstractBlockApp.AppView):
     def getBaseAppName(self):
         return ModuleRegistry.MANAGEMENT_EVENT
 
-    def home(self):
-        return super().index('panel.module.management_event.view_dispatch', ['choice'])
+    def home(self, request):
+        return super().index(request, 'panel.module.management_event.view_dispatch', ['choice'])
 
     def setViewDispatcher(self):
         dispatcher = Dispatcher()

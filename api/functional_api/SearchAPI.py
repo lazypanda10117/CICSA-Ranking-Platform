@@ -1,11 +1,16 @@
 import json
 from django.apps import apps
 from django.http import HttpResponse
+
+from api.authentication import AuthenticationGuardType
 from misc.CustomFunctions import ModelFunctions
 from api.base import AbstractCoreAPI
 
 
 class SearchAPI(AbstractCoreAPI):
+    def __init__(self, request):
+        super().__init__(request=request, permission=AuthenticationGuardType.PUBLIC_GUARD)
+
     @staticmethod
     def search(model_name, key, term):
         # add a list of viewable models or just refactor to use api later

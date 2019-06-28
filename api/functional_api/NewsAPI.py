@@ -1,11 +1,12 @@
 from cicsa_ranking.models import Config, NewsBump, NewsComment, NewsPost
 from misc.CustomFunctions import APIFunctions
+from api.authentication import AuthenticationGuardType
 from api.base import AbstractCoreAPI
 
 
 class NewsAPI(AbstractCoreAPI):
     def __init__(self, request):
-        super().__init__(request)
+        super().__init__(request=request, permission=AuthenticationGuardType.PUBLIC_GUARD)
         self.admin_ids = self.__applyAPI(Config).getAdminIDs()
 
     # Utility Functions

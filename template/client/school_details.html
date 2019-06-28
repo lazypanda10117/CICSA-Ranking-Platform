@@ -41,7 +41,7 @@
 						</div>
 						<div class="col">
 							{% with info=page_data.school_info %}
-								{% cycle info.school_region info.school_status info.school_season_score %}
+								{% cycle info.school_region.0 info.school_status info.school_season_score %}
 							{% endwith %}
 						</div>
 					</div>

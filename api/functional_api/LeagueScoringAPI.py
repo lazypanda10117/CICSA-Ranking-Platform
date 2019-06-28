@@ -2,12 +2,13 @@ import math
 
 from cicsa_ranking.models import Event
 from api.base import AbstractCoreAPI
+from api.authentication import AuthenticationGuardType
 from api.model_api import SchoolAPI, EventAPI, SummaryAPI, ConfigAPI
 
 
 class LeagueScoringAPI(AbstractCoreAPI):
     def __init__(self, request, season=None):
-        super().__init__(request)
+        super().__init__(request=request, permission=AuthenticationGuardType.PUBLIC_GUARD)
         self.current_configuration = ConfigAPI(self.request).getAll()[0]
         self.current_season = self.current_configuration.config_current_season
         self.season = self.current_season if season is None else season
@@ -35,6 +36,7 @@ class LeagueScoringAPI(AbstractCoreAPI):
         num_school_in_region = SchoolAPI(self.request).filterSelf(school_region=region).count()
         num_race = len(scores)
 
+        # Specific region has different race num average
         if num_school_in_region in [1, 2]:
             base_average_race_num = 1
         elif num_school_in_region >= 3:
