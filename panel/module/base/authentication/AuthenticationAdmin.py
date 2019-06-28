@@ -3,12 +3,13 @@ from cicsa_ranking.models import *
 from panel.config.admin.management_data.CustomPages import *
 from panel.config.admin.management_data.CustomForms import *
 from panel.module.ModuleRegistry import ModuleRegistry
+from api.authentication import AuthenticationType
 
 
 class AuthenticationAdmin:
     @staticmethod
     def getIdentifier():
-        return 'admin'
+        return AuthenticationType.TEAM
 
     @staticmethod
     def getAllowedModules():
@@ -16,7 +17,8 @@ class AuthenticationAdmin:
             ModuleRegistry.MANAGEMENT_DATA,
             ModuleRegistry.MANAGEMENT_EVENT,
             ModuleRegistry.MANAGEMENT_RANKING,
-            ModuleRegistry.MANAGEMENT_NEWS
+            ModuleRegistry.MANAGEMENT_NEWS,
+            ModuleRegistry.MANAGEMENT_LEAGUE,
         ]
         return allowedModules
 

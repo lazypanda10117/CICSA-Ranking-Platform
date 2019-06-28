@@ -1,12 +1,13 @@
 from cicsa_ranking import models as model
-from .AuthenticationBase import AuthenticationBase
-from .AuthenticantionComponentBase import AuthenticationComponentBase
+from api.authentication import AuthenticationType
+from api.authentication.AuthenticationBase import AuthenticationBase
+from api.authentication.AuthenticantionComponentBase import AuthenticationComponentBase
 
 
 class AuthenticationPublic(AuthenticationBase):
 
     def getAuthenticationType(self):
-        return 'public'
+        return AuthenticationType.PUBLIC
 
     class Account(AuthenticationComponentBase):
         def setBaseModelClass(self):

@@ -1,24 +1,29 @@
 from django.views.decorators.csrf import csrf_exempt
 from misc.CustomElements import Dispatcher
-from ..base.block.Base import AbstractBlockApp
-from .CustomView import CustomView
-from .GeneralView import GeneralView
+from panel.module_permission import ModulePermission
+from panel.module.base.block.Base import AbstractBlockApp
+from panel.module.management_data.CustomView import CustomView
+from panel.module.management_data.GeneralView import GeneralView
 from panel.module.ModuleRegistry import ModuleRegistry
 
 
 def index(request):
-    return ManagementDataView().authenticateModule(
-        request,
-        ManagementDataView().home())
+    return ModulePermission(request).verifyRequest(
+        ManagementDataView().getBaseAppName(),
+        ManagementDataView().home(request),
+        None
+    )
 
 
 @csrf_exempt
 def viewDispatch(request, param, route):
     dispatcher = ManagementDataView().setViewDispatcher()
     view = dispatcher.get(route)(request)
-    return ManagementDataView().authenticateModule(
-        request,
-        view.dispatch(param))
+    return ModulePermission(request).verifyRequest(
+        ManagementDataView().getBaseAppName(),
+        view.dispatch(param),
+        None
+    )
 
 
 class ManagementDataView(AbstractBlockApp.AppView):
@@ -26,8 +31,8 @@ class ManagementDataView(AbstractBlockApp.AppView):
     def getBaseAppName(self):
         return ModuleRegistry.MANAGEMENT_DATA
 
-    def home(self):
-        return super().index('panel.module.management_data.view_dispatch_param', ['event', 'custom'])
+    def home(self, request):
+        return super().index(request, 'panel.module.management_data.view_dispatch_param', ['event', 'custom'])
 
     def setViewDispatcher(self):
         dispatcher = Dispatcher()

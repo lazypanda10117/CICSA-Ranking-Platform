@@ -27,15 +27,19 @@ class ScoringPageAPI(GeneralClientAPI):
             rotation=('Rotation Page', reverse('client.view_dispatch_param', args=['rotation', event.id])),
             season=(
                 SeasonAPI(self.request).getSelf(id=event.event_season).season_name,
-                UrlFunctions.getClientViewLink('season', event.event_season)
+                UrlFunctions.getClientViewLink('seasons')
             ),
-            region=(
-                RegionAPI(self.request).getSelf(id=event.event_region).region_name,
-                UrlFunctions.getClientViewLink('region', event.event_region)
-            ),
+            region=(lambda region_name: (region_name, "{}#{}".format(
+                        UrlFunctions.getClientViewLink('schools'), 
+                        region_name
+                    )))(
+                        RegionAPI(self.request).getSelf(
+                            id=event.event_region
+                        ).region_name,
+                    ),
             host=(
                 SchoolAPI(self.request).getSelf(id=event.event_host).school_name,
-                UrlFunctions.getClientViewLink('host', event.event_host)
+                UrlFunctions.getClientViewLink('school_details', event.event_host)
             ),
             location=event.event_location,
             status=status_map[event.event_status],
