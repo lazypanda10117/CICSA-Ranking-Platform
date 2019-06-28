@@ -3,6 +3,7 @@ from django.http import Http404
 from functools import reduce
 
 from misc.CustomFunctions import RequestFunctions
+from api.authentication import AuthenticationType
 
 
 # By default, it blocks unauthenticated access and does nothing if the request is valid
@@ -14,7 +15,6 @@ def kickRequest(
         api=False,
         allowed_types=None
 ):
-    from api.authentication import AuthenticationType
     allowed_types = allowed_types if allowed_types else [AuthenticationType.ADMIN, AuthenticationType.TEAM]
     kick_result = rend
     is_request_valid = False

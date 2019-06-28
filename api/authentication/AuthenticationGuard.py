@@ -1,4 +1,6 @@
 from misc.CustomFunctions import AuthFunctions
+from api.authentication import AuthenticationType
+from api.authentication import AuthenticationGuardType
 
 
 class AuthenticationGuard:
@@ -8,9 +10,6 @@ class AuthenticationGuard:
 		self.permission = permission
 
 	def guard(self):
-		from api.authentication import AuthenticationType
-		from api.authentication import AuthenticationGuardType
-
 		if self.permission == AuthenticationGuardType.ADMIN_GUARD:
 			allowed_types = [AuthenticationType.ADMIN]
 		elif self.permission == AuthenticationGuardType.TEAM_GUARD:
@@ -22,7 +21,7 @@ class AuthenticationGuard:
 		elif self.permission == AuthenticationGuardType.LOGIN_GUARD:
 			allowed_types = [AuthenticationType.ADMIN, AuthenticationType.TEAM]
 		else:
-			raise Exception("Failed Authenticaion Process During AuthenticationGuard Stage")
+			raise Exception("Failed Authentication Process During AuthenticationGuard Stage")
 
 		AuthFunctions.kickRequest(
 			request=self.request,
