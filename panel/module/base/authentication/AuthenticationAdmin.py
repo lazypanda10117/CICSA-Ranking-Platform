@@ -17,7 +17,8 @@ class AuthenticationAdmin:
             ModuleRegistry.MANAGEMENT_DATA,
             ModuleRegistry.MANAGEMENT_EVENT,
             ModuleRegistry.MANAGEMENT_RANKING,
-            ModuleRegistry.MANAGEMENT_NEWS
+            ModuleRegistry.MANAGEMENT_NEWS,
+            ModuleRegistry.MANAGEMENT_LEAGUE,
         ]
         return allowedModules
 
