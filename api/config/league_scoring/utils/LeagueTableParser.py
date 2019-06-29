@@ -9,8 +9,8 @@ class LeagueTableParser:
 
 	def __init__(self):
 		self.csvToRead = [
-			('A', 'Rank_A_Event_Score_Map.csv'),
-			('B', 'Rank_B_Event_Score_Map.csv')
+			('A', '../resources/Rank_A_Event_Score_Map.csv'),
+			('B', '../resources/Rank_B_Event_Score_Map.csv')
 		]
 
 	def parse(self):
@@ -23,7 +23,7 @@ class LeagueTableParser:
 			
 			with open(csvFile, newline='') as csvfile:
 				tableReader = csv.reader(csvfile, delimiter=',', quotechar='|')
-				maxTeamNum = self.getMaxTeam()
+				maxTeamNum = self.getMaxTeam(csvFile)
 				rowNum = 0
 
 				for row in tableReader:
@@ -42,7 +42,7 @@ class LeagueTableParser:
 								try:
 									score = float(col)
 								except:
-									score = 0.0
+									score = None
 								parsedTable[teamIndex][rowNum] = score
 							tempDistance += 1
 						else:
@@ -52,20 +52,22 @@ class LeagueTableParser:
 
 			result[csvCategory] = self.pruneData(parsedTable)
 
-		print(json.dumps(result, indent=4, sort_keys=True))
+		return json.dumps(result, indent=4, sort_keys=True)
 
-	def pruneData(data):
-		response = dict()
-		for rankScores in data:
-			for score in rankScores:
-				
+	def pruneData(self, data):
+		return {
+			size: {
+				rank: scores for rank, scores in rankScores.items() if scores is not None
+			} for size, rankScores in data.items()
+		}
 
-	def getMaxTeam(self):
-		with open('WomenA.csv', newline='') as csvfile:
+	def getMaxTeam(self, csvFile):
+		with open(csvFile, newline='') as csvfile:
 			tableReader = csv.reader(csvfile, delimiter=' ', quotechar='|')
 			counter = 0
-			for row in tableReader:
+			for _ in tableReader:
 				counter += 1
-			return counter - 1 if counter > 0 else 0					
+			return counter - 1 if counter > 0 else 0
 
-LeagueTableParser().parse()
+
+print(LeagueTableParser().parse())
