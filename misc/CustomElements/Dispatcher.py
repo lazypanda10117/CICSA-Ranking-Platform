@@ -2,6 +2,10 @@ class Dispatcher:
     def __init__(self):
         self.dispatchTable = dict()
 
+    def exists(self, link_name):
+        return link_name in self.dispatchTable
+
+
     def add(self, link_name, link_obj):
         self.dispatchTable[link_name] = link_obj
 
