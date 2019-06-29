@@ -24,7 +24,7 @@ class ManagementLeagueView(AbstractBlockApp.AppView):
         return ModuleRegistry.MANAGEMENT_LEAGUE
 
     def home(self, request):
-        return super().index(request, 'panel.module.management_league.view_dispatch', ['choice'])
+        return super().index(request, 'panel.module.management_league.view_dispatch', ['ranking'])
 
     def setViewDispatcher(self):
         dispatcher = Dispatcher()
