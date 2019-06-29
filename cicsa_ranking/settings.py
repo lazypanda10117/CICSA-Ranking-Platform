@@ -53,23 +53,24 @@ ALLOWED_HOSTS = [
     'scores.cicsailing.ca',
     '.herokuapp.com',
     '.gitpod.io'
-    # 'sailing-dinosaurs-system.herokuapp.com',
-    # 'sailing-dino-testing.herokuapp.com',
 ]
 
 SILENCED_SYSTEM_CHECKS = ["fields.W161"]
 
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_ALLOW_ALL = False
 
 # Application definition
 
 INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     'cicsa_ranking.apps.CicsaRankingConfig',
+    'permission.apps.PermissionConfig',
     'panel.apps.PanelConfig',
     'panel.module.management_data.apps.PanelManagementDataConfig',
     'panel.module.management_event.apps.PanelManagementEventConfig',
     'panel.module.management_ranking.apps.PanelManagementRankingConfig',
+    'panel.module.management_news.apps.PanelManagementNewsConfig',
+    'panel.module.management_league.apps.PanelManagementLeagueConfig',
     'client.apps.ClientConfig',
     'corsheaders',
     'django.contrib.admin',
