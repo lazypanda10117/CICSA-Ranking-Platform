@@ -1,6 +1,7 @@
 from misc.CustomElements import Dispatcher
 from api.config.league_scoring import LeagueScoringConfig
 
+
 class ConfigReader:
 	def __init__(self, path):
 		self.path = path
@@ -11,5 +12,5 @@ class ConfigReader:
 		dispatcher.add('league_scoring', LeagueScoringConfig)
 		return dispatcher
 
-	def getRootConfig():
+	def getRootConfig(self):
 		return self.config_dispatcher.get(self.path)
