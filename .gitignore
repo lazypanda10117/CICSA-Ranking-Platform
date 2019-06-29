@@ -109,6 +109,9 @@ venv.bak/
 # GitPod Online IDE Related Files
 .theia/
 
+# Mac DS Store
+**.DS_Store
+
 # Migration Scripts Related Files
 **/migrations/**
 !**/migrations

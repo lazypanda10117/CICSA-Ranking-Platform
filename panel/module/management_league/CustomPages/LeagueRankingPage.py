@@ -1,8 +1,8 @@
 from django.shortcuts import reverse
 from api import EventAPI
-from ....component.CustomElements import Choices
-from ...base.block.CustomPages import AbstractBasePage
-from ...base.block.CustomComponents import BlockObject, BlockSet, PageObject
+from panel.component.CustomElements import Choices
+from panel.module.base.block.CustomPages import AbstractBasePage
+from panel.module.base.block.CustomComponents import BlockObject, BlockSet, PageObject
 
 
 class LeagueRankingPage(AbstractBasePage):
