@@ -4,7 +4,7 @@ from cicsa_ranking.models import Event
 from api.base import AbstractCoreAPI
 from api.authentication import AuthenticationGuardType
 from api.model_api import SchoolAPI, EventAPI, SummaryAPI, ConfigAPI
-
+from api.config import ConfigReader
 
 class LeagueScoringAPI(AbstractCoreAPI):
     def __init__(self, request, season=None):
@@ -12,6 +12,8 @@ class LeagueScoringAPI(AbstractCoreAPI):
         self.current_configuration = ConfigAPI(self.request).getAll()[0]
         self.current_season = self.current_configuration.config_current_season
         self.season = self.current_season if season is None else season
+        self.LeagueScoringConfig = (ConfigReader('league_scoring').getRootConfig())()
+        self.league_scoring_data = self.LeagueScoringConfig.getData('league_rank_place_score_map')
 
     # TODO: Not supporting getting history league scores yet
     def getCurrentLeagueScoreBySchool(self, school_id):
@@ -29,8 +31,14 @@ class LeagueScoringAPI(AbstractCoreAPI):
         return self.getScoreForEvent(position, event.event_team_number, event.event_class)
 
     def getScoreForEvent(self, position, team_number, event_class):
-        # A multivariate function that takes in 3 variables and return the score
-        return 0
+        try:
+            score = self.league_scoring_data.get(event_class).get(team_number).get(position)
+        except KeyError:
+            raise Exception(
+                "Cannot get the score for event given this context. "
+                "Event Class: {}  Team Number: {}  Position: {}".format(event_class, team_number, position)
+            )
+        return score
 
     def getAverageScore(self, scores, region):
         num_school_in_region = SchoolAPI(self.request).filterSelf(school_region=region).count()
