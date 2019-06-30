@@ -1,7 +1,8 @@
 from django.views.decorators.csrf import csrf_exempt
 from misc.CustomElements import Dispatcher
-from ..base.block.Base import AbstractBlockApp
-from .CustomPages import LeagueRankingPage, LeagueScoreCompilePage
+from panel.module.base.block.Base import AbstractBlockApp
+from panel.module.management_league.CustomPages import LeagueSchoolScoreCompilePage
+from panel.module.management_league.CustomPages import LeagueOverallScoreCompilePage
 from panel.module.ModuleRegistry import ModuleRegistry
 
 
@@ -24,14 +25,16 @@ class ManagementLeagueView(AbstractBlockApp.AppView):
         return ModuleRegistry.MANAGEMENT_LEAGUE
 
     def home(self, request):
-        return super().index(request, 'panel.module.management_league.view_dispatch', ['ranking'])
+        return super().index(request, 'panel.module.management_league.view_dispatch', ['overall'])
 
     def setViewDispatcher(self):
         dispatcher = Dispatcher()
-        dispatcher.add('ranking', LeagueRankingPage)
-        dispatcher.add('compile', LeagueScoreCompilePage)
+        dispatcher.add('specific', LeagueSchoolScoreCompilePage)
+        dispatcher.add('overall', LeagueOverallScoreCompilePage)
         return dispatcher
 
     def setProcessDispatcher(self):
         dispatcher = Dispatcher()
+        dispatcher.add('overall_compiler', LeagueOverallScoreCompilePage)
+
         return dispatcher
