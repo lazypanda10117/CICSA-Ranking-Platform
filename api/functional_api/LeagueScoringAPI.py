@@ -6,10 +6,11 @@ from api.authentication import AuthenticationGuardType
 from api.model_api import SchoolAPI, EventAPI, SummaryAPI, ConfigAPI
 from api.config import ConfigReader
 
+
 class LeagueScoringAPI(AbstractCoreAPI):
     def __init__(self, request, season=None):
         super().__init__(request=request, permission=AuthenticationGuardType.PUBLIC_GUARD)
-        self.current_configuration = ConfigAPI(self.request).getAll()[0]
+        self.current_configuration = ConfigAPI(self.request).getConfig()
         self.current_season = self.current_configuration.config_current_season
         self.season = self.current_season if season is None else season
         self.LeagueScoringConfig = (ConfigReader('league_scoring').getRootConfig())()
