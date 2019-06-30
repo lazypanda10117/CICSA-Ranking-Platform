@@ -1,1 +1,1 @@
-from .EventChoiceProcess import EventChoiceProcess
+from .LeagueOverallScoreCompileProcess import LeagueOverallScoreCompileProcess
