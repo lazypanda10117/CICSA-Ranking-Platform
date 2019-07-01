@@ -2,10 +2,12 @@ from django.shortcuts import reverse
 from api import EventAPI
 from panel.component.CustomElements import Choices
 from panel.module.base.block.CustomPages import AbstractBasePage
-from panel.module.base.block.CustomComponents import BlockObject, BlockSet, PageObject
+from panel.module.base.block.CustomComponents import BlockObject
+from panel.module.base.block.CustomComponents import BlockSet
+from panel.module.base.block.CustomComponents import PageObject
 
 
-class LeagueRankingPage(AbstractBasePage):
+class LeagueSchoolScoreCompilePage(AbstractBasePage):
     def generateList(self):
         event_type = dict((y, x) for x, y in Choices().getEventTypeChoices())[self.param["type"]]
 

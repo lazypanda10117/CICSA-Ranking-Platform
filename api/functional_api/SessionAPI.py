@@ -11,3 +11,7 @@ class SessionAPI(AbstractCoreAPI):
     def getPanelConfig(self, key):
         panel_config = RequestFunctions.sessionGetter(self.request, "panel_config")
         return MiscFunctions.noneCatcher(key, panel_config)
+
+    def getClientConfig(self, key):
+        client_config = RequestFunctions.sessionGetter(self.request, "client_config")
+        return MiscFunctions.noneCatcher(key, client_config)
