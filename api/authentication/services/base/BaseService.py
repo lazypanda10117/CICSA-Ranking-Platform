@@ -3,11 +3,12 @@ from abc import ABC
 from misc.CustomElements import Dispatcher
 from api.authentication import AuthenticationActionType
 
-
+# Each service takes in a query object and returns a list of of objects
 class BaseService(ABC):
     def __init__(self, request, objects):
         self.request = request
-        self.objects = objects
+        self.objects = self.__inputTransformer(objects)
+        self.raw_objects = self.objects
         self.service_dispatcher = self.__setServiceDispatcher()
 
     def __setServiceDispatcher(self):
@@ -18,14 +19,14 @@ class BaseService(ABC):
         dispatcher.add(AuthenticationActionType.VIEW, self._verifyVIEW)
         return dispatcher
 
-    # This return transformed needs to be used for all objects return for compatibility issues
-    def _returnTransformer(self, response):
-        if len(response) == 0:
-            return None
-        elif len(response) == 1:
-            return response[0]
+    # This transforms input to a list of objects (The standard for service inputs)
+    def __inputTransformer(self, objects):
+        if objects is None:
+            return []
+        elif type(objects) == 'QuerySet':
+            return [obj for obj in objects]
         else:
-            return response
+            return [objects]
 
     def verify(self, identifier):
         if self.service_dispatcher.exists(identifier):
@@ -35,16 +36,16 @@ class BaseService(ABC):
 
     # The following functions are to be implemented by the respective services that inherit this.
     def _verifyADD(self):
-        return self._returnTransformer(self.objects)
+        return self.objects
 
     def _verifyEDIT(self):
-        return self._returnTransformer(self.objects)
+        return self.objects
 
     def _verifyDELETE(self):
-        return self._returnTransformer(self.objects)
+        return self.objects
 
     def _verifyVIEW(self):
-        return self._returnTransformer(self.objects)
+        return self.objects
 
     def _verifyOTHER(self):
         return None
