@@ -32,7 +32,7 @@ class BaseService(ABC):
         if self.service_dispatcher.exists(identifier):
             return self.service_dispatcher.get(identifier)()
         else:
-            return self._verifyOTHER()
+            return self._verifyOTHER(identifier)
 
     # The following functions are to be implemented by the respective services that inherit this.
     def _verifyADD(self):
@@ -47,5 +47,5 @@ class BaseService(ABC):
     def _verifyVIEW(self):
         return self.objects
 
-    def _verifyOTHER(self):
+    def _verifyOTHER(self, identifier):
         return None
