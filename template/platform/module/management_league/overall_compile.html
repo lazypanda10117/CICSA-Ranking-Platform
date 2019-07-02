@@ -1,0 +1,55 @@
+{% extends 'platform/base.html' %}
+{% block 'head' %}
+{% endblock %}
+{% block 'body' %}
+    <h4><pre>{{ page.block_title }}</pre></h4>
+    <div class="card">
+        <div class="card-body">
+            <div class="container-fluid row mb-2">
+                <div class="col col-lg-2 offset-lg-1">
+                    Ranking
+                </div>
+                <div class="col col-lg-auto">
+                    School
+                </div>
+                <div class="col col-lg-auto">
+                    Events Participated
+                </div>
+
+                <div class="col col-lg-auto">
+                    Scores
+                </div>
+                <div class="col col-lg-auto">
+                    Override Scores
+                </div>
+            </div>
+            <hr>
+            <form action="{{ page.action_destination }}" id="{{ page.form_id }}" method="post">
+                {% for key, content in page.contents.items %}
+                    <div class="container-fluid row mt-4">
+                        <div class="col col-lg-2 offset-lg-1">
+                            {{ content.league_ranking }}
+                        </div>
+                        <div class="col col-lg-auto">
+                            <a href="{{ content.school_score_url  }}">{{ content.school_name }}</a>
+                        </div>
+                        <div class="col col-lg-auto">
+                            {{ content.participated_event_num }}
+                        </div>
+                        <div class="col col-lg-auto">
+                            {{ content.league_score }}
+                        </div>
+                        <div class="col col-lg-auto">
+                            {{ content.league_override_score }}
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="container-fluid row mt-4">
+                    <div class="col col-lg-6 offset-lg-3">
+                        <button type="submit" class="btn btn-info btn-lg btn-block">Finalize League Scoring</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

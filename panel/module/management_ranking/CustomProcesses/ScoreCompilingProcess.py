@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, reverse
 from misc.CustomFunctions import RequestFunctions
 from api import EventAPI, SummaryAPI
-from ...base.block.CustomProcesses import AbstractBaseProcess
+from panel.module.base.block.CustomProcesses import AbstractBaseProcess
 
 
 class ScoreCompilingProcess(AbstractBaseProcess):

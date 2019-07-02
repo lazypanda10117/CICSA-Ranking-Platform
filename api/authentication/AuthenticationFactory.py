@@ -1,6 +1,8 @@
 from misc.CustomElements import Dispatcher
-from ..authentication import AuthenticationAdmin, AuthenticationTeam, AuthenticationPublic
-from .AuthenticationConstants import AuthenticationType
+from api.authentication import AuthenticationAdmin
+from api.authentication import AuthenticationTeam
+from api.authentication import AuthenticationPublic
+from api.authentication.AuthenticationConstants import AuthenticationType
 
 
 class AuthenticationFactory:

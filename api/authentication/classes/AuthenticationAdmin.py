@@ -1,13 +1,13 @@
 from cicsa_ranking import models as model
 from api.authentication import AuthenticationType
-from api.authentication.AuthenticationBase import AuthenticationBase
-from api.authentication.AuthenticantionComponentBase import AuthenticationComponentBase
+from api.authentication.base.AuthenticationBase import AuthenticationBase
+from api.authentication.base.AuthenticationComponentBase import AuthenticationComponentBase
 
 
-class AuthenticationTeam(AuthenticationBase):
+class AuthenticationAdmin(AuthenticationBase):
 
     def getAuthenticationType(self):
-        return AuthenticationType.TEAM
+        return AuthenticationType.ADMIN
 
     class Account(AuthenticationComponentBase):
         def setBaseModelClass(self):
@@ -16,20 +16,6 @@ class AuthenticationTeam(AuthenticationBase):
     class EventActivity(AuthenticationComponentBase):
         def setBaseModelClass(self):
             return model.EventActivity
-
-        class SingleAuthenticate(AuthenticationComponentBase.SingleAuthenticate):
-            def viewAuthenticate(self):
-                pass
-
-            def editAuthenticate(self):
-                pass
-
-        class BulkAuthenticate(AuthenticationComponentBase.BulkAuthenticate):
-            def viewAuthenticate(self):
-                pass
-
-            def editAuthenticate(self):
-                pass
 
     class Event(AuthenticationComponentBase):
         def setBaseModelClass(self):
