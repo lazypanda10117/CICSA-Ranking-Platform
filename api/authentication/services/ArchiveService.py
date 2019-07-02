@@ -1,5 +1,4 @@
 from api.authentication.services.base import BaseService
-from cicsa_ranking import ArchiveModel
 
 
 class ArchiveService(BaseService):
