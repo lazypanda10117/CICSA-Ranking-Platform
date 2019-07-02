@@ -1,7 +1,7 @@
 from cicsa_ranking import models as model
 from api.authentication import AuthenticationType
 from api.authentication.AuthenticationBase import AuthenticationBase
-from api.authentication.AuthenticantionComponentBase import AuthenticationComponentBase
+from api.authentication.AuthenticationComponentBase import AuthenticationComponentBase
 
 
 class AuthenticationAdmin(AuthenticationBase):
