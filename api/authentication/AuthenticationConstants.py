@@ -13,3 +13,10 @@ class AuthenticationType:
 	ADMIN = "admin"
 	TEAM = "team"
 	PUBLIC = "public"
+
+
+class AuthenticationActionType:
+	ADD = 'add'
+	EDIT = 'edit'
+	DELETE = 'delete'
+	VIEW = 'view'
