@@ -1,8 +1,8 @@
-from .AuthenticationConstants import AuthenticationGuardType
-from .AuthenticationConstants import AuthenticationType
-from .AuthenticationConstants import AuthenticationActionType
-from .AuthenticationAdmin import AuthenticationAdmin
-from .AuthenticationTeam import AuthenticationTeam
-from .AuthenticationPublic import AuthenticationPublic
-from .AuthenticationGuard import AuthenticationGuard
+from api.authentication.AuthenticationConstants import AuthenticationGuardType
+from api.authentication.AuthenticationConstants import AuthenticationType
+from api.authentication.AuthenticationConstants import AuthenticationActionType
+from api.authentication.classes.AuthenticationAdmin import AuthenticationAdmin
+from api.authentication.classes.AuthenticationTeam import AuthenticationTeam
+from api.authentication.classes.AuthenticationPublic import AuthenticationPublic
+from api.authentication.AuthenticationGuard import AuthenticationGuard
 
