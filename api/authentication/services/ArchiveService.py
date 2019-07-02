@@ -3,8 +3,10 @@ from cicsa_ranking import ArchiveModel
 
 
 class ArchiveService(BaseService):
-    def __isArchived(self, obj):
-        return obj.__class__ in [ArchiveModel] and obj.archived
+    def __isArchived(self, object):
+        # TODO: To implement this isArchive function
+        # return obj.__class__ in [ArchiveModel] and obj.archived
+        return object
 
     def __filterArchived(self, objects):
         return [o for o in objects if not self.__isArchived(o)]
