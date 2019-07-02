@@ -1,23 +1,37 @@
 from django.contrib.postgres.fields import JSONField, ArrayField
 from django.db import models
 
+class BaseModel(models.Model):
+    class Meta:
+        abstract = True
+
+    def __archivable__(self):
+        return False
+    def __has_history__(self):
+        return False
 
 # We can toggle the object to be archived or not
-class ArchivableModel(models.Model):
+class ArchivableModel(BaseModel):
     archived = models.BooleanField(default=False)
 
     class Meta:
         abstract = True
 
+    def __archivable__(self):
+        return True
+
 # We can have the same object but tied to a different season
-class HasHistoryModel(models.Model):
+class HasHistoryModel(BaseModel):
     season = models.ForeignKey("Season", on_delete=models.CASCADE)
 
     class Meta:
         abstract = True
 
+    def __has_history__(self):
+        return True
 
-class Event(models.Model):
+# Use as test of ArchivableModel
+class Event(ArchivableModel):
     EVENT_CLASS_RANK_A = 0
     EVENT_CLASS_RANK_B = 1
 
@@ -109,7 +123,8 @@ class Log(models.Model):
     log_create_time = models.DateTimeField(auto_now_add=True, blank=True)
 
 
-class School(models.Model):
+# Use as test of HasHistoryModel
+class School(HasHistoryModel):
     school_name = models.CharField(max_length=200)
     school_region = models.IntegerField()
     school_status = models.CharField(max_length=50)
