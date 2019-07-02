@@ -1,8 +1,9 @@
 from django.contrib.postgres.fields import JSONField, ArrayField
 from django.db import models
+from .ArchiveModel import ArchiveModel
 
 
-class Event(models.Model):
+class Event(models.Model, ArchiveModel):
     EVENT_CLASS_RANK_A = 0
     EVENT_CLASS_RANK_B = 1
 

@@ -1,4 +1,6 @@
 from abc import ABC, abstractmethod
+
+from cicsa_ranking import ArchiveModel
 from misc.CustomElements import Dispatcher
 
 
@@ -7,10 +9,18 @@ class AuthenticationComponentBase(ABC):
         self.request = request
         self.base = self.setBaseModelClass()
 
+    @staticmethod
+    def isArchived(self, obj):
+        return obj.__class__ in [ArchiveModel] and obj.archived
+
+    # maybe addd a isHistory as well later?
+    # def __isHistory(self, obj):
+
     @abstractmethod
     def setBaseModelClass(self):
         pass
 
+    # This is only being called when passed in a none object. Essentially does nothing, just for completeness sake.
     class NoneAuthenticate:
         def __init__(self, objects):
             self.objects = objects
@@ -27,6 +37,7 @@ class AuthenticationComponentBase(ABC):
         def deleteAuthenticate(self):
             return self.objects
 
+    # This is called when you pass in a bulk object
     class BulkAuthenticate:
         def __init__(self, objects):
             self.objects = objects
@@ -34,8 +45,9 @@ class AuthenticationComponentBase(ABC):
         def viewAuthenticate(self):
             return self.objects
 
+        # An example of filtering out archived object
         def editAuthenticate(self):
-            return []
+            return [o for o in self.objects if not AuthenticationComponentBase.isArchived(o)]
 
         def addAuthenticate(self):
             return []
@@ -50,8 +62,9 @@ class AuthenticationComponentBase(ABC):
         def viewAuthenticate(self):
             return self.objects
 
+        # Another example of how to restrict editing access
         def editAuthenticate(self):
-            return self.objects
+            return self.objects if not AuthenticationComponentBase.isArchived(self.objects) else None
 
         def addAuthenticate(self):
             return self.objects
