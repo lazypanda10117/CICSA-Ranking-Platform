@@ -12,6 +12,9 @@ from .authentication_api import AuthenticationMetaAPI
 
 # Importing APIs From FunctionalAPI
 from .functional_api import SearchAPI
+from .functional_api import LeagueScoringAPI
+from .functional_api import SessionAPI
+from .functional_api import NewsAPI
 
 # Importing APIs From ModelAPI
 from .model_api import AccountAPI
