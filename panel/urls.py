@@ -7,4 +7,5 @@ urlpatterns = [
     path('event/', include('panel.module.management_event.urls')),
     path('ranking/', include('panel.module.management_ranking.urls')),
     path('news/', include('panel.module.management_news.urls')),
+    path('league/', include('panel.module.management_league.urls')),
 ]

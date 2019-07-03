@@ -5,6 +5,7 @@ from ...base.block.CustomPages import AbstractBasePage
 
 class ScoreCompilingPage(AbstractBasePage):
     DONE = 'done'
+
     def getPagePath(self):
         return 'platform/module/management_ranking/score_compile.html'
 

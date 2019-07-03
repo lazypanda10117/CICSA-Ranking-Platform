@@ -52,8 +52,6 @@ class Login:
         if RequestFunctions.sessionChecker(self.request, 'uid', 'utype'):
             LogFunctions.generateLog(self.request, "system",
                                      LogFunctions.makeLogQuery(Account, 'Logout', id=self.request.session['uid']))
-            self.request.session['uid'] = None
-            self.request.session['utype'] = None
             self.request.session.clear()
         else:
             print('{"Response": "Error: Not Logged In"}')

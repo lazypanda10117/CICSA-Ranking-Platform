@@ -1,2 +1,2 @@
-from .LeagueRankingPage import LeagueRankingPage
-from .LeagueScoreCompilePage import LeagueScoreCompilePage
+from .LeagueSchoolScoreCompilePage import LeagueSchoolScoreCompilePage
+from .LeagueOverallScoreCompilePage import LeagueOverallScoreCompilePage
