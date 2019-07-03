@@ -24,7 +24,7 @@
             </div>
             <hr>
             <form action="{{ page.action_destination }}" id="{{ page.form_id }}" method="post">
-                {% for key, content in page.contents.items %}
+                {% for idx, content in page.contents %}
                     <div class="container-fluid row mt-4">
                         <div class="col col-lg-2 offset-lg-1">
                             {{ content.league_ranking }}
@@ -36,7 +36,10 @@
                             {{ content.participated_event_num }}
                         </div>
                         <div class="col col-lg-auto">
-                            {{ content.league_score }}
+                            {{ content.league_calculated_score }}
+                        </div>
+                        <div class="col col-lg-auto">
+                            {{ content.league_recorded_score }}
                         </div>
                         <div class="col col-lg-auto">
                             {{ content.league_override_score }}

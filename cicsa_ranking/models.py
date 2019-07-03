@@ -71,18 +71,20 @@ class EventActivity(models.Model):
 
 
 class Summary(models.Model):
+    DEFAULT_SUMMARY_LEAGUE_SCORE = -1
     summary_event_parent = models.IntegerField()
     summary_event_school = models.IntegerField(default=0)
     summary_event_ranking = models.IntegerField(default=0)
     summary_event_override_ranking = models.IntegerField(default=0)
     summary_event_race_score = models.IntegerField(default=0)
-    summary_event_league_score = models.FloatField(default=0)
-    summary_event_override_league_score = models.FloatField(default=0)
+    summary_event_league_score = models.FloatField(default=-1)
+    summary_event_override_league_score = models.FloatField(default=-1)
 
 
 class Score(models.Model):
-    score_value = models.IntegerField(default=0)
-    score_override_value = models.IntegerField(default=0)
+    DEFAULT_LEAGUE_SCORE = -1
+    score_value = models.IntegerField(default=-1)
+    score_override_value = models.IntegerField(default=-1)
     score_school = models.IntegerField()
     score_season = models.IntegerField()
 

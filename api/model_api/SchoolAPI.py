@@ -16,7 +16,7 @@ class SchoolAPI(GeneralModelAPI):
                 )
             else:
                 return EventAPI(self.request).filterSelf(
-                    event_status=Event.EVENT_STATUS_DONE,
+                    event_status=status,
                     event_school_ids_contains=[school_id]
                 )
         else:
@@ -28,7 +28,7 @@ class SchoolAPI(GeneralModelAPI):
             else:
                 return EventAPI(self.request).filterSelf(
                     event_season=season,
-                    event_status=Event.EVENT_STATUS_DONE,
+                    event_status=status,
                     event_school_ids_contains=[school_id]
                 )
 
@@ -40,7 +40,7 @@ class SchoolAPI(GeneralModelAPI):
                 ).exclude(event_name__in=Event.EVENT_NAME_FINAL_RACE)
             else:
                 return EventAPI(self.request).filterSelf(
-                    event_status=Event.EVENT_STATUS_DONE,
+                    event_status=status,
                     event_school_ids_contains=[school_id]
                 ).exclude(event_name__in=Event.EVENT_NAME_FINAL_RACE)
         else:
@@ -52,6 +52,6 @@ class SchoolAPI(GeneralModelAPI):
             else:
                 return EventAPI(self.request).filterSelf(
                     event_season=season,
-                    event_status=Event.EVENT_STATUS_DONE,
+                    event_status=status,
                     event_school_ids_contains=[school_id]
                 ).exclude(event_name__in=Event.EVENT_NAME_FINAL_RACE)
