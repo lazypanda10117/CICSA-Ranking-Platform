@@ -120,3 +120,6 @@ venv.bak/
 
 # Ignore staticfiles
 staticfiles/**
+
+# Ignore newrelic files
+newrelic.ini
