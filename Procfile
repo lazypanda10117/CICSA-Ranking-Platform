@@ -1,1 +1,1 @@
-web: bash ./scripts/compile.sh
+web: newrelic-admin run-program bash ./scripts/compile.sh

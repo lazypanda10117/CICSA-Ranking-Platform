@@ -123,3 +123,6 @@ staticfiles/**
 
 # Ignore Postgres Dump Files
 **.dump
+
+# Ignore newrelic files
+newrelic.ini
