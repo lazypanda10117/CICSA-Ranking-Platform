@@ -56,6 +56,7 @@ class ScoreMapping(models.Model):
 
 
 class EventType(models.Model):
+    # By seeder, there are 2 types: Fleet Race and Team Race
     event_type_name = models.CharField(max_length=200)
 
 
@@ -78,6 +79,7 @@ class Summary(models.Model):
     summary_event_override_ranking = models.IntegerField(default=0)
     summary_event_race_score = models.IntegerField(default=0)
     summary_event_league_score = models.FloatField(default=-1)
+    # I don't think this will be used anymore
     summary_event_override_league_score = models.FloatField(default=-1)
 
 

@@ -20,7 +20,7 @@ class LeagueScoringAPI(AbstractCoreAPI):
     def getCurrentLeagueScoreBySchool(self, school_id, compiled=False, subcompiled=False):
         school = SchoolAPI(self.request).getSelf(id=school_id)
         if compiled:
-            return self.getCompiledScoreForSchool(school)
+            return self.getCompiledScoreForSchool(school, error=False)
         else:
             events = SchoolAPI(self.request).getParticipatedNormalEvents(
                 school_id,
@@ -38,13 +38,16 @@ class LeagueScoringAPI(AbstractCoreAPI):
             return total_score
 
     # Returns either the normal or the overrride score of the summary for the event
-    def getCompiledScoreForSchool(self, school):
+    def getCompiledScoreForSchool(self, school, error=True):
         score = ScoreAPI(self.request).getSeasonScoreValue(school.id, season_id=self.season)
         if score == Score.DEFAULT_LEAGUE_SCORE:
-            raise Exception(
-                "Cannot invoke getCompiledScoreForSchool without first compiling"
-                " the scores for the school (id: {})".format(school.id)
-            )
+            if error:
+                raise Exception(
+                    "Cannot invoke getCompiledScoreForSchool without first compiling"
+                    " the scores for the school (id: {})".format(school.id)
+                )
+            else:
+                return None
         return score
 
     def getScoreForEventBySchool(self, event, school, compiled):
@@ -58,7 +61,7 @@ class LeagueScoringAPI(AbstractCoreAPI):
 
     def getScoreForEvent(self, position, team_number, event_class):
         try:
-            score = self.league_scoring_data.get(event_class).get(team_number).get(position)
+            score = self.league_scoring_data.get(str(event_class)).get(str(team_number)).get(str(position))
         except KeyError:
             raise Exception(
                 "Cannot get the score for event given this context. "
@@ -105,8 +108,9 @@ class LeagueScoringAPI(AbstractCoreAPI):
 
     def getFinalRaceScore(self, school, season):
         final_event = EventAPI(self.request).getSelf(event_name__in=Event.EVENT_NAME_FINAL_RACE, event_season=season)
-        final_ranking = SummaryAPI(self.request).getSummaryRankingBySchool(final_event.id, school.id)
+        print(final_event)
         if final_event and final_event.event_status == Event.EVENT_STATUS_DONE:
+            final_ranking = SummaryAPI(self.request).getSummaryRankingBySchool(final_event.id, school.id)
             return self.getScoreForEvent(final_ranking, final_event.event_team_number, final_event.event_class)
         else:
             return 0
@@ -142,5 +146,28 @@ class LeagueScoringAPI(AbstractCoreAPI):
             result.append(response)
         return result
 
+    def __tryCompileThenCalculateScore(self, school):
+        try:
+            return self.getCompiledScoreForSchool(school, error=True)
+        except:
+            return self.getCurrentLeagueScoreBySchool(school_id=school.id, compiled=False)
+
     def getClientLeagueScoreData(self):
-        pass
+        schools = SchoolAPI(self.request).getAll()
+        result = list()
+        for school in schools:
+            compiled = True
+            school_id = school.id
+            school_name = school.school_name
+            score = self.getCompiledScoreForSchool(school, error=True)
+            if score is None:
+                compiled = False
+                score = self.__tryCompileThenCalculateScore(school)
+            response = dict(
+                compiled=compiled,
+                school_id=school_id,
+                school_name=school_name,
+                display_score=score,
+            )
+            result.append(response)
+        return result

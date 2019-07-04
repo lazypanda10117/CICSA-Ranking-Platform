@@ -1,6 +1,7 @@
 from cicsa_ranking.models import Score
 from api.base.GeneralModelAPI import GeneralModelAPI
 
+
 class ScoreAPI(GeneralModelAPI):
     @staticmethod
     def getBaseClass():
@@ -12,5 +13,6 @@ class ScoreAPI(GeneralModelAPI):
             if score.score_override_value:
                 return score.score_override_value
             return score.score_value
-        except Exception:
+        except Exception as e:
+            print(e)
             return -1
