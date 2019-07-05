@@ -1,6 +1,7 @@
 from django.shortcuts import reverse
 
 from cicsa_ranking.models import Event
+from misc.CustomFunctions import MiscFunctions
 from api import ConfigAPI
 from api import EventAPI
 from api import SchoolAPI
@@ -33,12 +34,6 @@ class LeagueSchoolScoreCompilePage(AbstractBasePage):
             args=['scoring', event_id]
         )
 
-    def __truncateDisplayScore(self, score):
-        try:
-            return float('%.3f' % score)
-        except:
-            return "N/A"
-
     def __checkIsScoreUsed(self, event, score_list, final_events, average_factor):
         for final_event in final_events:
             if event.id == final_event.id:
@@ -56,7 +51,7 @@ class LeagueSchoolScoreCompilePage(AbstractBasePage):
 
     def genContent(self):
         content = list()
-        
+        # TODO: Remove these current season stuff as it will be handled by ModelAPI
         current_season = ConfigAPI(self.request).getConfig().config_current_season
         school_id = self.param.get("school_id")
         school = SchoolAPI(self.request).getSelf(id=school_id)
@@ -86,7 +81,7 @@ class LeagueSchoolScoreCompilePage(AbstractBasePage):
                     event_url=self.__eventUrlTransformer(event.id),
                     event_date=event.event_start_date,
                     school_summary_ranking=rankingMap.get(event.id),
-                    school_summary_score=self.__truncateDisplayScore(score),
+                    school_summary_score=MiscFunctions.truncateDisplayScore(score),
                     used_score_in_calculation=self.__checkIsScoreUsed(
                         event,
                         sorted_score_list,

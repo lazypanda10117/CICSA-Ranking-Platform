@@ -1,5 +1,6 @@
 from django.urls import reverse
 
+from misc.CustomFunctions import MiscFunctions
 from api.functional_api import LeagueScoringAPI
 from panel.module.base.block.CustomPages import AbstractBasePage
 
@@ -28,12 +29,6 @@ class LeagueOverallScoreCompilePage(AbstractBasePage):
             args=['specific', school_id]
         )
 
-    def __truncateDisplayScore(self, score):
-        try:
-            return float('%.3f' % score)
-        except:
-            return "N/A"
-
     def genContent(self):
         content = dict()
         league_scoring_list = LeagueScoringAPI(self.request).getPanelLeagueScoreData()
@@ -43,8 +38,8 @@ class LeagueOverallScoreCompilePage(AbstractBasePage):
                 school_name=data['school_name'],
                 school_score_url=self.__schoolUrlTransformer(data['school_id']),
                 participated_event_num=data['participated_events_num'],
-                league_calculated_score=self.__truncateDisplayScore(data['calculated_score']),
-                league_recorded_score=self.__truncateDisplayScore(data['recorded_score']),
+                league_calculated_score=MiscFunctions.truncateDisplayScore(data['calculated_score']),
+                league_recorded_score=MiscFunctions.truncateDisplayScore(data['recorded_score']),
             )
         content_list = [(idx + 1, o) for idx, o in enumerate(
             sorted(content.values(), key=lambda x: x.get('league_calculated_score'), reverse=True)
