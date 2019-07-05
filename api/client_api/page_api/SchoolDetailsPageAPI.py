@@ -50,8 +50,13 @@ class SchoolDetailsPageAPI(GeneralClientAPI):
                     start_date=event.event_start_date,
                     rank=rank,
                     link=reverse('client.view_dispatch_param', args=["event_scoring", event.id]),
+                    score=MiscFunctions.truncateDisplayScore(
+                        LeagueScoringAPI(self.request).getScoreForEventBySchool(
+                            event=event, school=school, compiled=True
+                        )
+                    )
                 ))
-            return result
+            return sorted(result, key=lambda event: event.get('start_date'), reverse=True)
 
         school_id = kwargs.get("id")
         school_api = SchoolAPI(self.request)
