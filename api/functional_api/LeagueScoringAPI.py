@@ -59,7 +59,7 @@ class LeagueScoringAPI(AbstractCoreAPI):
             try:
                 return self.getCompiledScoreForEventBySchool(event, school)
             except Exception as e:
-                print(e)
+                pass
         position = SummaryAPI(self.request).getSummaryRankingBySchool(event.id, school.id)
         return self.getScoreForEvent(position, event.event_team_number, event.event_class)
 

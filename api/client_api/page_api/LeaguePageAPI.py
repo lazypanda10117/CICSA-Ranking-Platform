@@ -25,8 +25,6 @@ class LeaguePageAPI(GeneralClientAPI):
                 reverse=True
             )
             for idx, league_score in enumerate(sorted_score_list):
-                print(league_score.get('compiled'))
-                print(type(league_score.get('compiled')))
                 league_row = dict(
                     rank=idx+1,
                     school_id=league_score.get('school_id'),

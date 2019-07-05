@@ -14,5 +14,4 @@ class ScoreAPI(GeneralModelAPI):
                 return score.score_override_value
             return score.score_value
         except Exception as e:
-            print(e)
             return -1
