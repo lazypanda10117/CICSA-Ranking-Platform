@@ -164,7 +164,7 @@ class LeagueScoringAPI(AbstractCoreAPI):
             compiled = True
             school_id = school.id
             school_name = school.school_name
-            score = self.getCompiledScoreForSchool(school, error=True)
+            score = self.getCompiledScoreForSchool(school, error=False)
             if score is None:
                 compiled = False
                 score = self.__tryCompileThenCalculateScore(school)
@@ -173,6 +173,11 @@ class LeagueScoringAPI(AbstractCoreAPI):
                 school_id=school_id,
                 school_name=school_name,
                 display_score=score,
+                num_race=SchoolAPI(self.request).getParticipatedEvents(
+                        school_id=school_id,
+                        status=Event.EVENT_STATUS_DONE,
+                        season=self.season,
+                    ).count()
             )
             result.append(response)
         return result
