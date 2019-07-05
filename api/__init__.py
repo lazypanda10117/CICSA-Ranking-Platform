@@ -18,6 +18,7 @@ from .functional_api import NewsAPI
 
 # Importing APIs From ModelAPI
 from .model_api import AccountAPI
+from .model_api import ConfigAPI
 from .model_api import EventActivityAPI
 from .model_api import EventAPI
 from .model_api import EventTagAPI

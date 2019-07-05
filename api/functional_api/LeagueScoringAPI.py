@@ -28,14 +28,18 @@ class LeagueScoringAPI(AbstractCoreAPI):
                 self.season
             )
             # TODO: Optimize the current n x m queries ;_;
-            scores = sorted(
-                [self.getScoreForEventBySchool(event, school, subcompiled) for event in events],
-                reverse=True
-            )
+            scores = [score for score, event in self.getReverseSortedEventScoresList(school, events, subcompiled)]
             average_score = self.getAverageScore(scores, school.school_region)
             final_race_score = self.getFinalRaceScore(school, self.season)
             total_score = average_score + final_race_score
             return total_score
+
+    def getReverseSortedEventScoresList(self, school, events, subcompiled=False):
+        return sorted(
+            [(self.getScoreForEventBySchool(event, school, subcompiled), event) for event in events],
+            key=lambda eventTuple: (eventTuple[0], eventTuple[1].event_create_time),
+            reverse=True
+        )
 
     # Returns either the normal or the overrride score of the summary for the event
     def getCompiledScoreForSchool(self, school, error=True):
@@ -84,10 +88,8 @@ class LeagueScoringAPI(AbstractCoreAPI):
             if summary.summary_event_override_league_score == Summary.DEFAULT_SUMMARY_LEAGUE_SCORE \
             else summary.summary_event_override_league_score
 
-    def getAverageScore(self, scores, region):
+    def getAverageFactor(self, region, num_race):
         num_school_in_region = SchoolAPI(self.request).filterSelf(school_region=region).count()
-        num_race = len(scores)
-
         # Specific region has different race num average
         if num_school_in_region in [1, 2]:
             base_average_race_num = 1
@@ -97,7 +99,11 @@ class LeagueScoringAPI(AbstractCoreAPI):
             raise Exception("Try to retrieve a region with less than or equal to 0 school.")
 
         average_factor = max(base_average_race_num, min(math.ceil(num_race/2), 4))
+        return average_factor
 
+    def getAverageScore(self, scores, region):
+        num_race = len(scores)
+        average_factor = self.getAverageFactor(region, num_race)
         total_score = 0
         for count, score in enumerate(scores):
             if count < average_factor:
@@ -128,7 +134,7 @@ class LeagueScoringAPI(AbstractCoreAPI):
         for school in schools:
             school_id = school.id
             school_name = school.school_name
-            participated_events = SchoolAPI(self.request).getParticipatedNormalEvents(
+            participated_events = SchoolAPI(self.request).getParticipatedEvents(
                 school_id,
                 Event.EVENT_STATUS_DONE,
                 self.season
