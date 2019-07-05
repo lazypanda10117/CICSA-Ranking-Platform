@@ -13,7 +13,7 @@ class NewsPageAPI(GeneralClientAPI):
                 dict(news_post_status=news_status)
                 ).order_by('-news_post_create_time')
             news_dict = list(map(lambda news: dict(
-                news_post_link=reverse("client.view_dispatch_param", args=["specific_news", news.id]),
+                news_post_link=reverse("client.view_dispatch_param", args=["news_specific", news.id]),
                 news_post_title=news.news_post_title,
                 news_post_content=news.news_post_content,
                 news_post_owner_name=AccountAPI(self.request).getAssociatedNameById(news.news_post_owner),

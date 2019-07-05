@@ -12,7 +12,7 @@ class LeaguePageAPI(GeneralClientAPI):
     def __schoolUrlTransformer(self, school_id):
         return reverse(
             'client.view_dispatch_param',
-            args=['school_details', school_id]
+            args=['school_specific', school_id]
         )
 
     def grabPageData(self, **kwargs):

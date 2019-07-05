@@ -16,15 +16,15 @@ class GenericClientPage():
 
     def setDispatcher(self):
         dispatcher = Dispatcher()
-        dispatcher.add('scoring', dict(page_api=ScoringPageAPI, template_path='client/regatta.html'))
-        dispatcher.add('rotation', dict(page_api=RotationPageAPI, template_path='client/rotation.html'))
-        dispatcher.add('regattas', dict(page_api=RegattasPageAPI, template_path='client/regattas.html'))
-        dispatcher.add('schools', dict(page_api=SchoolsPageAPI, template_path='client/teams.html'))
+        dispatcher.add('events', dict(page_api=RegattasPageAPI, template_path='client/events.html'))
+        dispatcher.add('event_scoring', dict(page_api=ScoringPageAPI, template_path='client/event_scoring.html'))
+        dispatcher.add('event_rotation', dict(page_api=RotationPageAPI, template_path='client/event_rotation.html'))
+        dispatcher.add('league', dict(page_api=LeaguePageAPI, template_path='client/league.html'))
+        dispatcher.add('schools', dict(page_api=SchoolsPageAPI, template_path='client/schools.html'))
+        dispatcher.add('school_specific', dict(page_api=SchoolDetailsPageAPI, template_path='client/school_specific.html'))
         dispatcher.add('seasons', dict(page_api=SeasonPageAPI, template_path='client/seasons.html'))
         dispatcher.add('news', dict(page_api=NewsPageAPI, template_path='client/news.html'))
-        dispatcher.add('specific_news', dict(page_api=SpecificNewsPageAPI, template_path='client/specific_news.html'))
-        dispatcher.add('league', dict(page_api=LeaguePageAPI, template_path='client/league.html'))
-        dispatcher.add('school_details', dict(page_api=SchoolDetailsPageAPI, template_path='client/school_details.html'))
+        dispatcher.add('news_specific', dict(page_api=SpecificNewsPageAPI, template_path='client/news_specific.html'))
         return dispatcher
 
     def parseMatch(self, pattern):

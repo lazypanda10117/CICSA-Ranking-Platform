@@ -151,7 +151,7 @@ class LeagueScoringAPI(AbstractCoreAPI):
             result.append(response)
         return result
 
-    def __tryCompileThenCalculateScore(self, school):
+    def tryCompileThenCalculateScore(self, school):
         try:
             return self.getCompiledScoreForSchool(school, error=True)
         except:
@@ -167,7 +167,7 @@ class LeagueScoringAPI(AbstractCoreAPI):
             score = self.getCompiledScoreForSchool(school, error=False)
             if score is None:
                 compiled = False
-                score = self.__tryCompileThenCalculateScore(school)
+                score = self.tryCompileThenCalculateScore(school)
             response = dict(
                 compiled=compiled,
                 school_id=school_id,
