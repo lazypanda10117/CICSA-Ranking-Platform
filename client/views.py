@@ -6,7 +6,7 @@ from client.CustomProcesses import SpecificNewsProcess
 
 
 def index(request):
-    return viewDispatch(request, "regattas")
+    return viewDispatch(request, "events")
 
 
 def viewDispatch(request, route, param=''):
@@ -21,15 +21,15 @@ def processDispatch(request, route, param=''):
 class ClientView():
     def setViewDispatcher(self):
         dispatcher = Dispatcher()
-        dispatcher.add('scoring', GenericClientPage)
-        dispatcher.add('rotation', GenericClientPage)
-        dispatcher.add('regattas', GenericClientPage)
+        dispatcher.add('events', GenericClientPage)
+        dispatcher.add('event_scoring', GenericClientPage)
+        dispatcher.add('event_rotation', GenericClientPage)
+        dispatcher.add('league', GenericClientPage)
         dispatcher.add('schools', GenericClientPage)
+        dispatcher.add('school_specific', GenericClientPage)
         dispatcher.add('seasons', GenericClientPage)
         dispatcher.add('news', GenericClientPage)
-        dispatcher.add('specific_news', GenericClientPage)
-        dispatcher.add('school_details', GenericClientPage)
-        dispatcher.add('league', GenericClientPage)
+        dispatcher.add('news_specific', GenericClientPage)
         return dispatcher
 
     def setProcessDispatcher(self):

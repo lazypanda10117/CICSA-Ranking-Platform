@@ -1,11 +1,14 @@
 # Importing APIs From ClientAPI
 from .client_api import RegattasPageAPI
-from .client_api import RegionPageAPI
-from .client_api import RotationPageAPI
-from .client_api import SchoolPageAPI
-from .client_api import SchoolsPageAPI
 from .client_api import ScoringPageAPI
+from .client_api import RotationPageAPI
+from .client_api import LeaguePageAPI
+from .client_api import SchoolsPageAPI
+from .client_api import SchoolDetailsPageAPI
 from .client_api import SeasonPageAPI
+from .client_api import NewsPageAPI
+from .client_api import SpecificNewsPageAPI
+
 
 # Importing APIs From AuthenticationAPI
 from .authentication_api import AuthenticationMetaAPI
@@ -18,6 +21,7 @@ from .functional_api import NewsAPI
 
 # Importing APIs From ModelAPI
 from .model_api import AccountAPI
+from .model_api import ConfigAPI
 from .model_api import EventActivityAPI
 from .model_api import EventAPI
 from .model_api import EventTagAPI

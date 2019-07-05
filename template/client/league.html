@@ -1,25 +1,79 @@
 {% extends 'client/index.html' %}
 
+{% block head %}
+	<script type="text/javascript">
+		window.onload = function() {
+			$(document).ready(function() {
+				// from https://stackoverflow.com/a/29129307
+				$(function(){
+					$('.table tr[data-href]').each(function(){
+						$(this).css('cursor','pointer').hover(
+							function(){
+								$(this).addClass('active');
+							},
+							function(){
+								$(this).removeClass('active');
+							}).click( function(){
+								document.location = $(this).attr('data-href');
+							}
+						);
+					});
+				});
+			});
+		};
+	</script>
+{% endblock %}
+
 {% block content %}
 	<div class="container mt-4 mb-4">
 		<h2>League Ranking</h2>
 		<ul class="list-group mt-3">
-			{% for league_title, league_list in page_data.items %}
+			{% for identifier, league_list in page_data.items %}
 				<ul class="list-group mt-4">
 					{% if league_list %}
 					<div class="table-responsive">
 						<table class="table table-hover">
 							<thead>
 								<tr>
-									<th scope="col">{{ league_title }}</th>
+									<th scope="col">
+										Rank
+									</th>
+									<th scope="col">
+										School
+									</th>
+									<th scope="col">
+										Number of Races
+									</th>
+									<th scope="col">
+										Score
+									</th>
+									<th scope="col">
+										Finalized
+									</th>
 								</tr>
 							</thead>
 
                             {% for league_ranking in league_list %}
                                 <tbody>
-                                    <tr data-href="{{ league_ranking.league_school_link }}">
+                                    <tr data-href="{{ league_ranking.school_url }}">
                                         <td scope="row">
-                                            {{ league_ranking.league_school_name }}
+                                            {{ league_ranking.rank }}
+                                        </td>
+                                        <td scope="row">
+                                            {{ league_ranking.school_name }}
+                                        </td>
+                                        <td scope="row">
+                                            {{ league_ranking.num_race }}
+                                        </td>
+                                        <td scope="row">
+                                            {{ league_ranking.league_score }}
+                                        </td>
+                                        <td scope="row">
+                                            {% if league_ranking.score_finalized %}
+                                            	<i class="fa fa-circle  fa-fw" style="margin-left: 15px;"></i>
+                                            {% else %}
+                                            	<i class="fa fa-circle-thin fa-fw" style="margin-left: 15px;"></i>
+                                            {% endif %}
                                         </td>
                                     </tr>
                                     {% empty %}

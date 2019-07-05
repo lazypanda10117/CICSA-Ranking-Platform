@@ -1,7 +1,15 @@
 from django.shortcuts import reverse
+
 from misc.CustomFunctions import UrlFunctions
+from misc.CustomFunctions import MiscFunctions
 from api.base.GeneralClientAPI import GeneralClientAPI
-from api.model_api import ConfigAPI, RegionAPI, SchoolAPI, ScoreAPI, SummaryAPI
+from api.functional_api import LeagueScoringAPI
+from api.model_api import ConfigAPI
+from api.model_api import RegionAPI
+from api.model_api import SchoolAPI
+from api.model_api import ScoreAPI
+from api.model_api import SummaryAPI
+
 
 class SchoolDetailsPageAPI(GeneralClientAPI):
     def grabPageData(self, **kwargs):
@@ -22,7 +30,9 @@ class SchoolDetailsPageAPI(GeneralClientAPI):
                     )
                 ),
                 school_status=school.school_status.capitalize(),
-                school_season_score=(season_score if season_score != -1 else "-")
+                school_season_score=MiscFunctions.truncateDisplayScore(
+                    LeagueScoringAPI(self.request).tryCompileThenCalculateScore(school)
+                )
             )
 
         def getSchoolParticipatedEvents(school_id, season_id):
@@ -39,9 +49,14 @@ class SchoolDetailsPageAPI(GeneralClientAPI):
                     region=region.region_name,
                     start_date=event.event_start_date,
                     rank=rank,
-                    link=reverse('client.view_dispatch_param', args=["scoring", event.id]),
+                    link=reverse('client.view_dispatch_param', args=["event_scoring", event.id]),
+                    score=MiscFunctions.truncateDisplayScore(
+                        LeagueScoringAPI(self.request).getScoreForEventBySchool(
+                            event=event, school=school, compiled=True
+                        )
+                    )
                 ))
-            return result
+            return sorted(result, key=lambda event: event.get('start_date'), reverse=True)
 
         school_id = kwargs.get("id")
         school_api = SchoolAPI(self.request)
@@ -54,3 +69,4 @@ class SchoolDetailsPageAPI(GeneralClientAPI):
             school_participated_events=getSchoolParticipatedEvents(school_id, current_season)
         )
         return page_data
+    

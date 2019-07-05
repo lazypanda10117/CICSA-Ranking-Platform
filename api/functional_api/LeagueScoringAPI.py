@@ -1,9 +1,9 @@
 import math
 
-from cicsa_ranking.models import Event
+from cicsa_ranking.models import Event, Summary, Score
 from api.base import AbstractCoreAPI
 from api.authentication import AuthenticationGuardType
-from api.model_api import SchoolAPI, EventAPI, SummaryAPI, ConfigAPI
+from api.model_api import SchoolAPI, EventAPI, SummaryAPI, ConfigAPI, ScoreAPI
 from api.config import ConfigReader
 
 
@@ -17,23 +17,55 @@ class LeagueScoringAPI(AbstractCoreAPI):
         self.league_scoring_data = self.LeagueScoringConfig.getData('league_rank_place_score_map')
 
     # TODO: Not supporting getting history league scores yet
-    def getCurrentLeagueScoreBySchool(self, school_id):
+    def getCurrentLeagueScoreBySchool(self, school_id, compiled=False, subcompiled=False):
         school = SchoolAPI(self.request).getSelf(id=school_id)
-        events = SchoolAPI(self.request).getParticipatedNormalEvents(school_id, Event.EVENT_STATUS_DONE, self.season)
-        # TODO: Optimize the current n x m queries ;_;
-        scores = sorted([self.getScoreForEventBySchool(event, school) for event in events], reverse=True)
-        average_score = self.getAverageScore(scores, school.school_region)
-        final_race_score = self.getFinalRaceScore(school, self.season)
-        total_score = average_score + final_race_score
-        return total_score
+        if compiled:
+            return self.getCompiledScoreForSchool(school, error=False)
+        else:
+            events = SchoolAPI(self.request).getParticipatedNormalEvents(
+                school_id,
+                Event.EVENT_STATUS_DONE,
+                self.season
+            )
+            # TODO: Optimize the current n x m queries ;_;
+            scores = [score for score, event in self.getReverseSortedEventScoresList(school, events, subcompiled)]
+            average_score = self.getAverageScore(scores, school.school_region)
+            final_race_score = self.getFinalRaceScore(school, self.season)
+            total_score = average_score + final_race_score
+            return total_score
 
-    def getScoreForEventBySchool(self, event, school):
+    def getReverseSortedEventScoresList(self, school, events, subcompiled=False):
+        return sorted(
+            [(self.getScoreForEventBySchool(event, school, subcompiled), event) for event in events],
+            key=lambda eventTuple: (eventTuple[0], eventTuple[1].event_create_time),
+            reverse=True
+        )
+
+    # Returns either the normal or the overrride score of the summary for the event
+    def getCompiledScoreForSchool(self, school, error=True):
+        score = ScoreAPI(self.request).getSeasonScoreValue(school.id, season_id=self.season)
+        if score == Score.DEFAULT_LEAGUE_SCORE:
+            if error:
+                raise Exception(
+                    "Cannot invoke getCompiledScoreForSchool without first compiling"
+                    " the scores for the school (id: {})".format(school.id)
+                )
+            else:
+                return None
+        return score
+
+    def getScoreForEventBySchool(self, event, school, compiled):
+        if compiled:
+            try:
+                return self.getCompiledScoreForEventBySchool(event, school)
+            except Exception as e:
+                pass
         position = SummaryAPI(self.request).getSummaryRankingBySchool(event.id, school.id)
         return self.getScoreForEvent(position, event.event_team_number, event.event_class)
 
     def getScoreForEvent(self, position, team_number, event_class):
         try:
-            score = self.league_scoring_data.get(event_class).get(team_number).get(position)
+            score = self.league_scoring_data.get(str(event_class)).get(str(team_number)).get(str(position))
         except KeyError:
             raise Exception(
                 "Cannot get the score for event given this context. "
@@ -41,10 +73,23 @@ class LeagueScoringAPI(AbstractCoreAPI):
             )
         return score
 
-    def getAverageScore(self, scores, region):
-        num_school_in_region = SchoolAPI(self.request).filterSelf(school_region=region).count()
-        num_race = len(scores)
+    # Returns either the normal or the overrride score of the summary for the event
+    def getCompiledScoreForEventBySchool(self, event, school):
+        def isScoreCompiled(summary):
+            return not summary.summary_event_ranking == Summary.DEFAULT_SUMMARY_LEAGUE_SCORE
 
+        summary = SummaryAPI(self.request).getSelf(summary_event_parent=event.id, summary_event_school=school.id)
+        if isScoreCompiled(summary):
+            raise Exception(
+                "Cannot invoke getCompiledScoreForEvent without first compiling"
+                " the scores for the event (id: {}) and school (id: {})".format(event.id, school.id)
+            )
+        return summary.summary_event_league_score \
+            if summary.summary_event_override_league_score == Summary.DEFAULT_SUMMARY_LEAGUE_SCORE \
+            else summary.summary_event_override_league_score
+
+    def getAverageFactor(self, region, num_race):
+        num_school_in_region = SchoolAPI(self.request).filterSelf(school_region=region).count()
         # Specific region has different race num average
         if num_school_in_region in [1, 2]:
             base_average_race_num = 1
@@ -54,7 +99,11 @@ class LeagueScoringAPI(AbstractCoreAPI):
             raise Exception("Try to retrieve a region with less than or equal to 0 school.")
 
         average_factor = max(base_average_race_num, min(math.ceil(num_race/2), 4))
+        return average_factor
 
+    def getAverageScore(self, scores, region):
+        num_race = len(scores)
+        average_factor = self.getAverageFactor(region, num_race)
         total_score = 0
         for count, score in enumerate(scores):
             if count < average_factor:
@@ -65,11 +114,11 @@ class LeagueScoringAPI(AbstractCoreAPI):
 
     def getFinalRaceScore(self, school, season):
         final_event = EventAPI(self.request).getSelf(event_name__in=Event.EVENT_NAME_FINAL_RACE, event_season=season)
-        final_ranking = SummaryAPI(self.request).getSummaryRankingBySchool(final_event.id, school.id)
         if final_event and final_event.event_status == Event.EVENT_STATUS_DONE:
-            return self.getScoreForEvent(final_ranking, final_event.event_team_number, final_event.event_class)
-        else:
-            return 0
+            final_ranking = SummaryAPI(self.request).getSummaryRankingBySchool(final_event.id, school.id)
+            if final_ranking is not None:
+                return self.getScoreForEvent(final_ranking, final_event.event_team_number, final_event.event_class)
+        return 0
 
     # All the functions below corresponds to a specific season (defined by self.season above)
     def setNormalOverrideSummaryScores(self, school, score_dict):
@@ -78,13 +127,57 @@ class LeagueScoringAPI(AbstractCoreAPI):
     def setNormalOverrideLeagueScore(self, school, score_tuple):
         pass
 
-    # Returns either the normal or the overrride score of the summary for the event
-    def getCompiledScoreForEvent(self, event, school):
-        pass
+    def getPanelLeagueScoreData(self):
+        schools = SchoolAPI(self.request).getAll()
+        result = list()
+        for school in schools:
+            school_id = school.id
+            school_name = school.school_name
+            participated_events = SchoolAPI(self.request).getParticipatedEvents(
+                school_id,
+                Event.EVENT_STATUS_DONE,
+                self.season
+            )
+            participated_events_num = participated_events.count()
+            calculated_score = self.getCurrentLeagueScoreBySchool(school_id=school.id, compiled=False)
+            recorded_score = self.getCurrentLeagueScoreBySchool(school_id=school.id, compiled=True)
+            response = dict(
+                school_id=school_id,
+                school_name=school_name,
+                participated_events_num=participated_events_num,
+                calculated_score=calculated_score,
+                recorded_score=recorded_score,
+            )
+            result.append(response)
+        return result
 
-    # Returns either the normal or the overrride score of the score for the school
-    def getFinalLeagueScore(self, school):
-        pass
+    def tryCompileThenCalculateScore(self, school):
+        try:
+            return self.getCompiledScoreForSchool(school, error=True)
+        except:
+            return self.getCurrentLeagueScoreBySchool(school_id=school.id, compiled=False)
 
-    def getFinalLeagueScores(self):
-        pass
+    def getClientLeagueScoreData(self):
+        schools = SchoolAPI(self.request).getAll()
+        result = list()
+        for school in schools:
+            compiled = True
+            school_id = school.id
+            school_name = school.school_name
+            score = self.getCompiledScoreForSchool(school, error=False)
+            if score is None:
+                compiled = False
+                score = self.tryCompileThenCalculateScore(school)
+            response = dict(
+                compiled=compiled,
+                school_id=school_id,
+                school_name=school_name,
+                display_score=score,
+                num_race=SchoolAPI(self.request).getParticipatedEvents(
+                        school_id=school_id,
+                        status=Event.EVENT_STATUS_DONE,
+                        season=self.season,
+                    ).count()
+            )
+            result.append(response)
+        return result
