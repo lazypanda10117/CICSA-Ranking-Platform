@@ -15,6 +15,55 @@
         <!-- In-house Customized Javascript Libraries -->
         <script src="{% static 'js/viewFunctions.js' %}"></script>
 
+        <script>
+            function setPanelConfig(key, val) {
+                var config = {}
+                var panelConfig = {};
+                if ('config' in localStorage) {
+                    config = JSON.parse(localStorage.config);
+                }
+                if (config.panel) {
+                    panelConfig = config.panel;
+                }
+                panelConfig[key] = val;
+                config["panel"] = panelConfig;
+                localStorage.config = JSON.stringify(config);
+            }
+
+            function getPanelConfig(key) {
+                if ('config' in localStorage === false) {
+                    return null;
+                }
+                config = JSON.parse(localStorage.config);
+                if (!config.panel) {
+                    return null;
+                }
+                panelConfig = config.panel;
+                return panelConfig[key];
+            }
+
+            function defaultView() {
+                // Check if the sidebar is active first in local storage
+                var isToggled = document.getElementById("wrapper").className === "toggled";
+                var showSidebar = getPanelConfig("showSidebar");
+                if (showSidebar === null) {
+                    setPanelConfig("showSidebar", true);
+                    showSidebar = getPanelConfig("showSidebar");
+                }
+                if (showSidebar) {
+                    if (!isToggled) {
+                        $("#wrapper").toggleClass("toggled");
+                    }
+                    $("#menu-show").hide();
+                } else {
+                    if (isToggled) {
+                        $("#wrapper").toggleClass("toggled");
+                    }
+                    $("#menu-hide").hide();
+                }
+            }
+        </script>
+
         {% block 'head' %}
             <script>
                 function onLoad() {
@@ -35,26 +84,49 @@
                     {% endblock %}
                     <li><a href="{% url 'permission.dispatch' route='logout' %}">Logout</a></li>
                     <br>
-                    <li style="color:#e0e0e0">Version 0.1</li>
+                    <li style="color:#e0e0e0">Version 0.3</li>
                 </div>
             </div>
             <div id="page-content-wrapper">
                 <div class="container-fluid">
-                    <div class="mb-3">
-                        <a href="#menu-popup" id="menu-popup">
-                            <i class="fa fa-bars fa-2x"></i>
-                        </a>
-                    </div>
-
                     {% block 'body' %}
                     {% endblock %}
                 </div>
             </div>
         </div>
+        
+        
+        <div id="menu-btn-wrapper">
+            <a href="#" id="menu-show" class="show-menu-btn smoothscroll" style="display: inline;">
+                <div class="menu-text-div">
+                    Show Menu
+                </div>
+            </a>
+        </div>
+        <div id="menu-btn-wrapper">
+            <a href="#" id="menu-hide" class="hide-menu-btn smoothscroll" style="display: inline;">
+                <div class="menu-text-div">
+                    Hide Menu
+                </div>
+            </a>
+        </div>
         <script>
-            $("#menu-popup").click(function(e) {
+            defaultView();
+            
+            $("#menu-show").click(function(e) {
                 e.preventDefault();
                 $("#wrapper").toggleClass("toggled");
+                $("#menu-show").hide();
+                $("#menu-hide").show();
+                setPanelConfig("showSidebar", true);
+            });
+            
+            $("#menu-hide").click(function(e) {
+                e.preventDefault();
+                $("#wrapper").toggleClass("toggled");
+                $("#menu-hide").hide();
+                $("#menu-show").show();
+                setPanelConfig("showSidebar", false);
             });
         </script>
     </body>
