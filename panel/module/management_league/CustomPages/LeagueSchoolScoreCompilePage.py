@@ -39,7 +39,11 @@ class LeagueSchoolScoreCompilePage(AbstractBasePage):
         except:
             return "N/A"
 
-    def __checkIsScoreUsed(self, event, score_list, average_factor):
+    def __checkIsScoreUsed(self, event, score_list, final_events, average_factor):
+        for final_event in final_events:
+            if event.id == final_event.id:
+                return True
+
         for idx, score_event in enumerate(score_list):
             loop_event = score_event[1]
             if idx < average_factor:
@@ -47,6 +51,7 @@ class LeagueSchoolScoreCompilePage(AbstractBasePage):
                     return True
             else:
                 break
+
         return False
 
     def genContent(self):
@@ -61,15 +66,16 @@ class LeagueSchoolScoreCompilePage(AbstractBasePage):
             current_season
         )
         rankingMap = SummaryAPI(self.request).getAllSummaryRankingBySchool(school_id)
-        print(rankingMap)
         league_scoring_api = LeagueScoringAPI(self.request)
+        average_events = list(filter(lambda event: event.event_name not in Event.EVENT_NAME_FINAL_RACE, participated_events))
+        final_events = list(filter(lambda event: event.event_name in Event.EVENT_NAME_FINAL_RACE, participated_events))
         average_factor = league_scoring_api.getAverageFactor(
-                                school.school_region, 
-                                len(participated_events)
+                                school.school_region,
+                                len(average_events)
                             )
-        sortedScoreList = league_scoring_api.getReverseSortedEventScoresList(
+        sorted_score_list = league_scoring_api.getReverseSortedEventScoresList(
                                 school, 
-                                participated_events
+                                average_events
                             )
         for event in participated_events:
             score = league_scoring_api.getScoreForEventBySchool(event, school, False)
@@ -83,7 +89,8 @@ class LeagueSchoolScoreCompilePage(AbstractBasePage):
                     school_summary_score=self.__truncateDisplayScore(score),
                     used_score_in_calculation=self.__checkIsScoreUsed(
                         event,
-                        sortedScoreList, 
+                        sorted_score_list,
+                        final_events,
                         average_factor
                     ),
                 )

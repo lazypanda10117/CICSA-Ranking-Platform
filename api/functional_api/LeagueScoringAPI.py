@@ -114,12 +114,11 @@ class LeagueScoringAPI(AbstractCoreAPI):
 
     def getFinalRaceScore(self, school, season):
         final_event = EventAPI(self.request).getSelf(event_name__in=Event.EVENT_NAME_FINAL_RACE, event_season=season)
-        print(final_event)
         if final_event and final_event.event_status == Event.EVENT_STATUS_DONE:
             final_ranking = SummaryAPI(self.request).getSummaryRankingBySchool(final_event.id, school.id)
-            return self.getScoreForEvent(final_ranking, final_event.event_team_number, final_event.event_class)
-        else:
-            return 0
+            if final_ranking is not None:
+                return self.getScoreForEvent(final_ranking, final_event.event_team_number, final_event.event_class)
+        return 0
 
     # All the functions below corresponds to a specific season (defined by self.season above)
     def setNormalOverrideSummaryScores(self, school, score_dict):
