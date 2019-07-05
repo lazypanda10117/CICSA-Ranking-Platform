@@ -3,6 +3,7 @@ from misc.CustomElements import Dispatcher
 from panel.module.base.block.Base import AbstractBlockApp
 from panel.module.management_league.CustomPages import LeagueSchoolScoreCompilePage
 from panel.module.management_league.CustomPages import LeagueOverallScoreCompilePage
+from panel.module.management_league.CustomProcesses import LeagueOverallScoreCompileProcess
 from panel.module.ModuleRegistry import ModuleRegistry
 
 
@@ -35,6 +36,5 @@ class ManagementLeagueView(AbstractBlockApp.AppView):
 
     def setProcessDispatcher(self):
         dispatcher = Dispatcher()
-        dispatcher.add('overall_compiler', LeagueOverallScoreCompilePage)
-
+        dispatcher.add('compile', LeagueOverallScoreCompileProcess)
         return dispatcher

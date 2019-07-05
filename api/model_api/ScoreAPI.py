@@ -10,8 +10,8 @@ class ScoreAPI(GeneralModelAPI):
     def getSeasonScoreValue(self, school_id, season_id):
         try:
             score = self.getSelf(score_school=school_id, score_season=season_id)
-            if score.score_override_value:
+            if not score.score_override_value == Score.DEFAULT_LEAGUE_SCORE:
                 return score.score_override_value
             return score.score_value
         except Exception as e:
-            return -1
+            return Score.DEFAULT_LEAGUE_SCORE

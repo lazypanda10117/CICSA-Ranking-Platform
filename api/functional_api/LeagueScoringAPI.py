@@ -1,9 +1,15 @@
 import math
 
-from cicsa_ranking.models import Event, Summary, Score
+from cicsa_ranking.models import Event
+from cicsa_ranking.models import Summary
+from cicsa_ranking.models import Score
 from api.base import AbstractCoreAPI
 from api.authentication import AuthenticationGuardType
-from api.model_api import SchoolAPI, EventAPI, SummaryAPI, ConfigAPI, ScoreAPI
+from api.model_api import SchoolAPI
+from api.model_api import EventAPI
+from api.model_api import SummaryAPI
+from api.model_api import ConfigAPI
+from api.model_api import ScoreAPI
 from api.config import ConfigReader
 
 
@@ -120,12 +126,29 @@ class LeagueScoringAPI(AbstractCoreAPI):
                 return self.getScoreForEvent(final_ranking, final_event.event_team_number, final_event.event_class)
         return 0
 
-    # All the functions below corresponds to a specific season (defined by self.season above)
     def setNormalOverrideSummaryScores(self, school, score_dict):
-        pass
+        school_id = school.id
+        for event_id, score in score_dict.items():
+            summary = SummaryAPI(self.request).verifySelf(summary_event_parent=event_id, summary_event_school=school_id)
+            summary.summary_event_league_score = float(score)
+            summary.save()
 
     def setNormalOverrideLeagueScore(self, school, score_tuple):
-        pass
+        school_id = school.id
+        score = ScoreAPI(self.request).getSelf(score_school=school_id, score_season=self.season)
+        if score is None:
+            score = Score()
+            score.score_school = school_id
+            score.score_season = self.season
+            score.score_value = float(score_tuple[0])
+            score.score_override_value = float(score_tuple[1])
+            score = ScoreAPI(self.request).addSelf(score)
+            score.save()
+        else:
+            score.score_value = float(score_tuple[0])
+            score.score_override_value = float(score_tuple[1])
+            ScoreAPI(self.request).verifySelf(id=score.id)
+            score.save()
 
     def getPanelLeagueScoreData(self):
         schools = SchoolAPI(self.request).getAll()
@@ -165,6 +188,7 @@ class LeagueScoringAPI(AbstractCoreAPI):
             school_id = school.id
             school_name = school.school_name
             score = self.getCompiledScoreForSchool(school, error=False)
+            print(score)
             if score is None:
                 compiled = False
                 score = self.tryCompileThenCalculateScore(school)

@@ -17,7 +17,7 @@ class LeagueOverallScoreCompilePage(AbstractBasePage):
             block_title='Compile League Overall Score',
             action_destination=reverse(
                 'panel.module.management_league.process_dispatch',
-                args=['overall_compiler']),
+                args=['compile']),
             form_id='league_overall_compile_form',
             contents=self.genContent()
         )
