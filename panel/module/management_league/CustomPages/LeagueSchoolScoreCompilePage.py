@@ -31,7 +31,7 @@ class LeagueSchoolScoreCompilePage(AbstractBasePage):
     def __eventUrlTransformer(self, event_id):
         return reverse(
             'client.view_dispatch_param',
-            args=['scoring', event_id]
+            args=['event_scoring', event_id]
         )
 
     def __checkIsScoreUsed(self, event, score_list, final_events, average_factor):
