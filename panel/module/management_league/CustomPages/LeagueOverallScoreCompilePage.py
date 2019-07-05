@@ -22,7 +22,7 @@ class LeagueOverallScoreCompilePage(AbstractBasePage):
         )
 
     # TODO: transform school id to the edit page for the league score of that school
-    def schoolUrlTransformer(self, school_id):
+    def __schoolUrlTransformer(self, school_id):
         return reverse(
             'panel.module.management_league.view_dispatch_param',
             args=['specific', school_id]
@@ -41,7 +41,7 @@ class LeagueOverallScoreCompilePage(AbstractBasePage):
             content[index] = dict(
                 school_id=data['school_id'],
                 school_name=data['school_name'],
-                school_score_url=self.schoolUrlTransformer(data['school_id']),
+                school_score_url=self.__schoolUrlTransformer(data['school_id']),
                 participated_event_num=data['participated_events_num'],
                 league_calculated_score=self.__truncateDisplayScore(data['calculated_score']),
                 league_recorded_score=self.__truncateDisplayScore(data['recorded_score']),

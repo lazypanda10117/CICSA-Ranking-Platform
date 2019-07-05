@@ -1,49 +1,97 @@
 from django.shortcuts import reverse
+
+from cicsa_ranking.models import Event
+from api import ConfigAPI
 from api import EventAPI
-from panel.component.CustomElements import Choices
+from api import SchoolAPI
+from api import SummaryAPI
+from api import LeagueScoringAPI
 from panel.module.base.block.CustomPages import AbstractBasePage
-from panel.module.base.block.CustomComponents import BlockObject
-from panel.module.base.block.CustomComponents import BlockSet
-from panel.module.base.block.CustomComponents import PageObject
 
 
 class LeagueSchoolScoreCompilePage(AbstractBasePage):
-    def generateList(self):
-        event_type = dict((y, x) for x, y in Choices().getEventTypeChoices())[self.param["type"]]
-
-        def genDict(status):
-            events = event_api.filterSelf(event_status=status, event_type=event_type)
-            event_dict = map(lambda event: dict(
-                element_text=event.event_name,
-                element_link=reverse(
-                    'panel.module.management_event.view_dispatch_param',
-                    args=['activity', event.id]),
-                elements=[
-                    dict(
-                        text='Modify',
-                        link=event_api.getEventModifyLink(self.param["type"], id=event.id)
-                    )
-                ]
-            ),
-                             [event for event in events])
-            return BlockObject(status, 'Event', ['Modify'], event_dict)
-
-        event_api = EventAPI(self.request)
-        return BlockSet().makeBlockSet(genDict('future'), genDict('running'), genDict('done'))
+    def getPagePath(self):
+        return 'platform/module/management_league/specific_score.html'
 
     def render(self):
-        header = dict(
-            button=dict(
-                link=reverse(
-                    'panel.module.management_data.view_dispatch_param',
-                    args=[self.param["type"], 'custom']
-                )+'?action=add&base=event_mgmt',
-                text='Add Event'
-            )
+        return super().renderHelper(self.genPageObject())
+
+    def genPageObject(self):
+        return dict(
+            block_title='Specific School Score View for {}'.format(
+                SchoolAPI(self.request).getSelf(id=self.param.get("school_id")).school_name
+            ),
+            redirection_destination=reverse(
+                'panel.module.management_league.view_dispatch',
+                args=['overall']),
+            contents=self.genContent()
         )
-        return super().renderHelper(PageObject('Events List', self.generateList(), header))
+
+    def __eventUrlTransformer(self, event_id):
+        return reverse(
+            'client.view_dispatch_param',
+            args=['scoring', event_id]
+        )
+
+    def __truncateDisplayScore(self, score):
+        try:
+            return float('%.3f' % score)
+        except:
+            return "N/A"
+
+    def __checkIsScoreUsed(self, event, score_list, average_factor):
+        for idx, score_event in enumerate(score_list):
+            loop_event = score_event[1]
+            if idx < average_factor:
+                if event.id == loop_event.id:
+                    return True
+            else:
+                break
+        return False
+
+    def genContent(self):
+        content = list()
+        
+        current_season = ConfigAPI(self.request).getConfig().config_current_season
+        school_id = self.param.get("school_id")
+        school = SchoolAPI(self.request).getSelf(id=school_id)
+        participated_events = SchoolAPI(self.request).getParticipatedEvents(
+            school_id,
+            Event.EVENT_STATUS_DONE,
+            current_season
+        )
+        rankingMap = SummaryAPI(self.request).getAllSummaryRankingBySchool(school_id)
+        print(rankingMap)
+        league_scoring_api = LeagueScoringAPI(self.request)
+        average_factor = league_scoring_api.getAverageFactor(
+                                school.school_region, 
+                                len(participated_events)
+                            )
+        sortedScoreList = league_scoring_api.getReverseSortedEventScoresList(
+                                school, 
+                                participated_events
+                            )
+        for event in participated_events:
+            score = league_scoring_api.getScoreForEventBySchool(event, school, False)
+            content.append(
+                dict(
+                    event_id=event.id,
+                    event_name=event.event_name,
+                    event_url=self.__eventUrlTransformer(event.id),
+                    event_date=event.event_start_date,
+                    school_summary_ranking=rankingMap.get(event.id),
+                    school_summary_score=self.__truncateDisplayScore(score),
+                    used_score_in_calculation=self.__checkIsScoreUsed(
+                        event,
+                        sortedScoreList, 
+                        average_factor
+                    ),
+                )
+            )
+        content_list = sorted(content, key=lambda x: x.get('event_date'))
+        return content_list
 
     def parseParams(self, param):
-        super().parseMatch('\s+')
-        param = dict(type=param)
+        super().parseMatch('\d+')
+        param = dict(school_id=param)
         return param
