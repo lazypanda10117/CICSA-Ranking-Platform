@@ -1,0 +1,64 @@
+{% extends 'platform/base.html' %}
+{% block 'head' %}
+
+{% endblock %}
+{% block 'body' %}
+    <h4><pre>{{ page.block_title }}</pre></h4>
+    <div class="card">
+        <div class="card-body">
+            <div class="container-fluid row mb-2">
+                <div class="col col-lg-4">
+                    Event
+                </div>
+                <div class="col col-lg-2">
+                    Date
+                </div>
+                <div class="col col-lg-2">
+                    Rank
+                </div>
+                <div class="col col-lg-2">
+                    Score
+                </div>
+                <div class="col col-lg-2">
+                    Used
+                </div>
+            </div>
+            <hr>
+            <div class="container-fluid">
+                {% for content in page.contents %}
+                    <div class="container-fluid row mt-4 form-group">
+                        <div class="col col-lg-4">
+                            <a href="{{ content.event_url }}">
+                                {{ content.event_name }}
+                            </a>
+                        </div>
+                        <div class="col col-lg-2">
+                            {{ content.event_date }}
+                        </div>
+                        <div class="col col-lg-2">
+                            {{ content.school_summary_ranking }}
+                        </div>
+                        <div class="col col-lg-2">
+                            {{ content.school_summary_score }}
+                        </div>
+                        <div class="col col-lg-2">
+                            {% if content.used_score_in_calculation %}
+                                <i class="fa fa-circle  fa-fw" style="margin-left: 15px;"></i>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="container-fluid row mt-4">
+                    <div class="col col-lg-6 offset-lg-3">
+                        <button 
+                            class="btn btn-info btn-lg btn-block"
+                            onclick="redirect('{{ page.redirection_destination }}');" 
+                        >
+                            Back to League Management
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
