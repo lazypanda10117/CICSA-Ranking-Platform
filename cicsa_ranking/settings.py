@@ -33,7 +33,7 @@ host = os.environ.get("DB_HOST", "localhost")
 port = os.environ.get("DB_PORT", "5432")
 name = os.environ.get("DB_NAME", "ranking")
 postgresURL = os.environ.get("DATABASE_URL", "None")
-postgresTESTURL = os.environ.get("DATABASE_TEST_URL", "postgres://rvrwungzlszlna:4b2ef3fd92609bc967fb67b46797bb053d5f838e531508480eebf810fb802e18@ec2-54-204-2-26.compute-1.amazonaws.com:5432/d7lnt211athrkq")
+postgresTESTURL = os.environ.get("DATABASE_TEST_URL", "")
 
 # Settings
 debugMode = os.environ.get("DEBUG_MODE", "TRUE")
