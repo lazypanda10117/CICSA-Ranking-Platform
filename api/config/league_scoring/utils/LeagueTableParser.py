@@ -9,8 +9,8 @@ class LeagueTableParser:
 
 	def __init__(self):
 		self.csvToRead = [
-			('A', '../resources/Rank_A_Event_Score_Map.csv'),
-			('B', '../resources/Rank_B_Event_Score_Map.csv')
+			('0', '../resources/Rank_A_Event_Score_Map.csv'),
+			('1', '../resources/Rank_B_Event_Score_Map.csv')
 		]
 
 	def parse(self):

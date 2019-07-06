@@ -6,41 +6,54 @@
     <div class="card">
         <div class="card-body">
             <div class="container-fluid row mb-2">
-                <div class="col col-lg-2 offset-lg-1">
-                    Ranking
+                <div class="col col-lg-1">
+                    Rank
                 </div>
-                <div class="col col-lg-auto">
+                <div class="col col-lg-3">
                     School
                 </div>
-                <div class="col col-lg-auto">
-                    Events Participated
+                <div class="col col-lg-1">
+                    #Race
                 </div>
-
-                <div class="col col-lg-auto">
-                    Scores
+                <div class="col col-lg-2">
+                    Calculated
                 </div>
-                <div class="col col-lg-auto">
-                    Override Scores
+                <div class="col col-lg-2">
+                    Recorded
+                </div>
+                <div class="col col-lg-3">
+                    Override
                 </div>
             </div>
             <hr>
             <form action="{{ page.action_destination }}" id="{{ page.form_id }}" method="post">
-                {% for key, content in page.contents.items %}
-                    <div class="container-fluid row mt-4">
-                        <div class="col col-lg-2 offset-lg-1">
-                            {{ content.league_ranking }}
+                {% for idx, content in page.contents %}
+                    <div class="container-fluid row mt-4 form-group">
+                        <div class="col col-lg-1">
+                            {{ idx }}
                         </div>
-                        <div class="col col-lg-auto">
+                        <div class="col col-lg-3">
                             <a href="{{ content.school_score_url  }}">{{ content.school_name }}</a>
                         </div>
-                        <div class="col col-lg-auto">
+                        <div class="col col-lg-1">
                             {{ content.participated_event_num }}
                         </div>
-                        <div class="col col-lg-auto">
-                            {{ content.league_score }}
+                        <div class="col col-lg-2">
+                            {{ content.league_calculated_score }}
                         </div>
-                        <div class="col col-lg-auto">
-                            {{ content.league_override_score }}
+                        <div class="col col-lg-2">
+                            {{ content.league_recorded_score }}
+                        </div>
+                        <div class="col col-lg-3">
+                            <input
+                                    class="form-control"
+                                    type="number"
+                                    step="0.0001"
+                                    min="0"
+                                    name="{{ content.school_id }}"
+                                    value=""
+                                    placeholder="Empty for Calculated"
+                            >
                         </div>
                     </div>
                 {% endfor %}

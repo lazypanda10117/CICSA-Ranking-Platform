@@ -1,6 +1,7 @@
 from django.urls import reverse
 
-from api import EventAPI, ScoringPageAPI
+from misc.CustomFunctions import MiscFunctions
+from api.functional_api import LeagueScoringAPI
 from panel.module.base.block.CustomPages import AbstractBasePage
 
 
@@ -16,46 +17,34 @@ class LeagueOverallScoreCompilePage(AbstractBasePage):
             block_title='Compile League Overall Score',
             action_destination=reverse(
                 'panel.module.management_league.process_dispatch',
-                args=['overall_compiler']),
+                args=['compile']),
             form_id='league_overall_compile_form',
             contents=self.genContent()
         )
 
-    def genContent(self):
-        def genOptions(data):
-            options = dict()
-            if event.event_status != "done":
-                for i in range(
-                        sum((1 if result['base_ranking'] == data['base_ranking'] else 0) for result in ranking_list)):
-                    options[i] = dict(
-                        disabled='',
-                        selected='' if data['need_override'] else 'selected',
-                        text=i if data['need_override'] else data['override_ranking']
-                    )
-            else:
-                for i in range(
-                        sum((1 if result['base_ranking'] == data['base_ranking'] else 0) for result in ranking_list)):
-                    options[i] = dict(
-                        disabled='',
-                        selected='selected' if (
-                                    i == int(data['override_ranking']) or not data['need_override']) else '',
-                        text=i if data['need_override'] else data['override_ranking']
-                    )
-            return options
+    # TODO: transform school id to the edit page for the league score of that school
+    def __schoolUrlTransformer(self, school_id):
+        return reverse(
+            'panel.module.management_league.view_dispatch_param',
+            args=['specific', school_id]
+        )
 
+    def genContent(self):
         content = dict()
-        event_id = int(self.param["id"])
-        event = EventAPI(self.request).getSelf(id=event_id)
-        ranking_list = ScoringPageAPI(self.request).buildDataTable(event)['ranking']
-        for index, data in enumerate(ranking_list):
+        league_scoring_list = LeagueScoringAPI(self.request).getPanelLeagueScoreData()
+        for index, data in enumerate(league_scoring_list):
             content[index] = dict(
                 school_id=data['school_id'],
                 school_name=data['school_name'],
-                score=data['score'],
-                ranking=data['base_ranking'],
-                options=genOptions(data)
+                school_score_url=self.__schoolUrlTransformer(data['school_id']),
+                participated_event_num=data['participated_events_num'],
+                league_calculated_score=MiscFunctions.truncateDisplayScore(data['calculated_score']),
+                league_recorded_score=MiscFunctions.truncateDisplayScore(data['recorded_score']),
             )
-        return content
+        content_list = [(idx + 1, o) for idx, o in enumerate(
+            sorted(content.values(), key=lambda x: x.get('league_calculated_score'), reverse=True)
+        )]
+        return content_list
 
     def parseParams(self, param):
         super().parseMatch('')

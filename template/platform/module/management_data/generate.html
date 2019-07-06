@@ -10,9 +10,6 @@
                 container.style.display = 'none';
             }
         }
-        function redirect(link){
-            window.location.href = link;
-        }
         function preDropdownClicks(){
             dropdown_num = 4;
             for(i = 1; i <= dropdown_num; i++){
@@ -75,7 +72,12 @@
             <div class="d-inline">
                 <p>
                     <pre>{{ element.title }}</pre>
-                    <button type="button" style="float:right; margin-top: -45px;" class="btn btn-outline-{{ element.tableElement.add_button.style }}" onclick="redirect('{{ element.tableElement.add_button.redirect }}');">
+                    <button 
+                        type="button" 
+                        style="float:right; margin-top: -45px;" 
+                        class="btn btn-outline-{{ element.tableElement.add_button.style }}" 
+                        onclick="redirect('{{ element.tableElement.add_button.redirect }}');"
+                    >
                         {{ element.tableElement.add_button.title }}
                     </button>
                 </p>

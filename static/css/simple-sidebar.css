@@ -27,7 +27,7 @@ body {
 }
 
 #sidebar-wrapper {
-  z-index: 1000;
+  z-index: 10;
   position: fixed;
   left: 250px;
   width: 0;
@@ -153,4 +153,67 @@ body {
 
 .sidebar-nav>.dropdown-btn:focus {
   outline: 0;
+}
+
+#menu-btn-wrapper a{
+  text-decoration: none;
+  text-align: center;
+}
+
+#menu-show .menu-text-div{
+  color: rgba(255,255,255,1);
+  padding-top: 8px;
+}
+
+#menu-hide .menu-text-div{
+  color: rgba(255,255,255,1);
+  padding-top: 8px;
+}
+
+.show-menu-btn {
+  margin-bottom: 25px;
+  margin-right: 25px;
+  position: fixed;
+  bottom: 0;
+  left: 20px;
+  width: 100px;
+  height: 40px;
+  z-index: 100;
+  display: none;
+  border-radius: 5px 5px 5px 5px;
+  background-color: rgba(100,100,100,0.8);
+  text-decoration: none;
+}
+
+.show-menu-btn i {
+  color: rgba(180,180,180,0.95);
+  font-size: 25px;
+  margin-left: 7.5px;
+  margin-right: 7.5px;
+  margin-top: 6.5px;
+  position: absolute;
+}
+
+.hide-menu-btn {
+  margin-bottom: 25px;
+  margin-right: 25px;
+  position: fixed;
+  bottom: 0;
+  left: 20px;
+  width: 100px;
+  height: 40px;
+  z-index: 100;
+  display: none;
+  border-radius: 5px 5px 5px 5px;
+  background-color: rgba(100,100,100,0.8);
+  text-decoration: none;
+}
+
+.hide-menu-btn i {
+  color: rgba(180,180,180,0.95);
+  font-size: 25px;
+  margin-left: 7.5px;
+  margin-right: 7.5px;
+  margin-top: 6.5px;
+  position: absolute;
 }
