@@ -112,10 +112,7 @@ venv.bak/
 # Mac DS Store
 **.DS_Store
 
-# Migration Scripts Related Files
-**/migrations/**
-!**/migrations
-!**/migrations/__init__.py
+# Git Secret
 .gitsecret/keys/random_seed
 
 # Ignore staticfiles

@@ -142,7 +142,7 @@ class LeagueScoringAPI(AbstractCoreAPI):
             score.score_season = self.season
             score.score_value = float(score_tuple[0])
             score.score_override_value = float(score_tuple[1])
-            score = ScoreAPI(self.request).addSelf(score)
+            ScoreAPI(self.request).addSelf(score)
             score.save()
         else:
             score.score_value = float(score_tuple[0])
