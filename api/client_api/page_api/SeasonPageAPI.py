@@ -1,4 +1,3 @@
-from django.shortcuts import reverse
 from api.base.GeneralClientAPI import GeneralClientAPI
 from api.model_api import SeasonAPI
 

@@ -1,9 +1,13 @@
-from django.shortcuts import redirect, reverse
+from django.shortcuts import redirect
+from django.shortcuts import reverse
 
+from cicsa_ranking.models import Event
+from cicsa_ranking.models import Score
 from misc.CustomFunctions import RequestFunctions
-from api.model_api import ConfigAPI
-from api.functional_api import LeagueScoringAPI
 from panel.module.base.block.CustomProcesses import AbstractBaseProcess
+from api import ConfigAPI
+from api import SchoolAPI
+from api import LeagueScoringAPI
 
 
 class LeagueOverallScoreCompileProcess(AbstractBaseProcess):
@@ -11,18 +15,35 @@ class LeagueOverallScoreCompileProcess(AbstractBaseProcess):
         post_dict = dict(self.request.POST)
         current_configuration = ConfigAPI(self.request).getConfig()
         current_season = current_configuration.config_current_season
-        # school_id = int(RequestFunctions.getSinglePostObj(post_dict, 'school_id_'+str(i)))
-
-        # related_summaries = SummaryAPI(self.request).filterSelf(summary_event_parent=event_id)
-        # for i in range(1, int(len(post_dict)/4)+1):
-        #     school_id = int(RequestFunctions.getSinglePostObj(post_dict, 'school_id_'+str(i)))
-        #     score = int(RequestFunctions.getSinglePostObj(post_dict, 'score_'+str(i)))
-        #     ranking = int(RequestFunctions.getSinglePostObj(post_dict, 'ranking_'+str(i)))
-        #     override_ranking = int(RequestFunctions.getSinglePostObj(post_dict, 'override_ranking_'+str(i)))
-        #     summary_id = related_summaries.get(summary_event_school=school_id).id
-        #     result = dict(ranking=ranking, override_ranking=override_ranking, race_score=score)
-        #     SummaryAPI(self.request).updateSummaryResult(summary_id, result)
-        # EventAPI(self.request).updateEventStatus(event_id, 'done')
+        league_scoring_map = {
+            data.get('school_id') : data
+            for data in LeagueScoringAPI(self.request).getPanelLeagueScoreData()
+        }
+        # update the db according to override values, otherwise, compute the calculated values again
+        for school_id, element in post_dict.items():
+            league_scoring_api = LeagueScoringAPI(self.request)
+            school_id = int(school_id)
+            school = SchoolAPI(self.request).getSelf(id=school_id)
+            override_score = element[0]
+            calculated_score = league_scoring_map.get(school_id).get('calculated_score')
+            if not override_score:
+                override_score = Score.DEFAULT_LEAGUE_SCORE
+            participated_events = SchoolAPI(self.request).getParticipatedEvents(
+                school_id,
+                Event.EVENT_STATUS_DONE,
+                current_season
+            )
+            school_score_dict = {
+                event.id: league_scoring_api.getScoreForEventBySchool(
+                    event, school, False
+                ) for event in participated_events
+            }
+            league_scoring_api.setNormalOverrideLeagueScore(
+                school, (calculated_score, override_score)
+            )
+            league_scoring_api.setNormalOverrideSummaryScores(
+                school, school_score_dict
+            )
         return redirect(
             reverse(
                 'panel.module.management_league.view_dispatch',
@@ -32,4 +53,5 @@ class LeagueOverallScoreCompileProcess(AbstractBaseProcess):
 
     def parseParams(self, param):
         super().parseMatch('')
-        return None
+        param = None
+        return param

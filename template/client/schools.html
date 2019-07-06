@@ -1,4 +1,29 @@
 {% extends 'client/index.html' %}
+
+{% block head %}
+	<script type="text/javascript">
+		window.onload = function() {
+			$(document).ready(function() {
+				// from https://stackoverflow.com/a/29129307
+				$(function(){
+					$('.table tr[data-href]').each(function(){
+						$(this).css('cursor','pointer').hover(
+							function(){
+								$(this).addClass('active');
+							},
+							function(){
+								$(this).removeClass('active');
+							}).click( function(){
+								document.location = $(this).attr('data-href');
+							}
+						);
+					});
+				});
+			});
+		};
+	</script>
+{% endblock %}
+
 {% block content %}
 	<div class="container mt-4 mb-4">
 		<h2>Schools</h2>
@@ -16,11 +41,11 @@
 										<th scope="col">Team Name</th>
 										<th scope="col">Status</th>
 										<th scope="col">School Season Score</th>
-										<th scope="col">Details</th>
 									</tr>
 								</thead>
-								{% for school in school_list %}
-									<tbody>
+								<tbody>
+									{% for school in school_list %}
+										<tr data-href="{{ school.school_link }}">
 										<td scope="row">
 											{{ school.school_name }}
 										</td>
@@ -33,13 +58,10 @@
 										<td>
 											{{ school.school_season_score }}
 										</td>
-										<td>
-											<a class="btn btn-outline-info" href="{{ school.school_link }}" role="button" aria-disabled="true">Details</a>
-										</td>
 										{% empty %}
 										<p>There is no school for this region.</p>
-									</tbody>
-								{% endfor %}
+									{% endfor %}
+								</tbody>
 							</table>
 						</div>
 						{% endif %}
