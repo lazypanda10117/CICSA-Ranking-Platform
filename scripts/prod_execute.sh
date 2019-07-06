@@ -61,8 +61,8 @@ then
     printf "Testing Database URL: DATABASE_TEST_URL \n\n"
 fi
 
-printf "Collecting Static Files: \n"
+printf "Collecting Static Files ... \n"
 python manage.py collectstatic --noinput
 
-printf "Starting Gunicorn Process: \n"
+printf "Starting Gunicorn Process ... \n"
 gunicorn ${APP_NAME}.wsgi
