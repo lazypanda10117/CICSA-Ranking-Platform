@@ -1,7 +1,4 @@
 ## ----- Variables -----
-ENV = 1 # 0 for production, 1 for development
-DB_VOL_NAME = postgres.data
-STACK_NAME = $(shell basename $$PWD)
 APP_NAME =  cicsa_ranking
 
 ## Use git-secret.
