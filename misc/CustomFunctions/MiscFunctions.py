@@ -58,3 +58,10 @@ def simpleEqtFormatter(equation, replace_dict):
 
 def truncateText(text, length=150):
     return text if len(text) < length else text[:length] + "..."
+
+
+def truncateDisplayScore(score):
+    try:
+        return float('%.3f' % score)
+    except:
+        return "N/A"

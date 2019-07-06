@@ -1,6 +1,9 @@
 from api.base.GeneralClientAPI import GeneralClientAPI
-from .ScoringPageAPI import ScoringPageAPI
-from api.model_api import SchoolAPI, EventAPI, EventTagAPI, TeamAPI
+from api.client_api.page_api.ScoringPageAPI import ScoringPageAPI
+from api.model_api import SchoolAPI
+from api.model_api import EventAPI
+from api.model_api import EventTagAPI
+from api.model_api import TeamAPI
 
 
 class RotationPageAPI(GeneralClientAPI):

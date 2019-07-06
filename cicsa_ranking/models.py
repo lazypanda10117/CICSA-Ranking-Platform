@@ -56,6 +56,7 @@ class ScoreMapping(models.Model):
 
 
 class EventType(models.Model):
+    # By seeder, there are 2 types: Fleet Race and Team Race
     event_type_name = models.CharField(max_length=200)
 
 
@@ -71,21 +72,23 @@ class EventActivity(models.Model):
 
 
 class Summary(models.Model):
+    DEFAULT_SUMMARY_LEAGUE_SCORE = -1
     summary_event_parent = models.IntegerField()
     summary_event_school = models.IntegerField(default=0)
     summary_event_ranking = models.IntegerField(default=0)
     summary_event_override_ranking = models.IntegerField(default=0)
     summary_event_race_score = models.IntegerField(default=0)
-    summary_event_league_score = models.FloatField(default=0)
-    summary_event_override_league_score = models.FloatField(default=0)
+    summary_event_league_score = models.FloatField(default=DEFAULT_SUMMARY_LEAGUE_SCORE)
+    # I don't think this will be used anymore
+    summary_event_override_league_score = models.FloatField(default=DEFAULT_SUMMARY_LEAGUE_SCORE)
 
 
 class Score(models.Model):
-    score_value = models.IntegerField(default=0)
-    score_override_value = models.IntegerField(default=0)
+    DEFAULT_LEAGUE_SCORE = -1
     score_school = models.IntegerField()
     score_season = models.IntegerField()
-
+    score_value = models.FloatField(default=DEFAULT_LEAGUE_SCORE)
+    score_override_value = models.FloatField(default=DEFAULT_LEAGUE_SCORE)
 
 class Log(models.Model):
     log_creator = models.IntegerField()  # if sql, then system (-1), else user id
