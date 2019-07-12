@@ -104,6 +104,12 @@ class School(models.Model):
     school_default_team_name = models.CharField(max_length=200, default='')
 
 
+class SchoolTeam(models.Model):
+    school = models.ForeignKey
+    member_group = fk
+    school_team_name = models.CharField(max_length=200, default='School Team Name')
+
+
 class Team(models.Model):
     team_name = models.CharField(max_length=200)
     team_school = models.IntegerField()
