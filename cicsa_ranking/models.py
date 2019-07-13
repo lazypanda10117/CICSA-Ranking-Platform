@@ -144,13 +144,13 @@ class Team(ArchivableModel):
     team_status = models.CharField(max_length=50)
 
 # History
-class MemberGroup(HasHistoryMode):
+class MemberGroup(HasHistoryModel):
     member_group_name = models.CharField(max_length=200)
     member_group_school = models.IntegerField()
     member_group_member_ids = ArrayField(models.IntegerField())
 
 # History
-class Member(HasHistoryMode):
+class Member(HasHistoryModel):
     member_name = models.CharField(max_length=200)
     member_school = models.IntegerField()
     member_email = models.EmailField()
@@ -167,8 +167,8 @@ class Account(BaseModel):
     account_status = models.CharField(max_length=50)
     account_linked_id = models.IntegerField(blank=True, null=True)
 
-# Archive?
-class NewsPost(ArchivableModel):
+# None
+class NewsPost(BaseModel):
     NEWS_POST_PINNED = 0
     NEWS_POST_ACTIVE = 1
     NEWS_POST_ARCHIVED = 2
@@ -179,15 +179,15 @@ class NewsPost(ArchivableModel):
     news_post_status = models.IntegerField()  # status from above
     news_post_create_time = models.DateTimeField('Post Date', auto_now_add=True, blank=True)
 
-# Archive?
-class NewsComment(ArchivableModel):
+# None
+class NewsComment(BaseModel):
     news_comment_owner = models.IntegerField()
     news_comment_post_id = models.IntegerField()
     news_comment_content = models.CharField(max_length=1000, blank=True)
     news_comment_create_time = models.DateTimeField('Comment Date', auto_now_add=True, blank=True)
 
-# Archive?
-class NewsBump(ArchivableModel):
+# None
+class NewsBump(BaseModel):
     news_bump_bumpper_id = models.IntegerField()
     news_bump_post_id = models.IntegerField()
     news_bump_create_time = models.DateTimeField('Bump Date', auto_now_add=True, blank=True)
