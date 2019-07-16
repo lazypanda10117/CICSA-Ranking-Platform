@@ -105,8 +105,8 @@ class School(models.Model):
 
 
 class SchoolTeam(models.Model):
-    school = models.ForeignKey
-    member_group = fk
+    school = models.ForeignKey(School, on_delete=models.SET_NULL, null=True)
+    member_group = models.ForeignKey(MemberGroup, on_delete=models.SET_NULL, null=True)
     school_team_name = models.CharField(max_length=200, default='School Team Name')
 
 
