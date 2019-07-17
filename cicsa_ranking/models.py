@@ -115,10 +115,12 @@ class MemberGroup(models.Model):
     member_group_school = models.IntegerField()
     member_group_member_ids = ArrayField(models.IntegerField())
 
+
 class SchoolTeam(models.Model):
-    school = models.ForeignKey(School, on_delete=models.SET_NULL, null=True)
-    member_group = models.ForeignKey(MemberGroup, on_delete=models.SET_NULL, null=True)
+    school = models.ForeignKey(School, related_name = 'school_teams', on_delete=models.SET_NULL, null=True)
+    member_group = models.ForeignKey(MemberGroup, related_name = 'school_teams', on_delete=models.SET_NULL, null=True)
     school_team_name = models.CharField(max_length=200, default='School Team Name')
+
 
 class Member(models.Model):
     member_name = models.CharField(max_length=200)
