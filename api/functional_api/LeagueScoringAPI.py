@@ -188,7 +188,6 @@ class LeagueScoringAPI(AbstractCoreAPI):
             school_id = school.id
             school_name = school.school_name
             score = self.getCompiledScoreForSchool(school, error=False)
-            print(score)
             if score is None:
                 compiled = False
                 score = self.tryCompileThenCalculateScore(school)
