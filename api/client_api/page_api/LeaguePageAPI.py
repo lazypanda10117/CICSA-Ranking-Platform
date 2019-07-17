@@ -2,10 +2,7 @@ from django.urls import reverse
 
 from misc.CustomFunctions import MiscFunctions
 from api.base.GeneralClientAPI import GeneralClientAPI
-from api.functional_api import NewsAPI
 from api.functional_api import LeagueScoringAPI
-from api.model_api import AccountAPI
-from api.model_api import SchoolAPI
 
 
 class LeaguePageAPI(GeneralClientAPI):
