@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.urls import reverse
+
 from api import EventTypeAPI
-from misc.CustomFunctions import AuthFunctions
 from ...base.block.CustomPages import AbstractBasePage
 
 
@@ -9,12 +9,22 @@ class EventChoicePage(AbstractBasePage):
         return 'platform/module/management_event/event.html'
 
     def render(self):
-        types = [value.event_type_name for value in EventTypeAPI(self.request).filterSelf()]
-        type_style = {'width': int(12 / len(types)) if len(types) else None}
-        return self.renderHelper({'types': types, 'type_style': type_style})
+        return super().renderHelper(self.genPageObject())
 
-    def renderHelper(self, data):
-        return AuthFunctions.kickRequest(self.request, True, render(self.request, self.page_path, data))
+    def genPageObject(self):
+        types = EventTypeAPI(self.request).getAll()
+        contents = list()
+        for event_type in types:
+            type_name = event_type.event_type_name
+            contents.append(dict(
+                event_type=type_name,
+                destination=reverse(
+                    'panel.module.management_event.view_dispatch_param',
+                    args=['event', type_name]
+                )
+            ))
+        print(contents)
+        return dict(block_title='Event Types', contents=contents)
 
     def parseParams(self, param):
         return None

@@ -2,7 +2,6 @@ from django.views.decorators.csrf import csrf_exempt
 from misc.CustomElements import Dispatcher
 from ..base.block.Base import AbstractBlockApp
 from .CustomPages import EventPage, EventActivityPage, EventActivityDetailPage, EventChoicePage
-from .CustomProcesses import EventChoiceProcess
 from panel.module.ModuleRegistry import ModuleRegistry
 
 
@@ -37,5 +36,4 @@ class ManagementEventView(AbstractBlockApp.AppView):
 
     def setProcessDispatcher(self):
         dispatcher = Dispatcher()
-        dispatcher.add('choice', EventChoiceProcess)
         return dispatcher
