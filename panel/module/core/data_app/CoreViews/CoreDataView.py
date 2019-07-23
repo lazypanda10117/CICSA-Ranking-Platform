@@ -7,12 +7,13 @@ from misc.CustomElements import Dispatcher
 from misc.CustomFunctions import MiscFunctions
 from panel.component.CustomElements import Form
 from panel.module.base.authentication.AuthenticationFactory import AuthenticationFactory
+from panel.module.base.block.CustomComponents import PageObject
 from panel.module.base.block.CustomPages import AbstractBasePage
 
 
 class CoreDataView(AbstractBasePage):
-    def __init__(self, request):
-        self.request = request
+    def __init__(self, request, param):
+        super(request, param)
         self.authentication_meta = AuthenticationMetaAPI(self.request)
         self.authentication_type = self.authentication_meta.getAuthType()
         self.permission_obj = AuthenticationFactory(self.authentication_type).dispatch()
@@ -35,8 +36,50 @@ class CoreDataView(AbstractBasePage):
         template_base = self.permission_obj().ManagementData().getTemplateBase()
         return template_base
 
+    def setFunctionDispatcher(self):
+        dispatcher = Dispatcher()
+        dispatcher.add('view', self.actionView)
+        dispatcher.add('add', self.actionAdd)
+        dispatcher.add('edit', self.actionEdit)
+        dispatcher.add('delete', self.actionDelete)
+        return dispatcher
+
+    def actionView(data):
+        action_type = dict(table=True)
+        return dict(page_title=page_title, type=action_type, context=data)
+
+    def actionAdd(data):
+        self.request.session[self.session_name] = MiscFunctions.getViewJSON(action, None)
+        page_type = dict(form=True)
+        content = Form('_add_form', form_path, action, self.destination,
+                       self.view_dispatcher.get(self.form_path)["form"](data=data['data']))
+        specialContent = data['special_field']
+        return dict(page_title=page_title, type=page_type, context=content, special_context=specialContent)
+
+    def actionEdit(data):
+        if element_id is None:
+            return HttpResponse('{"Response": "Error: No Element ID Provided"}')
+        else:
+            self.request.session[self.session_name] = MiscFunctions.getViewJSON(action, element_id)
+            page_type = dict(form=True)
+            content = Form('_edit_form', form_path, action, self.destination,
+                           self.view_dispatcher.get(self.form_path)["form"](data=data['data']))
+            specialContent = data['special_field']
+            return dict(page_title=page_title, type=page_type, context=content, special_context=specialContent)
+
+    def actionDelete(data):
+        if element_id is None:
+            return HttpResponse('{"Response": "Error: No Element ID Provided"}')
+        else:
+            self.request.session[self.session_name] = MiscFunctions.getViewJSON(action, element_id)
+            page_type = dict(form=True)
+            content = Form('_delete_form', form_path, action, self.destination,
+                           self.view_dispatcher.get(self.form_path)["form"](data=data['data']))
+            specialContent = data['special_field']
+            return dict(page_title=page_title, type=page_type, context=content, special_context=specialContent)
+
     def render(self):
-        super().renderHelper()
+        super().renderHelper(PageObject)
 
         def loadView(actionClass):
             return (
@@ -85,13 +128,6 @@ class CoreDataView(AbstractBasePage):
                 specialContent = data['special_field']
                 return dict(page_title=page_title, type=page_type, context=content, special_context=specialContent)
 
-        def setFunctionDispatcher():
-            dispatcher = Dispatcher()
-            dispatcher.add('view', actionView)
-            dispatcher.add('add', actionAdd)
-            dispatcher.add('edit', actionEdit)
-            dispatcher.add('delete', actionDelete)
-            return dispatcher
 
         action = (lambda x: x if x else 'view')(self.request.GET.get("action"))
         element_id = self.request.GET.get("element_id")

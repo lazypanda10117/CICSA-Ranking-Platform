@@ -1,0 +1,25 @@
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                {% for item in tableHeader %}
+                    <th>{{ item }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in tableContent %}
+                <tr>
+                    {% for cell in row.db_content %}
+                        <td>{{ cell }}</td>
+                    {% endfor %}
+                    {% for cell in row.button %}
+                        <td>
+                            <button type="button" class="btn btn-outline-{{ cell.style }}" onclick="redirect('{{ cell.redirect }}');">{{ cell.title }}</button>
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
