@@ -24,6 +24,28 @@ class CoreDataView(AbstractBasePage):
 
         self.template_base = self.getTemplateBase()
 
+    def parseParams(self, param):
+        # super().parseMatch('(\w+\s\w+)(?(\?.+))')
+        param = dict(route=param)
+        return param
+
+    def genPageObject(self):
+        route = self.param.get('route')
+        action = (lambda x: x if x else 'view')(self.request.GET.get("action"))
+        element_id = self.request.GET.get("element_id")
+        page_title = (self.form_path + " " + action).title()
+        currentData = self.view_dispatcher.get(route)
+        currentClass = currentData["class"]
+        functionDispatch = setFunctionDispatcher()
+
+        currentClass(self.request).grabData(action, form_path, element_id)
+
+        return PageObject('Event Related Objects List', self.generateList(), [])
+
+    def render(self):
+        super().renderHelper(self.genPageObject())
+
+
     @staticmethod
     def getPagePath():
         return 'platform/module/management_data/generate.html'
@@ -78,9 +100,7 @@ class CoreDataView(AbstractBasePage):
             specialContent = data['special_field']
             return dict(page_title=page_title, type=page_type, context=content, special_context=specialContent)
 
-    def render(self):
-        currentClass(self.request).grabData(action, form_path, element_id)
-        super().renderHelper(PageObject)
+
 
         def loadView(actionClass):
             return (
