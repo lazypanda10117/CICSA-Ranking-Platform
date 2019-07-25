@@ -25,7 +25,7 @@ class CoreDataApp(AbstractBlockApp.AppView):
         return ModuleRegistry.CORE_DATA
 
     def home(self, request):
-        return super().index(request, 'panel.module.management_data.view_dispatch_param', ['event', 'custom'])
+        return super().index(request, 'panel.module.core.data_app.view_dispatch', ['data'])
 
     def setViewDispatcher(self):
         dispatcher = Dispatcher()

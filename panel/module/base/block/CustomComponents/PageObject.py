@@ -1,9 +1,10 @@
 class PageObject:
-    def __init__(self, title, element_list, header, external=list()):
+    def __init__(self, title, element_list, header, external=list(), context=None):
         self.title = title
         self.element_list = element_list
         self.header = header
         self.external = external
+        self.context = context
 
     def getTitle(self):
         return self.title
