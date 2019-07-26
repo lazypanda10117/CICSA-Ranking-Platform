@@ -51,7 +51,7 @@ class CoreDataProcess(AbstractBaseProcess):
         return redirect(self.__getViewDestination())
 
     def parseParams(self, param):
-        # super().parseMatch('(\w+\s\w+)(?(\?.+))')
+        super().parseMatch('[\w|\d]+')
         param = dict(route=param)
         return param
 

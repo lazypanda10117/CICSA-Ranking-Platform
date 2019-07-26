@@ -9,7 +9,7 @@ class LeagueOverallScoreCompilePage(AbstractBasePage):
     def getPagePath(self):
         return 'platform/module/management_league/overall_compile.html'
 
-    def renderPage(self):
+    def render(self):
         return super().renderHelper(self.genPageObject())
 
     def genPageObject(self):

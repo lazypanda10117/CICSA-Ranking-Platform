@@ -14,7 +14,7 @@ class LeagueSchoolScoreCompilePage(AbstractBasePage):
     def getPagePath(self):
         return 'platform/module/management_league/specific_score.html'
 
-    def renderPage(self):
+    def render(self):
         return super().renderHelper(self.genPageObject())
 
     def genPageObject(self):

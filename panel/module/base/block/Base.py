@@ -34,7 +34,7 @@ class AbstractBlockApp(ABC):
             dispatcher = self.setViewDispatcher()
             page = dispatcher.get(dispatch_path)(request, param)
             self.__authenticateRoute(request, page.getGuardType())
-            return page.renderPage()
+            return page.render()
 
         def processDispatch(self, request, dispatch_path, param=''):
             self.__authenticateModule(

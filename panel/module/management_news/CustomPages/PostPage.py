@@ -38,7 +38,7 @@ class PostPage(AbstractBasePage):
         news_api = NewsAPI(self.request)
         return BlockSet().makeBlockSet(genPostDict())
 
-    def renderPage(self):
+    def render(self):
         return super().renderHelper(PageObject('Post Management', self.generateList(), 'Posts'))
 
     def parseParams(self, param):

@@ -3,7 +3,6 @@ from functools import partial
 
 from django.urls import reverse
 
-from api import AuthenticationMetaAPI
 from misc.CustomElements import Dispatcher
 from misc.CustomFunctions import UrlFunctions, MiscFunctions
 from panel.component.CustomElements import Form
@@ -111,11 +110,11 @@ class CoreDataView(AbstractBasePage):
             ),
         ))
 
-    def renderPage(self):
+    def render(self):
         super().renderHelper(self.genPageObject())
 
     def parseParams(self, param):
-        # super().parseMatch('(\w+\s\w+)(?(\?.+))')
+        super().parseMatch('[\w|\d]+')
         param = dict(route=param)
         return param
 

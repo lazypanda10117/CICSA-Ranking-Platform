@@ -1,14 +1,14 @@
 from django.urls import reverse
 
 from api import EventTypeAPI
-from ...base.block.CustomPages import AbstractBasePage
+from panel.module.base.block.CustomPages import AbstractBasePage
 
 
 class EventChoicePage(AbstractBasePage):
     def getPagePath(self):
         return 'platform/module/management_event/event.html'
 
-    def renderPage(self):
+    def render(self):
         return super().renderHelper(self.genPageObject())
 
     def genPageObject(self):
@@ -23,7 +23,6 @@ class EventChoicePage(AbstractBasePage):
                     args=['event', type_name]
                 )
             ))
-        print(contents)
         return dict(block_title='Event Types', contents=contents)
 
     def parseParams(self, param):

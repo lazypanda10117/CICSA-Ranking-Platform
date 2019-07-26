@@ -18,7 +18,7 @@ class AbstractBasePage(ABC):
         return AuthenticationGuardType.ADMIN_TEAM_GUARD
 
     @abstractmethod
-    def renderPage(self):
+    def render(self):
         pass
 
     @abstractmethod

@@ -28,7 +28,7 @@ class EventActivityDetailPage(AbstractBasePage):
         member_group_api = MemberGroupAPI(self.request)
         return BlockSet().makeBlockSet(genEventTeamDict(event_activity_id))
 
-    def renderPage(self):
+    def render(self):
         return super().renderHelper(PageObject('Event Activity Related Objects List', self.generateList(), []))
 
     def parseParams(self, param):
