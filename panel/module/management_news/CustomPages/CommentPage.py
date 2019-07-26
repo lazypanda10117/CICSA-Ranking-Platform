@@ -33,7 +33,7 @@ class CommentPage(AbstractBasePage):
         news_api = NewsAPI(self.request)
         return BlockSet().makeBlockSet(genCommentDict(news_id))
 
-    def render(self):
+    def renderPage(self):
         return super().renderHelper(PageObject('Comment Management', self.generateList(), 'Comments'))
 
     def parseParams(self, param):

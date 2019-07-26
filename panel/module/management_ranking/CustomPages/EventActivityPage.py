@@ -34,7 +34,7 @@ class EventActivityPage(AbstractBasePage):
         )
         return blockset
 
-    def render(self):
+    def renderPage(self):
         external = dict(
             button=dict(
                 link=reverse(

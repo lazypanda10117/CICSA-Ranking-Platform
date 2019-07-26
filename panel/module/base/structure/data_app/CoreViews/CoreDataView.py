@@ -65,7 +65,7 @@ class CoreDataView(AbstractBasePage):
             context=route_wrapper.routeClass(self.request).grabData(action=action, route=route, element_id=element_id)
         )
 
-    def render(self):
+    def renderPage(self):
         super().renderHelper(self.genPageObject())
 
     def actionView(self, page_object, context):

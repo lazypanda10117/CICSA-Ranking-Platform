@@ -29,7 +29,7 @@ class EventPage(AbstractBasePage):
         event_api = EventAPI(self.request)
         return BlockSet().makeBlockSet(genDict('future'), genDict('running'), genDict('done'))
 
-    def render(self):
+    def renderPage(self):
         header = dict(
             button=dict(
                 link=reverse(

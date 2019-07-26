@@ -8,7 +8,7 @@ class EventChoicePage(AbstractBasePage):
     def getPagePath(self):
         return 'platform/module/management_event/event.html'
 
-    def render(self):
+    def renderPage(self):
         return super().renderHelper(self.genPageObject())
 
     def genPageObject(self):

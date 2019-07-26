@@ -78,7 +78,7 @@ class EventActivityPage(AbstractBasePage):
         )
         return blockset
 
-    def render(self):
+    def renderPage(self):
         return super().renderHelper(PageObject('Event Related Objects List', self.generateList(), []))
 
     def parseParams(self, param):
