@@ -3,6 +3,8 @@ from django.shortcuts import render
 from django.http import Http404
 from abc import abstractmethod, ABC
 
+from api.authentication import AuthenticationGuardType
+
 
 class AbstractBasePage(ABC):
     def __init__(self, request, param):
@@ -10,9 +12,13 @@ class AbstractBasePage(ABC):
         self.raw_param = param
         self.param = self.parseParams(self.raw_param)
         self.page_path = self.getPagePath()
+        self.guard_type = self.getGuardType()
+
+    def getGuardType(self):
+        return AuthenticationGuardType.ADMIN_TEAM_GUARD
 
     @abstractmethod
-    def render(self):
+    def renderPage(self):
         pass
 
     @abstractmethod

@@ -31,7 +31,7 @@ class EventPage(AbstractBasePage):
         event_api = EventAPI(self.request)
         return BlockSet().makeBlockSet(genDict('future'), genDict('running'), genDict('done'))
 
-    def render(self):
+    def renderPage(self):
         return super().renderHelper(PageObject('Events List', self.generateList(), []))
 
     def parseParams(self, param):

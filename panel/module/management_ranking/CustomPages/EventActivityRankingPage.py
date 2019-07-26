@@ -8,7 +8,7 @@ class EventActivityRankingPage(AbstractBasePage):
     def getPagePath(self):
         return 'platform/module/management_ranking/submit_race.html'
 
-    def render(self):
+    def renderPage(self):
         return super().renderHelper(self.genPageObject())
 
     def genPageObject(self):

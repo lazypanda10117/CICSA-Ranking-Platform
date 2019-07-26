@@ -42,7 +42,7 @@ class CoreDataView(AbstractBasePage):
 
         return PageObject('Event Related Objects List', self.generateList(), [])
 
-    def render(self):
+    def renderPage(self):
         super().renderHelper(self.genPageObject())
 
 
