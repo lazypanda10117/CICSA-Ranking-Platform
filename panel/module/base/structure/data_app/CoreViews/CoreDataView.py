@@ -1,24 +1,28 @@
 from abc import abstractmethod
 from functools import partial
 
+from django.urls import reverse
+
 from api import AuthenticationMetaAPI
 from misc.CustomElements import Dispatcher
-from misc.CustomFunctions import MiscFunctions
+from misc.CustomFunctions import UrlFunctions, MiscFunctions
 from panel.component.CustomElements import Form
-from panel.module.base.authentication.AuthenticationFactory import AuthenticationFactory
-from panel.module.base.block.CustomComponents import PageObject, BlockSet, BlockObject
+from panel.module.base.block.CustomComponents import PageObject
+from panel.module.base.block.CustomComponents import BlockSet
+from panel.module.base.block.CustomComponents import BlockObject
 from panel.module.base.block.CustomPages import AbstractBasePage
 
 
 class CoreDataView(AbstractBasePage):
     def __init__(self, request, param):
-        super(request, param)
-        self.authentication_meta = AuthenticationMetaAPI(self.request)
-        self.authentication_type = self.authentication_meta.getAuthType()
-        self.permission_obj = AuthenticationFactory(self.authentication_type).dispatch()
-        # Setting up dispatchers
+        super().__init__(request, param)
+        self.app_name = self._setAppName()
         self.view_dispatcher = self._setViewDispatcher()
         self.function_dispatcher = self._setFunctionDispatcher()
+
+    @abstractmethod
+    def _setAppName(self):
+        pass
 
     @abstractmethod
     def _setViewDispatcher(self):
@@ -41,11 +45,6 @@ class CoreDataView(AbstractBasePage):
         dispatcher.add('delete', partial(self.actionMutate, verify=True))
         return dispatcher
 
-    def parseParams(self, param):
-        # super().parseMatch('(\w+\s\w+)(?(\?.+))')
-        param = dict(route=param)
-        return param
-
     def genPageObject(self):
         route = self.param.get('route')
         action = self.request.GET.get("action")
@@ -62,11 +61,9 @@ class CoreDataView(AbstractBasePage):
         # Adding additional contents to page objects
         self.function_dispatcher.get(action)(
             page_object=page_object,
+            # Route Wrapper should be an object that contains 2 classes: routeClass and routeForm
             context=route_wrapper.routeClass(self.request).grabData(action=action, route=route, element_id=element_id)
         )
-
-    def renderPage(self):
-        super().renderHelper(self.genPageObject())
 
     def actionView(self, page_object, context):
         page_type = dict(table=True)
@@ -83,18 +80,20 @@ class CoreDataView(AbstractBasePage):
         )
 
     def actionMutate(self, page_object, context, verify):
-        if verify and page_object.context.get('element_id') is None:
-            raise Exception("Element ID not defined for action: {}".format(page_object.context.get('action')))
-
-        page_type = dict(form=True)
+        element_id = page_object.context.get('element_id')
         action = page_object.context.get('action')
         route = page_object.context.get('route')
+
+        if verify and element_id  is None:
+            raise Exception("Element ID not defined for action: {}".format(action))
+
+        page_type = dict(form=True)
         content = Form(
-            '_{}_form'.format(action),
-            route,
-            action,
-            self.destination,
-            self.view_dispatcher.get(
+            form_path='_{}_form'.format(action),
+            form_name=route,
+            form_action=action,
+            destination=self.__getPostDestination(),
+            form=self.view_dispatcher.get(
                 route
             ).routeForm(data=context.get('data')),
         )
@@ -111,3 +110,21 @@ class CoreDataView(AbstractBasePage):
                 special_context=special_content
             ),
         ))
+
+    def renderPage(self):
+        super().renderHelper(self.genPageObject())
+
+    def parseParams(self, param):
+        # super().parseMatch('(\w+\s\w+)(?(\?.+))')
+        param = dict(route=param)
+        return param
+
+    # Util Functions
+    def __getPostDestination(self):
+        return UrlFunctions.generateGETURL(
+            reverse(
+                'panel.module.{}.process_dispatch_param'.format(self.app_name),
+                args=['data', self.param.get('route')]
+            ),
+            UrlFunctions.flattenRequestDict(self.request.GET)
+        )

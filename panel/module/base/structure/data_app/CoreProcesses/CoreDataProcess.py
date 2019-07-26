@@ -1,57 +1,63 @@
-from abc import ABC
-from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseRedirect
+from abc import abstractmethod
+from django.shortcuts import redirect
+from django.urls import reverse
 
 from misc.CustomElements import Dispatcher
-from misc.CustomFunctions import AuthFunctions, MiscFunctions
-from panel.component.CustomElements import Form
-from panel.module.base.authentication.AuthenticationFactory import AuthenticationFactory
 from panel.module.base.block.CustomProcesses import AbstractBaseProcess
 
 
 class CoreDataProcess(AbstractBaseProcess):
-    def __init__(self, request):
-        self.request = request
-        self.permission_obj = AuthenticationFactory(self.request.session['utype']).dispatch()
-        self.view_dispatcher = self.setDispatcher()
-        self.destination = 'custom'
-        self.session_name = 'custom_view'
-        self.page_path = 'platform/module/management_data/generate.html'
-        self.template_base = self.getTemplateBase()
+    def __init__(self, request, param):
+        super().__init__(request, param)
+        self.app_name = self._setAppName()
+        self.view_dispatcher = self._setViewDispatcher()
+        self.function_dispatcher = self._setFunctionDispatcher()
 
-    def dispatch(self, form_path):
-        self.form_path = form_path
+    @abstractmethod
+    def _setAppName(self):
+        pass
 
-        def CustomViewLogic():
-            def actionAdd():
-                currentClass(self.request).add()
+    @abstractmethod
+    def _setViewDispatcher(self):
+        pass
 
-            def actionEdit():
-                currentClass(self.request).edit(element_id)
+    def _setFunctionDispatcher(self):
+        dispatcher = Dispatcher()
+        dispatcher.add('add', self.add)
+        dispatcher.add('edit', self.edit)
+        dispatcher.add('delete', self.delete)
+        return dispatcher
 
-            def actionDelete():
-                currentClass(self.request).delete(element_id)
+    # CRUD calls to specific data app pages
+    def add(self, route_class, element_id):
+        route_class(self.request).add()
 
-            def setFunctionDispatcher():
-                dispatcher = Dispatcher()
-                dispatcher.add('add', actionAdd)
-                dispatcher.add('edit', actionEdit)
-                dispatcher.add('delete', actionDelete)
-                return dispatcher
+    def edit(self, route_class, element_id):
+        route_class(self.request).edit(element_id)
 
-            currentData = (lambda x: x if x else None)(self.view_dispatcher.get(self.form_path))
-            currentClass = currentData["class"]
+    def delete(self, route_class, element_id):
+        route_class(self.request).delete(element_id)
 
-            self.request_variables = self.request.session[self.session_name]
-            self.request.session[self.session_name] = None
-            action = self.request_variables["action"]
-            element_id = self.request_variables["id"]
+    def process(self):
+        route = self.param.get('route')
+        action = self.request.GET.get("action")
+        element_id = self.request.GET.get("element_id")
+        route_wrapper = self.view_dispatcher.get(route)
+        route_class = route_wrapper.routeClass(self.request)
+        self.function_dispatcher.get(action)(
+            route_class=route_class,
+            element_id=element_id
+        )
+        return redirect(self.__getViewDestination())
 
-            functionDispatch = setFunctionDispatcher()
-            functionDispatch.get(action)()
-            return HttpResponseRedirect(self.destination)
+    def parseParams(self, param):
+        # super().parseMatch('(\w+\s\w+)(?(\?.+))')
+        param = dict(route=param)
+        return param
 
-        return AuthFunctions.kickRequest(
-            self.request, True, (
-                lambda x: CustomViewLogic() if x else CustomViewDisplay()
-            )(self.request.method == 'POST'))
+    # Util Functions
+    def __getViewDestination(self):
+        return reverse(
+            'panel.module.{}.view_dispatch_param'.format(self.app_name),
+            args=['data', self.param.get('route')]
+        )
