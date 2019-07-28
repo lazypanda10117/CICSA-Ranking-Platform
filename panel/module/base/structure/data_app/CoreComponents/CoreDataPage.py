@@ -1,16 +1,15 @@
-from abc import ABC
 from abc import abstractmethod
 
 from misc.CustomElements import Dispatcher
-from panel.module.base.structure.data_app.CoreComponents.CoreDataComponentConstructor import CoreDataComponentConstructor
+from panel.module.base.structure.data_app.CoreComponents.CoreDataComponentConstructor import \
+    CoreDataComponentConstructor
 from panel.module.base.structure.data_app.constants import ActionType
 from panel.module.base.structure.data_app.constants import ComponentType
 
 
 class CoreDataPage(CoreDataComponentConstructor):
-    def __init__(self, request, base_class, mutable=False):
-        super().__init__(request, base_class, mutable)
-        self.validation_table = self._setValidationT
+    def __init__(self, request, app_name, base_class, mutable=False):
+        super().__init__(request, app_name, base_class, mutable)
         self.action_permission_dispatcher = self._setActionPermissionDispatcher()
         self.associated_component_class_dispatcher = self._setAssociatedComponentClassDispatcher()
 
@@ -36,13 +35,13 @@ class CoreDataPage(CoreDataComponentConstructor):
         element_id = kwargs.pop('element_id')
 
         if action == ActionType.VIEW:
-            return self.associated_component_class_dispatcher.get(ComponentType.TABLE).grabTableData(route=route)
+            return self.associated_component_class_dispatcher.get(ComponentType.TABLE).render(route=route)
 
         if action == ActionType.ADD:
-            return self.associated_component_class_dispatcher.get(ComponentType.FORM).grabFormData(action=action)
+            return self.associated_component_class_dispatcher.get(ComponentType.FORM).render(action=action)
 
         if action in [ActionType.EDIT, ActionType.DELETE] and element_id is not None:
-            return self.associated_component_class_dispatcher.get(ComponentType.FORM).grabFormData(
+            return self.associated_component_class_dispatcher.get(ComponentType.FORM).render(
                 action=action, element_id=element_id
             )
 

@@ -1,16 +1,22 @@
-from abc import ABC
 from abc import abstractmethod
 
 from misc.CustomElements import Dispatcher
+from panel.component.CustomElements import Form
 from panel.module.base.structure.data_app.CoreComponents.CoreDataComponentConstructor import \
     CoreDataComponentConstructor
 from panel.module.base.structure.data_app.constants import ActionType
+from panel.module.base.structure.data_app.utils import QueryTermUtils
 
 
 class CoreDataFormView(CoreDataComponentConstructor):
-    def __init__(self, request, base_class, mutable=False):
-        super().__init__(request, base_class, mutable)
+    def __init__(self, request, app_name, base_class, mutable=False):
+        super().__init__(request, app_name, base_class, mutable)
+        self.validation_set = self._setValidationSet()
         self.populate_data_dispatcher = self.__setPopulateDataDispatcher()
+
+    @abstractmethod
+    def _setValidationSet(self):
+        pass
 
     @abstractmethod
     def getFieldData(self, **kwargs):
@@ -36,13 +42,26 @@ class CoreDataFormView(CoreDataComponentConstructor):
     def getSearchElement(self, **kwargs):
         return None
 
-    def generateFormData(self, **kwargs):
+    def render(self, **kwargs):
+        app_name = kwargs.pop('app_name')
+        action = kwargs.pop('action')
+        route = kwargs.pop('route')
+
         data = dict(
             field_data=self.getFieldData(**kwargs),
             choice_data=self.getChoiceData(**kwargs),
             multi_choice_data=self.getMultiChoiceData(**kwargs)
         )
-        special_field = dict(
+
+        special_context = dict(
             search=self.getSearchElement(**kwargs)
         )
-        return dict(data=data, special_field=special_field)
+
+        return Form(
+            form_path='_{}_form'.format(action),
+            form_name=route,
+            form_action=action,
+            destination=QueryTermUtils(self.request).getRedirectDestination(app_name=app_name, route=route),
+            data=data,
+            special_context=special_context
+        )

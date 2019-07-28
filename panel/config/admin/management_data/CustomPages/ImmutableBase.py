@@ -145,27 +145,6 @@ class ImmutableBase(ABC):
     def getTableRowContent(self, content):
         pass
 
-    @staticmethod
-    def updateChoiceAsValue(field_data, choice_data):
-        temp_data = field_data
-        for key, value in choice_data.items():
-            temp_data[key] = MiscFunctions.grabLinkValueFromChoices(value, field_data[key])
-        return temp_data
-
-    @staticmethod
-    def updateMultipleChoicesAsValues(field_data, choice_data):
-        temp_data = field_data
-        for key, value in choice_data.items():
-            temp_data[key] = MiscFunctions.grabLinkValueFromChoices(value, field_data[key])
-        return temp_data
-
-    @staticmethod
-    def updateDBMapAsValue(field_data, db_map):
-        temp_data = field_data
-        for key, value in db_map.items():
-            temp_data[key] = value
-        return temp_data
-
     def getTableContent(self, range_terms=(0, 10), **kwargs):
         result = sorted(
                 self.useAPI(self.base_class).filterSelf(**kwargs),

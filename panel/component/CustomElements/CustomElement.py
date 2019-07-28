@@ -13,68 +13,47 @@ class Button:
 
 
 class Table:
-    def __init__(self, currentClass, title):
-        self.currentClass = currentClass
+    def __init__(self, current_class, title):
+        self.current_class = current_class
         self.title = title
-        self.tableElement = ''
-        self.tableHeader = ''
-        self.tableContent = ''
+        self.table_element = ''
+        self.table_header = ''
+        self.table_content = ''
 
     def makeTable(self):
-        self.tableElement = self.getTableElement('general')
-        self.tableHeader = self.getTableHeader()
-        self.tableContent = self.getTableContent()
+        self.table_element = self.getTableElement()
+        self.table_header = self.getTableHeader()
+        self.table_content = self.getTableContent()
         return self
 
-    def makeCustomTables(self, tableHeader, tableContent):
-        self.tableElement = self.getTableElement('custom')
-        self.tableHeader = tableHeader
-        self.tableContent = tableContent
+    def importTable(self, tableHeader, tableContent):
+        self.table_element = None
+        self.table_header = tableHeader
+        self.table_content = tableContent
         return self
 
-    def makeStaticTables(self, tableHeader, tableContent):
-        self.tableElement = None
-        self.tableHeader = tableHeader
-        self.tableContent = tableContent
-        return self
-
-    @staticmethod
-    def getTableElement(process):
-        def makeAddBtn(path):
-            addBtn = Button('Add', 'success', UrlFunctions.generateGETURL(path, {"action": 'add'}))
-            return dict(add_button=addBtn)
-        return makeAddBtn(process)
+    def getTableElement(self):
+        pass
 
     def getTableHeader(self):
-        fields = [field.name for field in self.currentClass._meta.get_fields()] + ["edit", "delete"]
-        return fields
+        pass
 
     def getTableContent(self):
-        def makeEditDeleteBtn(path, element_id):
-            editBtn = Button('Edit', 'info', UrlFunctions.generateGETURL(
-                path, {"action": 'edit', "element_id": element_id}))
-            deleteBtn = Button('Delete', 'danger', UrlFunctions.generateGETURL(
-                path, {"action": 'delete', "element_id": element_id}))
-            return [editBtn, deleteBtn]
-
-        def getTableRow(content):
-            rowContent = {"db_content": list(vars(content).values())[1:],
-                          "button": makeEditDeleteBtn('general', str(content.id))}
-            return rowContent
-
-        return [getTableRow(content) for content in sorted(self.currentClass.objects.all(), key=lambda q: q.id)]
+        pass
 
 
 class Form:
-    def __init__(self, form_path, form_name, form_action, destination, form):
+    def __init__(self, form_path, form_name, form_action, destination, data, special_context):
         self.form_path = form_path
-        self.form_id = self.getFormID(form_name)
+        self.form_name = form_name
+        self.form_id = self.getFormID()
         self.form_action = form_action.title()
         self.destination = destination
-        self.form = form
+        self.data = data
+        self.special_context = special_context
 
-    def getFormID(self, form_string):
-        return form_string + self.form_path
+    def getFormID(self):
+        return self.form_name + self.form_path
 
 
 class CustomForm(forms.Form):

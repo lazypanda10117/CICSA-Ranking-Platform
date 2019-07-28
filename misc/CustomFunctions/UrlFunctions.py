@@ -16,8 +16,8 @@ def getModifyLink(tag, **kwargs):
     return reverse('panel.module.management_data.view_dispatch_param', args=[tag, 'custom']) + '?kwargs=' + json.dumps(kwargs)
 
 
-def generateGETURL(path, arg_list):
-    return path + '?' + ''.join([arg[0] + '=' + arg[1] + '&' for arg in arg_list.items()])[:-1]
+def generateGETURL(path, args):
+    return path + '?'.join(['{}={}&'.format(key, val) for key, val in args])[:-1] if len(args) else path
 
 
 def flattenRequestDict(request_dict):

@@ -39,7 +39,7 @@ class EventView(EventManagementView):
     def grabTableData(self, form_path):
         tableHeader = self.getTableHeader()
         tableContent = self.getTableContent(self.getRangeTerms(), **self.getFilterTerms())
-        table = Table(self.base_class, form_path).makeStaticTables(tableHeader, tableContent)
+        table = Table(self.base_class, form_path).importTable(tableHeader, tableContent)
         return [table]
 
     def abstractFormProcess(self, action, **kwargs):

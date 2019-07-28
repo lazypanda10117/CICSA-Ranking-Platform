@@ -1,12 +1,8 @@
 from abc import abstractmethod
 from functools import partial
 
-from django.urls import reverse
-
 from misc.CustomElements import Dispatcher
-from misc.CustomFunctions import UrlFunctions
 from misc.CustomFunctions import MiscFunctions
-from panel.component.CustomElements import Form
 from panel.module.base.block.CustomComponents import PageObject
 from panel.module.base.block.CustomComponents import BlockSet
 from panel.module.base.block.CustomComponents import BlockObject
@@ -58,30 +54,18 @@ class CoreDataView(AbstractBasePage):
         action = page_object.context.get('action')
         route = page_object.context.get('route')
 
-        if verify and element_id  is None:
-            raise Exception("Element ID not defined for action: {}".format(action))
-
-        page_type = dict(form=True)
-        content = Form(
-            form_path='_{}_form'.format(action),
-            form_name=route,
-            form_action=action,
-            destination=self.__getPostDestination(),
-            form=self.view_dispatcher.get(
-                route
-            ).routeForm(data=context.get('data')),
-        )
-        special_content = context.get('special_field')
+        if verify and element_id is None:
+            raise Exception("Element ID not defined for action {} at {}".format(action, route))
 
         # Hydrating PageObject with additional data
+        page_type = dict(form=True)
         page_object.context = MiscFunctions.updateDict(page_object.context, dict(type=page_type))
         page_object.element_list = BlockSet().makeBlockSet(BlockObject(
             block_title=None,
             element_name=None,
             header=None,
             contents=dict(
-                context=content,
-                special_context=special_content
+                context=context,
             ),
         ))
 
@@ -103,7 +87,7 @@ class CoreDataView(AbstractBasePage):
             page_object=page_object,
             # Route Wrapper should be an object that contains 2 classes: routeClass and routeForm
             context=route_wrapper.routeClass(self.request).generateData(
-                action=action, route=route, element_id=element_id
+                action=action, route=route, element_id=element_id, app_name=self.app_name
             )
         )
 
@@ -114,13 +98,3 @@ class CoreDataView(AbstractBasePage):
         super().parseMatch('[\w|\d]+')
         param = dict(route=param)
         return param
-
-    # Util Functions
-    def __getPostDestination(self):
-        return UrlFunctions.generateGETURL(
-            reverse(
-                'panel.module.{}.process_dispatch_param'.format(self.app_name),
-                args=['data', self.param.get('route')]
-            ),
-            UrlFunctions.flattenRequestDict(self.request.GET)
-        )
