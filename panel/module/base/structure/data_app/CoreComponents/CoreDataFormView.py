@@ -2,8 +2,7 @@ from abc import abstractmethod
 
 from misc.CustomElements import Dispatcher
 from panel.component.CustomElements import Form
-from panel.module.base.structure.data_app.CoreComponents.CoreDataComponentConstructor import \
-    CoreDataComponentConstructor
+from panel.module.base.structure.data_app.CoreComponents import CoreDataComponentConstructor
 from panel.module.base.structure.data_app.constants import ActionType
 from panel.module.base.structure.data_app.utils import QueryTermUtils
 
@@ -12,10 +11,15 @@ class CoreDataFormView(CoreDataComponentConstructor):
     def __init__(self, request, app_name, base_class, mutable, guard):
         super().__init__(request, app_name, base_class, mutable, guard)
         self.validation_set = self._setValidationSet()
+        self.form_object = self._setFormObject()
         self.populate_data_dispatcher = self.__setPopulateDataDispatcher()
 
     @abstractmethod
     def _setValidationSet(self):
+        pass
+
+    @abstractmethod
+    def _setFormObject(self):
         pass
 
     @abstractmethod
@@ -63,6 +67,6 @@ class CoreDataFormView(CoreDataComponentConstructor):
             form_name=route,
             form_action=action,
             destination=QueryTermUtils(self.request).getRedirectDestination(app_name=app_name, route=route),
-            data=data,
+            form=self.form_object(data=data),
             special_context=special_context
         )

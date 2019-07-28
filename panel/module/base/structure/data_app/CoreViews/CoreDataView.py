@@ -74,7 +74,7 @@ class CoreDataView(AbstractBasePage):
         action = self.request.GET.get("action")
         element_id = self.request.GET.get("element_id")
         page_title = (route + " " + action).title()
-        route_wrapper = self.view_dispatcher.get(route)
+        route_component = self.view_dispatcher.get(route)
         page_object = PageObject(
             title=page_title,
             element_list=[],
@@ -85,8 +85,7 @@ class CoreDataView(AbstractBasePage):
         # Adding additional contents to page objects
         self.function_dispatcher.get(action)(
             page_object=page_object,
-            # Route Wrapper should be an object that contains 2 classes: routeClass and routeForm
-            context=route_wrapper.routeClass(self.request).generateData(
+            context=route_component(self.request).generateData(
                 action=action, route=route, element_id=element_id, app_name=self.app_name
             )
         )

@@ -28,13 +28,13 @@ class Table:
 
 
 class Form:
-    def __init__(self, form_path, form_name, form_action, destination, data, special_context):
+    def __init__(self, form_path, form_name, form_action, destination, form, special_context):
         self.form_path = form_path
         self.form_name = form_name
         self.form_id = self.getFormID()
         self.form_action = form_action.title()
         self.destination = destination
-        self.data = data
+        self.form = form
         self.special_context = special_context
 
     def getFormID(self):
