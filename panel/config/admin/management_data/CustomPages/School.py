@@ -29,7 +29,7 @@ class SchoolView(AbstractCustomClass):
                 school_id = kwargs.pop('id', None)
                 school = self.useAPI(self.base_class).verifySelf(id=school_id)
                 school_account = self.useAPI(self.assoc_class_account).verifySelf(account_linked_id=school.id)
-                pwd = RequestFunctions.getSinglePostObj(post_dict, 'account_password')
+                pwd = RequestFunctions.getSingleRequestObj(post_dict, 'account_password')
                 pwd_salt = school_account.account_salt
                 if not (pwd == school_account.account_password):
                     hashpwd = hashlib.sha224((pwd + pwd_salt).encode("utf-8")).hexdigest()
@@ -40,7 +40,7 @@ class SchoolView(AbstractCustomClass):
                 pwd_salt = ''.join(random.choices(string.ascii_uppercase + string.digits, k=15))
                 hashpwd = hashlib.sha224(
                     (
-                            RequestFunctions.getSinglePostObj(
+                            RequestFunctions.getSingleRequestObj(
                                 post_dict, 'account_password'
                             ) + pwd_salt
                     ).encode("utf-8")).hexdigest()
@@ -48,18 +48,18 @@ class SchoolView(AbstractCustomClass):
                 school_account.account_salt = pwd_salt
                 school_account.account_password = hashpwd
 
-            school.school_name = RequestFunctions.getSinglePostObj(post_dict, 'school_name')
-            school.school_region = RequestFunctions.getSinglePostObj(post_dict, 'school_region')
-            school.school_status = RequestFunctions.getSinglePostObj(post_dict, 'school_status')
-            school.school_default_team_name = RequestFunctions.getSinglePostObj(post_dict, 'school_default_team_name')
+            school.school_name = RequestFunctions.getSingleRequestObj(post_dict, 'school_name')
+            school.school_region = RequestFunctions.getSingleRequestObj(post_dict, 'school_region')
+            school.school_status = RequestFunctions.getSingleRequestObj(post_dict, 'school_status')
+            school.school_default_team_name = RequestFunctions.getSingleRequestObj(post_dict, 'school_default_team_name')
             if not action == 'delete':
                 school.save()
 
             LogFunctions.generateLog(
                 self.request, 'admin', LogFunctions.makeLogQuery(
                     self.base_class, action.title(), id=school.id))
-            school_account.account_email = RequestFunctions.getSinglePostObj(post_dict, 'account_email')
-            school_account.account_status = RequestFunctions.getSinglePostObj(post_dict, 'school_status')
+            school_account.account_email = RequestFunctions.getSingleRequestObj(post_dict, 'account_email')
+            school_account.account_status = RequestFunctions.getSingleRequestObj(post_dict, 'school_status')
             school_account.account_linked_id = school.id
             if not action == 'delete':
                 school_account.save()

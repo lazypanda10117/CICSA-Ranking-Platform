@@ -26,10 +26,10 @@ class MemberView(AbstractCustomClass):
             else:
                 member = self.base_class()
 
-            member.member_name = RequestFunctions.getSinglePostObj(post_dict, 'member_name')
-            member.member_school = RequestFunctions.getSinglePostObj(post_dict, 'member_school')
-            member.member_email = RequestFunctions.getSinglePostObj(post_dict, 'member_email')
-            member.member_status = RequestFunctions.getSinglePostObj(post_dict, 'member_status')
+            member.member_name = RequestFunctions.getSingleRequestObj(post_dict, 'member_name')
+            member.member_school = RequestFunctions.getSingleRequestObj(post_dict, 'member_school')
+            member.member_email = RequestFunctions.getSingleRequestObj(post_dict, 'member_email')
+            member.member_status = RequestFunctions.getSingleRequestObj(post_dict, 'member_status')
 
             if not action == 'delete':
                 member.save()

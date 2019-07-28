@@ -19,8 +19,8 @@ class Login:
 
     def login(self):
         post_dict = dict(self.request.POST)
-        uemail = RequestFunctions.getSinglePostObj(post_dict, "email")
-        upwd = RequestFunctions.getSinglePostObj(post_dict, "password")
+        uemail = RequestFunctions.getSingleRequestObj(post_dict, "email")
+        upwd = RequestFunctions.getSingleRequestObj(post_dict, "password")
         if uemail and upwd:
             u = ModelFunctions.getModelObject(Account, account_email=uemail)
             if u is None:

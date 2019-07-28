@@ -32,10 +32,10 @@ class EventTeamView(AbstractCustomClass):
             else:
                 event_team = self.base_class()
 
-            event_team.event_team_id = RequestFunctions.getSinglePostObj(post_dict, 'event_team_id')
-            event_team.event_team_event_activity_id = RequestFunctions.getSinglePostObj(
+            event_team.event_team_id = RequestFunctions.getSingleRequestObj(post_dict, 'event_team_id')
+            event_team.event_team_event_activity_id = RequestFunctions.getSingleRequestObj(
                 post_dict, 'event_team_event_activity_id')
-            event_team.event_team_member_group_id = [RequestFunctions.getSinglePostObj(post_dict, name + "_result")
+            event_team.event_team_member_group_id = [RequestFunctions.getSingleRequestObj(post_dict, name + "_result")
                                                      for name in self.search_name][0]
 
             if not action == 'delete':

@@ -26,7 +26,7 @@ class AccountView(AbstractCustomClass):
             if dispatcher.get(action):
                 account_id = kwargs.pop('id', None)
                 account = self.useAPI(self.base_class).verifySelf(id=account_id)
-                pwd = RequestFunctions.getSinglePostObj(post_dict, 'account_password')
+                pwd = RequestFunctions.getSingleRequestObj(post_dict, 'account_password')
                 pwd_salt = account.account_salt
                 if not (pwd == account.account_password):
                     hashpwd = hashlib.sha224((pwd + pwd_salt).encode("utf-8")).hexdigest()
@@ -35,15 +35,15 @@ class AccountView(AbstractCustomClass):
                 account = self.base_class()
                 pwd_salt = ''.join(random.choices(string.ascii_uppercase + string.digits, k=15))
                 hashpwd = hashlib.sha224(
-                    (RequestFunctions.getSinglePostObj(post_dict, 'account_password') + pwd_salt).encode("utf-8")
+                    (RequestFunctions.getSingleRequestObj(post_dict, 'account_password') + pwd_salt).encode("utf-8")
                 ).hexdigest()
                 account.account_salt = pwd_salt
                 account.account_password = hashpwd
 
-            account.account_type = RequestFunctions.getSinglePostObj(post_dict, 'account_type')
-            account.account_email = RequestFunctions.getSinglePostObj(post_dict, 'account_email')
-            account.account_status = RequestFunctions.getSinglePostObj(post_dict, 'account_status')
-            account.account_linked_id = RequestFunctions.getSinglePostObj(post_dict, 'account_linked_id')
+            account.account_type = RequestFunctions.getSingleRequestObj(post_dict, 'account_type')
+            account.account_email = RequestFunctions.getSingleRequestObj(post_dict, 'account_email')
+            account.account_status = RequestFunctions.getSingleRequestObj(post_dict, 'account_status')
+            account.account_linked_id = RequestFunctions.getSingleRequestObj(post_dict, 'account_linked_id')
 
             if not action == 'delete':
                 account.save()

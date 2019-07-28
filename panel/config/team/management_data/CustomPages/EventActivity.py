@@ -45,16 +45,16 @@ class EventActivityView(AbstractCustomClass):
             event_api = self.useAPI(self.assoc_class_event)
             event_activity = self.base_class()
             event_activity.event_activity_event_parent = int(
-                [RequestFunctions.getSinglePostObj(post_dict, self.search_name[0] + "_result")][0])
+                [RequestFunctions.getSingleRequestObj(post_dict, self.search_name[0] + "_result")][0])
             event_activity.event_activity_event_tag = int(
-                [RequestFunctions.getSinglePostObj(post_dict, self.search_name[1] + "_result")][0])
-            event_activity.event_activity_name = RequestFunctions.getSinglePostObj(post_dict, 'event_activity_name')
-            event_activity.event_activity_order = RequestFunctions.getSinglePostObj(post_dict, 'event_activity_order')
+                [RequestFunctions.getSingleRequestObj(post_dict, self.search_name[1] + "_result")][0])
+            event_activity.event_activity_name = RequestFunctions.getSingleRequestObj(post_dict, 'event_activity_name')
+            event_activity.event_activity_order = RequestFunctions.getSingleRequestObj(post_dict, 'event_activity_order')
             event_activity.event_activity_result = MiscFunctions.jsonLoadCatch(
-                RequestFunctions.getSinglePostObj(post_dict, 'event_activity_result'))
-            event_activity.event_activity_type = RequestFunctions.getSinglePostObj(post_dict, 'event_activity_type')
-            event_activity.event_activity_note = RequestFunctions.getSinglePostObj(post_dict, 'event_activity_note')
-            event_activity.event_activity_status = RequestFunctions.getSinglePostObj(post_dict, 'event_activity_status')
+                RequestFunctions.getSingleRequestObj(post_dict, 'event_activity_result'))
+            event_activity.event_activity_type = RequestFunctions.getSingleRequestObj(post_dict, 'event_activity_type')
+            event_activity.event_activity_note = RequestFunctions.getSingleRequestObj(post_dict, 'event_activity_note')
+            event_activity.event_activity_status = RequestFunctions.getSingleRequestObj(post_dict, 'event_activity_status')
             event_activity.save()
 
             LogFunctions.generateLog(
@@ -91,16 +91,16 @@ class EventActivityView(AbstractCustomClass):
         def edit(key):
             event_activity = self.useAPI(self.base_class).verifySelf(id=key)
             event_activity.event_activity_event_parent = int(
-                [RequestFunctions.getSinglePostObj(post_dict, self.search_name[0] + "_result")][0])
+                [RequestFunctions.getSingleRequestObj(post_dict, self.search_name[0] + "_result")][0])
             event_activity.event_activity_event_tag = int(
-                [RequestFunctions.getSinglePostObj(post_dict, self.search_name[1] + "_result")][0])
-            event_activity.event_activity_name = RequestFunctions.getSinglePostObj(post_dict, 'event_activity_name')
-            event_activity.event_activity_order = RequestFunctions.getSinglePostObj(post_dict, 'event_activity_order')
+                [RequestFunctions.getSingleRequestObj(post_dict, self.search_name[1] + "_result")][0])
+            event_activity.event_activity_name = RequestFunctions.getSingleRequestObj(post_dict, 'event_activity_name')
+            event_activity.event_activity_order = RequestFunctions.getSingleRequestObj(post_dict, 'event_activity_order')
             event_activity.event_activity_result = MiscFunctions.jsonLoadCatch(
-                RequestFunctions.getSinglePostObj(post_dict, 'event_activity_result'))
-            event_activity.event_activity_type = RequestFunctions.getSinglePostObj(post_dict, 'event_activity_type')
-            event_activity.event_activity_note = RequestFunctions.getSinglePostObj(post_dict, 'event_activity_note')
-            event_activity.event_activity_status = RequestFunctions.getSinglePostObj(post_dict, 'event_activity_status')
+                RequestFunctions.getSingleRequestObj(post_dict, 'event_activity_result'))
+            event_activity.event_activity_type = RequestFunctions.getSingleRequestObj(post_dict, 'event_activity_type')
+            event_activity.event_activity_note = RequestFunctions.getSingleRequestObj(post_dict, 'event_activity_note')
+            event_activity.event_activity_status = RequestFunctions.getSingleRequestObj(post_dict, 'event_activity_status')
             event_activity.save()
             LogFunctions.generateLog(
                 self.request, 'admin', LogFunctions.makeLogQuery(

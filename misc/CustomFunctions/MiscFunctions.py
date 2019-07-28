@@ -6,6 +6,14 @@ def filterDict(dict_items, invalid):
     return {key: val for key, val in dict_items if key not in invalid}
 
 
+def serializeJSONListData(tags, data):
+    to_serialize = tags
+    for json_obj_ref in to_serialize:
+        if json_obj_ref in data:
+            data[json_obj_ref] = json.dumps(data[json_obj_ref])
+    return data
+
+
 def grabValueAsList(dictionary):
     return list(dictionary.values())
 

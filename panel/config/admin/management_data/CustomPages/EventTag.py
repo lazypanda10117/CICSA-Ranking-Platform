@@ -29,9 +29,9 @@ class EventTagView(AbstractCustomClass):
             else:
                 event_tag = self.base_class()
 
-            event_tag.event_tag_event_id = [RequestFunctions.getSinglePostObj(
+            event_tag.event_tag_event_id = [RequestFunctions.getSingleRequestObj(
                 post_dict, name + "_result") for name in self.search_name][0]
-            event_tag.event_tag_name = RequestFunctions.getSinglePostObj(post_dict, 'event_tag_name')
+            event_tag.event_tag_name = RequestFunctions.getSingleRequestObj(post_dict, 'event_tag_name')
 
             if not action == 'delete':
                 event_tag.save()

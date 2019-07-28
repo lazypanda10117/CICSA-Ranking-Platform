@@ -31,7 +31,7 @@ class ImmutableBase(ABC):
 
     def getFilterTerms(self):
         get_dict = self.request.GET
-        kwargs = RequestFunctions.getMultiplePostObj(get_dict, 'kwargs')
+        kwargs = RequestFunctions.getMultipleRequestObj(get_dict, 'kwargs')
         if kwargs is not None:
             kwargs = json.loads(kwargs)
             return kwargs
@@ -39,8 +39,8 @@ class ImmutableBase(ABC):
 
     def getRangeTerms(self):
         get_dict = self.request.GET
-        range_start = RequestFunctions.getMultiplePostObj(get_dict, 'start')
-        range_end = RequestFunctions.getMultiplePostObj(get_dict, 'end')
+        range_start = RequestFunctions.getMultipleRequestObj(get_dict, 'start')
+        range_end = RequestFunctions.getMultipleRequestObj(get_dict, 'end')
 
         try:
             range_start = (int(range_start)-1 if int(range_start)-1 >= 0 else 0)

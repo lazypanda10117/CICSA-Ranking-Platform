@@ -29,18 +29,18 @@ class MemberGroupView(AbstractCustomClass):
             else:
                 member_group = self.base_class()
 
-            member_group.member_group_school = RequestFunctions.getSinglePostObj(post_dict, 'member_group_school')
-            member_group.member_group_member_ids = [RequestFunctions.getSinglePostObj(post_dict, name + "_result")
+            member_group.member_group_school = RequestFunctions.getSingleRequestObj(post_dict, 'member_group_school')
+            member_group.member_group_member_ids = [RequestFunctions.getSingleRequestObj(post_dict, name + "_result")
                                                     for name in self.search_name]
             if action == 'add':
                 member_group.member_group_name = ModelFunctions.getModelObject(
                     self.assoc_class_school,
                     id=member_group.member_group_school
-                ).school_name + ' - ' + RequestFunctions.getSinglePostObj(
+                ).school_name + ' - ' + RequestFunctions.getSingleRequestObj(
                     post_dict, 'member_group_name'
                 )
             elif action == 'edit':
-                member_group.member_group_name = RequestFunctions.getSinglePostObj(post_dict, 'member_group_name')
+                member_group.member_group_name = RequestFunctions.getSingleRequestObj(post_dict, 'member_group_name')
 
             member_group.save()
 

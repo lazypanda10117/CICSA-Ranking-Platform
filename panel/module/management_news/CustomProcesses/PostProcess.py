@@ -9,15 +9,15 @@ class PostProcess(AbstractBaseProcess):
         news_api = NewsAPI(self.request)
         post_dict = dict(self.request.POST)
         action = self.param.get("action", None)
-        news_id = RequestFunctions.getSinglePostObj(post_dict, "id")
+        news_id = RequestFunctions.getSingleRequestObj(post_dict, "id")
 
         if action == 'add':
-            news_title = RequestFunctions.getSinglePostObj(post_dict, 'news_title')
-            news_content = RequestFunctions.getSinglePostObj(post_dict, 'news_content')
+            news_title = RequestFunctions.getSingleRequestObj(post_dict, 'news_title')
+            news_content = RequestFunctions.getSingleRequestObj(post_dict, 'news_content')
             news_api.addNews(news_title, news_content)
         elif action == 'edit':
-            news_title = RequestFunctions.getSinglePostObj(post_dict, 'news_title')
-            news_content = RequestFunctions.getSinglePostObj(post_dict, 'news_content')
+            news_title = RequestFunctions.getSingleRequestObj(post_dict, 'news_title')
+            news_content = RequestFunctions.getSingleRequestObj(post_dict, 'news_content')
             news_api.editNews(news_id, news_title, news_content)
         elif action == 'delete':
             news_api.deleteNews(news_id)
