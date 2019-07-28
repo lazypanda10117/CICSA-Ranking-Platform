@@ -12,9 +12,9 @@ class CoreDataActionProcess(CoreDataComponentConstructor):
 
     def __setProcessDispatcher(self):
         dispatcher = Dispatcher()
-        dispatcher.add(ActionType.ADD, self.add)
-        dispatcher.add(ActionType.EDIT, self.edit)
-        dispatcher.add(ActionType.DELETE, self.delete)
+        dispatcher.add(ActionType.ADD, self._add)
+        dispatcher.add(ActionType.EDIT, self._edit)
+        dispatcher.add(ActionType.DELETE, self._delete)
         return dispatcher
 
     # View Process Functions
@@ -22,13 +22,13 @@ class CoreDataActionProcess(CoreDataComponentConstructor):
         self.process_dispatcher.get(action)(**kwargs)
 
     @abstractmethod
-    def add(self, **kwargs):
+    def _add(self, **kwargs):
         pass
 
     @abstractmethod
-    def edit(self, **kwargs):
+    def _edit(self, **kwargs):
         pass
 
     @abstractmethod
-    def delete(self, **kwargs):
+    def _delete(self, **kwargs):
         pass

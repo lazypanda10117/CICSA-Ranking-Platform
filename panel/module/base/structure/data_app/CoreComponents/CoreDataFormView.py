@@ -12,7 +12,7 @@ class CoreDataFormView(CoreDataComponentConstructor):
         super().__init__(request, app_name, base_class, mutable, guard)
         self.validation_set = self._setValidationSet()
         self.form_object = self._setFormObject()
-        self.populate_data_dispatcher = self.__setPopulateDataDispatcher()
+        self.populate_data_dispatcher = self._setPopulateDataDispatcher()
 
     @abstractmethod
     def _setValidationSet(self):
@@ -26,7 +26,8 @@ class CoreDataFormView(CoreDataComponentConstructor):
     def getFieldData(self, **kwargs):
         pass
 
-    def __setPopulateDataDispatcher(self):
+    @abstractmethod
+    def _setPopulateDataDispatcher(self):
         dispatcher = Dispatcher()
         dispatcher.add(ActionType.ADD, False)
         dispatcher.add(ActionType.EDIT, True)
