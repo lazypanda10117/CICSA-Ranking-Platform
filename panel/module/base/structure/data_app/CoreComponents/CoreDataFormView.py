@@ -9,8 +9,8 @@ from panel.module.base.structure.data_app.utils import QueryTermUtils
 
 
 class CoreDataFormView(CoreDataComponentConstructor):
-    def __init__(self, request, app_name, base_class, mutable=True):
-        super().__init__(request, app_name, base_class, mutable)
+    def __init__(self, request, app_name, base_class, mutable, guard):
+        super().__init__(request, app_name, base_class, mutable, guard)
         self.validation_set = self._setValidationSet()
         self.populate_data_dispatcher = self.__setPopulateDataDispatcher()
 

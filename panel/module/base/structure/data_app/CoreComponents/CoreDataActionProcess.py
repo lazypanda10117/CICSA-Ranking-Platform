@@ -1,14 +1,14 @@
-from abc import ABC
 from abc import abstractmethod
 
 from misc.CustomElements import Dispatcher
+from panel.module.base.structure.data_app.CoreComponents import CoreDataComponentConstructor
 from panel.module.base.structure.data_app.constants import ActionType
 
 
-class CoreDataActionProcess(ABC):
-    def __init__(self, base_name):
+class CoreDataActionProcess(CoreDataComponentConstructor):
+    def __init__(self, request, app_name, base_class, mutable, guard):
+        super().__init__(request, app_name, base_class, mutable, guard)
         self.process_dispatcher = self.__setProcessDispatcher()
-        self.base_name = base_name
 
     def __setProcessDispatcher(self):
         dispatcher = Dispatcher()

@@ -53,13 +53,19 @@ class CoreDataComponent(CoreDataComponentConstructor):
         element_id = kwargs.pop('element_id')
 
         if action == ActionType.VIEW:
-            return self.associated_component_class_dispatcher.get(ComponentType.TABLE).render(route=route)
+            return self.associated_component_class_dispatcher.get(ComponentType.TABLE)(
+                self.request, self.app_name, self.base_class, self.mutable, self.guard
+            ).render(route=route)
 
         if action == ActionType.ADD:
-            return self.associated_component_class_dispatcher.get(ComponentType.FORM).render(action=action)
+            return self.associated_component_class_dispatcher.get(ComponentType.FORM)(
+                self.request, self.app_name, self.base_class, self.mutable, self.guard
+            ).render(action=action)
 
         if action in [ActionType.EDIT, ActionType.DELETE] and element_id is not None:
-            return self.associated_component_class_dispatcher.get(ComponentType.FORM).render(
+            return self.associated_component_class_dispatcher.get(ComponentType.FORM)(
+                self.request, self.app_name, self.base_class, self.mutable, self.guard
+            ).render(
                 action=action, element_id=element_id
             )
 
@@ -68,7 +74,9 @@ class CoreDataComponent(CoreDataComponentConstructor):
     def processData(self, **kwargs):
         action = kwargs.pop("action")
         element_id = kwargs.pop('element_id')
-        self.associated_component_class_dispatcher.get(ComponentType.PROCESS).process(
+        self.associated_component_class_dispatcher.get(ComponentType.PROCESS)(
+                self.request, self.app_name, self.base_class, self.mutable, self.guard
+        ).process(
             action=action,
             element_id=element_id
         )
