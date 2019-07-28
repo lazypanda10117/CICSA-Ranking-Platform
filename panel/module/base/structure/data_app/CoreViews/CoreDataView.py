@@ -4,7 +4,8 @@ from functools import partial
 from django.urls import reverse
 
 from misc.CustomElements import Dispatcher
-from misc.CustomFunctions import UrlFunctions, MiscFunctions
+from misc.CustomFunctions import UrlFunctions
+from misc.CustomFunctions import MiscFunctions
 from panel.component.CustomElements import Form
 from panel.module.base.block.CustomComponents import PageObject
 from panel.module.base.block.CustomComponents import BlockSet
@@ -27,13 +28,7 @@ class CoreDataView(AbstractBasePage):
     def _setViewDispatcher(self):
         pass
 
-    @abstractmethod
-    def _getTemplateBase(self):
-        pass
-
-    # TODO: Abstract template to core app
-    @staticmethod
-    def getPagePath():
+    def getPagePath(self):
         return 'platform/module/management_data/generate.html'
 
     def _setFunctionDispatcher(self):
@@ -43,26 +38,6 @@ class CoreDataView(AbstractBasePage):
         dispatcher.add('edit', partial(self.actionMutate, verify=True))
         dispatcher.add('delete', partial(self.actionMutate, verify=True))
         return dispatcher
-
-    def genPageObject(self):
-        route = self.param.get('route')
-        action = self.request.GET.get("action")
-        element_id = self.request.GET.get("element_id")
-        page_title = (route + " " + action).title()
-        route_wrapper = self.view_dispatcher.get(route)
-        page_object = PageObject(
-            title=page_title,
-            element_list=[],
-            header=[],
-            external=[],
-            context=dict(route=route, action=action, element_id=element_id),
-        )
-        # Adding additional contents to page objects
-        self.function_dispatcher.get(action)(
-            page_object=page_object,
-            # Route Wrapper should be an object that contains 2 classes: routeClass and routeForm
-            context=route_wrapper.routeClass(self.request).grabData(action=action, route=route, element_id=element_id)
-        )
 
     def actionView(self, page_object, context):
         page_type = dict(table=True)
@@ -109,6 +84,28 @@ class CoreDataView(AbstractBasePage):
                 special_context=special_content
             ),
         ))
+
+    def genPageObject(self):
+        route = self.param.get('route')
+        action = self.request.GET.get("action")
+        element_id = self.request.GET.get("element_id")
+        page_title = (route + " " + action).title()
+        route_wrapper = self.view_dispatcher.get(route)
+        page_object = PageObject(
+            title=page_title,
+            element_list=[],
+            header=[],
+            external=[],
+            context=dict(route=route, action=action, element_id=element_id),
+        )
+        # Adding additional contents to page objects
+        self.function_dispatcher.get(action)(
+            page_object=page_object,
+            # Route Wrapper should be an object that contains 2 classes: routeClass and routeForm
+            context=route_wrapper.routeClass(self.request).generateData(
+                action=action, route=route, element_id=element_id
+            )
+        )
 
     def render(self):
         super().renderHelper(self.genPageObject())
