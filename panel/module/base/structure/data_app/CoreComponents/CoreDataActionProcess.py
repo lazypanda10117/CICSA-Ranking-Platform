@@ -6,8 +6,9 @@ from panel.module.base.structure.data_app.constants import ActionType
 
 
 class CoreDataActionProcess(ABC):
-    def __init__(self):
+    def __init__(self, base_name):
         self.process_dispatcher = self.__setProcessDispatcher()
+        self.base_name = base_name
 
     def __setProcessDispatcher(self):
         dispatcher = Dispatcher()

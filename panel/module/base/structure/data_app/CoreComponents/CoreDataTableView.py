@@ -1,19 +1,16 @@
-from abc import ABC
 from abc import abstractmethod
 
-from misc.CustomFunctions import MiscFunctions
 from misc.CustomFunctions import UrlFunctions
 from panel.component.CustomElements import Table
 from panel.component.CustomElements import Button
-from panel.module.base.structure.data_app.CoreComponents.CoreDataComponentConstructor import \
-    CoreDataComponentConstructor
 from panel.module.base.structure.data_app.constants import ActionType
 from panel.module.base.structure.data_app.utils import QueryTermUtils
 from panel.module.base.structure.data_app.utils import MiscUtils
+from panel.module.base.structure.data_app.CoreComponents import CoreDataComponentConstructor
 
 
 class CoreDataTableView(CoreDataComponentConstructor):
-    def __init__(self, request, app_name, base_class, mutable=False):
+    def __init__(self, request, app_name, base_class, mutable=True):
         super().__init__(request, app_name, base_class, mutable)
         self.validation_set = self._setValidationSet()
 
@@ -34,7 +31,7 @@ class CoreDataTableView(CoreDataComponentConstructor):
         query_term_parser = QueryTermUtils(self.request)
         table_header = self.getHeader()
         table_content = self.getBody(query_term_parser.getRangeTerms(), **query_term_parser.getFilterTerms())
-        return Table(current_class=self.base_class, title=route).importTable(table_header, table_content)
+        return Table(current_class=self.base_class, title=route).buildTable(table_header, table_content)
 
     def getHeader(self):
         return self.getHeaderContent() + ([] if self.mutable else [ActionType.EDIT, ActionType.DELETE])

@@ -20,26 +20,11 @@ class Table:
         self.table_header = ''
         self.table_content = ''
 
-    def makeTable(self):
-        self.table_element = self.getTableElement()
-        self.table_header = self.getTableHeader()
-        self.table_content = self.getTableContent()
+    def buildTable(self, table_header, table_content, table_element=None):
+        self.table_element = table_element
+        self.table_header = table_header
+        self.table_content = table_content
         return self
-
-    def importTable(self, tableHeader, tableContent):
-        self.table_element = None
-        self.table_header = tableHeader
-        self.table_content = tableContent
-        return self
-
-    def getTableElement(self):
-        pass
-
-    def getTableHeader(self):
-        pass
-
-    def getTableContent(self):
-        pass
 
 
 class Form:

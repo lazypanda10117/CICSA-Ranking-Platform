@@ -9,7 +9,7 @@ from panel.module.base.structure.data_app.utils import QueryTermUtils
 
 
 class CoreDataFormView(CoreDataComponentConstructor):
-    def __init__(self, request, app_name, base_class, mutable=False):
+    def __init__(self, request, app_name, base_class, mutable=True):
         super().__init__(request, app_name, base_class, mutable)
         self.validation_set = self._setValidationSet()
         self.populate_data_dispatcher = self.__setPopulateDataDispatcher()
@@ -47,6 +47,7 @@ class CoreDataFormView(CoreDataComponentConstructor):
         action = kwargs.pop('action')
         route = kwargs.pop('route')
 
+        # There should only have element_id left inside kwargs
         data = dict(
             field_data=self.getFieldData(**kwargs),
             choice_data=self.getChoiceData(**kwargs),

@@ -1,17 +1,29 @@
 from abc import abstractmethod
 
+from api.authentication import AuthenticationGuardType
 from misc.CustomElements import Dispatcher
-from panel.module.base.structure.data_app.CoreComponents.CoreDataComponentConstructor import \
-    CoreDataComponentConstructor
+from panel.module.base.structure.data_app.CoreComponents import CoreDataComponentConstructor
 from panel.module.base.structure.data_app.constants import ActionType
 from panel.module.base.structure.data_app.constants import ComponentType
 
 
-class CoreDataPage(CoreDataComponentConstructor):
-    def __init__(self, request, app_name, base_class, mutable=False):
-        super().__init__(request, app_name, base_class, mutable)
+class CoreDataComponent(CoreDataComponentConstructor):
+    def __init__(self, request):
+        self.app_name = self._getAppName()
+        self.base_class = self._getBaseClass()
+        self.mutable = self._getMutability()
+        self.guard = self._getGuardType()
+        super().__init__(request, self.app_name, self.base_class, self.mutable, self.guard)
         self.action_permission_dispatcher = self._setActionPermissionDispatcher()
         self.associated_component_class_dispatcher = self._setAssociatedComponentClassDispatcher()
+
+    @abstractmethod
+    def _getAppName(self):
+        pass
+
+    @abstractmethod
+    def _getBaseClass(self):
+        pass
 
     @abstractmethod
     def _setAssociatedComponentClassDispatcher(self):
@@ -20,6 +32,12 @@ class CoreDataPage(CoreDataComponentConstructor):
         dispatcher.add(ComponentType.FORM, None)
         dispatcher.add(ComponentType.PROCESS, None)
         return dispatcher
+
+    def _getMutability(self):
+        return True
+
+    def _getGuardType(self):
+        return AuthenticationGuardType.ADMIN_TEAM_GUARD
 
     def _setActionPermissionDispatcher(self):
         dispatcher = Dispatcher()
