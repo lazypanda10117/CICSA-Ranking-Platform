@@ -1,7 +1,8 @@
 from misc.CustomElements import Dispatcher
 from panel.module.ModuleRegistry import ModuleRegistry
 from panel.module.base.structure.data_app.CoreViews import CoreDataView
-from panel.module.management_event.CustomComponents import sth
+from panel.module.management_event.CustomComponents.FleetRaceComponent import FleetRaceComponent
+
 
 class EventDataPage(CoreDataView):
     def _setAppName(self):
@@ -9,9 +10,8 @@ class EventDataPage(CoreDataView):
 
     def _setViewDispatcher(self):
         dispatcher = Dispatcher()
-        dispatcher.add('')
+        dispatcher.add('fleet', FleetRaceComponent)
         return dispatcher
 
     def _getTemplateBase(self):
-        pass
-
+        return 'platform/base.html'
