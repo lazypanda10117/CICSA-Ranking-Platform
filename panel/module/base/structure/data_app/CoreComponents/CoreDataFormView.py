@@ -26,7 +26,7 @@ class CoreDataFormView(CoreDataComponentConstructor):
     def getFieldData(self, **kwargs):
         pass
 
-    @abstractmethod
+    # To determine whether an action requires populating preexisting data for a form
     def _setPopulateDataDispatcher(self):
         dispatcher = Dispatcher()
         dispatcher.add(ActionType.ADD, False)
