@@ -25,7 +25,7 @@ class AccountView(AbstractCustomClass):
 
             if dispatcher.get(action):
                 account_id = kwargs.pop('id', None)
-                account = self.useAPI(self.base_class).verifySelf(id=account_id)
+                account = self.useAPI(self.base_class).editSelf(id=account_id)
                 pwd = RequestFunctions.getSingleRequestObj(post_dict, 'account_password')
                 pwd_salt = account.account_salt
                 if not (pwd == account.account_password):
@@ -67,7 +67,7 @@ class AccountView(AbstractCustomClass):
         field_data_dispatcher = self.populateDispatcher()
         if field_data_dispatcher.get(action):
             field_data = MiscFunctions.filterDict(
-                self.useAPI(self.base_class).verifySelf(
+                self.useAPI(self.base_class).editSelf(
                     id=element_id
                 ).__dict__.items(),
                 self.validation_table['base_form_invalid']

@@ -57,6 +57,8 @@ class ScoreMapping(models.Model):
 
 class EventType(models.Model):
     # By seeder, there are 2 types: Fleet Race and Team Race
+    FLEET_RACE = 'fleet race'
+    TEAM_RACE = 'team race'
     event_type_name = models.CharField(max_length=200)
 
 

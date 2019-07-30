@@ -25,7 +25,7 @@ class EventAPI(GeneralModelAPI):
         return teams
 
     def updateEventStatus(self, event_id, event_status):
-        event = self.verifySelf(id=event_id)
+        event = self.editSelf(id=event_id)
         AuthFunctions.raise404Empty(event)
         event.event_status = event_status
         event.save()

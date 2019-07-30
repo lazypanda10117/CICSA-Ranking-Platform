@@ -46,7 +46,7 @@ class NewsAPI(AbstractCoreAPI):
 
     def archiveNews(self, news_id):
         self.__checkAdminPermission('archive news')
-        news = self.__applyAPI(NewsPost).verifySelf(id=news_id)
+        news = self.__applyAPI(NewsPost).editSelf(id=news_id)
         if news.news_post_status == NewsPost.NEWS_POST_ARCHIVED:
             raise PermissionError("This news is already archived")
         else:
@@ -54,7 +54,7 @@ class NewsAPI(AbstractCoreAPI):
 
     def pinNews(self, news_id):
         self.__checkAdminPermission('pin news')
-        news = self.__applyAPI(NewsPost).verifySelf(id=news_id)
+        news = self.__applyAPI(NewsPost).editSelf(id=news_id)
         if news.news_post_status == NewsPost.NEWS_POST_PINNED:
             raise PermissionError("This news is already pinned")
         else:
@@ -62,7 +62,7 @@ class NewsAPI(AbstractCoreAPI):
 
     def restoreNews(self, news_id):
         self.__checkAdminPermission('restore news')
-        news = self.__applyAPI(NewsPost).verifySelf(id=news_id)
+        news = self.__applyAPI(NewsPost).editSelf(id=news_id)
         if news.news_post_status in [NewsPost.NEWS_POST_ARCHIVED, NewsPost.NEWS_POST_PINNED]:
             news.update(news_post_status=NewsPost.NEWS_POST_ACTIVE)
         else:
@@ -83,7 +83,7 @@ class NewsAPI(AbstractCoreAPI):
         news = self.getNews(news_id)
         news.news_post_title = news_title
         news.news_post_content = news_content
-        news = self.__applyAPI(NewsPost).verifySelf(news)
+        news = self.__applyAPI(NewsPost).editSelf(news)
         news.save()
 
     def deleteNews(self, news_id):

@@ -68,7 +68,7 @@ class EventView(EventManagementView):
             dispatcher = super().populateDispatcher()
             if dispatcher.get(action):
                 event_creation_id = kwargs.pop('id', None)
-                event_creation = self.useAPI(self.base_class).verifySelf(id=event_creation_id)
+                event_creation = self.useAPI(self.base_class).editSelf(id=event_creation_id)
             else:
                 event_creation = self.base_class()
 

@@ -25,7 +25,7 @@ class EventTagView(AbstractCustomClass):
 
             if dispatcher.get(action):
                 event_tag_id = kwargs.pop('id', None)
-                event_tag = self.useAPI(self.base_class).verifySelf(id=event_tag_id)
+                event_tag = self.useAPI(self.base_class).editSelf(id=event_tag_id)
             else:
                 event_tag = self.base_class()
 

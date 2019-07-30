@@ -166,7 +166,7 @@ class FleetManagementView(EventManagementView):
             summary_api = self.useAPI(self.assoc_class_summary)
             event_team_api = self.useAPI(self.assoc_class_team_link)
             event_tag_api = self.useAPI(self.assoc_class_tag)
-            event = event_api.verifySelf(id=key)
+            event = event_api.editSelf(id=key)
             event_activities = event_activity_api.filterSelf(event_activity_event_parent=event.id)
             event_summaries = summary_api.filterSelf(summary_event_parent=event.id)
 

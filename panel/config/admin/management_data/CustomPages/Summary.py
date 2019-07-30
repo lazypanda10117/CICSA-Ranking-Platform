@@ -24,7 +24,7 @@ class SummaryView(AbstractCustomClass):
 
             if dispatcher.get(action):
                 summary_id = kwargs.pop('id', None)
-                summary = self.useAPI(self.base_class).verifySelf(id=summary_id)
+                summary = self.useAPI(self.base_class).editSelf(id=summary_id)
             else:
                 summary = self.base_class()
 

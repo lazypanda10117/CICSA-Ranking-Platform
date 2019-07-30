@@ -1,6 +1,6 @@
 from abc import abstractmethod
 
-from misc.CustomFunctions import UrlFunctions
+from misc.CustomFunctions import UrlFunctions, MiscFunctions
 from panel.component.CustomElements import Table
 from panel.component.CustomElements import Button
 from panel.module.base.structure.data_app.constants import ActionType
@@ -30,8 +30,17 @@ class CoreDataTableView(CoreDataComponentConstructor):
         route = kwargs.pop('route')
         query_term_parser = QueryTermUtils(self.request)
         table_header = self.getHeader()
-        table_content = self.getBody(query_term_parser.getRangeTerms(), **query_term_parser.getFilterTerms())
+        table_content = self.getBody(
+            query_term_parser.getRangeTerms(), 
+            **MiscFunctions.updateDict(
+                query_term_parser.getFilterTerms(), self.injectTableFilter()
+            )
+        )
         return Table(current_class=self.base_class, title=route).buildTable(table_header, table_content)
+
+    # Injection dict is empty bby default
+    def injectTableFilter(self):
+        return {}
 
     def getHeader(self):
         return self.getHeaderContent() + ([] if self.mutable else [ActionType.EDIT, ActionType.DELETE])

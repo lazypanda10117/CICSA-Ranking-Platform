@@ -129,7 +129,7 @@ class LeagueScoringAPI(AbstractCoreAPI):
     def setNormalOverrideSummaryScores(self, school, score_dict):
         school_id = school.id
         for event_id, score in score_dict.items():
-            summary = SummaryAPI(self.request).verifySelf(summary_event_parent=event_id, summary_event_school=school_id)
+            summary = SummaryAPI(self.request).editSelf(summary_event_parent=event_id, summary_event_school=school_id)
             summary.summary_event_league_score = float(score)
             summary.save()
 
@@ -147,7 +147,7 @@ class LeagueScoringAPI(AbstractCoreAPI):
         else:
             score.score_value = float(score_tuple[0])
             score.score_override_value = float(score_tuple[1])
-            ScoreAPI(self.request).verifySelf(id=score.id)
+            ScoreAPI(self.request).editSelf(id=score.id)
             score.save()
 
     def getPanelLeagueScoreData(self):

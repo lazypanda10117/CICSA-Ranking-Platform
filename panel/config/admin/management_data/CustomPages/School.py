@@ -27,8 +27,8 @@ class SchoolView(AbstractCustomClass):
 
             if dispatcher.get(action):
                 school_id = kwargs.pop('id', None)
-                school = self.useAPI(self.base_class).verifySelf(id=school_id)
-                school_account = self.useAPI(self.assoc_class_account).verifySelf(account_linked_id=school.id)
+                school = self.useAPI(self.base_class).editSelf(id=school_id)
+                school_account = self.useAPI(self.assoc_class_account).editSelf(account_linked_id=school.id)
                 pwd = RequestFunctions.getSingleRequestObj(post_dict, 'account_password')
                 pwd_salt = school_account.account_salt
                 if not (pwd == school_account.account_password):

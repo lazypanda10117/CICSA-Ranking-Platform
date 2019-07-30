@@ -22,7 +22,7 @@ class TeamView(AbstractCustomClass):
 
             if dispatcher.get(action):
                 team_id = kwargs.pop('id', None)
-                team = self.useAPI(self.base_class).verifySelf(id=team_id)
+                team = self.useAPI(self.base_class).editSelf(id=team_id)
             else:
                 team = self.base_class()
 

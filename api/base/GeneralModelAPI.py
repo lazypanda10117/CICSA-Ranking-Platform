@@ -17,7 +17,7 @@ class GeneralModelAPI(AbstractCoreAPI):
     def getBaseClass():
         pass
 
-    def verifySelf(self, **kwargs):
+    def editSelf(self, **kwargs):
         result = ModelFunctions.getModelObject(self.base, **kwargs)
         result = self.auth_class(self.request).authenticate('edit', result)
         AuthFunctions.raise404Empty(result)

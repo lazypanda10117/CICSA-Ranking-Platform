@@ -89,7 +89,7 @@ class EventActivityView(AbstractCustomClass):
                     self.assoc_class_event, action.title(), id=event.id))
 
         def edit(key):
-            event_activity = self.useAPI(self.base_class).verifySelf(id=key)
+            event_activity = self.useAPI(self.base_class).editSelf(id=key)
             event_activity.event_activity_event_parent = int(
                 [RequestFunctions.getSingleRequestObj(post_dict, self.search_name[0] + "_result")][0])
             event_activity.event_activity_event_tag = int(
@@ -108,7 +108,7 @@ class EventActivityView(AbstractCustomClass):
 
         def delete(key):
             event_api = self.useAPI(self.assoc_class_event)
-            event_activity = self.useAPI(self.base_class).verifySelf(id=key)
+            event_activity = self.useAPI(self.base_class).editSelf(id=key)
             event_team_links = self.useAPI(
                 self.assoc_class_team_link
             ).filterSelf(event_team_event_activity_id=event_activity.id)

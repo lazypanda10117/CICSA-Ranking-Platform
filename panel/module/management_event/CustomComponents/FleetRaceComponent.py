@@ -1,16 +1,21 @@
 from django import forms
 from django.utils import timezone
 
+from api import EventTypeAPI
+from api import EventAPI
 from cicsa_ranking.models import Event
+from cicsa_ranking.models import EventType
 from api.authentication import AuthenticationGuardType
 from misc.CustomElements import Dispatcher
-from panel.component.CustomElements import CustomForm
+from misc.CustomFunctions import MiscFunctions
+from panel.component.CustomElements import CustomForm, Choices
 from panel.module.ModuleRegistry import ModuleRegistry
 from panel.module.base.structure.data_app.CoreComponents import CoreDataComponent
 from panel.module.base.structure.data_app.CoreComponents import CoreDataTableView
 from panel.module.base.structure.data_app.CoreComponents import CoreDataActionProcess
 from panel.module.base.structure.data_app.CoreComponents import CoreDataFormView
 from panel.module.base.structure.data_app.constants import ComponentType
+from panel.module.base.structure.data_app.utils import MiscUtils
 
 
 class FleetRaceComponent(CoreDataComponent):
@@ -36,10 +41,56 @@ class FleetRaceTable(CoreDataTableView):
         return {'_state', 'id', 'event_rotation_detail', 'event_school_ids', 'event_create_time'}
 
     def getHeaderContent(self):
-        pass
+        replace_dict = dict(
+            event_name='Event',
+            event_description='Description',
+            event_status="Status",
+            event_type='Type',
+            event_host='Host',
+            event_location='Location',
+            event_season='Season',
+            event_region='Region',
+            event_boat_rotation_name='Sail Numbers',
+            event_race_number='Number of Races',
+            event_team_number='Number of Teams',
+            event_date='Date'
+        )
+        base_header = [
+            field.name for field in Event._meta.get_fields() if field.name not in self.validation_set
+        ]
+        base_header.remove('event_start_date')
+        base_header.remove('event_end_date')
+        base_header.append('event_date')
+        for index, header in enumerate(base_header):
+            base_header[index] = replace_dict[header] if header in replace_dict else header
+        additional_header = []
+        return base_header + additional_header
 
     def getRowContent(self, model_object):
-        pass
+        field_data = MiscFunctions.filterDict(
+            EventAPI(self.request).getSelf(id=model_object.id).__dict__.items(),
+            self.validation_set
+        )
+        date = '{} to {}'.format(str(field_data['event_start_date']), str(field_data['event_end_date']))
+        del field_data['event_start_date']
+        del field_data['event_end_date']
+        field_data['date'] = date
+        field_data = MiscUtils(self.request).updateChoiceAsValue(
+            field_data,
+            FleetRaceForm(
+                self.request,
+                self.app_name,
+                self.base_class,
+                self.mutable,
+                self.guard
+            )
+        ).getChoiceData()
+        field_data = MiscFunctions.serializeJSONListData(['event_school_ids', 'event_rotation_detail'], field_data)
+        field_data = MiscFunctions.grabValueAsList(field_data)
+        return field_data
+
+    def injectTableFilter(self):
+        return dict(event_type=EventTypeAPI(self.request).getSelf(event_type_name=EventType.FLEET_RACE).id)
 
 
 class FleetRaceForm(CoreDataFormView):
@@ -50,7 +101,33 @@ class FleetRaceForm(CoreDataFormView):
         return FleetRaceFormObject
 
     def getFieldData(self, **kwargs):
-        pass
+        action = kwargs.pop('action')
+        element_id = kwargs.pop('element_id')
+        field_data = dict(event_type=EventType.FLEET_RACE)
+        if self.populate_data_dispatcher.get(action):
+            raw_data = EventAPI(self.request).editSelf(id=element_id).__dict__
+            field_data = MiscFunctions.filterDict(raw_data.items(), self.validation_set)
+            field_data['event_team'] = raw_data['event_school_ids']
+            field_data = MiscFunctions.serializeJSONListData(['event_school_ids', 'event_rotation_detail'], field_data)
+            return field_data
+        return field_data
+
+    def getChoiceData(self, **kwargs):
+        choice_data = dict()
+        choice_data['event_type'] = Choices().getEventTypeChoices()
+        choice_data['event_status'] = Choices().getEventStatusChoices()
+        choice_data['event_host'] = Choices().getSchoolChoices()
+        choice_data['event_season'] = Choices().getSeasonChoices()
+        choice_data['event_region'] = Choices().getRegionChoices()
+        choice_data['event_type'] = (lambda event_type: (event_type.id, event_type.event_type_name))(
+            EventTypeAPI(self.request).getSelf(event_type_name=EventType.FLEET_RACE)
+        )
+        return choice_data
+
+    def getMultiChoiceData(self, **kwargs):
+        multi_choice_data = dict()
+        multi_choice_data['event_team'] = Choices().getSchoolChoices()
+        return multi_choice_data
 
 
 class FleetRaceFormObject(CustomForm):

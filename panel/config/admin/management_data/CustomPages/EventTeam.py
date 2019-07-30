@@ -28,7 +28,7 @@ class EventTeamView(AbstractCustomClass):
 
             if dispatcher.get(action):
                 event_team_id = kwargs.pop('id', None)
-                event_team = self.useAPI(self.base_class).verifySelf(id=event_team_id)
+                event_team = self.useAPI(self.base_class).editSelf(id=event_team_id)
             else:
                 event_team = self.base_class()
 

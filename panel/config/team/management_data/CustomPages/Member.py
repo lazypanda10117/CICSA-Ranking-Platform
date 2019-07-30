@@ -22,7 +22,7 @@ class MemberView(AbstractCustomClass):
 
             if dispatcher.get(action):
                 member_id = kwargs.pop('id', None)
-                member = self.useAPI(self.base_class).verifySelf(id=member_id)
+                member = self.useAPI(self.base_class).editSelf(id=member_id)
             else:
                 member = self.base_class()
 

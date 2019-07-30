@@ -25,7 +25,7 @@ class MemberGroupView(AbstractCustomClass):
 
             if dispatcher.get(action):
                 member_group_id = kwargs.pop('id', None)
-                member_group = self.useAPI(self.base_class).verifySelf(id=member_group_id)
+                member_group = self.useAPI(self.base_class).editSelf(id=member_group_id)
             else:
                 member_group = self.base_class()
 
