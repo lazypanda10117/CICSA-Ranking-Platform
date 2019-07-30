@@ -56,7 +56,7 @@ class FleetRaceTable(CoreDataTableView):
             event_date='Date'
         )
         base_header = [
-            field.name for field in Event._meta.get_fields() if field.name not in self.validation_set
+            field.name for field in self.base_class._meta.get_fields() if field.name not in self.validation_set
         ]
         base_header.remove('event_start_date')
         base_header.remove('event_end_date')
