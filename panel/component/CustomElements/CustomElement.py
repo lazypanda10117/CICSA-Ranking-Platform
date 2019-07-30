@@ -116,7 +116,7 @@ class Choices:
     @staticmethod
     def getEventStatusChoices():
         EVENT_STATUS_CHOICES = (
-            ("future", "Future Event"),
+            ("pending", "Pending Event"),
             ("running", "Ongoing Event"),
             ("done", "Completed Event")
         )
@@ -125,8 +125,8 @@ class Choices:
     @staticmethod
     def getEventActivityTypeChoices():
         EVENT_ACTIVITY_TYPE_CHOICES = (
-            ("race", "Race"),
-            ("other", "Other")
+            (EventActivity.EVENT_ACTIVITY_TYPE_RACE, "Race"),
+            (EventActivity.EVENT_ACTIVITY_TYPE_OTHER, "Other")
         )
         return EVENT_ACTIVITY_TYPE_CHOICES
 

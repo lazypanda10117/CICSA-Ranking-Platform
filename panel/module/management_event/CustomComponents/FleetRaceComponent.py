@@ -1,20 +1,22 @@
+import random
+
 from django import forms
 from django.utils import timezone
 
-from api import EventTypeAPI
+from api import EventTypeAPI, SummaryAPI, EventActivityAPI, EventTeamAPI, EventTagAPI
 from api import EventAPI
-from cicsa_ranking.models import Event
+from cicsa_ranking.models import Event, EventTeam, EventTag, Summary, School, Team, EventActivity
 from cicsa_ranking.models import EventType
 from api.authentication import AuthenticationGuardType
 from misc.CustomElements import Dispatcher
-from misc.CustomFunctions import MiscFunctions
+from misc.CustomFunctions import MiscFunctions, LogFunctions, RequestFunctions, ModelFunctions
 from panel.component.CustomElements import CustomForm, Choices
 from panel.module.ModuleRegistry import ModuleRegistry
 from panel.module.base.structure.data_app.CoreComponents import CoreDataComponent
 from panel.module.base.structure.data_app.CoreComponents import CoreDataTableView
 from panel.module.base.structure.data_app.CoreComponents import CoreDataActionProcess
 from panel.module.base.structure.data_app.CoreComponents import CoreDataFormView
-from panel.module.base.structure.data_app.constants import ComponentType
+from panel.module.base.structure.data_app.constants import ComponentType, ActionType
 from panel.module.base.structure.data_app.utils import MiscUtils
 
 
@@ -147,11 +149,260 @@ class FleetRaceFormObject(CustomForm):
 
 
 class FleetRaceProcess(CoreDataActionProcess):
+    EVENT_RACE_TAG = ["Fleet A", "Fleet B"]
+    EVENT_TEAM_NAME_SUFFIX = ["Team A", "Team B"]
+
+    def __rotationGenerator(self, tag_dict, team_dict, event_race_number, event_team_number):
+        rand_array = random.sample(range(1, event_team_number + 1), event_team_number)
+        result_dict = dict()
+        for shift, tag in enumerate(tag_dict):
+            team_sequence = dict()
+            for team_num, team_id in enumerate(team_dict[tag]):
+                team_sequence[team_id] = [
+                    MiscFunctions.modAdd(
+                        rand_array[team_num] + shift, (race - race % 2),
+                        event_team_number
+                    )
+                    for race in range(event_race_number)
+                ]
+            result_dict[tag_dict[tag]] = team_sequence
+        return result_dict
+
     def _add(self, **kwargs):
-        pass
+        post_dict = dict(self.request.POST)
+
+        event_type = RequestFunctions.getSingleRequestObj(post_dict, 'event_type')
+        event_name = RequestFunctions.getSingleRequestObj(post_dict, 'event_name')
+        event_status = RequestFunctions.getSingleRequestObj(post_dict, 'event_status')
+        event_description = RequestFunctions.getSingleRequestObj(post_dict, 'event_description')
+        event_location = RequestFunctions.getSingleRequestObj(post_dict, 'event_location')
+        event_season = RequestFunctions.getSingleRequestObj(post_dict, 'event_season')
+        event_region = RequestFunctions.getSingleRequestObj(post_dict, 'event_region')
+        event_host = RequestFunctions.getSingleRequestObj(post_dict, 'event_host')
+        event_school = RequestFunctions.getMultipleRequestObj(post_dict, 'event_team')
+        event_race_number = RequestFunctions.getSingleRequestObj(post_dict, 'event_race_number')
+        event_boat_rotation_name = RequestFunctions.getSingleRequestObj(post_dict, 'event_boat_rotation_name')
+        event_start_date = RequestFunctions.getSingleRequestObj(post_dict, 'event_start_date')
+        event_end_date = RequestFunctions.getSingleRequestObj(post_dict, 'event_end_date')
+
+        race_tag_dict = dict()
+        team_activity_dict = dict()
+
+        # event generation
+        event_creation = self.base_class()
+        event_creation.event_type = int(event_type)
+        event_creation.event_name = event_name
+        event_creation.event_status = event_status
+        event_creation.event_description = event_description
+        event_creation.event_location = event_location
+        event_creation.event_season = event_season
+        event_creation.event_region = int(event_region)
+        event_creation.event_host = int(event_host)
+        event_creation.event_boat_rotation_name = event_boat_rotation_name
+        event_creation.event_race_number = int(event_race_number)
+        event_creation.event_start_date = event_start_date
+        event_creation.event_end_date = event_end_date
+        event_creation.event_team_number = len(event_school)
+        event_creation.event_school_ids = event_school
+        event_creation.event_rotation_detail = dict()
+        event_creation.save()
+
+        # event tag generation
+        for tag in self.EVENT_RACE_TAG:
+            event_tag = EventTag()
+            event_tag.event_tag_event_id = event_creation.id
+            event_tag.event_tag_name = tag
+            event_tag.save()
+            race_tag_dict[tag] = event_tag.id
+            LogFunctions.generateLog(
+                self.request,
+                'admin',
+                LogFunctions.makeLogQuery(
+                    model_name=EventTag,
+                    log_type=ActionType.ADD.title(),
+                    id=event_tag.id
+                )
+            )
+
+        for school_id in event_school:
+            # NOTE: Cannot use API here because no permission to get Model.
+            school = ModelFunctions.getModelObject(School, id=school_id)
+            # summary generation
+            summary = Summary()
+            summary.summary_event_parent = event_creation.id
+            summary.summary_event_school = school_id
+            summary.save()
+            LogFunctions.generateLog(
+                self.request,
+                'admin',
+                LogFunctions.makeLogQuery(
+                    model_name=Summary,
+                    log_type=ActionType.ADD.title(),
+                    id=summary.id
+                )
+            )
+            # team generation
+            for index, suffix in enumerate(self.EVENT_TEAM_NAME_SUFFIX):
+                team = Team()
+                team_name = '{} {}'.format(school.school_default_team_name, suffix)
+                team.team_name = team_name
+                team.team_school = school_id
+                team.team_status = Team.TEAM_STATUS_ACTIVE
+                team.team_tag_id = list(race_tag_dict.values())[index]
+                team.save()
+                if self.EVENT_RACE_TAG[index] not in team_activity_dict:
+                    team_activity_dict[self.EVENT_RACE_TAG[index]] = []
+                team_activity_dict[self.EVENT_RACE_TAG[index]].append(team.id)
+                LogFunctions.generateLog(
+                    self.request,
+                    'admin',
+                    LogFunctions.makeLogQuery(
+                        model_name=Team,
+                        log_type=ActionType.ADD.title(),
+                        id=team.id
+                    )
+                )
+
+        for tag, tag_id in race_tag_dict.items():
+            for race in range(event_creation.event_race_number):
+                # event activity generation
+                event_activity = EventActivity()
+                event_activity.event_activity_event_parent = event_creation.id
+                event_activity.event_activity_event_tag = tag_id
+                event_activity.event_activity_name = '{} Race {}'.format(tag, str(race + 1))
+                event_activity.event_activity_order = race + 1
+                event_activity.event_activity_result = dict()
+                event_activity.event_activity_note = ""
+                event_activity.event_activity_type = EventActivity.EVENT_ACTIVITY_TYPE_RACE
+                event_activity.event_activity_status = Event.EVENT_STATUS_PENDING
+                event_activity.save()
+                LogFunctions.generateLog(
+                    self.request,
+                    'admin',
+                    LogFunctions.makeLogQuery(
+                        model_name=EventActivity,
+                        log_type=ActionType.ADD.title(),
+                        id=event_activity.id
+                    )
+                )
+                for team_id in team_activity_dict[tag]:
+                    # event team link generation
+                    event_team = EventTeam()
+                    event_team.event_team_event_activity_id = event_activity.id
+                    event_team.event_team_id = team_id
+                    event_team.save()
+                    LogFunctions.generateLog(
+                        self.request,
+                        'admin',
+                        LogFunctions.makeLogQuery(
+                            model_name=EventTeam,
+                            log_type=ActionType.ADD.title(),
+                            id=event_team.id
+                        )
+                    )
+
+        event_creation.event_rotation_detail = self.__rotationGenerator(
+            race_tag_dict,
+            team_activity_dict,
+            event_creation.event_race_number,
+            event_creation.event_team_number
+        )
+        event_creation.save()
+
+        LogFunctions.generateLog(
+            self.request,
+            'admin',
+            LogFunctions.makeLogQuery(
+                model_name=self.base_class,
+                log_type=ActionType.ADD.title(),
+                id=event_creation.id
+            )
+        )
 
     def _edit(self, **kwargs):
-        pass
+        self._delete(**kwargs)
+        self._add()
 
     def _delete(self, **kwargs):
-        pass
+        event_id = kwargs.pop('id')
+
+        event = EventAPI(self.request).editSelf(id=event_id)
+        event_activities = EventActivityAPI(self.request).filterSelf(event_activity_event_parent=event.id)
+        event_summaries = SummaryAPI(self.request).filterSelf(summary_event_parent=event.id)
+        event_tags = EventTagAPI(self.request).filterSelf(event_tag_event_id=event.id)
+        event_teams = EventAPI(self.request).getEventCascadeTeams(event_id=event.id)
+        event_team_links = [
+            EventTeamAPI(self.request).filterSelf(event_team_event_activity_id=activity.id)
+            for activity in event_activities
+        ]
+
+        for team in event_teams:
+            LogFunctions.generateLog(
+                self.request,
+                'admin',
+                LogFunctions.makeLogQuery(
+                    model_name=Team,
+                    log_type=ActionType.DELETE.title(),
+                    id=team.id
+                )
+            )
+            team.delete()
+
+        for tag in event_tags:
+            LogFunctions.generateLog(
+                self.request,
+                'admin',
+                LogFunctions.makeLogQuery(
+                    model_name=EventTag,
+                    log_type=ActionType.DELETE.title(),
+                    id=team.id
+                )
+            )
+            tag.delete()
+
+        for summary in event_summaries:
+            LogFunctions.generateLog(
+                self.request,
+                'admin',
+                LogFunctions.makeLogQuery(
+                    model_name=Summary,
+                    log_type=ActionType.DELETE.title(),
+                    id=team.id
+                )
+            )
+            summary.delete()
+
+        for activity in event_activities:
+            LogFunctions.generateLog(
+                self.request,
+                'admin',
+                LogFunctions.makeLogQuery(
+                    model_name=EventActivity,
+                    log_type=ActionType.DELETE.title(),
+                    id=team.id
+                )
+            )
+            activity.delete()
+        for team_links in event_team_links:
+            for team_link in team_links:
+                LogFunctions.generateLog(
+                    self.request,
+                    'admin',
+                    LogFunctions.makeLogQuery(
+                        model_name=EventTeam,
+                        log_type=ActionType.DELETE.title(),
+                        id=team.id
+                    )
+                )
+                team_link.delete()
+
+        LogFunctions.generateLog(
+            self.request,
+            'admin',
+            LogFunctions.makeLogQuery(
+                model_name=self.base_class,
+                log_type=ActionType.DELETE.title(),
+                id=team.id
+            )
+        )
+        event.delete()
