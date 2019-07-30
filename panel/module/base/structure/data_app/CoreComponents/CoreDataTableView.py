@@ -6,7 +6,7 @@ from panel.component.CustomElements import Button
 from panel.module.base.structure.data_app.constants import ActionType
 from panel.module.base.structure.data_app.utils import QueryTermUtils
 from panel.module.base.structure.data_app.utils import MiscUtils
-from panel.module.base.structure.data_app.CoreComponents import CoreDataComponentConstructor
+from panel.module.base.structure.data_app.CoreComponents.CoreDataComponentConstructor import CoreDataComponentConstructor
 
 
 class CoreDataTableView(CoreDataComponentConstructor):

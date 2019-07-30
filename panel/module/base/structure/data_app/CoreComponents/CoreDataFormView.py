@@ -2,9 +2,9 @@ from abc import abstractmethod
 
 from misc.CustomElements import Dispatcher
 from panel.component.CustomElements import Form
-from panel.module.base.structure.data_app.CoreComponents import CoreDataComponentConstructor
 from panel.module.base.structure.data_app.constants import ActionType
 from panel.module.base.structure.data_app.utils import QueryTermUtils
+from panel.module.base.structure.data_app.CoreComponents.CoreDataComponentConstructor import CoreDataComponentConstructor
 
 
 class CoreDataFormView(CoreDataComponentConstructor):

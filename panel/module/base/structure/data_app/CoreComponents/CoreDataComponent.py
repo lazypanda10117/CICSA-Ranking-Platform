@@ -2,7 +2,7 @@ from abc import abstractmethod
 
 from api.authentication import AuthenticationGuardType
 from misc.CustomElements import Dispatcher
-from panel.module.base.structure.data_app.CoreComponents import CoreDataComponentConstructor
+from panel.module.base.structure.data_app.CoreComponents.CoreDataComponentConstructor import CoreDataComponentConstructor
 from panel.module.base.structure.data_app.constants import ActionType
 from panel.module.base.structure.data_app.constants import ComponentType
 
