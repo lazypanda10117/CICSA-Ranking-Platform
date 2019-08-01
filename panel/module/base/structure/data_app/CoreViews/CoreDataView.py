@@ -7,6 +7,7 @@ from panel.module.base.block.CustomComponents import PageObject
 from panel.module.base.block.CustomComponents import BlockSet
 from panel.module.base.block.CustomComponents import BlockObject
 from panel.module.base.block.CustomPages import AbstractBasePage
+from panel.module.base.structure.data_app.constants import ActionType
 
 
 class CoreDataView(AbstractBasePage):
@@ -50,9 +51,9 @@ class CoreDataView(AbstractBasePage):
         )
 
     def actionMutate(self, page_object, context, verify):
-        element_id = page_object.context.get('element_id')
-        action = page_object.context.get('action')
-        route = page_object.context.get('route')
+        route = self.param.get('route')
+        action = self.request.GET.get("action", ActionType.VIEW)
+        element_id = self.request.GET.get("element_id")
 
         if verify and element_id is None:
             raise Exception("Element ID not defined for action {} at {}".format(action, route))
@@ -71,8 +72,9 @@ class CoreDataView(AbstractBasePage):
 
     def genPageObject(self):
         route = self.param.get('route')
-        action = self.request.GET.get("action")
+        action = self.request.GET.get("action", ActionType.VIEW)
         element_id = self.request.GET.get("element_id")
+
         page_title = (route + " " + action).title()
         route_component = self.view_dispatcher.get(route)
         page_object = PageObject(
@@ -94,6 +96,6 @@ class CoreDataView(AbstractBasePage):
         super().renderHelper(self.genPageObject())
 
     def parseParams(self, param):
-        super().parseMatch('[\w|\d]+')
+        super().parseMatch('[\w|\d|\s]+')
         param = dict(route=param)
         return param

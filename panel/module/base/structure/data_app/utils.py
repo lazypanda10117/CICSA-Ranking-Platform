@@ -63,6 +63,7 @@ class MiscUtils:
     @staticmethod
     def buildRangeTerms(range_start, range_end, result_len):
         range_start, range_end = MiscUtils.verifyRangeTerms(range_start, range_end)
+        print(range_start, result_len if range_end is None else range_end)
         return range_start, result_len if range_end is None else range_end
 
     @staticmethod
