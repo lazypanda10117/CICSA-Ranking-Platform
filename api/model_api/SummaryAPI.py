@@ -14,7 +14,6 @@ class SummaryAPI(GeneralModelAPI):
 
     def updateSummaryResult(self, summary_id, result):
         summary = self.editSelf(id=summary_id)
-        AuthFunctions.raise404Empty(summary)
         summary.summary_event_ranking = result['ranking']
         summary.summary_event_override_ranking = result['override_ranking']
         summary.summary_event_race_score = result['race_score']

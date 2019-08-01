@@ -47,7 +47,7 @@ class LeagueScoringAPI(AbstractCoreAPI):
             reverse=True
         )
 
-    # Returns either the normal or the overrride score of the summary for the event
+    # Returns either the normal or the override score of the summary for the event
     def getCompiledScoreForSchool(self, school, error=True):
         score = ScoreAPI(self.request).getSeasonScoreValue(school.id, season_id=self.season)
         if score == Score.DEFAULT_LEAGUE_SCORE:
@@ -64,7 +64,7 @@ class LeagueScoringAPI(AbstractCoreAPI):
         if compiled:
             try:
                 return self.getCompiledScoreForEventBySchool(event, school)
-            except Exception as e:
+            except Exception:
                 pass
         position = SummaryAPI(self.request).getSummaryRankingBySchool(event.id, school.id)
         return self.getScoreForEvent(position, event.event_team_number, event.event_class)
