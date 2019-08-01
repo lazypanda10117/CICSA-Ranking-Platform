@@ -20,7 +20,7 @@ def grabValueAsList(dictionary):
 
 def grabLinkValueFromChoices(choices, key):
     choice_data = {choice_id: choice_val for choice_id, choice_val in choices}
-    return choice_data[key] if key in choice_data else None
+    return choice_data.get(key)
 
 
 def noneCatcher(key, data):
@@ -30,8 +30,7 @@ def noneCatcher(key, data):
 def jsonLoadCatch(text):
     try:
         return json.loads(text)
-    except Exception as e:
-        print(e)
+    except:
         return {}
 
 

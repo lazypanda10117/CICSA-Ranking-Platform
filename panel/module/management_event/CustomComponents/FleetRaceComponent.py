@@ -3,20 +3,35 @@ import random
 from django import forms
 from django.utils import timezone
 
-from api import EventTypeAPI, SummaryAPI, EventActivityAPI, EventTeamAPI, EventTagAPI
-from api import EventAPI
-from cicsa_ranking.models import Event, EventTeam, EventTag, Summary, School, Team, EventActivity
+from cicsa_ranking.models import Event
+from cicsa_ranking.models import EventTeam
+from cicsa_ranking.models import EventTag
+from cicsa_ranking.models import Summary
 from cicsa_ranking.models import EventType
+from cicsa_ranking.models import School
+from cicsa_ranking.models import Team
+from cicsa_ranking.models import EventActivity
+from api import EventAPI
+from api import EventActivityAPI
+from api import EventTagAPI
+from api import EventTeamAPI
+from api import EventTypeAPI
+from api import SummaryAPI
 from api.authentication import AuthenticationGuardType
 from misc.CustomElements import Dispatcher
-from misc.CustomFunctions import MiscFunctions, LogFunctions, RequestFunctions, ModelFunctions
-from panel.component.CustomElements import CustomForm, Choices
+from misc.CustomFunctions import LogFunctions
+from misc.CustomFunctions import MiscFunctions
+from misc.CustomFunctions import ModelFunctions
+from misc.CustomFunctions import RequestFunctions
+from panel.component.CustomElements import Choices
+from panel.component.CustomElements import CustomForm
 from panel.module.ModuleRegistry import ModuleRegistry
-from panel.module.base.structure.data_app.CoreComponents import CoreDataComponent
-from panel.module.base.structure.data_app.CoreComponents import CoreDataTableView
 from panel.module.base.structure.data_app.CoreComponents import CoreDataActionProcess
+from panel.module.base.structure.data_app.CoreComponents import CoreDataComponent
 from panel.module.base.structure.data_app.CoreComponents import CoreDataFormView
-from panel.module.base.structure.data_app.constants import ComponentType, ActionType
+from panel.module.base.structure.data_app.CoreComponents import CoreDataTableView
+from panel.module.base.structure.data_app.constants import ActionType
+from panel.module.base.structure.data_app.constants import ComponentType
 from panel.module.base.structure.data_app.utils import MiscUtils
 
 
@@ -85,8 +100,8 @@ class FleetRaceTable(CoreDataTableView):
                 self.base_class,
                 self.mutable,
                 self.guard
-            )
-        ).getChoiceData()
+            ).getChoiceData()
+        )
         field_data = MiscFunctions.serializeJSONListData(['event_school_ids', 'event_rotation_detail'], field_data)
         field_data = MiscFunctions.grabValueAsList(field_data)
         return field_data

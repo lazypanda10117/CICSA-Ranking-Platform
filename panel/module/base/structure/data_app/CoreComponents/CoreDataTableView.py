@@ -48,14 +48,12 @@ class CoreDataTableView(CoreDataComponentConstructor):
     def getBody(self, range_terms=(0, 10), **kwargs):
         result = MiscUtils(self.request).useAPI(self.base_class).filterSelf(**kwargs).order_by('id')
         return [
-            self.getRow(model_object) for model_object in
-            result[
-                MiscUtils.buildRangeTerms(
-                    range_start=range_terms[0],
-                    range_end=range_terms[1],
-                    result_len=len(result)
-                )
-            ]
+            self.getRow(result[idx]) for idx in
+            MiscUtils.buildRangeTerms(
+                range_start=range_terms[0],
+                range_end=range_terms[1],
+                result_len=result.count()
+            )
         ]
 
     def getRow(self, model_object):

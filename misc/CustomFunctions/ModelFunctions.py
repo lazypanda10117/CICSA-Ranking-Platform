@@ -12,9 +12,4 @@ def excludeModelObject(model_name, **kwargs):
 
 
 def getModelObject(model_name, **kwargs):
-    try:
-        result = get_object_or_404(model_name, **kwargs)
-    except Exception as e:
-        print(e)
-        result = None
-    return result
+    return get_object_or_404(model_name, **kwargs)
