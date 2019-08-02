@@ -47,14 +47,12 @@ class CoreDataTableView(CoreDataComponentConstructor):
 
     def getBody(self, range_terms=(0, 10), **kwargs):
         result = MiscUtils(self.request).useAPI(self.base_class).filterSelf(**kwargs).order_by('id')
-        return [
-            self.getRow(result[idx]) for idx in
-            MiscUtils.buildRangeTerms(
-                range_start=range_terms[0],
-                range_end=range_terms[1],
-                result_len=result.count()
-            )
-        ]
+        range = MiscUtils.buildRangeTerms(
+            range_start=range_terms[0],
+            range_end=range_terms[1],
+            result_len=result.count()
+        )
+        return [self.getRow(data) for data in result[range[0]:range[1]]]
 
     def getRow(self, model_object):
         row_content = dict()
