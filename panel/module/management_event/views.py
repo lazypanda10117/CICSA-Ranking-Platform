@@ -16,7 +16,6 @@ def index(request):
 
 
 def viewDispatch(request, route, param=''):
-    print('req: {}   route: {}    param: {}'.format(request, route, param))
     return ManagementEventView().viewDispatch(request, route, param)
 
 

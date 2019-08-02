@@ -136,8 +136,11 @@ class FleetRaceForm(CoreDataFormView):
         choice_data['event_host'] = Choices().getSchoolChoices()
         choice_data['event_season'] = Choices().getSeasonChoices()
         choice_data['event_region'] = Choices().getRegionChoices()
-        choice_data['event_type'] = (lambda event_type: (event_type.id, event_type.event_type_name))(
-            EventTypeAPI(self.request).getSelf(event_type_name=EventType.FLEET_RACE)
+        choice_data['event_type'] = tuple(
+            [
+                (lambda event_type: (event_type.id, event_type.event_type_name))
+                (EventTypeAPI(self.request).getSelf(event_type_name=EventType.FLEET_RACE))
+            ]
         )
         return choice_data
 

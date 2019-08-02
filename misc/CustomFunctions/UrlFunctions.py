@@ -13,11 +13,14 @@ def emptyActionRedirect(request, func):
 
 
 def getModifyLink(tag, **kwargs):
-    return reverse('panel.module.management_data.view_dispatch_param', args=[tag, 'custom']) + '?kwargs=' + json.dumps(kwargs)
+    return reverse(
+        'panel.module.management_data.view_dispatch_param',
+        args=[tag, 'custom']
+    ) + '?kwargs={}'.format(json.dumps(kwargs))
 
 
 def generateGETURL(path, args):
-    return path + '?'.join(['{}={}&'.format(key, val) for key, val in args])[:-1] if len(args) else path
+    return path + '?'.join(['{}={}&'.format(key, val) for key, val in args.items()])[:-1] if len(args) else path
 
 
 def flattenRequestDict(request_dict):
@@ -25,7 +28,6 @@ def flattenRequestDict(request_dict):
 
 
 def getClientViewLink(path, identifier = None):
-    # TODO: return reverse(path, identifier);
     return reverse(
         'client.view_dispatch', args=[path]
     ) if identifier is None else reverse(
