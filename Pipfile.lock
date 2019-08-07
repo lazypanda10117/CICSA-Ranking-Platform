@@ -79,10 +79,10 @@
         },
         "newrelic": {
             "hashes": [
-                "sha256:708ac6a75c76a59e3d6c0d714e2fbb1e4ec7d540f7d34bddd81e61bdb636e895"
+                "sha256:96cc8d37127f84718fa9a93f19648b3b8287267c9ceb1386d0ff9dc47e5859f3"
             ],
             "index": "pypi",
-            "version": "==4.20.1.121"
+            "version": "==5.0.0.124"
         },
         "psycopg2": {
             "hashes": [
@@ -145,10 +145,10 @@
         },
         "pytz": {
             "hashes": [
-                "sha256:303879e36b721603cc54604edcac9d20401bdbe31e1e4fdee5b9f98d5d31dfda",
-                "sha256:d747dd3d23d77ef44c6a3526e274af6efeb0a6f1afd5a69ba4d5be4098c8e141"
+                "sha256:26c0b32e437e54a18161324a2fca3c4b9846b74a8dccddd843113109e1116b32",
+                "sha256:c894d57500a4cd2d5c71114aaab77dbab5eabd9022308ce5ac9bb93a60a6f0c7"
             ],
-            "version": "==2019.1"
+            "version": "==2019.2"
         },
         "requests": {
             "hashes": [
