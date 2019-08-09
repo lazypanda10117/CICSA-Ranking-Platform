@@ -20,7 +20,8 @@
             preDropdownClicks();
         }
     </script>
-    {% if type.form %}
+
+    {% ifequal page.element|get_class_name 'Table' %}
         <script>
             function json_prettify(blob) {
                 var json_obj = JSON.parse(blob.value);
@@ -57,35 +58,53 @@
                     try{
                         text_areas[i].value = json_prettify(text_areas[i]);
                     }catch(error){
-                        console.log(text_areas[i].name + ' does not contain JSON formatted data');
+                        // console.log(text_areas[i].name + ' does not contain JSON formatted data');
                     }
                 }
             }
         </script>
     {% endif %}
+
 {% endblock %}
+
 {% block 'body' %}
-    <h2>{{ page_title }}</h2>
+
+    <h2>{{ page.title }}</h2>   
     <hr>
-    {% if type.table %}
-        {% for element in context %}
-            <div class="d-inline">
-                <p>
-                    <pre>{{ element.title }}</pre>
-                    <button 
-                        type="button" 
-                        style="float:right; margin-top: -45px;" 
-                        class="btn btn-outline-{{ element.tableElement.add_button.style }}" 
-                        onclick="redirect('{{ element.tableElement.add_button.redirect }}');"
-                    >
-                        {{ element.tableElement.add_button.title }}
-                    </button>
-                </p>
-            </div>
-            {% include "platform/module/management_data/component/table.html" with tableHeader=element.tableHeader tableContent=element.tableContent only %}
-        {% endfor %}
+    
+    {# Table Component #}
+    {% ifequal page.element|get_class_name 'Table' %}
+        <div class="d-inline">
+            <p>
+                <pre>{{ page.element.title }}</pre>
+                <button 
+                    type="button" 
+                    style="float:right; margin-top: -45px;" 
+                    class="btn btn-outline-{{ page.element.tableElement.add_button.style }}" 
+                    onclick="redirect('{{ page.element.tableElement.add_button.redirect }}');"
+                >
+                    {{ page.element.tableElement.add_button.title }}
+                </button>
+            </p>
+        </div>
+        {% include "platform/module/management_data/component/table.html" with 
+            tableHeader=page.element.tableHeader 
+            tableContent=page.element.tableContent 
+        only 
+        %}
     {% endif %}
-    {% if type.form %}
-        {% include "platform/module/management_data/component/form.html" with action_destination=context.destination form_action=context.form_action form_id=context.form_id form=context.form special_context=special_context only %}
+    
+
+    {# Form Component #}
+    {% if ifequal page.element|get_class_name 'Form' %}
+        {% include "platform/module/management_data/component/form.html" with 
+            action_destination=page.element.destination 
+            form_action=page.element.form_action 
+            form_id=page.element.form_id 
+            form=page.element.form 
+            special_context=page.element.special_context 
+        only 
+        %}
     {% endif %}
+
 {% endblock %}

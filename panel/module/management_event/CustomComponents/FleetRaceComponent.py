@@ -19,7 +19,6 @@ from api import EventTypeAPI
 from api import SummaryAPI
 from api.authentication import AuthenticationGuardType
 from misc.CustomElements import Dispatcher
-from misc.CustomFunctions import LogFunctions
 from misc.CustomFunctions import MiscFunctions
 from misc.CustomFunctions import ModelFunctions
 from misc.CustomFunctions import RequestFunctions
@@ -232,15 +231,6 @@ class FleetRaceProcess(CoreDataActionProcess):
             event_tag.event_tag_name = tag
             event_tag.save()
             race_tag_dict[tag] = event_tag.id
-            LogFunctions.generateLog(
-                self.request,
-                'admin',
-                LogFunctions.makeLogQuery(
-                    model_name=EventTag,
-                    log_type=ActionType.ADD.title(),
-                    id=event_tag.id
-                )
-            )
 
         for school_id in event_school:
             # NOTE: Cannot use API here because no permission to get Model.
@@ -250,15 +240,7 @@ class FleetRaceProcess(CoreDataActionProcess):
             summary.summary_event_parent = event_creation.id
             summary.summary_event_school = school_id
             summary.save()
-            LogFunctions.generateLog(
-                self.request,
-                'admin',
-                LogFunctions.makeLogQuery(
-                    model_name=Summary,
-                    log_type=ActionType.ADD.title(),
-                    id=summary.id
-                )
-            )
+
             # team generation
             for index, suffix in enumerate(self.EVENT_TEAM_NAME_SUFFIX):
                 team = Team()
@@ -271,15 +253,7 @@ class FleetRaceProcess(CoreDataActionProcess):
                 if self.EVENT_RACE_TAG[index] not in team_activity_dict:
                     team_activity_dict[self.EVENT_RACE_TAG[index]] = []
                 team_activity_dict[self.EVENT_RACE_TAG[index]].append(team.id)
-                LogFunctions.generateLog(
-                    self.request,
-                    'admin',
-                    LogFunctions.makeLogQuery(
-                        model_name=Team,
-                        log_type=ActionType.ADD.title(),
-                        id=team.id
-                    )
-                )
+
 
         for tag, tag_id in race_tag_dict.items():
             for race in range(event_creation.event_race_number):
@@ -294,30 +268,13 @@ class FleetRaceProcess(CoreDataActionProcess):
                 event_activity.event_activity_type = EventActivity.EVENT_ACTIVITY_TYPE_RACE
                 event_activity.event_activity_status = Event.EVENT_STATUS_PENDING
                 event_activity.save()
-                LogFunctions.generateLog(
-                    self.request,
-                    'admin',
-                    LogFunctions.makeLogQuery(
-                        model_name=EventActivity,
-                        log_type=ActionType.ADD.title(),
-                        id=event_activity.id
-                    )
-                )
+
                 for team_id in team_activity_dict[tag]:
                     # event team link generation
                     event_team = EventTeam()
                     event_team.event_team_event_activity_id = event_activity.id
                     event_team.event_team_id = team_id
                     event_team.save()
-                    LogFunctions.generateLog(
-                        self.request,
-                        'admin',
-                        LogFunctions.makeLogQuery(
-                            model_name=EventTeam,
-                            log_type=ActionType.ADD.title(),
-                            id=event_team.id
-                        )
-                    )
 
         event_creation.event_rotation_detail = self.__rotationGenerator(
             race_tag_dict,
@@ -327,19 +284,9 @@ class FleetRaceProcess(CoreDataActionProcess):
         )
         event_creation.save()
 
-        LogFunctions.generateLog(
-            self.request,
-            'admin',
-            LogFunctions.makeLogQuery(
-                model_name=self.base_class,
-                log_type=ActionType.ADD.title(),
-                id=event_creation.id
-            )
-        )
-
     def _edit(self, **kwargs):
         self._delete(**kwargs)
-        self._add()
+        self._add(**kwargs)
 
     def _delete(self, **kwargs):
         event_id = kwargs.pop('id')
@@ -355,72 +302,19 @@ class FleetRaceProcess(CoreDataActionProcess):
         ]
 
         for team in event_teams:
-            LogFunctions.generateLog(
-                self.request,
-                'admin',
-                LogFunctions.makeLogQuery(
-                    model_name=Team,
-                    log_type=ActionType.DELETE.title(),
-                    id=team.id
-                )
-            )
             team.delete()
 
         for tag in event_tags:
-            LogFunctions.generateLog(
-                self.request,
-                'admin',
-                LogFunctions.makeLogQuery(
-                    model_name=EventTag,
-                    log_type=ActionType.DELETE.title(),
-                    id=team.id
-                )
-            )
             tag.delete()
 
         for summary in event_summaries:
-            LogFunctions.generateLog(
-                self.request,
-                'admin',
-                LogFunctions.makeLogQuery(
-                    model_name=Summary,
-                    log_type=ActionType.DELETE.title(),
-                    id=team.id
-                )
-            )
             summary.delete()
 
         for activity in event_activities:
-            LogFunctions.generateLog(
-                self.request,
-                'admin',
-                LogFunctions.makeLogQuery(
-                    model_name=EventActivity,
-                    log_type=ActionType.DELETE.title(),
-                    id=team.id
-                )
-            )
             activity.delete()
+
         for team_links in event_team_links:
             for team_link in team_links:
-                LogFunctions.generateLog(
-                    self.request,
-                    'admin',
-                    LogFunctions.makeLogQuery(
-                        model_name=EventTeam,
-                        log_type=ActionType.DELETE.title(),
-                        id=team.id
-                    )
-                )
                 team_link.delete()
 
-        LogFunctions.generateLog(
-            self.request,
-            'admin',
-            LogFunctions.makeLogQuery(
-                model_name=self.base_class,
-                log_type=ActionType.DELETE.title(),
-                id=team.id
-            )
-        )
         event.delete()

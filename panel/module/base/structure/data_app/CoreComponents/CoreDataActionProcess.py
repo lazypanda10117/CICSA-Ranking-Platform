@@ -1,5 +1,6 @@
 from abc import abstractmethod
 
+from misc.CustomFunctions import LogFunctions
 from misc.CustomElements import Dispatcher
 from panel.module.base.structure.data_app.constants import ActionType
 from panel.module.base.structure.data_app.CoreComponents.CoreDataComponentConstructor import CoreDataComponentConstructor
@@ -20,6 +21,13 @@ class CoreDataActionProcess(CoreDataComponentConstructor):
     # View Process Functions
     def process(self, action, **kwargs):
         self.process_dispatcher.get(action)(**kwargs)
+        LogFunctions.generateLog(
+            request=self.request, 
+            log_type=AuthenticationMetaAPI(self.request).getAuthType(), 
+            message='Core Data App Process - App: {}, Action: {}, Base Class: {}'.format(
+                self.app_name, self.action, self.base_class
+            )
+        )
 
     @abstractmethod
     def _add(self, **kwargs):

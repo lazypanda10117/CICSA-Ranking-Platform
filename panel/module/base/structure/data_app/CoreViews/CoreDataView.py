@@ -39,16 +39,7 @@ class CoreDataView(AbstractBasePage):
     def actionView(self, page_object, context):
         page_type = dict(table=True)
         page_object.context = MiscFunctions.updateDict(page_object.context, dict(type=page_type))
-        page_object.element_list = BlockSet().makeBlockSet(
-            BlockObject(
-                block_title=None,
-                element_name=None,
-                header=None,
-                contents=dict(
-                    context=context,
-                ),
-            )
-        )
+        page_object.element = context
 
     def actionMutate(self, page_object, context, verify):
         route = self.param.get('route')
@@ -61,27 +52,17 @@ class CoreDataView(AbstractBasePage):
         # Hydrating PageObject with additional data
         page_type = dict(form=True)
         page_object.context = MiscFunctions.updateDict(page_object.context, dict(type=page_type))
-        page_object.element_list = BlockSet().makeBlockSet(BlockObject(
-            block_title=None,
-            element_name=None,
-            header=None,
-            contents=dict(
-                context=context,
-            ),
-        ))
+        page_object.element = context
 
     def genPageObject(self):
         route = self.param.get('route')
         action = self.request.GET.get("action", ActionType.VIEW)
         element_id = self.request.GET.get("element_id")
 
-        page_title = (route + " " + action).title()
+        page_title = ('{} {}'.format(route, action)).title()
         route_component = self.view_dispatcher.get(route)
         page_object = PageObject(
             title=page_title,
-            element_list=[],
-            header=[],
-            external=[],
             context=dict(route=route, action=action, element_id=element_id),
         )
         # Adding additional contents to page objects
