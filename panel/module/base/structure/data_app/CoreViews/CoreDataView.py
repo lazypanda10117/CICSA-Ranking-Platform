@@ -4,8 +4,6 @@ from functools import partial
 from misc.CustomElements import Dispatcher
 from misc.CustomFunctions import MiscFunctions
 from panel.module.base.block.CustomComponents import PageObject
-from panel.module.base.block.CustomComponents import BlockSet
-from panel.module.base.block.CustomComponents import BlockObject
 from panel.module.base.block.CustomPages import AbstractBasePage
 from panel.module.base.structure.data_app.constants import ActionType
 

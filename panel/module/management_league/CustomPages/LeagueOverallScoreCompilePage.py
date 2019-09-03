@@ -22,7 +22,6 @@ class LeagueOverallScoreCompilePage(AbstractBasePage):
             contents=self.genContent()
         )
 
-    # TODO: transform school id to the edit page for the league score of that school
     def __schoolUrlTransformer(self, school_id):
         return reverse(
             'panel.module.management_league.view_dispatch_param',

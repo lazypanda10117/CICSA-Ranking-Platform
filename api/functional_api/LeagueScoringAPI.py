@@ -184,13 +184,14 @@ class LeagueScoringAPI(AbstractCoreAPI):
         schools = SchoolAPI(self.request).getAll()
         result = list()
         for school in schools:
-            compiled = True
             school_id = school.id
             school_name = school.school_name
             score = self.getCompiledScoreForSchool(school, error=False)
             if score is None:
                 compiled = False
                 score = self.tryCompileThenCalculateScore(school)
+            else:
+                compiled = True
             response = dict(
                 compiled=compiled,
                 school_id=school_id,
