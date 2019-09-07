@@ -23,7 +23,7 @@ class ArchivableModel(BaseModel):
 # We can have the same object but tied to a different season
 class HasHistoryModel(BaseModel):
     season = models.ForeignKey("Season", on_delete=models.CASCADE)
-    universal_id = models.IntegerField() # Somehow default to id?
+    universal_id = models.IntegerField(null=True)
 
     class Meta:
         abstract = True
