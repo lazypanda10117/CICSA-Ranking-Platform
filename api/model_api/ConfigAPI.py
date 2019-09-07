@@ -13,3 +13,6 @@ class ConfigAPI(GeneralModelAPI):
 
     def getConfig(self):
         return self.getAll()[0]
+
+    def getSeason(self):
+        return self.getConfig().config_current_season

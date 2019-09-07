@@ -8,10 +8,16 @@ from api.model_api import SchoolAPI
 
 
 class RegattasPageAPI(GeneralClientAPI):
+    def __init__(self, request):
+        super().__init__(request)
+        self.season = self.getSeason()
+
     def grabPageData(self, **kwargs):
         def genEventTable(status):
             status_map = {'future': "Future Events", 'running': "Ongoing Events", 'done': "Completed Events"}
-            events = EventAPI(self.request).filterSelf(event_status=status).order_by('event_start_date')
+            events = EventAPI(self.request).filterSelf(
+                event_status=status, event_season=self.season
+            ).order_by('event_start_date')
             event_dict = list(map(lambda event: dict(
                 event_name=event.event_name,
                 event_link=reverse('client.view_dispatch_param', args=["event_scoring", event.id]),

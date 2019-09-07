@@ -6,6 +6,10 @@ from api.functional_api import LeagueScoringAPI
 
 
 class LeaguePageAPI(GeneralClientAPI):
+    def __init__(self, request):
+        super().__init__(request)
+        self.season = self.getSeason()
+
     def __schoolUrlTransformer(self, school_id):
         return reverse(
             'client.view_dispatch_param',
@@ -15,7 +19,7 @@ class LeaguePageAPI(GeneralClientAPI):
     def grabPageData(self, **kwargs):
         def genLeagueTable():
             content = list()
-            league_scoring_list = LeagueScoringAPI(self.request).getClientLeagueScoreData()
+            league_scoring_list = LeagueScoringAPI(self.request, self.season).getClientLeagueScoreData()
             sorted_score_list = sorted(
                 league_scoring_list, 
                 key=lambda league_obj: league_obj.get('display_score'),
