@@ -4,22 +4,22 @@ from misc.CustomFunctions import UrlFunctions
 from misc.CustomFunctions import MiscFunctions
 from api.base.GeneralClientAPI import GeneralClientAPI
 from api.functional_api import LeagueScoringAPI
-from api.model_api import ConfigAPI
 from api.model_api import RegionAPI
 from api.model_api import SchoolAPI
-from api.model_api import ScoreAPI
 from api.model_api import SummaryAPI
 
 
 class SchoolDetailsPageAPI(GeneralClientAPI):
+    def __init__(self, request):
+        super().__init__(request)
+        self.season = self.getSeason()
+
     def grabPageData(self, **kwargs):
-        def getSchoolInfo(school_id, season_id):
-            # name region status season_score
+        def getSchoolInfo(school_id):
             school = school_api.getSelf(id=school_id)
             region_api = RegionAPI(self.request)
             region = region_api.getSelf(id=school.school_region)
-            score_api = ScoreAPI(self.request)
-            season_score = score_api.getSeasonScoreValue(school_id, season_id)
+            season_score = LeagueScoringAPI(self.request, self.season).tryCompileThenCalculateScore(school)
             return dict(
                 school_name=school.school_name,
                 school_region=(
@@ -30,13 +30,11 @@ class SchoolDetailsPageAPI(GeneralClientAPI):
                     )
                 ),
                 school_status=school.school_status.capitalize(),
-                school_season_score=MiscFunctions.truncateDisplayScore(
-                    LeagueScoringAPI(self.request).tryCompileThenCalculateScore(school)
-                )
+                school_season_score=MiscFunctions.truncateDisplayScore(season_score)
             )
 
-        def getSchoolParticipatedEvents(school_id, season_id):
-            events = school_api.getParticipatedEvents(school_id, season=season_id)
+        def getSchoolParticipatedEvents(school_id):
+            events = school_api.getParticipatedEvents(school_id, season=self.season)
             school = school_api.getSelf(id=school_id)
             region_api = RegionAPI(self.request)
             region = region_api.getSelf(id=school.school_region)
@@ -61,12 +59,8 @@ class SchoolDetailsPageAPI(GeneralClientAPI):
         school_id = kwargs.get("id")
         school_api = SchoolAPI(self.request)
 
-        current_configuration = ConfigAPI(self.request).getAll()[0]
-        current_season = current_configuration.config_current_season
-
         page_data = dict(
-            school_info=getSchoolInfo(school_id, current_season),
-            school_participated_events=getSchoolParticipatedEvents(school_id, current_season)
+            school_info=getSchoolInfo(school_id),
+            school_participated_events=getSchoolParticipatedEvents(school_id)
         )
         return page_data
-    

@@ -43,6 +43,7 @@ class EventTag(models.Model):
 
 
 class Region(models.Model):
+    REGION_EXCLUDED_NAMES = ["Other"]
     region_name = models.CharField(max_length=100)
 
 
