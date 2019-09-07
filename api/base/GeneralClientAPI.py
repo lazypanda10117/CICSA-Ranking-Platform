@@ -10,7 +10,5 @@ class GeneralClientAPI(AbstractCoreAPI):
         pass
 
     def getSeason(self):
-        # Check if season is defined in the request. If not, we use current season from config
-        current_configuration = ConfigAPI(self.request).getAll()[0]
-        current_season = current_configuration.config_current_season
-        return current_season
+        # TODO: Check if season is defined in the request. If not, we use current season from config
+        return ConfigAPI(self.request).getSeason()
