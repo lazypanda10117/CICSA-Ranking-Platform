@@ -1,7 +1,7 @@
 from django import forms
 from django.utils import timezone
 
-from cicsa_ranking.models import Season, Region, EventType, Score, ScoreMapping, Log
+from cicsa_ranking.models import Season, Region, EventType, Score, ScoreMapping, Log, Config
 from panel.component.CustomElements import CustomForm
 
 
@@ -41,8 +41,10 @@ class LogForm(forms.ModelForm):
         fields = '__all__'
 
 
-class ConfigForm(CustomForm):
-    config_current_season = forms.ChoiceField(choices=[])
+class ConfigForm(forms.ModelForm):
+    class Meta:
+        model = Config
+        fields = '__all__'
 
 
 class AccountForm(CustomForm):
