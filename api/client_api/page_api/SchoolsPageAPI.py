@@ -1,5 +1,6 @@
 from django.shortcuts import reverse
 
+from cicsa_ranking.models import Region
 from misc.CustomFunctions import MiscFunctions
 from api.base.GeneralClientAPI import GeneralClientAPI
 from api.functional_api import LeagueScoringAPI
@@ -23,7 +24,9 @@ class SchoolsPageAPI(GeneralClientAPI):
             return school_dict
 
         page_data = dict()
-        regions = RegionAPI(self.request).excludeSelf(region_name="Other").order_by('region_name')
+        regions = RegionAPI(self.request).excludeSelf(
+            region_name__in=Region.REGION_EXCLUDED_NAMES
+        ).order_by('region_name')
         for region in regions:
             region_name = region.region_name
             page_data[region_name] = genSchoolTable(region.id)

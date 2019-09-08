@@ -1,4 +1,5 @@
 from abc import abstractmethod
+
 from api.base import AbstractCoreAPI
 from misc.CustomFunctions import AuthFunctions
 from misc.CustomFunctions import LogFunctions

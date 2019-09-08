@@ -4,21 +4,18 @@ from cicsa_ranking.models import Event
 from cicsa_ranking.models import Summary
 from cicsa_ranking.models import Score
 from api.base import AbstractCoreAPI
+from api.base import SeasonBasedAPI
 from api.authentication import AuthenticationGuardType
 from api.model_api import SchoolAPI
 from api.model_api import EventAPI
 from api.model_api import SummaryAPI
-from api.model_api import ConfigAPI
 from api.model_api import ScoreAPI
 from api.config import ConfigReader
 
 
-class LeagueScoringAPI(AbstractCoreAPI):
+class LeagueScoringAPI(AbstractCoreAPI, SeasonBasedAPI):
     def __init__(self, request, season=None):
-        super().__init__(request=request, permission=AuthenticationGuardType.PUBLIC_GUARD)
-        self.current_configuration = ConfigAPI(self.request).getConfig()
-        self.current_season = self.current_configuration.config_current_season
-        self.season = self.current_season if season is None else season
+        super().__init__(request=request, season=season)
         self.LeagueScoringConfig = (ConfigReader('league_scoring').getRootConfig())()
         self.league_scoring_data = self.LeagueScoringConfig.getData('league_rank_place_score_map')
 

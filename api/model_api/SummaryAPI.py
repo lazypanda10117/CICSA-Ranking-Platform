@@ -4,10 +4,11 @@ from misc.CustomFunctions import AuthFunctions
 from misc.CustomFunctions import LogFunctions 
 from misc.CustomFunctions import UrlFunctions
 from api.base.GeneralModelAPI import GeneralModelAPI
-from api.model_api.ConfigAPI import ConfigAPI
+from api.base.SeasonBasedAPI import SeasonBasedAPI
 from api.model_api.SchoolAPI import SchoolAPI
 
-class SummaryAPI(GeneralModelAPI):
+
+class SummaryAPI(GeneralModelAPI, SeasonBasedAPI):
     @staticmethod
     def getBaseClass():
         return Summary
@@ -38,13 +39,11 @@ class SummaryAPI(GeneralModelAPI):
         else:
             return summary.summary_event_ranking + summary.summary_event_override_ranking
         
-    def getAllSummaryRankingBySchool(self, school_id, season=None):
-        if season is None:
-            season = ConfigAPI(self.request).getConfig().config_current_season
+    def getAllSummaryRankingBySchool(self, school_id):
         events = SchoolAPI(self.request).getParticipatedEvents(
             school_id,
             Event.EVENT_STATUS_DONE,
-            season
+            self.season
         )
         summaries = self.filterSelf(
             summary_event_school=school_id, 

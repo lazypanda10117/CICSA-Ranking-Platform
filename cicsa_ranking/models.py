@@ -1,4 +1,5 @@
-from django.contrib.postgres.fields import JSONField, ArrayField
+from django.contrib.postgres.fields import JSONField
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
 
 
@@ -43,10 +44,13 @@ class EventTag(models.Model):
 
 
 class Region(models.Model):
+    REGION_EXCLUDED_NAMES = ["Other"]
     region_name = models.CharField(max_length=100)
 
 
 class Season(models.Model):
+    ALL_SEASON = 'ALL'
+
     season_name = models.CharField(max_length=200)
 
 
