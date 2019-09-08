@@ -6,9 +6,8 @@ from api.authentication_api import AuthenticationMetaAPI
 
 
 class AbstractCoreAPI(AbstractRequestAPI):
-    def __init__(self, request, permission=AuthenticationGuardType.PUBLIC_GUARD):
+    def __init__(self, request, permission=AuthenticationGuardType.PUBLIC_GUARD, **kwargs):
         super().__init__(request)
-        self.request = request
         self.context = self.__setContext()
         AuthenticationGuard(permission, self.request, self.context).guard()
 

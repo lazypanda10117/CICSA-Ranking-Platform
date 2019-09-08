@@ -3,3 +3,4 @@ from .AbstractRequestAPI import AbstractRequestAPI
 from .AbstractCoreAPI import AbstractCoreAPI
 from .GeneralClientAPI import GeneralClientAPI
 from .GeneralModelAPI import GeneralModelAPI
+from .SeasonBasedAPI import SeasonBasedAPI
