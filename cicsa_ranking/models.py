@@ -1,4 +1,5 @@
-from django.contrib.postgres.fields import JSONField, ArrayField
+from django.contrib.postgres.fields import JSONField
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
 
 
@@ -48,6 +49,8 @@ class Region(models.Model):
 
 
 class Season(models.Model):
+    ALL_SEASON = 'ALL'
+
     season_name = models.CharField(max_length=200)
 
 
@@ -91,6 +94,7 @@ class Score(models.Model):
     score_value = models.FloatField(default=DEFAULT_LEAGUE_SCORE)
     score_override_value = models.FloatField(default=DEFAULT_LEAGUE_SCORE)
 
+
 class Log(models.Model):
     log_creator = models.IntegerField()  # if sql, then system (-1), else user id
     log_content = JSONField()
@@ -103,6 +107,7 @@ class School(models.Model):
     school_region = models.IntegerField()
     school_status = models.CharField(max_length=50)
     school_default_team_name = models.CharField(max_length=200, default='')
+
 
 class Team(models.Model):
     team_name = models.CharField(max_length=200)
@@ -118,8 +123,8 @@ class MemberGroup(models.Model):
 
 
 class SchoolTeam(models.Model):
-    school = models.ForeignKey(School, related_name = 'school_teams', on_delete=models.SET_NULL, null=True)
-    member_group = models.ForeignKey(MemberGroup, related_name = 'school_teams', on_delete=models.SET_NULL, null=True)
+    school = models.ForeignKey(School, related_name='school_teams', on_delete=models.SET_NULL, null=True)
+    member_group = models.ForeignKey(MemberGroup, related_name='school_teams', on_delete=models.SET_NULL, null=True)
     school_team_name = models.CharField(max_length=200, default='School Team Name')
 
 
