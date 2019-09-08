@@ -14,8 +14,8 @@ from api.config import ConfigReader
 
 
 class LeagueScoringAPI(AbstractCoreAPI, SeasonBasedAPI):
-    def __init__(self, request, permission=AuthenticationGuardType.PUBLIC_GUARD, season=None):
-        super().__init__(request=request, permission=permission, season=season)
+    def __init__(self, request, season=None):
+        super().__init__(request=request, season=season)
         self.LeagueScoringConfig = (ConfigReader('league_scoring').getRootConfig())()
         self.league_scoring_data = self.LeagueScoringConfig.getData('league_rank_place_score_map')
 
