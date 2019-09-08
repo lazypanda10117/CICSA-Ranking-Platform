@@ -9,49 +9,17 @@ class SchoolAPI(GeneralModelAPI):
         return School
 
     def getParticipatedEvents(self, school_id, status=None, season=None):
-        if season is None:
-            if status is None:
-                return EventAPI(self.request).filterSelf(
-                    event_school_ids__contains=[school_id]
-                )
-            else:
-                return EventAPI(self.request).filterSelf(
-                    event_status=status,
-                    event_school_ids__contains=[school_id]
-                )
-        else:
-            if status is None:
-                return EventAPI(self.request).filterSelf(
-                    event_season=season,
-                    event_school_ids__contains=[school_id]
-                )
-            else:
-                return EventAPI(self.request).filterSelf(
-                    event_season=season,
-                    event_status=status,
-                    event_school_ids__contains=[school_id]
-                )
+        filter_kwargs = dict(
+            event_school_ids__contains=[school_id]
+        )
+        if status is not None:
+            filter_kwargs["event_status"] = status
+        if season is not None:
+            filter_kwargs["event_season"] = season
+
+        return EventAPI(self.request).filterSelf(**filter_kwargs)
 
     def getParticipatedNormalEvents(self, school_id, status=None, season=None):
-        if season is None:
-            if status is None:
-                return EventAPI(self.request).filterSelf(
-                    event_school_ids__contains=[school_id]
-                ).exclude(event_name__in=Event.EVENT_NAME_FINAL_RACE)
-            else:
-                return EventAPI(self.request).filterSelf(
-                    event_status=status,
-                    event_school_ids__contains=[school_id]
-                ).exclude(event_name__in=Event.EVENT_NAME_FINAL_RACE)
-        else:
-            if status is None:
-                return EventAPI(self.request).filterSelf(
-                    event_season=season,
-                    event_school_ids__contains=[school_id]
-                ).exclude(event_name__in=Event.EVENT_NAME_FINAL_RACE)
-            else:
-                return EventAPI(self.request).filterSelf(
-                    event_season=season,
-                    event_status=status,
-                    event_school_ids__contains=[school_id]
-                ).exclude(event_name__in=Event.EVENT_NAME_FINAL_RACE)
+        return self.getParticipatedEvents(
+            school_id, status, season
+        ).exclude(event_name__in=Event.EVENT_NAME_FINAL_RACE)

@@ -19,7 +19,7 @@ class SchoolDetailsPageAPI(GeneralClientAPI):
             school = school_api.getSelf(id=school_id)
             region_api = RegionAPI(self.request)
             region = region_api.getSelf(id=school.school_region)
-            season_score = LeagueScoringAPI(self.request, self.season).tryCompileThenCalculateScore(school)
+            season_score = LeagueScoringAPI(self.request).tryCompileThenCalculateScore(school)
             return dict(
                 school_name=school.school_name,
                 school_region=(
