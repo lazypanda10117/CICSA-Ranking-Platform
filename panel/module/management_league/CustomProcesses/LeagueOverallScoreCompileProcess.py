@@ -3,7 +3,6 @@ from django.shortcuts import reverse
 
 from cicsa_ranking.models import Event
 from cicsa_ranking.models import Score
-from misc.CustomFunctions import RequestFunctions
 from panel.module.base.block.CustomProcesses import AbstractBaseProcess
 from api import ConfigAPI
 from api import SchoolAPI
@@ -13,8 +12,7 @@ from api import LeagueScoringAPI
 class LeagueOverallScoreCompileProcess(AbstractBaseProcess):
     def process(self):
         post_dict = dict(self.request.POST)
-        current_configuration = ConfigAPI(self.request).getConfig()
-        current_season = current_configuration.config_current_season
+        current_season = ConfigAPI(self.request).getSeason()
         league_scoring_map = {
             data.get('school_id') : data
             for data in LeagueScoringAPI(self.request).getPanelLeagueScoreData()

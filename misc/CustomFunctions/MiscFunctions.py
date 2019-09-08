@@ -16,7 +16,7 @@ def grabLinkValueFromChoices(choices, key):
 
 
 def noneCatcher(key, data):
-    return data[key] if key in data else None
+    return data.get(key)
 
 
 def jsonLoadCatch(text):
@@ -47,6 +47,10 @@ def updateDict(dictionary, new_dictionary):
 
 def getModelName(model):
     return model.__name__
+
+
+def fallback(a, b):
+    return b if a is None else a
 
 
 def simpleEqtFormatter(equation, replace_dict):
