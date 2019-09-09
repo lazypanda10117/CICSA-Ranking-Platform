@@ -1,4 +1,6 @@
 from django.views.decorators.csrf import csrf_exempt
+
+from api.functional_api import LoggerAPI
 from misc.CustomElements import Dispatcher
 from panel.module_permission import ModulePermission
 from panel.module.base.block.Base import AbstractBlockApp
@@ -13,6 +15,13 @@ def index(request):
         ManagementDataView().home(request),
         None
     )
+
+
+def pruneLog(request):
+    result = index(request)
+    if result is not None:
+        LoggerAPI(request).pruneLog()
+    return result
 
 
 @csrf_exempt
