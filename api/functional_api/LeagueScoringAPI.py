@@ -5,7 +5,6 @@ from cicsa_ranking.models import Summary
 from cicsa_ranking.models import Score
 from api.base import AbstractCoreAPI
 from api.base import SeasonBasedAPI
-from api.authentication import AuthenticationGuardType
 from api.model_api import SchoolAPI
 from api.model_api import EventAPI
 from api.model_api import SummaryAPI
