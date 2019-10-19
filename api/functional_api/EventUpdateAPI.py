@@ -1,6 +1,7 @@
 import random
+from functools import reduce
 
-from api import TeamAPI, EventTeamAPI
+from api import TeamAPI, EventTeamAPI, ScoringPageAPI, LeagueScoringAPI
 from api.base import AbstractCoreAPI
 from api.base import SeasonBasedAPI
 from api.authentication import AuthenticationGuardType
@@ -11,7 +12,7 @@ from api.model_api import SummaryAPI
 from api.model_api import ScoreAPI
 from api.model_api import EventActivityAPI
 from api.model_api import EventTagAPI
-from cicsa_ranking.models import Team, ScoreMapping
+from cicsa_ranking.models import Team, ScoreMapping, Event
 from misc.CustomFunctions import MiscFunctions
 
 
@@ -78,7 +79,19 @@ class EventUpdateAPI(AbstractCoreAPI, SeasonBasedAPI):
         self.event.save()
 
     def recalculateScores(self):
-        pass
+        if self.event.event_status == Event.EVENT_STATUS_DONE:
+            ranking_list = ScoringPageAPI(self.request).buildDataTable(self.event, force_compile=True)['ranking']
+            summaries = SummaryAPI(self.request).verifySelf(summary_event_parent=self.event.id)
+            for ranking_data in ranking_list:
+                school_id = ranking_data['school_id']
+                score = ranking_data['score']
+                base_ranking = ranking_data['base_ranking']
+                summary_id = summaries.get(summary_event_school=school_id).id
+                # TODO: Take care of override automatically, instead of the hard-coded 0
+                result = dict(ranking=base_ranking, override_ranking=0, race_score=score)
+                SummaryAPI(self.request).updateSummaryResult(summary_id, result)
+        # Recompile league scores if season is finished
+        LeagueScoringAPI(self.request).computeLeagueScores(initialize=False)
 
     def updateSummaryBySchool(self, school_ids, action):
         if action == AuthenticationActionType.ADD:
@@ -132,11 +145,21 @@ class EventUpdateAPI(AbstractCoreAPI, SeasonBasedAPI):
                     if activity.event_activity_event_tag == team.team_tag_id:
                         new_result[team.team_tag_id] = ScoreMapping.DEFAULT_MAPPING
                     ranking.update(new_result)
-                    activity.event_activity_result = ranking
                 elif action == AuthenticationActionType.DELETE:
+                    # We need to fix up the scoring order
                     if activity.event_activity_event_tag == team.team_tag_id:
                         del ranking[team.team_tag_id]
-                    activity.event_activity_result = ranking
+            # We need to adjust the ranking after deleting some teams
+            if action == AuthenticationActionType.DELETE:
+                # Ranking sorted by its integer, if it is string like 'DNF', set as 0
+                s_ranking = sorted(map(lambda x: x[1] if isinstance(x[1], int) else -1, ranking.items()))
+                count = 1
+                for team_id, rank in s_ranking:
+                    if not rank == -1:
+                        ranking[team_id] = count
+                        count += 1
+            activity.event_activity_result = ranking
+            activity.save()
 
     def updateEventTeamLinks(self, school_ids, action):
         event_tags = EventTagAPI(self.request).filterSelf(event_tag_event_id=self.event.id)

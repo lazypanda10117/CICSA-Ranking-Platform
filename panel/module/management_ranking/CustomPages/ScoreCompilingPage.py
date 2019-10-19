@@ -24,7 +24,7 @@ class ScoreCompilingPage(AbstractBasePage):
 
     def genContent(self):
         def genOptions(data):
-            options =  dict()
+            options = dict()
             if event.event_status != "done":
                 for i in range(sum((1 if result['base_ranking'] == data['base_ranking'] else 0) for result in ranking_list)):
                     options[i] = dict(
