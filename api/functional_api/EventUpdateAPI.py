@@ -14,9 +14,6 @@ from api.model_api import SchoolAPI
 from api.model_api import SummaryAPI
 from api.model_api import EventActivityAPI
 from api.model_api import EventTagAPI
-from api.client_api import ScoringPageAPI
-from api.functional_api import LeagueScoringAPI
-
 
 class EventUpdateAPI(AbstractCoreAPI, SeasonBasedAPI):
     def __init__(self, request, event, **kwargs):
@@ -81,6 +78,9 @@ class EventUpdateAPI(AbstractCoreAPI, SeasonBasedAPI):
         self.event.save()
 
     def recalculateScores(self):
+        from api.client_api import ScoringPageAPI
+        from api.functional_api import LeagueScoringAPI
+
         if self.event.event_status == Event.EVENT_STATUS_DONE:
             ranking_list = ScoringPageAPI(self.request).buildDataTable(self.event, force_compile=True)['ranking']
             summaries = SummaryAPI(self.request).verifySelf(summary_event_parent=self.event.id)

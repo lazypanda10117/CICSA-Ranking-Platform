@@ -91,3 +91,8 @@ def getAlphabet(idx):
     if idx > 25 or idx < 0:
         raise IndexError("Out of Alphabetical Range")
     return alphabet_arr[idx]
+
+
+# For use within a lambda expression or as a wrapper for raise
+def lraise(e):
+    raise e

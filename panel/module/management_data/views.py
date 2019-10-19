@@ -12,7 +12,7 @@ from panel.module.ModuleRegistry import ModuleRegistry
 def index(request):
     return ModulePermission(request).verifyRequest(
         ManagementDataView().getBaseAppName(),
-        ManagementDataView().home(request),
+        lambda: ManagementDataView().home(request),
         None
     )
 

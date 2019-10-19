@@ -1,5 +1,8 @@
 from misc.CustomElements import Dispatcher
-from panel.module.base.authentication import AuthenticationAdmin, AuthenticationTeam
+from api.authentication import AuthenticationType
+from panel.module.base.authentication import AuthenticationAdmin
+from panel.module.base.authentication import AuthenticationPublic
+from panel.module.base.authentication import AuthenticationTeam
 
 
 class AuthenticationFactory:
@@ -9,8 +12,9 @@ class AuthenticationFactory:
     @staticmethod
     def getDispatcher():
         dispatcher = Dispatcher()
-        dispatcher.add('admin', AuthenticationAdmin)
-        dispatcher.add('team', AuthenticationTeam)
+        dispatcher.add(AuthenticationType.ADMIN, AuthenticationAdmin)
+        dispatcher.add(AuthenticationType.TEAM, AuthenticationTeam)
+        dispatcher.add(AuthenticationType.PUBLIC, AuthenticationPublic)
         return dispatcher
 
     def dispatch(self):

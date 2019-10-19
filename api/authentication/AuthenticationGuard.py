@@ -9,7 +9,7 @@ class AuthenticationGuard:
 		self.context = context
 		self.permission = permission
 
-	def guard(self):
+	def guard(self, api=True, **kwargs):
 		if self.permission == AuthenticationGuardType.ADMIN_GUARD:
 			allowed_types = [AuthenticationType.ADMIN]
 		elif self.permission == AuthenticationGuardType.TEAM_GUARD:
@@ -25,6 +25,7 @@ class AuthenticationGuard:
 
 		AuthFunctions.kickRequest(
 			request=self.request,
-			api=True,
-			allowed_types=allowed_types
+			api=api,
+			allowed_types=allowed_types,
+			**kwargs
 		)

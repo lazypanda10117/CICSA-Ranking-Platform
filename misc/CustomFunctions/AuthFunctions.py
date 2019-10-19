@@ -28,11 +28,11 @@ def kickRequest(
             kick_result = redirect(reverse('permission.dispatch', args=['view']))
         else:
             is_request_valid = True
-    
     if is_request_valid:
         return kick_result
-    
-    return Exception("Insufficient Permission to Use API") if api else kick_result
+    if api:
+        return Exception("Insufficient Permission to Use API")
+    return kick_result
 
 
 def signed_in(request, user_type):
