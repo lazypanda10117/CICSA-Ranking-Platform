@@ -69,3 +69,17 @@ def truncateDisplayScore(score):
         return float('%.3f' % score)
     except:
         return "N/A"
+
+
+def findMaxInStrArr(arr):
+    m = None
+    for a in arr:
+        try:
+            b = int(a)
+            if m is None:
+                m = b
+            if b > m:
+                m = b
+        except ValueError:
+            continue
+    return m
