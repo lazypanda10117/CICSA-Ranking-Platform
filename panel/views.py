@@ -1,6 +1,10 @@
 from django.shortcuts import render
-from misc.CustomFunctions import AuthFunctions
+
+from api.authentication import AuthenticationGuard
+from api.authentication import AuthenticationGuardType
 
 
 def index(request):
-    return AuthFunctions.kickRequest(request, render(request, 'platform/index.html'))
+    return AuthenticationGuard(AuthenticationGuardType.LOGIN_GUARD, request).guard(
+            api=False, rend=render(request, 'platform/index.html')
+        )
