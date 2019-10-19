@@ -2,6 +2,7 @@ import re
 from functools import reduce
 from django.shortcuts import reverse
 
+from cicsa_ranking.models import Event
 from misc.CustomFunctions import UrlFunctions
 from misc.CustomFunctions import MiscFunctions
 from misc.CustomElements import EquationParser
@@ -89,7 +90,7 @@ class ScoringPageAPI(GeneralClientAPI):
             value2 = score_map[y]
         return value1 + value2
 
-    def __buildFleetTable(self, event):
+    def __buildFleetTable(self, event, force_compile):
         def __buildFleetScoreTable():
             race_table = dict()
             event_score_map = self.__compileScoreMap(event)
@@ -142,7 +143,7 @@ class ScoringPageAPI(GeneralClientAPI):
             return race_table
 
         def __buildFleetRankingTable():
-            if event.event_status != "done":
+            if not event.event_status == Event.EVENT_STATUS_DONE or force_compile:
                 ranking_table = dict()
                 for school in schools:
                     ranking_table[school.id] = 0
@@ -186,7 +187,8 @@ class ScoringPageAPI(GeneralClientAPI):
                     ) for index, summary in enumerate(summaries)
                 ]
             school_ranking_list = sorted(school_ranking_list, key=(lambda x: x['ranking']))
-            # loop to check if entry needs override
+            # TODO: Refactor, this code does not belong to the frontend API, it is for the backend score compilation
+            # Loop to check if entry needs override
             for index, school_ranking_data in enumerate(school_ranking_list):
                 duplicates = sum(
                     (1 if result['base_ranking'] == school_ranking_data['base_ranking'] else 0) for result in
@@ -218,14 +220,14 @@ class ScoringPageAPI(GeneralClientAPI):
         rank_table = __buildFleetRankingTable()
         return dict(ranking=rank_table, score=score_table)
 
-    def buildDataTable(self, event):
+    def buildDataTable(self, event, force_compile=False):
         event_type_name = EventTypeAPI(self.request).getSelf(id=event.event_type).event_type_name
         if event_type_name == self.FLEET_RACE:
-            return self.__buildFleetTable(event)
+            return self.__buildFleetTable(event, force_compile)
         elif event_type_name == self.TEAM_RACE:
             pass
         else:
-            pass
+            raise Exception("Such event type does not exist")
 
     def grabPageData(self, **kwargs):
         event_id = kwargs['id']

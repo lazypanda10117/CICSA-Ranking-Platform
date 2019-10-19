@@ -9,7 +9,7 @@ from api.authentication import AuthenticationType
 class AuthenticationAdmin:
     @staticmethod
     def getIdentifier():
-        return AuthenticationType.TEAM
+        return AuthenticationType.ADMIN
 
     @staticmethod
     def getAllowedModules():

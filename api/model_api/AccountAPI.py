@@ -17,3 +17,6 @@ class AccountAPI(GeneralModelAPI):
             return associated_school.school_name
         else:
             return "Anonymous"
+
+    def getAdminIDs(self):
+        return [account.id for account in AccountAPI(self.request).filterSelf(account_type="admin")]

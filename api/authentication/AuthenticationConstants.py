@@ -7,6 +7,7 @@ class AuthenticationGuardType(Enum):
 	PUBLIC_GUARD = 3
 	ADMIN_TEAM_GUARD = 4
 	LOGIN_GUARD = 5
+	NO_GUARD = 6
 
 
 class AuthenticationType:

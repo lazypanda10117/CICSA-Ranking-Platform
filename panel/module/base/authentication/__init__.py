@@ -1,2 +1,4 @@
 from .AuthenticationAdmin import AuthenticationAdmin
+from .AuthenticationPublic import AuthenticationPublic
 from .AuthenticationTeam import AuthenticationTeam
+

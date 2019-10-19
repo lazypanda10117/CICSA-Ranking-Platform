@@ -10,15 +10,16 @@ from api.authentication import AuthenticationType
 # If it is an api request and it fails, it will raise an error
 def kickRequest(
         request,
-        authenticated=True,
         rend=None,
-        api=False,
+        api=True,
         allowed_types=None
 ):
     allowed_types = allowed_types if allowed_types else [AuthenticationType.ADMIN, AuthenticationType.TEAM]
+    authenticated = AuthenticationType.PUBLIC not in allowed_types
     kick_result = rend
     is_request_valid = False
-    if reduce((lambda x, y: x or y), [signed_in(request, t) for t in allowed_types]):
+    matched = reduce((lambda x, y: x or y), [signed_in(request, t) for t in allowed_types])
+    if matched:
         if not authenticated:
             kick_result = redirect(reverse('panel.index'))
         else:
@@ -28,15 +29,18 @@ def kickRequest(
             kick_result = redirect(reverse('permission.dispatch', args=['view']))
         else:
             is_request_valid = True
-    
     if is_request_valid:
         return kick_result
-    
-    return Exception("Insufficient Permission to Use API") if api else kick_result
+    if api:
+        raise Exception("Insufficient Permission to Use API")
+    return kick_result
 
 
 def signed_in(request, user_type):
-    return RequestFunctions.sessionChecker(request, 'uid', 'utype') and request.session['utype'] == user_type
+    # The uid part guard against public access
+    return RequestFunctions.sessionChecker(request, 'uid', 'utype') and \
+           request.session['utype'] in [AuthenticationType.ADMIN, AuthenticationType.TEAM] and \
+           request.session['utype'] == user_type
 
 
 def raise404Empty(objects=None):
