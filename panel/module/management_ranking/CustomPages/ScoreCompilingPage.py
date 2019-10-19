@@ -1,6 +1,8 @@
 from django.shortcuts import reverse
-from api import ScoringPageAPI, EventAPI
-from ...base.block.CustomPages import AbstractBasePage
+
+from api.client_api import ScoringPageAPI
+from api.model_api import EventAPI
+from panel.module.base.block.CustomPages import AbstractBasePage
 
 
 class ScoreCompilingPage(AbstractBasePage):

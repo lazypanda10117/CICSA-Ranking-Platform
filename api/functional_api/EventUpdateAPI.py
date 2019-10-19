@@ -1,19 +1,21 @@
 import random
-from functools import reduce
 
-from api import TeamAPI, EventTeamAPI, ScoringPageAPI, LeagueScoringAPI
+from cicsa_ranking.models import Team
+from cicsa_ranking.models import ScoreMapping
+from cicsa_ranking.models import Event
+from misc.CustomFunctions import MiscFunctions
 from api.base import AbstractCoreAPI
 from api.base import SeasonBasedAPI
 from api.authentication import AuthenticationGuardType
 from api.authentication import AuthenticationActionType
+from api.model_api import TeamAPI
+from api.model_api import EventTeamAPI
 from api.model_api import SchoolAPI
-from api.model_api import EventAPI
 from api.model_api import SummaryAPI
-from api.model_api import ScoreAPI
 from api.model_api import EventActivityAPI
 from api.model_api import EventTagAPI
-from cicsa_ranking.models import Team, ScoreMapping, Event
-from misc.CustomFunctions import MiscFunctions
+from api.client_api import ScoringPageAPI
+from api.functional_api import LeagueScoringAPI
 
 
 class EventUpdateAPI(AbstractCoreAPI, SeasonBasedAPI):
@@ -138,17 +140,18 @@ class EventUpdateAPI(AbstractCoreAPI, SeasonBasedAPI):
             # Don't do anything if ranking is empty, because event is in the future
             if not ranking:
                 continue
+
             # Add/delete the teams specified by school_ids, and commit to db
+            new_result = dict()
             for team in teams:
                 if action == AuthenticationActionType.ADD:
-                    new_result = dict()
                     if activity.event_activity_event_tag == team.team_tag_id:
                         new_result[team.team_tag_id] = ScoreMapping.DEFAULT_MAPPING
-                    ranking.update(new_result)
                 elif action == AuthenticationActionType.DELETE:
-                    # We need to fix up the scoring order
                     if activity.event_activity_event_tag == team.team_tag_id:
                         del ranking[team.team_tag_id]
+
+            ranking.update(new_result)
             # We need to adjust the ranking after deleting some teams
             if action == AuthenticationActionType.DELETE:
                 # Ranking sorted by its integer, if it is string like 'DNF', set as 0
@@ -177,17 +180,12 @@ class EventUpdateAPI(AbstractCoreAPI, SeasonBasedAPI):
                 event_team_id__in=[t.id for t in teams]
             ).delete()
 
-
     def updateRotationByActivity(self, event_activity_id, action):
         def updateIndividualRotation(individual_rotation):
             if action == AuthenticationActionType.ADD:
                 if not len(individual_rotation) % 2:
                     individual_rotation.append(
-                        MiscFunctions.modAdd(
-                            individual_rotation[-1]-1,
-                            2,
-                            self.event.event_team_number
-                        )
+                        MiscFunctions.modAdd(individual_rotation[-1]-1, 2, self.event.event_team_number)
                     )
                 else:
                     individual_rotation.append(individual_rotation[-1])
