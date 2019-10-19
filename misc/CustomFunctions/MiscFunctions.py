@@ -83,3 +83,11 @@ def findMaxInStrArr(arr):
         except ValueError:
             continue
     return m
+
+
+def getAlphabet(idx):
+    alphabet_arr = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+                    'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    if idx > 25 or idx < 0:
+        raise IndexError("Out of Alphabetical Range")
+    return alphabet_arr[idx]

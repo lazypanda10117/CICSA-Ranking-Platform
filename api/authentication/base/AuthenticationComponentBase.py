@@ -32,16 +32,16 @@ class AuthenticationComponentBase(ABC):
 	# This is called when you pass in a bulk object
 	class BulkAuthenticate(AuthenticationSizeAuthenticate):
 		def viewAuthenticate(self):
-			return [o for o in self.objects]
+			return list(self.objects)
 
 		def editAuthenticate(self):
-			return []
+			return list(self.objects)
 
 		def addAuthenticate(self):
-			return []
+			return list(self.objects)
 
 		def deleteAuthenticate(self):
-			return []
+			return list(self.objects)
 
 	class SingleAuthenticate(AuthenticationSizeAuthenticate):
 		def viewAuthenticate(self):
