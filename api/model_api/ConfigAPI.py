@@ -8,9 +8,6 @@ class ConfigAPI(GeneralModelAPI):
     def getBaseClass():
         return Config
 
-    def getAdminIDs(self):
-        return [account.id for account in AccountAPI(self.request).filterSelf(account_type="admin")]
-
     def getConfig(self):
         return self.getAll()[0]
 

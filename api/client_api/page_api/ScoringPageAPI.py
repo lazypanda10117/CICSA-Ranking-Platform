@@ -211,10 +211,10 @@ class ScoringPageAPI(GeneralClientAPI):
             event_tag_name = EventTagAPI(self.request).getSelf(id=ea.event_activity_event_tag).event_tag_name
             event_activity_name_tags.append(event_tag_name)
             event_activity_id_tags.append(ea.event_activity_event_tag)
-            tea[event_tag_name] = [team.id for team in teams.filter(team_tag_id=ea.event_activity_event_tag)]
+            team_ids[event_tag_name] = [team.id for team in teams.filter(team_tag_id=ea.event_activity_event_tag)]
         for team in TeamAPI(self.request).filterSelf(id__in=team_flatten_ids):
             team_school_link[team.id] = schools.get(id=team.team_school)
-            team_name_link[team.id] = team_school_link[team.id].school_name + ' - ' + team.team_namem_ids
+            team_name_link[team.id] = team_school_link[team.id].school_name + ' - ' + team.team_name
 
         score_table = __buildFleetScoreTable()
         rank_table = __buildFleetRankingTable()

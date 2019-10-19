@@ -20,10 +20,12 @@ class AuthenticationGuard:
 			allowed_types = [AuthenticationType.ADMIN, AuthenticationType.TEAM]
 		elif self.permission == AuthenticationGuardType.LOGIN_GUARD:
 			allowed_types = [AuthenticationType.ADMIN, AuthenticationType.TEAM]
+		elif self.permission == AuthenticationGuardType.NO_GUARD:
+			allowed_types = [AuthenticationType.PUBLIC, AuthenticationType.ADMIN, AuthenticationType.TEAM]
 		else:
 			raise Exception("Failed Authentication Process During AuthenticationGuard Stage")
 
-		AuthFunctions.kickRequest(
+		return AuthFunctions.kickRequest(
 			request=self.request,
 			api=api,
 			allowed_types=allowed_types,

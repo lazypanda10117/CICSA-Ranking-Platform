@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
+
+from api.authentication import AuthenticationGuard, AuthenticationGuardType
 from misc.CustomElements import Dispatcher
 from misc.CustomFunctions import AuthFunctions
 from permission.CustomClasses.Login import Login
@@ -29,4 +31,6 @@ class PermissionView:
 
     @staticmethod
     def view(request):
-        return AuthFunctions.kickRequest(request, False, render(request, 'permission/login.html'))
+        return AuthenticationGuard(AuthenticationGuardType.PUBLIC_GUARD, request).guard(
+            api=False, rend=render(request, 'permission/login.html')
+        )
