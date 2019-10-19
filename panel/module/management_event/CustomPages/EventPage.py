@@ -18,11 +18,11 @@ class EventPage(AbstractBasePage):
                     args=['activity', event.id]),
                 elements=[
                     dict(
-                        text='Teams',
+                        text='Teams (WIP)',
                         link='#'
                     ),
                     dict(
-                        text='Races',
+                        text='Races (WIP)',
                         link='#'
                     ),
                     dict(
