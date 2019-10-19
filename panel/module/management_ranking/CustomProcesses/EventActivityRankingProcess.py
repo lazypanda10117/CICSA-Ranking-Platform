@@ -1,6 +1,8 @@
-from django.shortcuts import redirect, reverse
+from django.shortcuts import redirect
+from django.shortcuts import reverse
+
 from api import EventActivityAPI
-from ...base.block.CustomProcesses import AbstractBaseProcess
+from panel.module.base.block.CustomProcesses import AbstractBaseProcess
 
 
 class EventActivityRankingProcess(AbstractBaseProcess):

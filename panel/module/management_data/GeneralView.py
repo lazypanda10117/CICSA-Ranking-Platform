@@ -1,5 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
+
+from api.authentication import AuthenticationGuard, AuthenticationGuardType
 from misc.CustomElements import Dispatcher
 from misc.CustomFunctions import AuthFunctions, LogFunctions, MiscFunctions
 from ...component.CustomElements import Form, Table
@@ -125,7 +127,7 @@ class GeneralView:
 
             return HttpResponseRedirect(self.destination)
 
-        return AuthFunctions.kickRequest(
-            self.request, True, (
-                lambda x: generalViewLogic() if x else generalViewDisplay()
-            )(self.request.method == 'POST'))
+        return AuthenticationGuard(AuthenticationGuardType.LOGIN_GUARD, self.request).guard(
+            api=False,
+            rend=(lambda x: generalViewLogic() if x else generalViewDisplay())(self.request.method == 'POST')
+        )

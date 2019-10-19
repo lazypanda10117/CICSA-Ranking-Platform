@@ -12,7 +12,7 @@ from panel.module.ModuleRegistry import ModuleRegistry
 def index(request):
     return ModulePermission(request).verifyRequest(
         ManagementDataView().getBaseAppName(),
-        ManagementDataView().home(request),
+        lambda: ManagementDataView().home(request),
         None
     )
 
@@ -27,10 +27,9 @@ def pruneLog(request):
 @csrf_exempt
 def viewDispatch(request, param, route):
     dispatcher = ManagementDataView().setViewDispatcher()
-    view = dispatcher.get(route)(request)
     return ModulePermission(request).verifyRequest(
         ManagementDataView().getBaseAppName(),
-        view.dispatch(param),
+        lambda: dispatcher.get(route)(request).dispatch(param),
         None
     )
 

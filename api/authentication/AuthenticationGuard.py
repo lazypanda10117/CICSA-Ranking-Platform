@@ -9,7 +9,7 @@ class AuthenticationGuard:
 		self.context = context
 		self.permission = permission
 
-	def guard(self):
+	def guard(self, api=True, **kwargs):
 		if self.permission == AuthenticationGuardType.ADMIN_GUARD:
 			allowed_types = [AuthenticationType.ADMIN]
 		elif self.permission == AuthenticationGuardType.TEAM_GUARD:
@@ -20,11 +20,14 @@ class AuthenticationGuard:
 			allowed_types = [AuthenticationType.ADMIN, AuthenticationType.TEAM]
 		elif self.permission == AuthenticationGuardType.LOGIN_GUARD:
 			allowed_types = [AuthenticationType.ADMIN, AuthenticationType.TEAM]
+		elif self.permission == AuthenticationGuardType.NO_GUARD:
+			allowed_types = [AuthenticationType.PUBLIC, AuthenticationType.ADMIN, AuthenticationType.TEAM]
 		else:
 			raise Exception("Failed Authentication Process During AuthenticationGuard Stage")
 
-		AuthFunctions.kickRequest(
+		return AuthFunctions.kickRequest(
 			request=self.request,
-			api=True,
-			allowed_types=allowed_types
+			api=api,
+			allowed_types=allowed_types,
+			**kwargs
 		)

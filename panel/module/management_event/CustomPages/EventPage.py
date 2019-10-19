@@ -18,13 +18,21 @@ class EventPage(AbstractBasePage):
                     args=['activity', event.id]),
                 elements=[
                     dict(
-                        text='Modify',
+                        text='Teams',
+                        link='#'
+                    ),
+                    dict(
+                        text='Races',
+                        link='#'
+                    ),
+                    dict(
+                        text='Manage',
                         link=event_api.getEventModifyLink(self.param["type"], id=event.id)
                     )
                 ]
             ),
                              [event for event in events])
-            return BlockObject(status, 'Event', ['Modify'], event_dict)
+            return BlockObject(status, 'Event', ['', '', ''], event_dict)
 
         event_api = EventAPI(self.request)
         return BlockSet().makeBlockSet(genDict('future'), genDict('running'), genDict('done'))

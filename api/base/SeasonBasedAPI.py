@@ -8,7 +8,7 @@ class SeasonBasedAPI(AbstractRequestAPI):
     def __init__(self, request, season=None, **kwargs):
         super().__init__(request)
         self.all_season = False
-        self.season = 0
+        self.season = season
         self.setSeasons(season)
 
     def setSeasons(self, season):
