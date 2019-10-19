@@ -2,19 +2,22 @@ import hashlib
 from django.shortcuts import redirect, reverse
 from django.http import HttpResponse
 
+from api.authentication import AuthenticationType
 from api.model_api import ConfigAPI
-from cicsa_ranking.models import *
-from misc.CustomFunctions import LogFunctions, ModelFunctions, RequestFunctions
+from cicsa_ranking.models import Account
+from misc.CustomFunctions import LogFunctions
+from misc.CustomFunctions import ModelFunctions
+from misc.CustomFunctions import RequestFunctions
 
 
 class Login:
     def __init__(self, request):
         self.request = request
-        self.acceptable_type = {"admin", "team"}
+        self.acceptable_type = [AuthenticationType.ADMIN, AuthenticationType.TEAM]
 
     @staticmethod
     def account_type_mapper(account_type):
-        type_map = dict(admin="admin", school="team")
+        type_map = dict(admin=AuthenticationType.ADMIN, school=AuthenticationType.TEAM)
         return type_map[account_type]
 
     def login(self):
@@ -24,7 +27,7 @@ class Login:
         if uemail and upwd:
             u = ModelFunctions.getModelObject(Account, account_email=uemail)
             if u is None:
-                return HttpResponse('{"Response": "Error: No Such User"}')
+                raise Exception('User not found')
             else:
                 u_pwd = u.account_password
                 u_salt = u.account_salt
@@ -42,17 +45,18 @@ class Login:
                                                  LogFunctions.makeLogQuery(Account, 'Login', id=u.id))
                         return redirect(reverse('panel.index'))
                     else:
-                        return HttpResponse('{"Response": "Error: Insufficient Permission"}')
+                        raise Exception('Insufficient Permission')
                 else:
-                    return HttpResponse('{"Response": "Error: Wrong Credentials"}')
+                    raise Exception('Wrong Credentials')
         else:
-            return HttpResponse('{"Response": "Error: Insufficient Parameters."}')
+            raise Exception('Insufficient Parameters')
 
     def logout(self):
         if RequestFunctions.sessionChecker(self.request, 'uid', 'utype'):
             LogFunctions.generateLog(self.request, "system",
                                      LogFunctions.makeLogQuery(Account, 'Logout', id=self.request.session['uid']))
             self.request.session.clear()
+            self.request.session['utype'] = AuthenticationType.PUBLIC
         else:
-            print('{"Response": "Error: Not Logged In"}')
+            raise Exception('User is not logged in')
         return redirect(reverse('permission.dispatch', args=['view']))

@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
+
+from api.authentication import AuthenticationGuard, AuthenticationGuardType
 from misc.CustomElements import Dispatcher
 from misc.CustomFunctions import AuthFunctions, MiscFunctions
 from ...component.CustomElements import Form
@@ -128,7 +130,7 @@ class CustomView:
             functionDispatch.get(action)()
             return HttpResponseRedirect(self.destination)
 
-        return AuthFunctions.kickRequest(
-            self.request, True, (
-                lambda x: CustomViewLogic() if x else CustomViewDisplay()
-            )(self.request.method == 'POST'))
+        return AuthenticationGuard(AuthenticationGuardType.LOGIN_GUARD, self.request).guard(
+            api=False,
+            rend=(lambda x: CustomViewLogic() if x else CustomViewDisplay())(self.request.method == 'POST')
+        )

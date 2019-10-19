@@ -1,4 +1,6 @@
 from django.views.decorators.csrf import csrf_exempt
+
+from api.functional_api import LoggerAPI
 from misc.CustomElements import Dispatcher
 from panel.module_permission import ModulePermission
 from panel.module.base.block.Base import AbstractBlockApp
@@ -10,18 +12,24 @@ from panel.module.ModuleRegistry import ModuleRegistry
 def index(request):
     return ModulePermission(request).verifyRequest(
         ManagementDataView().getBaseAppName(),
-        ManagementDataView().home(request),
+        lambda: ManagementDataView().home(request),
         None
     )
+
+
+def pruneLog(request):
+    result = index(request)
+    if result is not None:
+        LoggerAPI(request).pruneLog()
+    return result
 
 
 @csrf_exempt
 def viewDispatch(request, param, route):
     dispatcher = ManagementDataView().setViewDispatcher()
-    view = dispatcher.get(route)(request)
     return ModulePermission(request).verifyRequest(
         ManagementDataView().getBaseAppName(),
-        view.dispatch(param),
+        lambda: dispatcher.get(route)(request).dispatch(param),
         None
     )
 
