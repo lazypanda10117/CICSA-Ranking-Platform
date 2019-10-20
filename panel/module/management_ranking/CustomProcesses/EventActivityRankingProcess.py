@@ -1,7 +1,9 @@
 from django.shortcuts import redirect
 from django.shortcuts import reverse
 
-from api import EventActivityAPI
+from api.model_api import EventAPI
+from api.model_api import EventActivityAPI
+from api.functional_api import EventUpdateAPI
 from panel.module.base.block.CustomProcesses import AbstractBaseProcess
 
 
@@ -13,9 +15,14 @@ class EventActivityRankingProcess(AbstractBaseProcess):
 
         event_activity = event_activity_api.getSelf(id=event_activity_id)
         event_activity_parent_id = event_activity.event_activity_event_parent
+        event = EventAPI(self.request).getSelf(id=event_activity_parent_id)
+
         result_dict = {school_id: rank[0] for school_id, rank in post_dict.items()}
         event_activity_api.updateEventActivityResult(event_activity_id, result_dict)
         event_activity_api.updateEventActivityState(event_activity_id, 'done')
+
+        if event.event_status == 'done':
+            EventUpdateAPI(self.request, event).recalculateScores()
 
         return redirect(
             reverse(

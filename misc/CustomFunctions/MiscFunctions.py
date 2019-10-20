@@ -96,3 +96,12 @@ def getAlphabet(idx):
 # For use within a lambda expression or as a wrapper for raise
 def lraise(e):
     raise e
+
+
+# Try to convert an object to a specfic type
+def canConvertTo(type, obj):
+    try:
+        type(obj)
+        return True
+    except ValueError:
+        return False

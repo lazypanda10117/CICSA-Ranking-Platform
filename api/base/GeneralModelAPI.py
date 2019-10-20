@@ -33,10 +33,12 @@ class GeneralModelAPI(AbstractCoreAPI):
         )
         obj.save()
 
-    def verifySelf(self, **kwargs):
-        result = ModelFunctions.filterModelObject(self.base, **kwargs)
+    def verifySelf(self, legacy=True, **kwargs):
+        if legacy:
+            result = ModelFunctions.getModelObject(self.base, **kwargs)
+        else:
+            result = ModelFunctions.filterModelObject(self.base, **kwargs)
         result = self.auth_class(self.request).authenticate(AuthenticationActionType.EDIT, result)
-        AuthFunctions.raise404Empty(result)
         LogFunctions.generateLog(
             self.request,
             self.context.authType,
@@ -57,10 +59,12 @@ class GeneralModelAPI(AbstractCoreAPI):
         else:
             AuthFunctions.raise404Empty()
 
-    def deleteSelf(self, **kwargs):
-        result = ModelFunctions.filterModelObject(self.base, **kwargs)
+    def deleteSelf(self, legacy=True, **kwargs):
+        if legacy:
+            result = ModelFunctions.getModelObject(self.base, **kwargs)
+        else:
+            result = ModelFunctions.filterModelObject(self.base, **kwargs)
         result = self.auth_class(self.request).authenticate(AuthenticationActionType.DELETE, result)
-        AuthFunctions.raise404Empty(result)
         LogFunctions.generateLog(
             self.request,
             self.context.authType,
