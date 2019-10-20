@@ -27,8 +27,8 @@ class FleetManagementView(EventManagementView):
         self.assoc_class_summary = Summary
         self.assoc_class_season = Season
 
-        self.event_race_tag = [EventTag.DEFAULT_EVENT_TAGS + '{}'.format(MiscFunctions.getAlphabet(i)) for i in range(2)]
-        self.event_team_name_suffix = [Team.TEAM_NAME_SUFFIX + '{}'.format(MiscFunctions.getAlphabet(i)) for i in range(2)]
+        self.event_race_tag = [EventTag.DEFAULT_EVENT_TAGS + ' {}'.format(MiscFunctions.getAlphabet(i)) for i in range(2)]
+        self.event_team_name_suffix = [Team.TEAM_NAME_SUFFIX + ' {}'.format(MiscFunctions.getAlphabet(i)) for i in range(2)]
         self.event_activity_type = EventActivity.ACTIVITY_TYPE_RACE
 
     # Class Specific Functions
