@@ -35,7 +35,6 @@
                                             class="form-control"
                                             type="checkbox"
                                             name="event_team_management_checkbox_{{ content.school_id }}"
-                                            value=""
                                             autocomplete="off"
                                             checked
                                     >
@@ -44,7 +43,6 @@
                                             class="form-control"
                                             type="checkbox"
                                             name="event_team_management_checkbox_{{ content.school_id }}"
-                                            value=""
                                             autocomplete="off"
                                     >
                                 {% endif %}
@@ -61,50 +59,4 @@
             </form>
         </div>
     </div>
-<!--                <div class="container-fluid row mb-2">-->
-<!--                    <div class="col col-lg-2">-->
-<!--                        School ID-->
-<!--                    </div>-->
-<!--                    <div class="col col-lg-3">-->
-<!--                        School Name-->
-<!--                    </div>-->
-<!--                    <div class="col col-lg-2">-->
-<!--                        Participated-->
-<!--                    </div>-->
-<!--                    <div class="col col-lg-3">-->
-<!--                        Changes-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            <hr>-->
-<!--                <div class="container-fluid row mt-4 form-group">-->
-<!--                        <div class="col col-lg-2">-->
-<!--                            {{ content.school_id }}-->
-<!--                        </div>-->
-<!--                        <div class="col col-lg-3">-->
-<!--                            <a href="{{ content.school_score_url  }}">{{ content.school_name }}</a>-->
-<!--                        </div>-->
-<!--                        <div class="col col-lg-2">-->
-<!--                            {% if content.participated %}-->
-<!--                                <i class="fa fa-circle  fa-fw" style="margin-left: 15px;"></i>-->
-<!--                            {% endif %}-->
-<!--                        </div>-->
-<!--                        <div class="col col-lg-3">-->
-<!--                            {% if content.participated %}-->
-<!--                                <input-->
-<!--                                        class="form-control"-->
-<!--                                        type="checkbox"-->
-<!--                                        name="event_team_management_checkbox_{{ content.school_id }}"-->
-<!--                                        value=""-->
-<!--                                        checked-->
-<!--                                >-->
-<!--                            {% else %}-->
-<!--                                <input-->
-<!--                                        class="form-control"-->
-<!--                                        type="checkbox"-->
-<!--                                        name="event_team_management_checkbox_{{ content.school_id }}"-->
-<!--                                        value=""-->
-<!--                                >-->
-<!--                            {% endif %}-->
-<!--                        </div>-->
-<!--                    </div>-->
 {% endblock %}
