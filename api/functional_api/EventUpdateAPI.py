@@ -162,7 +162,6 @@ class EventUpdateAPI(AbstractCoreAPI, SeasonBasedAPI):
                 s_ranking = sorted(
                     map(lambda x: x if MiscFunctions.canConvertTo(int, x[1]) else (x[0], -1), ranking.items())
                 )
-                print(s_ranking)
                 count = 1
                 for team_id, rank in s_ranking:
                     if not rank == -1:
