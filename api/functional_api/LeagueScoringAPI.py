@@ -213,7 +213,6 @@ class LeagueScoringAPI(AbstractCoreAPI, SeasonBasedAPI):
         # TODO: Have an indicator for finished season and use it to determine whether to recompile league scores
         # We only recompute if initialize is true and all recorded scores are not None
         if not (initialize or reduce(lambda x, y: x and (y['recorded_score'] is not None), league_scoring_data, True)):
-            print("I AM HOME!")
             return
 
         # We initialize override as all None values if the override variable is not set

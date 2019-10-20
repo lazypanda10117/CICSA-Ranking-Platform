@@ -65,28 +65,18 @@ class EventUpdateAPI(AbstractCoreAPI, SeasonBasedAPI):
         self.event.event_boat_rotation_name = ','.join(new_boat_ids)
         self.event.save()
         # Update all the associated objects
-        print("1")
         self.updateSummaryBySchool(additionList, AuthenticationActionType.ADD)
-        print("2")
         self.updateSummaryBySchool(removalList, AuthenticationActionType.DELETE)
-        print("3")
         self.updateEventTeams(additionList, AuthenticationActionType.ADD)
-        print("4")
         self.updateEventTeams(removalList, AuthenticationActionType.DELETE)
-        print("5")
         self.updateEventActivities(additionList, AuthenticationActionType.ADD)
-        print("6")
         self.updateEventActivities(removalList, AuthenticationActionType.DELETE)
-        print("7")
         self.updateEventTeamLinks(additionList, AuthenticationActionType.ADD)
-        print("8")
         self.updateEventTeamLinks(removalList, AuthenticationActionType.DELETE)
         # Update rotation, previous doesn't have information about new teams
-        print("9")
         self.event.event_rotation_detail = self.regenerateRotation()
         self.event.save()
         # Update Summary and League Scores
-        print("10")
         self.recalculateScores()
 
     def recalculateScores(self):
