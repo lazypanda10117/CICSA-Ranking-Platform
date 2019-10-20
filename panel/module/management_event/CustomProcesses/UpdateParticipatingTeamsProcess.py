@@ -1,6 +1,7 @@
 from django.shortcuts import redirect
 from django.urls import reverse
 
+from api.functional_api import EventUpdateAPI
 from panel.module.base.block.CustomProcesses import AbstractBaseProcess
 
 
@@ -13,6 +14,7 @@ class UpdateParticipatingTeamsProcess(AbstractBaseProcess):
         #  'event_team_management_checkbox_8': ['on'], 'event_team_management_checkbox_9': ['on'],
         #  'event_team_management_checkbox_10': ['on'], 'event_team_management_checkbox_13': ['on'],
         #  'event_team_management_checkbox_14': ['on'], 'event_team_management_checkbox_15': ['on']}
+        EventUpdateAPI(self.request)
         return redirect(
             reverse(
                 'panel.module.management_event.view_dispatch_param',

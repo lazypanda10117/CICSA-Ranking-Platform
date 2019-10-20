@@ -15,6 +15,7 @@ from api.model_api import SummaryAPI
 from api.model_api import EventActivityAPI
 from api.model_api import EventTagAPI
 
+
 class EventUpdateAPI(AbstractCoreAPI, SeasonBasedAPI):
     def __init__(self, request, event, **kwargs):
         super().__init__(request=request, permission=AuthenticationGuardType.LOGIN_GUARD, **kwargs)
