@@ -160,7 +160,9 @@ class EventUpdateAPI(AbstractCoreAPI, SeasonBasedAPI):
 
                 # Ranking sorted by its integer, if it is string like 'DNF', set as 0
                 s_ranking = sorted(
-                    map(lambda x: x if MiscFunctions.canConvertTo(int, x[1]) else (x[0], -1), ranking.items())
+                    map(lambda x: (x[0], int(x[1])) if MiscFunctions.canConvertTo(int, x[1]) else (x[0], -1),
+                        ranking.items()),
+                    key=lambda k: k[1],
                 )
                 count = 1
                 for team_id, rank in s_ranking:
