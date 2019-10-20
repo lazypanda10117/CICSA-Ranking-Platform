@@ -1,0 +1,110 @@
+{% extends 'platform/base.html' %}
+{% block 'head' %}
+{% endblock %}
+{% block 'body' %}
+    <h4><pre>{{ page.block_title }}</pre></h4>
+    <div class="card">
+        <div class="card-body">
+            <form action="{{ page.action_destination }}" id="{{ page.form_id }}" method="post">
+                <table class="table table-borderless">
+                    <thead>
+                        <tr>
+                            <th scope="col">School ID</th>
+                            <th scope="col">School Name</th>
+                            <th scope="col">Participated</th>
+                            <th scope="col">Updated Participation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for content in page.contents %}
+                        <tr>
+                            <th scope="row">
+                                {{ content.school_id }}
+                            </th>
+                            <td>
+                                <a href="{{ content.school_score_url  }}">{{ content.school_name }}</a>
+                            </td>
+                            <td>
+                                {% if content.participated %}
+                                    <i class="fa fa-circle  fa-fw" style="margin-left: 15px;"></i>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if content.participated %}
+                                    <input
+                                            class="form-control"
+                                            type="checkbox"
+                                            name="event_team_management_checkbox_{{ content.school_id }}"
+                                            value=""
+                                            autocomplete="off"
+                                            checked
+                                    >
+                                {% else %}
+                                    <input
+                                            class="form-control"
+                                            type="checkbox"
+                                            name="event_team_management_checkbox_{{ content.school_id }}"
+                                            value=""
+                                            autocomplete="off"
+                                    >
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <div class="container-fluid row mt-4">
+                    <div class="col col-lg-6 offset-lg-3">
+                        <button type="submit" class="btn btn-info btn-lg btn-block">Update Participating Teams</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+<!--                <div class="container-fluid row mb-2">-->
+<!--                    <div class="col col-lg-2">-->
+<!--                        School ID-->
+<!--                    </div>-->
+<!--                    <div class="col col-lg-3">-->
+<!--                        School Name-->
+<!--                    </div>-->
+<!--                    <div class="col col-lg-2">-->
+<!--                        Participated-->
+<!--                    </div>-->
+<!--                    <div class="col col-lg-3">-->
+<!--                        Changes-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            <hr>-->
+<!--                <div class="container-fluid row mt-4 form-group">-->
+<!--                        <div class="col col-lg-2">-->
+<!--                            {{ content.school_id }}-->
+<!--                        </div>-->
+<!--                        <div class="col col-lg-3">-->
+<!--                            <a href="{{ content.school_score_url  }}">{{ content.school_name }}</a>-->
+<!--                        </div>-->
+<!--                        <div class="col col-lg-2">-->
+<!--                            {% if content.participated %}-->
+<!--                                <i class="fa fa-circle  fa-fw" style="margin-left: 15px;"></i>-->
+<!--                            {% endif %}-->
+<!--                        </div>-->
+<!--                        <div class="col col-lg-3">-->
+<!--                            {% if content.participated %}-->
+<!--                                <input-->
+<!--                                        class="form-control"-->
+<!--                                        type="checkbox"-->
+<!--                                        name="event_team_management_checkbox_{{ content.school_id }}"-->
+<!--                                        value=""-->
+<!--                                        checked-->
+<!--                                >-->
+<!--                            {% else %}-->
+<!--                                <input-->
+<!--                                        class="form-control"-->
+<!--                                        type="checkbox"-->
+<!--                                        name="event_team_management_checkbox_{{ content.school_id }}"-->
+<!--                                        value=""-->
+<!--                                >-->
+<!--                            {% endif %}-->
+<!--                        </div>-->
+<!--                    </div>-->
+{% endblock %}
