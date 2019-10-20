@@ -45,6 +45,7 @@ class SchoolDetailsPageAPI(GeneralClientAPI):
                 result.append(dict(
                     name=event.event_name,
                     region=region.region_name,
+                    status=event.event_status,
                     start_date=event.event_start_date,
                     rank=rank,
                     link=reverse('client.view_dispatch_param', args=["event_scoring", event.id]),

@@ -33,20 +33,40 @@
         <h1 class="text-center mb-3">{{ page_data.school_info.school_name }}</h1>
         <h4>Details</h4>
         <ul class="list-group mb-5">
-            {% for i in "123" %}
+            {% with info=page_data.school_info %}
 				<li class="list-group-item">
 					<div class="row">
 						<div class="col">
-							{% cycle 'Region' 'Status' 'Season Score' %}:
+                            Region:
 						</div>
 						<div class="col">
-							{% with info=page_data.school_info %}
-								{% cycle info.school_region.0 info.school_status info.school_season_score %}
-							{% endwith %}
-						</div>
+                            <a href="{{ info.school_region.1 }}">
+                                {{ info.school_region.0 }}
+                            </a>
+                        </div>
 					</div>
 				</li>
-			{% endfor %}
+                <li class="list-group-item">
+					<div class="row">
+						<div class="col">
+                            Status:
+						</div>
+						<div class="col">
+                            {{ info.school_status }}
+                        </div>
+					</div>
+				</li>
+                <li class="list-group-item">
+					<div class="row">
+						<div class="col">
+                            Season Score:
+						</div>
+						<div class="col">
+                            {{ info.school_season_score }}
+                        </div>
+					</div>
+				</li>
+            {% endwith %}
         </ul>
 
         {# TODO: refactor? #}
@@ -59,6 +79,7 @@
                         <tr>
                             <th scope="col">Event Name</th>
                             <th scope="col">Region</th>
+                            <th scope="col">Status</th>
                             <th scope="col">Start Date</th>
                             <th scope="col">Rank</th>
                             <th scope="col">Score</th>
@@ -69,6 +90,7 @@
                             <tr data-href="{{ event.link }}">
                                 <td scope="row">{{ event.name }}</td>
                                 <td>{{ event.region }}</td>
+                                <td>{{ event.status }}</td>
                                 <td>{{ event.start_date }}</td>
                                 <td>{{ event.rank }}</td>
                                 <td>{{ event.score }}</td>
