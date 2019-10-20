@@ -27,8 +27,8 @@ class FleetManagementView(EventManagementView):
         self.assoc_class_summary = Summary
         self.assoc_class_season = Season
 
-        self.event_race_tag = [EventTag.DEFAULT_EVENT_TAGS + '{}'.format(MiscFunctions.getAlphabet(i)) for i in range(2)]
-        self.event_team_name_suffix = [Team.TEAM_NAME_SUFFIX + '{}'.format(MiscFunctions.getAlphabet(i)) for i in range(2)]
+        self.event_race_tag = [EventTag.DEFAULT_EVENT_TAGS + ' {}'.format(MiscFunctions.getAlphabet(i)) for i in range(2)]
+        self.event_team_name_suffix = [Team.TEAM_NAME_SUFFIX + ' {}'.format(MiscFunctions.getAlphabet(i)) for i in range(2)]
         self.event_activity_type = EventActivity.ACTIVITY_TYPE_RACE
 
     # Class Specific Functions
@@ -63,6 +63,7 @@ class FleetManagementView(EventManagementView):
             post_dict = dict(self.request.POST)
 
             event_type = RequestFunctions.getSinglePostObj(post_dict, 'event_type')
+            event_class = RequestFunctions.getSinglePostObj(post_dict, 'event_class')
             event_name = RequestFunctions.getSinglePostObj(post_dict, 'event_name')
             event_status = RequestFunctions.getSinglePostObj(post_dict, 'event_status')
             event_description = RequestFunctions.getSinglePostObj(post_dict, 'event_description')
@@ -81,6 +82,7 @@ class FleetManagementView(EventManagementView):
             # event generation
             event_creation = self.base_class()
             event_creation.event_type = int(event_type)
+            event_creation.event_class = int(event_class)
             event_creation.event_name = event_name
             event_creation.event_status = event_status
             event_creation.event_description = event_description
