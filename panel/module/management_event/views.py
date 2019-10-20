@@ -1,8 +1,14 @@
 from django.views.decorators.csrf import csrf_exempt
+
 from misc.CustomElements import Dispatcher
-from ..base.block.Base import AbstractBlockApp
-from .CustomPages import EventPage, EventActivityPage, EventActivityDetailPage, EventChoicePage
 from panel.module.ModuleRegistry import ModuleRegistry
+from panel.module.base.block.Base import AbstractBlockApp
+from panel.module.management_event.CustomPages import EventPage
+from panel.module.management_event.CustomPages import EventActivityPage
+from panel.module.management_event.CustomPages import EventActivityDetailPage
+from panel.module.management_event.CustomPages import EventChoicePage
+from panel.module.management_event.CustomPages import EventTeamPage
+from panel.module.management_event.CustomProcesses import UpdateParticipatingTeamsProcess
 
 
 def index(request):
@@ -32,8 +38,10 @@ class ManagementEventView(AbstractBlockApp.AppView):
         dispatcher.add('event', EventPage)
         dispatcher.add('activity', EventActivityPage)
         dispatcher.add('activity detail', EventActivityDetailPage)
+        dispatcher.add('team', EventTeamPage)
         return dispatcher
 
     def setProcessDispatcher(self):
         dispatcher = Dispatcher()
+        dispatcher.add('update teams', UpdateParticipatingTeamsProcess)
         return dispatcher

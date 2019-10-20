@@ -32,13 +32,13 @@ class AbstractBlockApp(ABC):
             page = self.setViewDispatcher().get(dispatch_path)(request, param)
             return self.__authenticateModule(
                 request=request,
-                callback=(lambda: page.render())
+                callback=lambda: page.render()
             )
 
         def processDispatch(self, request, dispatch_path, param=''):
             page = self.setProcessDispatcher().get(dispatch_path)(request, param)
             return self.__authenticateModule(
                 request=request,
-                callback=page.process(),
-                failure=(lambda: MiscFunctions.lraise(Exception("Insufficient Permission to Access Module Process")))
+                callback=lambda: page.process(),
+                failure=lambda: MiscFunctions.lraise(Exception("Insufficient Permission to Access Module Process"))
             )

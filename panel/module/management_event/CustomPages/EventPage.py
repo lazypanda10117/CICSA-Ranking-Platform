@@ -18,8 +18,11 @@ class EventPage(AbstractBasePage):
                     args=['activity', event.id]),
                 elements=[
                     dict(
-                        text='Teams (WIP)',
-                        link='#'
+                        text='Teams',
+                        link=reverse(
+                            'panel.module.management_event.view_dispatch_param',
+                            args=['team', event.id]
+                        )
                     ),
                     dict(
                         text='Races (WIP)',
