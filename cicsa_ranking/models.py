@@ -54,8 +54,10 @@ class Season(models.Model):
     season_name = models.CharField(max_length=200)
 
 
+# UNDER THE ASSUMPTION THAT NO VALUE IS GREATER THAN 100000
 class ScoreMapping(models.Model):
-    DEFAULT_MAPPING = 'No race'
+    DEFAULT_MAPPING = 'No-show'
+    SCORE_SENTINEL = 100000
     score_name = models.CharField(max_length=200)
     score_value = models.CharField(default="RACE+1", max_length=100)
 

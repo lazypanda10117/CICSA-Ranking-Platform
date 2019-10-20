@@ -6,3 +6,6 @@ class ScoreMappingAPI(GeneralModelAPI):
     @staticmethod
     def getBaseClass():
         return ScoreMapping
+
+    def getMaxSentinel(self):
+        return self.base.SCORE_SENTINEL

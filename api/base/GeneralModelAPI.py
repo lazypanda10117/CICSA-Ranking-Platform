@@ -11,7 +11,7 @@ class GeneralModelAPI(AbstractCoreAPI):
     def __init__(self, request):
         super().__init__(request)
         self.base = self.getBaseClass()
-        self.class_name = self.base.__class__.__name__
+        self.class_name = self.base.__name__
         self.auth_class = self.auth(request).dispatch(self.class_name)
 
     @staticmethod
@@ -26,34 +26,50 @@ class GeneralModelAPI(AbstractCoreAPI):
             setattr(obj, key, val)
         result = self.auth_class(self.request).authenticate(AuthenticationActionType.ADD, obj)
         AuthFunctions.raise404Empty(result)
-        LogFunctions.generateLog(self.request, self.context.authType,
-                                 LogFunctions.makeLogQueryFromObject(self.base, AuthenticationActionType.ADD, result))
+        LogFunctions.generateLog(
+            self.request,
+            self.context.authType,
+            "{} {} with kwargs {}".format("CREATE", self.class_name, kwargs)
+        )
         obj.save()
 
-    def verifySelf(self, **kwargs):
-        result = ModelFunctions.getModelObject(self.base, **kwargs)
+    def verifySelf(self, legacy=True, **kwargs):
+        if legacy:
+            result = ModelFunctions.getModelObject(self.base, **kwargs)
+        else:
+            result = ModelFunctions.filterModelObject(self.base, **kwargs)
         result = self.auth_class(self.request).authenticate(AuthenticationActionType.EDIT, result)
-        AuthFunctions.raise404Empty(result)
-        LogFunctions.generateLog(self.request, self.context.authType,
-                                 LogFunctions.makeLogQueryFromObject(self.base, AuthenticationActionType.EDIT, result))
+        LogFunctions.generateLog(
+            self.request,
+            self.context.authType,
+            "{} {} with kwargs {}".format("VERIFY", self.class_name, kwargs)
+        )
         return result
 
     def addSelf(self, obj):
         if isinstance(obj, self.base):
             result = self.auth_class(self.request).authenticate(AuthenticationActionType.ADD, obj)
             AuthFunctions.raise404Empty(result)
-            LogFunctions.generateLog(self.request, self.context.authType,
-                                     LogFunctions.makeLogQueryFromObject(self.base, AuthenticationActionType.ADD, result))
+            LogFunctions.generateLog(
+                self.request,
+                self.context.authType,
+                "{} {} with kwargs {}".format("ADD", self.class_name, obj.__dict__)
+            )
             return result
         else:
             AuthFunctions.raise404Empty()
 
-    def deleteSelf(self, **kwargs):
-        result = ModelFunctions.getModelObject(self.base, **kwargs)
+    def deleteSelf(self, legacy=True, **kwargs):
+        if legacy:
+            result = ModelFunctions.getModelObject(self.base, **kwargs)
+        else:
+            result = ModelFunctions.filterModelObject(self.base, **kwargs)
         result = self.auth_class(self.request).authenticate(AuthenticationActionType.DELETE, result)
-        AuthFunctions.raise404Empty(result)
-        LogFunctions.generateLog(self.request, self.context.authType,
-                                 LogFunctions.makeLogQueryFromObject(self.base, AuthenticationActionType.DELETE, result))
+        LogFunctions.generateLog(
+            self.request,
+            self.context.authType,
+            "{} {} with kwargs {}".format("DELETE", self.class_name, kwargs)
+        )
         return result
 
     def getSelf(self, **kwargs):

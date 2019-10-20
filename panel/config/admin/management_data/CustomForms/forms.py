@@ -84,6 +84,7 @@ class MemberGroupForm(CustomForm):
 
 class EventManagementForm(CustomForm):
     event_type = forms.ChoiceField(choices=[])
+    event_class = forms.ChoiceField(choices=[])
     event_name = forms.CharField(max_length=200)
     event_status = forms.ChoiceField(choices=[])
     event_description = forms.CharField(max_length=1500, widget=forms.Textarea, required=False)

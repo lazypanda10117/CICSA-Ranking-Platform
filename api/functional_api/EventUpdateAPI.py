@@ -15,6 +15,7 @@ from api.model_api import SummaryAPI
 from api.model_api import EventActivityAPI
 from api.model_api import EventTagAPI
 
+
 class EventUpdateAPI(AbstractCoreAPI, SeasonBasedAPI):
     def __init__(self, request, event, **kwargs):
         super().__init__(request=request, permission=AuthenticationGuardType.LOGIN_GUARD, **kwargs)
@@ -24,10 +25,10 @@ class EventUpdateAPI(AbstractCoreAPI, SeasonBasedAPI):
     def regenerateRotation(self):
         rotation = dict()
         permutation = random.sample(range(1, self.event.event_team_number + 1), self.event.event_team_number)
-        event_tags = EventTagAPI(self.request).verifySelf(event_tag_event_id=self.event.id)
-        for boat_shift, tag_id in enumerate(event_tags):
-            teams = TeamAPI(self.request).filterSelf(team_tag_id=tag_id)
-            team_sequence = {team_id:
+        event_tags = EventTagAPI(self.request).verifySelf(legacy=False, event_tag_event_id=self.event.id)
+        for boat_shift, tag in enumerate(event_tags):
+            teams = TeamAPI(self.request).filterSelf(team_tag_id=tag.id)
+            team_sequence = {team.id:
                 [
                     MiscFunctions.modAdd(
                         permutation[idx] + boat_shift,
@@ -36,9 +37,9 @@ class EventUpdateAPI(AbstractCoreAPI, SeasonBasedAPI):
                     )
                     for race in range(self.event.event_race_number)
                 ]
-                for idx, team_id in enumerate(teams)
+                for idx, team in enumerate(teams)
             }
-            rotation[tag_id] = team_sequence
+            rotation[tag.id] = team_sequence
         return rotation
 
     def updateSchools(self, school_ids):
@@ -46,36 +47,42 @@ class EventUpdateAPI(AbstractCoreAPI, SeasonBasedAPI):
         # Return error if one or more of the school ids could not be found
         if not len(schools) == len(school_ids):
             raise Exception("At least one of the school ids is invalid in updateSchools")
-        old_school_ids = self.event.event_school_ids
+        old_school_ids = list(map(lambda x: int(x), self.event.event_school_ids))
 
         # Finding all the elements in school_ids that are not already in old_school_ids, and its converse
-        additionList = [e for e in school_ids if e in old_school_ids]
-        removalList = [e for e in old_school_ids if e in school_ids]
+        additionList = [e for e in school_ids if e not in old_school_ids]
+        removalList = [e for e in old_school_ids if e not in school_ids]
 
         self.event.event_school_ids = school_ids
         self.event.event_team_number = len(school_ids)
         # Remove some boat identifiers if less schools, or add more non duplicate numbers if more schools
         boat_ids = self.event.event_boat_rotation_name.split(',')
         next_boat_id = (lambda m: m if m is not None else 0)(MiscFunctions.findMaxInStrArr(boat_ids)) + 1
-        self.event.event_boat_rotation_name = boat_ids[:min(self.event.event_team_number, len(boat_ids))] + \
-                                              [next_boat_id + i for i in range(
+        new_boat_ids = boat_ids[:min(self.event.event_team_number, len(boat_ids))] + \
+                                              [str(next_boat_id + i) for i in range(
                                                   max(0, self.event.event_team_number - len(boat_ids))
                                               )]
+        self.event.event_boat_rotation_name = ','.join(new_boat_ids)
         self.event.save()
-        # Update all the associated objects
+
+        # Handling Addition first before deletion
         self.updateSummaryBySchool(additionList, AuthenticationActionType.ADD)
-        self.updateSummaryBySchool(removalList, AuthenticationActionType.DELETE)
         self.updateEventTeams(additionList, AuthenticationActionType.ADD)
-        self.updateEventTeams(removalList, AuthenticationActionType.DELETE)
         self.updateEventActivities(additionList, AuthenticationActionType.ADD)
-        self.updateEventActivities(removalList, AuthenticationActionType.DELETE)
         self.updateEventTeamLinks(additionList, AuthenticationActionType.ADD)
+
+        # Handling Deletion
+        self.updateSummaryBySchool(removalList, AuthenticationActionType.DELETE)
+        self.updateEventActivities(removalList, AuthenticationActionType.DELETE)
         self.updateEventTeamLinks(removalList, AuthenticationActionType.DELETE)
-        # Update Summary and League Scores
-        self.recalculateScores()
+        self.updateEventTeams(removalList, AuthenticationActionType.DELETE)
+
         # Update rotation, previous doesn't have information about new teams
         self.event.event_rotation_detail = self.regenerateRotation()
         self.event.save()
+
+        # Update Summary and League Scores
+        self.recalculateScores()
 
     def recalculateScores(self):
         from api.client_api import ScoringPageAPI
@@ -83,7 +90,7 @@ class EventUpdateAPI(AbstractCoreAPI, SeasonBasedAPI):
 
         if self.event.event_status == Event.EVENT_STATUS_DONE:
             ranking_list = ScoringPageAPI(self.request).buildDataTable(self.event, force_compile=True)['ranking']
-            summaries = SummaryAPI(self.request).verifySelf(summary_event_parent=self.event.id)
+            summaries = SummaryAPI(self.request).verifySelf(legacy=False, summary_event_parent=self.event.id)
             for ranking_data in ranking_list:
                 school_id = ranking_data['school_id']
                 score = ranking_data['score']
@@ -104,11 +111,10 @@ class EventUpdateAPI(AbstractCoreAPI, SeasonBasedAPI):
                 )
         elif action == AuthenticationActionType.DELETE:
             SummaryAPI(self.request).deleteSelf(
+                legacy=False,
                 summary_event_parent=self.event.id,
                 summary_event_school__in=school_ids
             ).delete()
-            # for summary in summaries:
-            #     summary.delete()
 
     def updateEventTeams(self, school_ids, action):
         event_tags = EventTagAPI(self.request).filterSelf(event_tag_event_id=self.event.id)
@@ -116,7 +122,7 @@ class EventUpdateAPI(AbstractCoreAPI, SeasonBasedAPI):
             schools = SchoolAPI(self.request).filterSelf(id__in=school_ids)
             for school in schools:
                 for idx, tag in enumerate(event_tags):
-                    team_name = '{} {}{}'.format(
+                    team_name = '{} {} {}'.format(
                         school.school_default_team_name, Team.TEAM_NAME_SUFFIX, MiscFunctions.getAlphabet(idx)
                     )
                     TeamAPI(self.request).createSelf(
@@ -124,17 +130,17 @@ class EventUpdateAPI(AbstractCoreAPI, SeasonBasedAPI):
                     )
         elif action == AuthenticationActionType.DELETE:
             TeamAPI(self.request).deleteSelf(
-                team_tag_id__in=[e.id for e in event_tags], team_school__in=school_ids
+                legacy=False,
+                team_tag_id__in=[e.id for e in event_tags],
+                team_school__in=school_ids
             ).delete()
-            # for team in teams:
-            #     team.delete()
 
     def updateEventActivities(self, school_ids, action):
         event_tags = EventTagAPI(self.request).filterSelf(event_tag_event_id=self.event.id)
         teams = TeamAPI(self.request).filterSelf(
             team_tag_id__in=[e.id for e in event_tags], team_school__in=school_ids
         )
-        event_activities = EventActivityAPI(self.request).verifySelf(event_activity_parent=self.event.id)
+        event_activities = EventActivityAPI(self.request).verifySelf(legacy=False, event_activity_event_parent=self.event.id)
         for activity in event_activities:
             ranking = activity.event_activity_result
             # Don't do anything if ranking is empty, because event is in the future
@@ -142,24 +148,24 @@ class EventUpdateAPI(AbstractCoreAPI, SeasonBasedAPI):
                 continue
 
             # Add/delete the teams specified by school_ids, and commit to db
-            new_result = dict()
             for team in teams:
                 if action == AuthenticationActionType.ADD:
                     if activity.event_activity_event_tag == team.team_tag_id:
-                        new_result[team.team_tag_id] = ScoreMapping.DEFAULT_MAPPING
+                        ranking.update({team.id: ScoreMapping.DEFAULT_MAPPING})
                 elif action == AuthenticationActionType.DELETE:
                     if activity.event_activity_event_tag == team.team_tag_id:
-                        del ranking[team.team_tag_id]
-
-            ranking.update(new_result)
+                        ranking.pop(str(team.id))
             # We need to adjust the ranking after deleting some teams
             if action == AuthenticationActionType.DELETE:
+
                 # Ranking sorted by its integer, if it is string like 'DNF', set as 0
-                s_ranking = sorted(map(lambda x: x[1] if isinstance(x[1], int) else -1, ranking.items()))
+                s_ranking = sorted(
+                    map(lambda x: x if MiscFunctions.canConvertTo(int, x[1]) else (x[0], -1), ranking.items())
+                )
                 count = 1
                 for team_id, rank in s_ranking:
                     if not rank == -1:
-                        ranking[team_id] = count
+                        ranking.update({team_id: str(count)})
                         count += 1
             activity.event_activity_result = ranking
             activity.save()
@@ -169,7 +175,7 @@ class EventUpdateAPI(AbstractCoreAPI, SeasonBasedAPI):
         teams = TeamAPI(self.request).filterSelf(
             team_tag_id__in=[e.id for e in event_tags], team_school__in=school_ids
         )
-        event_activities = EventActivityAPI(self.request).verifySelf(event_activity_parent=self.event.id)
+        event_activities = EventActivityAPI(self.request).verifySelf(legacy=False, event_activity_event_parent=self.event.id)
         if action == AuthenticationActionType.ADD:
             for activity in event_activities:
                 for team in teams:
@@ -194,7 +200,7 @@ class EventUpdateAPI(AbstractCoreAPI, SeasonBasedAPI):
                 return individual_rotation[:-1]
 
         rotation = self.event.event_rotation_detail
-        race_tag = EventActivityAPI(self.request).verifySelf(id=event_activity_id).event_activity_race_tag
+        race_tag = EventActivityAPI(self.request).verifySelf(legacy=False, id=event_activity_id).event_activity_race_tag
         team_rotations = rotation[race_tag]
         for team_id, team_rotation in team_rotations.items():
             rotation[race_tag].update(
