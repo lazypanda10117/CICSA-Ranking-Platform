@@ -13,6 +13,14 @@ class AuthenticationPublic(AuthenticationBase):
         def setBaseModelClass(self):
             return model.Account
 
+    class Config(AuthenticationComponentBase):
+        def setBaseModelClass(self):
+            return model.Config
+
+    class Score(AuthenticationComponentBase):
+        def setBaseModelClass(self):
+            return model.Score
+
     class EventActivity(AuthenticationComponentBase):
         def setBaseModelClass(self):
             return model.EventActivity
