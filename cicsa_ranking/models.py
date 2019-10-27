@@ -7,7 +7,7 @@ class Event(models.Model):
     EVENT_CLASS_RANK_A = 0
     EVENT_CLASS_RANK_B = 1
 
-    EVENT_NAME_FINAL_RACE = ["Fleet Race National"]
+    EVENT_NAME_FINAL_RACE = ["Fleet Race National", "2019 Fleet Race Nationals"]
 
     EVENT_STATUS_PENDING = "pending"
     EVENT_STATUS_RUNNING = "running"
