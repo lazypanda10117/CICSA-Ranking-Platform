@@ -48,11 +48,11 @@
         },
         "django-cors-middleware": {
             "hashes": [
-                "sha256:85904a3401e7bc0c86502ff2b01d726917af3aaa7dafb77799b27ace637e8c92",
-                "sha256:bca8888ed33a94ba5472bde37ed71ec3d08231d6817fd4d799296b016073da95"
+                "sha256:5bbdea85e22909d596e26f6e0dbc174d5521429fa3943ae02a2c6c48e76c88c7",
+                "sha256:856dbe4d7aae65844ccc68acb49c6da7dbf7cbacaf5bcf37019f4c0c60b3be84"
             ],
             "index": "pypi",
-            "version": "==1.4.0"
+            "version": "==1.5.0"
         },
         "django-dotenv": {
             "hashes": [
