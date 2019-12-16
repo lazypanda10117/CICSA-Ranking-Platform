@@ -9,7 +9,10 @@
                 {{ content.event_type|title }}
             </div>
             <div class="card-body">
-                <a href="{{ content.destination }}" class="btn btn-primary">View all {{ content.event_type }} events</a>
+                <p>
+                    {{ content.description }}
+                </p>
+                <a href="{{ content.destination }}" class="btn btn-primary">{{ content.button_description }}</a>
             </div>
         </div>
         <br>

@@ -31,7 +31,7 @@ class ImmutableBase(ABC):
 
     def getFilterTerms(self):
         get_dict = self.request.GET
-        kwargs = RequestFunctions.getMultiplePostObj(get_dict, 'kwargs')
+        kwargs = RequestFunctions.getMultipleRequestObj(get_dict, 'kwargs')
         if kwargs is not None:
             kwargs = json.loads(kwargs)
             return kwargs
@@ -39,8 +39,8 @@ class ImmutableBase(ABC):
 
     def getRangeTerms(self):
         get_dict = self.request.GET
-        range_start = RequestFunctions.getMultiplePostObj(get_dict, 'start')
-        range_end = RequestFunctions.getMultiplePostObj(get_dict, 'end')
+        range_start = RequestFunctions.getMultipleRequestObj(get_dict, 'start')
+        range_end = RequestFunctions.getMultipleRequestObj(get_dict, 'end')
 
         try:
             range_start = (int(range_start)-1 if int(range_start)-1 >= 0 else 0)
@@ -144,27 +144,6 @@ class ImmutableBase(ABC):
     @abstractmethod
     def getTableRowContent(self, content):
         pass
-
-    @staticmethod
-    def updateChoiceAsValue(field_data, choice_data):
-        temp_data = field_data
-        for key, value in choice_data.items():
-            temp_data[key] = MiscFunctions.grabLinkValueFromChoices(value, field_data[key])
-        return temp_data
-
-    @staticmethod
-    def updateMultipleChoicesAsValues(field_data, choice_data):
-        temp_data = field_data
-        for key, value in choice_data.items():
-            temp_data[key] = MiscFunctions.grabLinkValueFromChoices(value, field_data[key])
-        return temp_data
-
-    @staticmethod
-    def updateDBMapAsValue(field_data, db_map):
-        temp_data = field_data
-        for key, value in db_map.items():
-            temp_data[key] = value
-        return temp_data
 
     def getTableContent(self, range_terms=(0, 10), **kwargs):
         result = sorted(

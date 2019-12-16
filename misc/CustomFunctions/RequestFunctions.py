@@ -2,11 +2,11 @@ from django.views.decorators.csrf import csrf_exempt
 from ..CustomFunctions import MiscFunctions
 
 
-def getSinglePostObj(post_dict, name):
+def getSingleRequestObj(post_dict, name):
     return (lambda x: x[name][0] if name in x else None)(post_dict)
 
 
-def getMultiplePostObj(post_dict, name):
+def getMultipleRequestObj(post_dict, name):
     return MiscFunctions.noneCatcher(name, post_dict)
 
 

@@ -1,0 +1,110 @@
+{% extends template_base %}
+
+{% block 'head' %}
+    <script>
+        function showDropdown(i){
+            var container = document.getElementById("dropdown-container-"+i);
+            if (container.style.display === 'none'){
+                container.style.display = 'block';
+            }else{
+                container.style.display = 'none';
+            }
+        }
+        function preDropdownClicks(){
+            dropdown_num = 4;
+            for(i = 1; i <= dropdown_num; i++){
+                showDropdown(i);
+            }
+        }
+        function onLoad(){
+            preDropdownClicks();
+        }
+    </script>
+
+    {% ifequal page.element|get_class_name 'Table' %}
+        <script>
+            function json_prettify(blob) {
+                var json_obj = JSON.parse(blob.value);
+                var pretty_json_string = JSON.stringify(json_obj, undefined, 4);
+                return pretty_json_string;
+            }
+
+            function onLoad(){
+                var childTagsTable = ['input', 'textarea', 'select'];
+                var child = document.getElementById("{{context.form_id}}").children;
+                for(i=0; i<child.length; i++) {
+                    if(child[i].tagName.toLowerCase() == 'p'){
+                        child[i].className = "form-group";
+                        sub_child = child[i].children;
+                        for(j=0; j<sub_child.length; j++){
+                            subchildTag = sub_child[j].tagName.toLowerCase();
+                            if(childTagsTable.includes(subchildTag)){
+                                sub_child[j].className = "form-control";
+                            }
+                        }
+                    }else if(child[i].tagName.toLowerCase() == 'input'){
+                        child[i].className = "btn btn-lg btn-block ";
+                        if(child[i].name.toLowerCase() == 'add'){
+                            child[i].className += "btn-outline-success";
+                        }else if(child[i].name.toLowerCase() == 'edit'){
+                            child[i].className += "btn-outline-info";
+                        }else if(child[i].name.toLowerCase() == 'delete'){
+                            child[i].className += "btn-outline-danger";
+                        }
+                    }
+                }
+                var text_areas = document.querySelectorAll("p.form-group > textarea");
+                for(var i = 0; i < text_areas.length; i++){
+                    try{
+                        text_areas[i].value = json_prettify(text_areas[i]);
+                    }catch(error){
+                        // console.log(text_areas[i].name + ' does not contain JSON formatted data');
+                    }
+                }
+            }
+        </script>
+    {% endif %}
+
+{% endblock %}
+
+{% block 'body' %}
+
+    <h2>{{ page.title }}</h2>   
+    <hr>
+    
+    {# Table Component #}
+    {% ifequal page.element|get_class_name 'Table' %}
+        <div class="d-inline">
+            <p>
+                <pre>{{ page.element.title }}</pre>
+                <button 
+                    type="button" 
+                    style="float:right; margin-top: -45px;" 
+                    class="btn btn-outline-{{ page.element.tableElement.add_button.style }}" 
+                    onclick="redirect('{{ page.element.tableElement.add_button.redirect }}');"
+                >
+                    {{ page.element.tableElement.add_button.title }}
+                </button>
+            </p>
+        </div>
+        {% include "platform/module/management_data/component/table.html" with 
+            tableHeader=page.element.tableHeader 
+            tableContent=page.element.tableContent 
+        only 
+        %}
+    {% endif %}
+    
+
+    {# Form Component #}
+    {% if ifequal page.element|get_class_name 'Form' %}
+        {% include "platform/module/management_data/component/form.html" with 
+            action_destination=page.element.destination 
+            form_action=page.element.form_action 
+            form_id=page.element.form_id 
+            form=page.element.form 
+            special_context=page.element.special_context 
+        only 
+        %}
+    {% endif %}
+
+{% endblock %}

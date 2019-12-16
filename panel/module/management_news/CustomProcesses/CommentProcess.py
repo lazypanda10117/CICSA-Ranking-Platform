@@ -9,7 +9,7 @@ class CommentProcess(AbstractBaseProcess):
         news_api = NewsAPI(self.request)
         post_dict = dict(self.request.POST)
         action = self.param.get("action", None)
-        comment_id = RequestFunctions.getSinglePostObj(post_dict, "id")
+        comment_id = RequestFunctions.getSingleRequestObj(post_dict, "id")
 
         if action == 'delete':
             news_api.deleteComment(comment_id)

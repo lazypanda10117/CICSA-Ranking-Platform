@@ -14,8 +14,7 @@ class SummaryAPI(GeneralModelAPI, SeasonBasedAPI):
         return Summary
 
     def updateSummaryResult(self, summary_id, result):
-        summary = self.verifySelf(id=summary_id)
-        AuthFunctions.raise404Empty(summary)
+        summary = self.editSelf(id=summary_id)
         summary.summary_event_ranking = result['ranking']
         summary.summary_event_override_ranking = result['override_ranking']
         summary.summary_event_race_score = result['race_score']
