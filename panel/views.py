@@ -6,6 +6,5 @@ from api.authentication import AuthenticationGuardType
 
 def index(request):
     return AuthenticationGuard(AuthenticationGuardType.LOGIN_GUARD, request).guard(
-        api=False,
-        callback=render(request, 'platform/index.html')
-    )
+            api=False, rend=render(request, 'platform/index.html')
+        )

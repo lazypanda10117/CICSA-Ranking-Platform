@@ -1,1 +1,2 @@
+from .UpdateParticipatingTeamsProcess import UpdateParticipatingTeamsProcess
 from .EventDataProcess import EventDataProcess

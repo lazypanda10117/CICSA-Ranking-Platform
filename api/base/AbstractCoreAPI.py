@@ -8,10 +8,10 @@ from api.authentication_api import AuthenticationMetaAPI
 class AbstractCoreAPI(AbstractRequestAPI):
     def __init__(self, request, permission=AuthenticationGuardType.PUBLIC_GUARD, **kwargs):
         super().__init__(request)
-        self.context = self.__setContext()
+        self.context = self._setContext()
         AuthenticationGuard(permission, self.request, self.context).guard()
 
-    def __setContext(self):
+    def _setContext(self):
         auth_meta = AuthenticationMetaAPI(self.request)
         return AttrDict(
             authID=auth_meta.getAuthenticatedID(),

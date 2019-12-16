@@ -1,7 +1,17 @@
 import random
-from misc.CustomFunctions import LogFunctions, MiscFunctions, ModelFunctions, RequestFunctions
+from misc.CustomFunctions import LogFunctions
+from misc.CustomFunctions import MiscFunctions
+from misc.CustomFunctions import ModelFunctions
+from misc.CustomFunctions import RequestFunctions
 from .EventManagement import EventManagementView
-from cicsa_ranking.models import EventActivity, Team, School, EventTeam, EventTag, EventType, Summary, Season
+from cicsa_ranking.models import EventActivity
+from cicsa_ranking.models import Team
+from cicsa_ranking.models import School
+from cicsa_ranking.models import EventTeam
+from cicsa_ranking.models import EventTag
+from cicsa_ranking.models import EventType
+from cicsa_ranking.models import Summary
+from cicsa_ranking.models import Season
 
 
 class FleetManagementView(EventManagementView):
@@ -17,9 +27,9 @@ class FleetManagementView(EventManagementView):
         self.assoc_class_summary = Summary
         self.assoc_class_season = Season
 
-        self.event_race_tag = ["Fleet A", "Fleet B"]
-        self.event_team_name_suffix = ["Team A", "Team B"]
-        self.event_activity_type = "race"
+        self.event_race_tag = [EventTag.DEFAULT_EVENT_TAGS + ' {}'.format(MiscFunctions.getAlphabet(i)) for i in range(2)]
+        self.event_team_name_suffix = [Team.TEAM_NAME_SUFFIX + ' {}'.format(MiscFunctions.getAlphabet(i)) for i in range(2)]
+        self.event_activity_type = EventActivity.ACTIVITY_TYPE_RACE
 
     # Class Specific Functions
     def getChoiceData(self):
@@ -52,25 +62,27 @@ class FleetManagementView(EventManagementView):
         def add():
             post_dict = dict(self.request.POST)
 
-            event_type = RequestFunctions.getSingleRequestObj(post_dict, 'event_type')
-            event_name = RequestFunctions.getSingleRequestObj(post_dict, 'event_name')
-            event_status = RequestFunctions.getSingleRequestObj(post_dict, 'event_status')
-            event_description = RequestFunctions.getSingleRequestObj(post_dict, 'event_description')
-            event_location = RequestFunctions.getSingleRequestObj(post_dict, 'event_location')
-            event_season = RequestFunctions.getSingleRequestObj(post_dict, 'event_season')
-            event_region = RequestFunctions.getSingleRequestObj(post_dict, 'event_region')
-            event_host = RequestFunctions.getSingleRequestObj(post_dict, 'event_host')
-            event_school = RequestFunctions.getMultipleRequestObj(post_dict, 'event_team')
-            event_race_number = RequestFunctions.getSingleRequestObj(post_dict, 'event_race_number')
-            event_boat_rotation_name = RequestFunctions.getSingleRequestObj(post_dict, 'event_boat_rotation_name')
-            event_start_date = RequestFunctions.getSingleRequestObj(post_dict, 'event_start_date')
-            event_end_date = RequestFunctions.getSingleRequestObj(post_dict, 'event_end_date')
+            event_type = RequestFunctions.getSinglePostObj(post_dict, 'event_type')
+            event_class = RequestFunctions.getSinglePostObj(post_dict, 'event_class')
+            event_name = RequestFunctions.getSinglePostObj(post_dict, 'event_name')
+            event_status = RequestFunctions.getSinglePostObj(post_dict, 'event_status')
+            event_description = RequestFunctions.getSinglePostObj(post_dict, 'event_description')
+            event_location = RequestFunctions.getSinglePostObj(post_dict, 'event_location')
+            event_season = RequestFunctions.getSinglePostObj(post_dict, 'event_season')
+            event_region = RequestFunctions.getSinglePostObj(post_dict, 'event_region')
+            event_host = RequestFunctions.getSinglePostObj(post_dict, 'event_host')
+            event_school = RequestFunctions.getMultiplePostObj(post_dict, 'event_team')
+            event_race_number = RequestFunctions.getSinglePostObj(post_dict, 'event_race_number')
+            event_boat_rotation_name = RequestFunctions.getSinglePostObj(post_dict, 'event_boat_rotation_name')
+            event_start_date = RequestFunctions.getSinglePostObj(post_dict, 'event_start_date')
+            event_end_date = RequestFunctions.getSinglePostObj(post_dict, 'event_end_date')
 
             race_tag_dict = dict()
             team_activity_dict = dict()
             # event generation
             event_creation = self.base_class()
             event_creation.event_type = int(event_type)
+            event_creation.event_class = int(event_class)
             event_creation.event_name = event_name
             event_creation.event_status = event_status
             event_creation.event_description = event_description

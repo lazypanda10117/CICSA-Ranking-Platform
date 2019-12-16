@@ -1,3 +1,4 @@
+from panel.module.ModuleRegistry import ModuleRegistry
 from api.authentication import AuthenticationType
 
 

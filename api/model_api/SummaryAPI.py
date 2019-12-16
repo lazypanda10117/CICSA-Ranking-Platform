@@ -21,7 +21,6 @@ class SummaryAPI(GeneralModelAPI, SeasonBasedAPI):
         summary.summary_event_league_score = 0.0
         summary.summary_event_override_league_score = 0.0
         summary.save()
-        LogFunctions.generateLog(self.request, 'admin', LogFunctions.makeLogQuery(Summary, 'Edit', id=summary.id))
 
     @staticmethod
     def getEventSummaryModifiyLink(**kwargs):

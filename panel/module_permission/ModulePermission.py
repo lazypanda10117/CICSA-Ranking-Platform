@@ -12,14 +12,14 @@ class ModulePermission:
         self.authentication_type = self.authentication_meta.getAuthType()
         self.authentication_class = AuthenticationFactory(self.authentication_type).dispatch()
         self.module_base_redirect_route = 'panel.index'
-        self.alowed_modules = self.authentication_class.getAllowedModules()
+        self.allowed_modules = self.authentication_class.getAllowedModules()
 
     def __checkModulePermission(self, module):
-        return module in self.alowed_modules
+        return module in self.allowed_modules
 
     def verifyRequest(self, module, callback, failure):
         AuthenticationGuard(AuthenticationGuardType.LOGIN_GUARD, self.module_request).guard()
         if self.__checkModulePermission(module):
-            return callback
+            return callback()
         else:
-            return failure if failure else redirect(reverse(self.module_base_redirect_route))
+            return redirect(reverse(self.module_base_redirect_route)) if failure is None else failure()

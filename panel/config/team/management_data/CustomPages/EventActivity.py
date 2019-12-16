@@ -22,7 +22,7 @@ class EventActivityView(AbstractCustomClass):
         def updateRotationArray(action, array):
             if action == 'add':
                 if len(array) % 2 == 0:
-                    array.append(MiscFunctions.modAdd(array[len(array)-1]-1, 2, team_num))
+                    array.append(MiscFunctions.modAdd(array[-1]-1, 2, team_num))
                 else:
                     array.append(array[len(array)-1])
                 return array

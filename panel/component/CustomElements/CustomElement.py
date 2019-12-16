@@ -114,6 +114,14 @@ class Choices:
         return SCORE_MAP_CHOICES
 
     @staticmethod
+    def getEventClassChoices():
+        EVENT_CLASS_CHOICES = (
+            (Event.EVENT_CLASS_RANK_A, "Rank A"),
+            (Event.EVENT_CLASS_RANK_B, "Rank B")
+        )
+        return EVENT_CLASS_CHOICES
+
+    @staticmethod
     def getEventStatusChoices():
         EVENT_STATUS_CHOICES = (
             ("pending", "Pending Event"),

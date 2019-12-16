@@ -1,7 +1,9 @@
-from django.shortcuts import reverse, redirect
-from abc import abstractmethod, ABC
+from django.shortcuts import redirect
+from django.shortcuts import reverse
+from abc import ABC
+from abc import abstractmethod
 
-from api.authentication import AuthenticationGuard, AuthenticationGuardType
+from misc.CustomFunctions import MiscFunctions
 from panel.module_permission import ModulePermission
 
 
@@ -27,21 +29,19 @@ class AbstractBlockApp(ABC):
 
         def index(self, request, path, args=None):
             args = [] if args is None else args
-            return self.__authenticateModule(request=request, callback=redirect(reverse(path, args=args)))
+            return self.__authenticateModule(request=request, callback=(lambda: redirect(reverse(path, args=args))))
 
         def viewDispatch(self, request, dispatch_path, param=''):
-            self.__authenticateModule(request=request)
-            dispatcher = self.setViewDispatcher()
-            page = dispatcher.get(dispatch_path)(request, param)
-            self.__authenticateRoute(request, page.getGuardType())
-            return page.render()
+            page = self.setViewDispatcher().get(dispatch_path)(request, param)
+            return self.__authenticateModule(
+                request=request,
+                callback=lambda: page.render()
+            )
 
         def processDispatch(self, request, dispatch_path, param=''):
-            self.__authenticateModule(
+            page = self.setProcessDispatcher().get(dispatch_path)(request, param)
+            return self.__authenticateModule(
                 request=request,
-                failure=Exception("Insufficient Permission to Access Module Process")
+                callback=lambda: page.process(),
+                failure=lambda: MiscFunctions.lraise(Exception("Insufficient Permission to Access Module Process"))
             )
-            dispatcher = self.setProcessDispatcher()
-            page = dispatcher.get(dispatch_path)(request, param)
-            self.__authenticateRoute(request, page.getGuardType())
-            return page.process()

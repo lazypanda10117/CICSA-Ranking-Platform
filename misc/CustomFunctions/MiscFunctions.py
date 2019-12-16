@@ -76,3 +76,39 @@ def truncateDisplayScore(score):
         return float('%.3f' % score)
     except:
         return "N/A"
+
+
+def findMaxInStrArr(arr):
+    m = None
+    for a in arr:
+        try:
+            b = int(a)
+            if m is None:
+                m = b
+            if b > m:
+                m = b
+        except ValueError:
+            continue
+    return m
+
+
+def getAlphabet(idx):
+    alphabet_arr = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+                    'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    if idx > 25 or idx < 0:
+        raise IndexError("Out of Alphabetical Range")
+    return alphabet_arr[idx]
+
+
+# For use within a lambda expression or as a wrapper for raise
+def lraise(e):
+    raise e
+
+
+# Try to convert an object to a specfic type
+def canConvertTo(type, obj):
+    try:
+        type(obj)
+        return True
+    except ValueError:
+        return False

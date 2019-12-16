@@ -1,11 +1,11 @@
 import math
+from functools import reduce
 
 from cicsa_ranking.models import Event
 from cicsa_ranking.models import Summary
 from cicsa_ranking.models import Score
 from api.base import AbstractCoreAPI
 from api.base import SeasonBasedAPI
-from api.authentication import AuthenticationGuardType
 from api.model_api import SchoolAPI
 from api.model_api import EventAPI
 from api.model_api import SummaryAPI
@@ -202,3 +202,45 @@ class LeagueScoringAPI(AbstractCoreAPI, SeasonBasedAPI):
             )
             result.append(response)
         return result
+
+    # override is a n-vector of 2-tuples (school id, override value)
+    def computeLeagueScores(self, initialize=True, override=None):
+        league_scoring_data = self.getPanelLeagueScoreData()
+        league_scoring_map = {
+            data.get('school_id'): data
+            for data in league_scoring_data
+        }
+
+        # TODO: Have an indicator for finished season and use it to determine whether to recompile league scores
+        # We only recompute if initialize is true and all recorded scores are not None
+        if not (initialize or reduce(lambda x, y: x and (y['recorded_score'] is not None), league_scoring_data, True)):
+            return
+
+        # We initialize override as all None values if the override variable is not set
+        if override is None:
+            override = [(school_id, False) for school_id in league_scoring_map.keys()]
+
+        # Update the DB according to override values, otherwise, compute the calculated values again
+        for school_id, override_score in override:
+            league_scoring_api = LeagueScoringAPI(self.request)
+            school_id = int(school_id)
+            school = SchoolAPI(self.request).getSelf(id=school_id)
+            calculated_score = league_scoring_map.get(school_id).get('calculated_score')
+            if not override_score:
+                override_score = Score.DEFAULT_LEAGUE_SCORE
+            participated_events = SchoolAPI(self.request).getParticipatedEvents(
+                school_id,
+                Event.EVENT_STATUS_DONE,
+                self.season
+            )
+            school_score_dict = {
+                event.id: league_scoring_api.getScoreForEventBySchool(
+                    event, school, False
+                ) for event in participated_events
+            }
+            league_scoring_api.setNormalOverrideLeagueScore(
+                school, (calculated_score, override_score)
+            )
+            league_scoring_api.setNormalOverrideSummaryScores(
+                school, school_score_dict
+            )

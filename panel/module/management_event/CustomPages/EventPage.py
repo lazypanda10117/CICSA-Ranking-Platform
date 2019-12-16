@@ -1,8 +1,11 @@
 from django.shortcuts import reverse
+
 from api import EventAPI
-from ....component.CustomElements import Choices
-from ...base.block.CustomPages import AbstractBasePage
-from ...base.block.CustomComponents import BlockObject, BlockSet, PageObject
+from panel.component.CustomElements import Choices
+from panel.module.base.block.CustomPages import AbstractBasePage
+from panel.module.base.block.CustomComponents import BlockObject
+from panel.module.base.block.CustomComponents import BlockSet
+from panel.module.base.block.CustomComponents import PageObject
 
 
 class EventPage(AbstractBasePage):
@@ -18,13 +21,24 @@ class EventPage(AbstractBasePage):
                     args=['activity', event.id]),
                 elements=[
                     dict(
-                        text='Modify',
+                        text='Teams',
+                        link=reverse(
+                            'panel.module.management_event.view_dispatch_param',
+                            args=['team', event.id]
+                        )
+                    ),
+                    dict(
+                        text='Races (WIP)',
+                        link='#'
+                    ),
+                    dict(
+                        text='Manage',
                         link=event_api.getEventModifyLink(self.param["type"], id=event.id)
                     )
                 ]
             ),
                              [event for event in events])
-            return BlockObject(status, 'Event', ['Modify'], event_dict)
+            return BlockObject(status, 'Event', ['', '', ''], event_dict)
 
         event_api = EventAPI(self.request)
         return BlockSet().makeBlockSet(genDict('future'), genDict('running'), genDict('done'))

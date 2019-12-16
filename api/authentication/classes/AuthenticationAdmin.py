@@ -13,6 +13,34 @@ class AuthenticationAdmin(AuthenticationBase):
         def setBaseModelClass(self):
             return model.Account
 
+    class NewsPost(AuthenticationComponentBase):
+        def setBaseModelClass(self):
+            return model.NewsPost
+
+    class NewsComment(AuthenticationComponentBase):
+        def setBaseModelClass(self):
+            return model.NewsComment
+
+    class NewsBump(AuthenticationComponentBase):
+        def setBaseModelClass(self):
+            return model.NewsBump
+
+    class EventType(AuthenticationComponentBase):
+        def setBaseModelClass(self):
+            return model.EventType
+
+    class SchoolTeam(AuthenticationComponentBase):
+        def setBaseModelClass(self):
+            return model.SchoolTeam
+
+    class Config(AuthenticationComponentBase):
+        def setBaseModelClass(self):
+            return model.Config
+
+    class Score(AuthenticationComponentBase):
+        def setBaseModelClass(self):
+            return model.Score
+
     class EventActivity(AuthenticationComponentBase):
         def setBaseModelClass(self):
             return model.EventActivity

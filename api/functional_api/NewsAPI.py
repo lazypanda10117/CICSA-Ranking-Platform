@@ -1,4 +1,7 @@
-from cicsa_ranking.models import Config, NewsBump, NewsComment, NewsPost
+from cicsa_ranking.models import Account
+from cicsa_ranking.models import NewsBump
+from cicsa_ranking.models import NewsComment
+from cicsa_ranking.models import NewsPost
 from misc.CustomFunctions import APIFunctions
 from api.authentication import AuthenticationGuardType
 from api.base import AbstractCoreAPI
@@ -7,7 +10,7 @@ from api.base import AbstractCoreAPI
 class NewsAPI(AbstractCoreAPI):
     def __init__(self, request):
         super().__init__(request=request, permission=AuthenticationGuardType.PUBLIC_GUARD)
-        self.admin_ids = self.__applyAPI(Config).getAdminIDs()
+        self.admin_ids = self.__applyAPI(Account).getAdminIDs()
 
     # Utility Functions
     def __applyAPI(self, model):

@@ -1,6 +1,9 @@
-from django.shortcuts import redirect, reverse
+from django.shortcuts import redirect
+from django.shortcuts import reverse
+
 from misc.CustomFunctions import RequestFunctions
-from api import EventAPI, SummaryAPI
+from api.model_api import EventAPI
+from api.model_api import SummaryAPI
 from panel.module.base.block.CustomProcesses import AbstractBaseProcess
 
 

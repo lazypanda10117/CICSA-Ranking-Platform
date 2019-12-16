@@ -9,18 +9,18 @@ from api.authentication import AuthenticationType
 # By default, it blocks unauthenticated access and does nothing if the request is valid
 # If it is an api request and it fails, it will raise an error
 def kickRequest(
-    request,
-    authenticated=True,
-    callback=None,
-    api=False,
-    allowed_types=None,
+        request,
+        rend=None,
+        api=True,
+        allowed_types=None
 ):
     forceDefaultAuthObject(request)
     allowed_types = allowed_types if allowed_types else [AuthenticationType.ADMIN, AuthenticationType.TEAM]
-    kick_result = callback
+    authenticated = AuthenticationType.PUBLIC not in allowed_types
+    kick_result = rend
     is_request_valid = False
-
-    if reduce((lambda x, y: x or y), [authTypeChecker(request, t) for t in allowed_types]):
+    matched = reduce((lambda x, y: x or y), [signed_in(request, t) for t in allowed_types])
+    if matched:
         if not authenticated:
             kick_result = redirect(reverse('panel.index'))
         else:
@@ -31,21 +31,22 @@ def kickRequest(
         else:
             is_request_valid = True
 
-    if not api:
+    if is_request_valid:
         return kick_result
-
-    if not is_request_valid:
+    if api:
         raise Exception("Insufficient Permission to Use API")
+    return kick_result
 
+
+def signed_in(request, user_type):
+    # The uid part guard against public access
+    return RequestFunctions.sessionChecker(request, 'uid', 'utype') and \
+           request.session['utype'] in [AuthenticationType.ADMIN, AuthenticationType.TEAM] and \
+           request.session['utype'] == user_type
 
 def forceDefaultAuthObject(request):
     if not RequestFunctions.sessionChecker(request, 'utype'):
         request.session['utype'] = AuthenticationType.PUBLIC
-
-
-def authTypeChecker(request, user_type):
-    return RequestFunctions.sessionChecker(request, 'utype') and request.session['utype'] == user_type
-
 
 def raise404Empty(objects=None):
     if objects is None:
