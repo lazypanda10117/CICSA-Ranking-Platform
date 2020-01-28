@@ -11,16 +11,16 @@ class SpecificNewsProcess(GenericClientProcess):
         news_api = NewsAPI(self.request)
         post_dict = dict(self.request.POST)
         action = self.param.get("action", None)
-        news_id = RequestFunctions.getSinglePostObj(post_dict, "id")
+        news_id = RequestFunctions.getSingleRequestObj(post_dict, "id")
 
         if action == "bump":
-            bump_up = True if RequestFunctions.getSinglePostObj(post_dict, "bump") == "up" else False
+            bump_up = True if RequestFunctions.getSingleRequestObj(post_dict, "bump") == "up" else False
             if bump_up:
                 news_api.bumpNews(news_id)
             else:
                 news_api.unbumpNews(news_id)
         elif action == 'comment':
-            comment_content = RequestFunctions.getSinglePostObj(post_dict, 'comment_content')
+            comment_content = RequestFunctions.getSingleRequestObj(post_dict, 'comment_content')
             news_api.replyComment(news_id, comment_content)
         else:
             raise Exception("The requested action cannot be resolved in SpecificNewsProcess.")

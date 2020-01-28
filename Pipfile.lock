@@ -90,6 +90,7 @@
             ],
             "index": "pypi",
             "version": "==5.4.1.134"
+
         },
         "psycopg2": {
             "hashes": [

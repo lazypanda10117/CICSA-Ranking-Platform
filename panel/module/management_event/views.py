@@ -9,6 +9,8 @@ from panel.module.management_event.CustomPages import EventActivityDetailPage
 from panel.module.management_event.CustomPages import EventChoicePage
 from panel.module.management_event.CustomPages import EventTeamPage
 from panel.module.management_event.CustomProcesses import UpdateParticipatingTeamsProcess
+from panel.module.management_event.CustomPages import EventDataPage
+from panel.module.management_event.CustomProcesses import EventDataProcess
 
 
 def index(request):
@@ -39,9 +41,11 @@ class ManagementEventView(AbstractBlockApp.AppView):
         dispatcher.add('activity', EventActivityPage)
         dispatcher.add('activity detail', EventActivityDetailPage)
         dispatcher.add('team', EventTeamPage)
+        dispatcher.add('data', EventDataPage)
         return dispatcher
 
     def setProcessDispatcher(self):
         dispatcher = Dispatcher()
         dispatcher.add('update teams', UpdateParticipatingTeamsProcess)
+        dispatcher.add('data', EventDataProcess)
         return dispatcher

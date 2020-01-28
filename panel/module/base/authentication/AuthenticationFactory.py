@@ -1,3 +1,4 @@
+from api.authentication import AuthenticationType
 from misc.CustomElements import Dispatcher
 from api.authentication import AuthenticationType
 from panel.module.base.authentication import AuthenticationAdmin

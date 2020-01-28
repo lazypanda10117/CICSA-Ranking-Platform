@@ -9,4 +9,5 @@ class AuthenticationPublic:
 
     @staticmethod
     def getAllowedModules():
-        return []
+        allowedModules = []
+        return allowedModules

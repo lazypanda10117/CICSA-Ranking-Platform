@@ -39,7 +39,7 @@ class EventView(EventManagementView):
     def grabTableData(self, form_path):
         tableHeader = self.getTableHeader()
         tableContent = self.getTableContent(self.getRangeTerms(), **self.getFilterTerms())
-        table = Table(self.base_class, form_path).makeStaticTables(tableHeader, tableContent)
+        table = Table(self.base_class, form_path).buildTable(tableHeader, tableContent)
         return [table]
 
     def abstractFormProcess(self, action, **kwargs):
@@ -62,14 +62,14 @@ class EventView(EventManagementView):
             event_race_number = RequestFunctions.getSinglePostObj(post_dict, 'event_race_number')
             event_boat_rotation_name = RequestFunctions.getSinglePostObj(post_dict, 'event_boat_rotation_name')
             event_rotation_detail = MiscFunctions.jsonLoadCatch(
-                RequestFunctions.getSinglePostObj(post_dict, 'event_rotation_detail'))
-            event_start_date = RequestFunctions.getSinglePostObj(post_dict, 'event_start_date')
-            event_end_date = RequestFunctions.getSinglePostObj(post_dict, 'event_end_date')
+                RequestFunctions.getSingleRequestObj(post_dict, 'event_rotation_detail'))
+            event_start_date = RequestFunctions.getSingleRequestObj(post_dict, 'event_start_date')
+            event_end_date = RequestFunctions.getSingleRequestObj(post_dict, 'event_end_date')
 
             dispatcher = super().populateDispatcher()
             if dispatcher.get(action):
                 event_creation_id = kwargs.pop('id', None)
-                event_creation = self.useAPI(self.base_class).verifySelf(id=event_creation_id)
+                event_creation = self.useAPI(self.base_class).editSelf(id=event_creation_id)
             else:
                 event_creation = self.base_class()
 

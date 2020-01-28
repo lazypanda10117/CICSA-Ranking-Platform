@@ -19,6 +19,8 @@ def processDispatch(request, route, param=''):
 
 
 class ClientView():
+    DEFAULT_PATH = 'events'
+
     def setViewDispatcher(self):
         dispatcher = Dispatcher()
         dispatcher.add('events', GenericClientPage)
@@ -39,7 +41,11 @@ class ClientView():
 
     def viewDispatch(self, request, dispatch_path, param=''):
         dispatcher = self.setViewDispatcher()
-        page = dispatcher.get(dispatch_path)(request, dispatch_path, param)
+        # For better client experience, we redirect wrong path to default path instead of throwing errors
+        if dispatcher.exists(dispatch_path):
+            page = dispatcher.get(dispatch_path)(request, dispatch_path, param)
+        else:
+            page = dispatcher.get(self.DEFAULT_PATH)(request, dispatch_path, param)
         return page.render()
 
     def processDispatch(self, request, dispatch_path, param=''):

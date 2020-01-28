@@ -13,68 +13,32 @@ class Button:
 
 
 class Table:
-    def __init__(self, currentClass, title):
-        self.currentClass = currentClass
+    def __init__(self, current_class, title):
+        self.current_class = current_class
         self.title = title
-        self.tableElement = ''
-        self.tableHeader = ''
-        self.tableContent = ''
+        self.table_element = ''
+        self.table_header = ''
+        self.table_content = ''
 
-    def makeTable(self):
-        self.tableElement = self.getTableElement('general')
-        self.tableHeader = self.getTableHeader()
-        self.tableContent = self.getTableContent()
+    def buildTable(self, table_header, table_content, table_element=None):
+        self.table_element = table_element
+        self.table_header = table_header
+        self.table_content = table_content
         return self
-
-    def makeCustomTables(self, tableHeader, tableContent):
-        self.tableElement = self.getTableElement('custom')
-        self.tableHeader = tableHeader
-        self.tableContent = tableContent
-        return self
-
-    def makeStaticTables(self, tableHeader, tableContent):
-        self.tableElement = None
-        self.tableHeader = tableHeader
-        self.tableContent = tableContent
-        return self
-
-    @staticmethod
-    def getTableElement(process):
-        def makeAddBtn(path):
-            addBtn = Button('Add', 'success', UrlFunctions.generateGETURL(path, {"action": 'add'}))
-            return dict(add_button=addBtn)
-        return makeAddBtn(process)
-
-    def getTableHeader(self):
-        fields = [field.name for field in self.currentClass._meta.get_fields()] + ["edit", "delete"]
-        return fields
-
-    def getTableContent(self):
-        def makeEditDeleteBtn(path, element_id):
-            editBtn = Button('Edit', 'info', UrlFunctions.generateGETURL(
-                path, {"action": 'edit', "element_id": element_id}))
-            deleteBtn = Button('Delete', 'danger', UrlFunctions.generateGETURL(
-                path, {"action": 'delete', "element_id": element_id}))
-            return [editBtn, deleteBtn]
-
-        def getTableRow(content):
-            rowContent = {"db_content": list(vars(content).values())[1:],
-                          "button": makeEditDeleteBtn('general', str(content.id))}
-            return rowContent
-
-        return [getTableRow(content) for content in sorted(self.currentClass.objects.all(), key=lambda q: q.id)]
 
 
 class Form:
-    def __init__(self, form_path, form_name, form_action, destination, form):
+    def __init__(self, form_path, form_name, form_action, destination, form, special_context):
         self.form_path = form_path
-        self.form_id = self.getFormID(form_name)
+        self.form_name = form_name
+        self.form_id = self.getFormID()
         self.form_action = form_action.title()
         self.destination = destination
         self.form = form
+        self.special_context = special_context
 
-    def getFormID(self, form_string):
-        return form_string + self.form_path
+    def getFormID(self):
+        return self.form_name + self.form_path
 
 
 class CustomForm(forms.Form):
@@ -160,7 +124,7 @@ class Choices:
     @staticmethod
     def getEventStatusChoices():
         EVENT_STATUS_CHOICES = (
-            ("future", "Future Event"),
+            ("pending", "Pending Event"),
             ("running", "Ongoing Event"),
             ("done", "Completed Event")
         )
@@ -169,8 +133,8 @@ class Choices:
     @staticmethod
     def getEventActivityTypeChoices():
         EVENT_ACTIVITY_TYPE_CHOICES = (
-            ("race", "Race"),
-            ("other", "Other")
+            (EventActivity.EVENT_ACTIVITY_TYPE_RACE, "Race"),
+            (EventActivity.EVENT_ACTIVITY_TYPE_OTHER, "Other")
         )
         return EVENT_ACTIVITY_TYPE_CHOICES
 

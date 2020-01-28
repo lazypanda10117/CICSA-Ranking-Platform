@@ -44,7 +44,7 @@ class LeagueScoringAPI(AbstractCoreAPI, SeasonBasedAPI):
             reverse=True
         )
 
-    # Returns either the normal or the overrride score of the summary for the event
+    # Returns either the normal or the override score of the summary for the event
     def getCompiledScoreForSchool(self, school, error=True):
         score = ScoreAPI(self.request).getSeasonScoreValue(school.id, season_id=self.season)
         if score == Score.DEFAULT_LEAGUE_SCORE:
@@ -61,7 +61,7 @@ class LeagueScoringAPI(AbstractCoreAPI, SeasonBasedAPI):
         if compiled:
             try:
                 return self.getCompiledScoreForEventBySchool(event, school)
-            except Exception as e:
+            except Exception:
                 pass
         position = SummaryAPI(self.request).getSummaryRankingBySchool(event.id, school.id)
         return self.getScoreForEvent(position, event.event_team_number, event.event_class)
@@ -126,7 +126,7 @@ class LeagueScoringAPI(AbstractCoreAPI, SeasonBasedAPI):
     def setNormalOverrideSummaryScores(self, school, score_dict):
         school_id = school.id
         for event_id, score in score_dict.items():
-            summary = SummaryAPI(self.request).verifySelf(summary_event_parent=event_id, summary_event_school=school_id)
+            summary = SummaryAPI(self.request).editSelf(summary_event_parent=event_id, summary_event_school=school_id)
             summary.summary_event_league_score = float(score)
             summary.save()
 
@@ -144,7 +144,7 @@ class LeagueScoringAPI(AbstractCoreAPI, SeasonBasedAPI):
         else:
             score.score_value = float(score_tuple[0])
             score.score_override_value = float(score_tuple[1])
-            ScoreAPI(self.request).verifySelf(id=score.id)
+            ScoreAPI(self.request).editSelf(id=score.id)
             score.save()
 
     def getPanelLeagueScoreData(self):
@@ -181,13 +181,14 @@ class LeagueScoringAPI(AbstractCoreAPI, SeasonBasedAPI):
         schools = SchoolAPI(self.request).getAll()
         result = list()
         for school in schools:
-            compiled = True
             school_id = school.id
             school_name = school.school_name
             score = self.getCompiledScoreForSchool(school, error=False)
             if score is None:
                 compiled = False
                 score = self.tryCompileThenCalculateScore(school)
+            else:
+                compiled = True
             response = dict(
                 compiled=compiled,
                 school_id=school_id,

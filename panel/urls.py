@@ -11,3 +11,4 @@ urlpatterns = [
     path('news/', include('panel.module.management_news.urls')),
     path('league/', include('panel.module.management_league.urls')),
 ]
+

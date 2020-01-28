@@ -37,7 +37,7 @@ class EventManagementView(AbstractCustomClass):
         element_id = kwargs.pop('element_id')
         field_data_dispatcher = self.populateDispatcher()
         if field_data_dispatcher.get(action):
-            raw_data = self.useAPI(self.base_class).verifySelf(id=element_id).__dict__
+            raw_data = self.useAPI(self.base_class).editSelf(id=element_id).__dict__
             field_data = MiscFunctions.filterDict(raw_data.items(), self.validation_table['base_form_invalid'])
             field_data['event_team'] = raw_data['event_school_ids']
             field_data = self.serializeJSONListData(['event_school_ids', 'event_rotation_detail'], field_data)

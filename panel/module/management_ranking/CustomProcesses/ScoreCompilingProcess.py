@@ -13,10 +13,10 @@ class ScoreCompilingProcess(AbstractBaseProcess):
         event_id = int(self.param["id"])
         related_summaries = SummaryAPI(self.request).filterSelf(summary_event_parent=event_id)
         for i in range(1, int(len(post_dict)/4)+1):
-            school_id = int(RequestFunctions.getSinglePostObj(post_dict, 'school_id_'+str(i)))
-            score = int(RequestFunctions.getSinglePostObj(post_dict, 'score_'+str(i)))
-            ranking = int(RequestFunctions.getSinglePostObj(post_dict, 'ranking_'+str(i)))
-            override_ranking = int(RequestFunctions.getSinglePostObj(post_dict, 'override_ranking_'+str(i)))
+            school_id = int(RequestFunctions.getSingleRequestObj(post_dict, 'school_id_' + str(i)))
+            score = int(RequestFunctions.getSingleRequestObj(post_dict, 'score_' + str(i)))
+            ranking = int(RequestFunctions.getSingleRequestObj(post_dict, 'ranking_' + str(i)))
+            override_ranking = int(RequestFunctions.getSingleRequestObj(post_dict, 'override_ranking_' + str(i)))
             summary_id = related_summaries.get(summary_event_school=school_id).id
             result = dict(ranking=ranking, override_ranking=override_ranking, race_score=score)
             SummaryAPI(self.request).updateSummaryResult(summary_id, result)

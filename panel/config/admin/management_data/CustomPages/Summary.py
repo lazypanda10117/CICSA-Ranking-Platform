@@ -24,19 +24,19 @@ class SummaryView(AbstractCustomClass):
 
             if dispatcher.get(action):
                 summary_id = kwargs.pop('id', None)
-                summary = self.useAPI(self.base_class).verifySelf(id=summary_id)
+                summary = self.useAPI(self.base_class).editSelf(id=summary_id)
             else:
                 summary = self.base_class()
 
-            summary.summary_event_parent = [RequestFunctions.getSinglePostObj(
+            summary.summary_event_parent = [RequestFunctions.getSingleRequestObj(
                 post_dict, name + "_result") for name in self.search_name][0]
-            summary.summary_event_school = RequestFunctions.getSinglePostObj(post_dict, 'summary_event_school')
-            summary.summary_event_ranking = RequestFunctions.getSinglePostObj(post_dict, 'summary_event_ranking')
-            summary.summary_event_override_ranking = RequestFunctions.getSinglePostObj(
+            summary.summary_event_school = RequestFunctions.getSingleRequestObj(post_dict, 'summary_event_school')
+            summary.summary_event_ranking = RequestFunctions.getSingleRequestObj(post_dict, 'summary_event_ranking')
+            summary.summary_event_override_ranking = RequestFunctions.getSingleRequestObj(
                 post_dict, 'summary_event_override_ranking')
-            summary.summary_event_race_score = RequestFunctions.getSinglePostObj(post_dict, 'summary_event_race_score')
-            summary.summary_event_league_score = RequestFunctions.getSinglePostObj(post_dict, 'summary_event_league_score')
-            summary.summary_event_override_league_score = RequestFunctions.getSinglePostObj(post_dict, 'summary_event_override_league_score')
+            summary.summary_event_race_score = RequestFunctions.getSingleRequestObj(post_dict, 'summary_event_race_score')
+            summary.summary_event_league_score = RequestFunctions.getSingleRequestObj(post_dict, 'summary_event_league_score')
+            summary.summary_event_override_league_score = RequestFunctions.getSingleRequestObj(post_dict, 'summary_event_override_league_score')
 
 
             if not action == 'delete':

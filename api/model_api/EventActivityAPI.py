@@ -9,12 +9,12 @@ class EventActivityAPI(GeneralModelAPI):
         return EventActivity
 
     def updateEventActivityState(self, event_activity_id, event_activity_status):
-        event_activity = self.verifySelf(id=event_activity_id)
+        event_activity = self.editSelf(id=event_activity_id)
         event_activity.event_activity_status = event_activity_status
         event_activity.save()
 
     def updateEventActivityResult(self, event_activity_id, event_activity_result):
-        event_activity = self.verifySelf(id=event_activity_id)
+        event_activity = self.editSelf(id=event_activity_id)
         event_activity.event_activity_result = event_activity_result
         event_activity.save()
 

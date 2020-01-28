@@ -22,14 +22,14 @@ class TeamView(AbstractCustomClass):
 
             if dispatcher.get(action):
                 team_id = kwargs.pop('id', None)
-                team = self.useAPI(self.base_class).verifySelf(id=team_id)
+                team = self.useAPI(self.base_class).editSelf(id=team_id)
             else:
                 team = self.base_class()
 
-            team.team_name = RequestFunctions.getSinglePostObj(post_dict, 'team_name')
-            team.team_school = RequestFunctions.getSinglePostObj(post_dict, 'team_school')
-            team.team_tag_id = RequestFunctions.getSinglePostObj(post_dict, 'team_tag_id')
-            team.team_status = RequestFunctions.getSinglePostObj(post_dict, 'team_status')
+            team.team_name = RequestFunctions.getSingleRequestObj(post_dict, 'team_name')
+            team.team_school = RequestFunctions.getSingleRequestObj(post_dict, 'team_school')
+            team.team_tag_id = RequestFunctions.getSingleRequestObj(post_dict, 'team_tag_id')
+            team.team_status = RequestFunctions.getSingleRequestObj(post_dict, 'team_status')
 
             if not action == 'delete':
                 team.save()

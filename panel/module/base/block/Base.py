@@ -24,6 +24,9 @@ class AbstractBlockApp(ABC):
         def __authenticateModule(self, request, callback=None, failure=None):
             return ModulePermission(request).verifyRequest(self.getBaseAppName(), callback, failure)
 
+        def __authenticateRoute(self, request, guard_type):
+            AuthenticationGuard(guard_type, request).guard()
+
         def index(self, request, path, args=None):
             args = [] if args is None else args
             return self.__authenticateModule(request=request, callback=(lambda: redirect(reverse(path, args=args))))

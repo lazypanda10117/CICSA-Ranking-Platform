@@ -14,6 +14,7 @@ def kickRequest(
         api=True,
         allowed_types=None
 ):
+    forceDefaultAuthObject(request)
     allowed_types = allowed_types if allowed_types else [AuthenticationType.ADMIN, AuthenticationType.TEAM]
     authenticated = AuthenticationType.PUBLIC not in allowed_types
     kick_result = rend
@@ -29,6 +30,7 @@ def kickRequest(
             kick_result = redirect(reverse('permission.dispatch', args=['view']))
         else:
             is_request_valid = True
+
     if is_request_valid:
         return kick_result
     if api:
@@ -42,6 +44,9 @@ def signed_in(request, user_type):
            request.session['utype'] in [AuthenticationType.ADMIN, AuthenticationType.TEAM] and \
            request.session['utype'] == user_type
 
+def forceDefaultAuthObject(request):
+    if not RequestFunctions.sessionChecker(request, 'utype'):
+        request.session['utype'] = AuthenticationType.PUBLIC
 
 def raise404Empty(objects=None):
     if objects is None:

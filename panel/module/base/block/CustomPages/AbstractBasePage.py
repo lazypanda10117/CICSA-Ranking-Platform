@@ -1,7 +1,9 @@
 import re
 from django.shortcuts import render
-from django.http import Http404
-from abc import abstractmethod, ABC
+from abc import ABC
+from abc import abstractmethod
+
+from api.authentication import AuthenticationGuardType
 
 
 class AbstractBasePage(ABC):
@@ -10,6 +12,10 @@ class AbstractBasePage(ABC):
         self.raw_param = param
         self.param = self.parseParams(self.raw_param)
         self.page_path = self.getPagePath()
+        self.guard_type = self.getGuardType()
+
+    def getGuardType(self):
+        return AuthenticationGuardType.ADMIN_TEAM_GUARD
 
     @abstractmethod
     def render(self):
@@ -24,7 +30,7 @@ class AbstractBasePage(ABC):
         if match:
             return match
         else:
-            raise Http404("Page parameters parsing engine failed to recognize provided path")
+            raise Exception("Page parameters parsing engine failed to recognize provided path")
 
     @staticmethod
     def getPagePath():
