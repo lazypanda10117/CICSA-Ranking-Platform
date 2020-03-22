@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.views.decorators.csrf import csrf_exempt
 
 from misc.CustomElements import Dispatcher
 from api.authentication import AuthenticationGuard
@@ -7,7 +6,6 @@ from api.authentication import AuthenticationGuardType
 from permission.CustomClasses.Login import Login
 
 
-@csrf_exempt
 def dispatch(request, route):
     return PermissionView().setFunctionDispatcher().get(route)(request)
 

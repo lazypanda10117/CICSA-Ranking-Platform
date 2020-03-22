@@ -1,4 +1,3 @@
-from django.views.decorators.csrf import csrf_exempt
 from ..CustomFunctions import MiscFunctions
 
 

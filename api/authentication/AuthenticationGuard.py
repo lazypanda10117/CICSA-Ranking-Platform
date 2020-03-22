@@ -8,8 +8,8 @@ class AuthenticationGuard:
 		self.request = request
 		self.context = context
 		self.permission = permission
-  
-  # Prev conflict: has callback=None as parameter
+
+	# Prev conflict: has callback=None as parameter
 	def guard(self, api=True, **kwargs):
 		if self.permission == AuthenticationGuardType.ADMIN_GUARD:
 			allowed_types = [AuthenticationType.ADMIN]

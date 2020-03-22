@@ -1,5 +1,3 @@
-from django.views.decorators.csrf import csrf_exempt
-
 from api.functional_api import LoggerAPI
 from misc.CustomElements import Dispatcher
 from panel.module_permission import ModulePermission
@@ -24,7 +22,6 @@ def pruneLog(request):
     return result
 
 
-@csrf_exempt
 def viewDispatch(request, param, route):
     dispatcher = ManagementDataView().setViewDispatcher()
     return ModulePermission(request).verifyRequest(

@@ -1,4 +1,3 @@
-from django.views.decorators.csrf import csrf_exempt
 from misc.CustomElements import Dispatcher
 from panel.module.base.block.Base import AbstractBlockApp
 from panel.module.management_league.CustomPages import LeagueSchoolScoreCompilePage
@@ -15,7 +14,6 @@ def viewDispatch(request, route, param=''):
     return ManagementLeagueView().viewDispatch(request, route, param)
 
 
-@csrf_exempt
 def processDispatch(request, route, param=''):
     return ManagementLeagueView().processDispatch(request, route, param)
 

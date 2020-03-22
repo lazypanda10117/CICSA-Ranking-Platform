@@ -1,8 +1,12 @@
-from django.views.decorators.csrf import csrf_exempt
 from misc.CustomElements import Dispatcher
-from ..base.block.Base import AbstractBlockApp
-from .CustomPages import EventPage, EventActivityPage, EventActivityRankingPage, ScoreCompilingPage
-from .CustomProcesses import UpdateEventStatusProcess, EventActivityRankingProcess, ScoreCompilingProcess
+from panel.module.base.block.Base import AbstractBlockApp
+from panel.module.management_ranking.CustomPages import EventPage
+from panel.module.management_ranking.CustomPages import EventActivityPage
+from panel.module.management_ranking.CustomPages import EventActivityRankingPage
+from panel.module.management_ranking.CustomPages import ScoreCompilingPage
+from panel.module.management_ranking.CustomProcesses import UpdateEventStatusProcess
+from panel.module.management_ranking.CustomProcesses import EventActivityRankingProcess
+from panel.module.management_ranking.CustomProcesses import ScoreCompilingProcess
 from panel.module.ModuleRegistry import ModuleRegistry
 
 
@@ -14,7 +18,6 @@ def viewDispatch(request, route, param=''):
     return ManagementRankingView().viewDispatch(request, route, param)
 
 
-@csrf_exempt
 def processDispatch(request, route, param=''):
     return ManagementRankingView().processDispatch(request, route, param)
 

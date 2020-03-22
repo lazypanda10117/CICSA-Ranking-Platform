@@ -1,4 +1,3 @@
-from django.views.decorators.csrf import csrf_exempt
 from misc.CustomElements import Dispatcher
 from panel.module.base.block.Base import AbstractBlockApp
 from panel.module.management_news.CustomPages import PostPage
@@ -16,7 +15,6 @@ def viewDispatch(request, route, param=''):
     return ManagementNewsView().viewDispatch(request, route, param)
 
 
-@csrf_exempt
 def processDispatch(request, route, param=''):
     return ManagementNewsView().processDispatch(request, route, param)
 

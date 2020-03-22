@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from api.authentication import AuthenticationType
 from api.model_api import ConfigAPI
 from cicsa_ranking.models import Account
-from misc.CustomFunctions import LogFunctions
+from misc.CustomFunctions import LogFunctions, AuthFunctions
 from misc.CustomFunctions import ModelFunctions
 from misc.CustomFunctions import RequestFunctions
 
@@ -56,7 +56,7 @@ class Login:
             LogFunctions.generateLog(self.request, "system",
                                      LogFunctions.makeLogQuery(Account, 'Logout', id=self.request.session['uid']))
             self.request.session.clear()
-            self.request.session['utype'] = AuthenticationType.PUBLIC
+            AuthFunctions.default_session(self.request)
         else:
             raise Exception('User is not logged in')
         return redirect(reverse('permission.dispatch', args=['view']))

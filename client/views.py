@@ -1,5 +1,3 @@
-from django.views.decorators.csrf import csrf_exempt
-
 from misc.CustomElements import Dispatcher
 from client.CustomPages import GenericClientPage
 from client.CustomProcesses import SpecificNewsProcess
@@ -13,12 +11,11 @@ def viewDispatch(request, route, param=''):
     return ClientView().viewDispatch(request, route, param)
 
 
-@csrf_exempt
 def processDispatch(request, route, param=''):
     return ClientView().processDispatch(request, route, param)
 
 
-class ClientView():
+class ClientView:
     DEFAULT_PATH = 'events'
 
     def setViewDispatcher(self):
