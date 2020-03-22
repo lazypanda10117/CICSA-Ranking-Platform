@@ -7,7 +7,7 @@ from api import LeagueScoringAPI
 
 class LeagueOverallScoreCompileProcess(AbstractBaseProcess):
     def process(self):
-        post_dict = dict(self.request.POST)
+        post_dict = self.post_data
         LeagueScoringAPI(self.request).computeLeagueScores(
             override=[(school_id, element[0]) for school_id, element in post_dict.items()]
         )

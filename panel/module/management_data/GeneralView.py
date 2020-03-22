@@ -18,6 +18,13 @@ class GeneralView:
         self.page_path = 'platform/module/management_data/generate.html'
         self.template_base = self.getTemplateBase()
 
+    def __parseRequestPost(self, request):
+        EXCLUDED_FIELDS = ['csrfmiddlewaretoken']
+        result = dict(request.POST)
+        for field in EXCLUDED_FIELDS:
+            result.pop(field)
+        return result
+
     def setDispatcher(self):
         dispatcher = self.permission_obj().ManagementData().getDataGeneralDispatcher()
         return dispatcher
@@ -46,7 +53,7 @@ class GeneralView:
                 self.request.session[self.session_name] = MiscFunctions.getViewJSON(action, None)
                 action_type = dict(form=True)
                 content = Form('_add_form', form_path, action, self.destination,
-                               self.view_dispatcher.get(self.form_path)["form"]())
+                               self.view_dispatcher.get(self.form_path)["form"](), None)
                 return dict(page_title=page_title, type=action_type, context=content)
 
             def actionEditDelete(choice):
@@ -58,7 +65,7 @@ class GeneralView:
                     element = currentClass.objects.get(pk=int(element_id))
                     action_type = dict(form=True)
                     content = Form(choiceDict[choice], form_path, action, self.destination,
-                                   self.view_dispatcher.get(self.form_path)["form"](instance=element))
+                                   self.view_dispatcher.get(self.form_path)["form"](instance=element), None)
                     return dict(page_title=page_title, type=action_type, context=content)
 
             def setFunctionDispatcher():
@@ -89,14 +96,14 @@ class GeneralView:
 
         def generalViewLogic():
             def actionAdd():
-                form = self.view_dispatcher.get(self.form_path)["form"](self.request.POST)
+                form = self.view_dispatcher.get(self.form_path)["form"](self.__parseRequestPost(self.request))
                 temp = form.save()
                 LogFunctions.generateLog(
                     self.request, 'admin', LogFunctions.makeLogQuery(currentClass, action.title(), id=temp.id))
 
             def actionEdit():
                 element = get_object_or_404(currentClass, pk=element_id)
-                form = self.view_dispatcher.get(self.form_path)["form"](self.request.POST, instance=element)
+                form = self.view_dispatcher.get(self.form_path)["form"](self.__parseRequestPost(self.request), instance=element)
                 temp = form.save()
                 LogFunctions.generateLog(
                     self.request, 'admin', LogFunctions.makeLogQuery(currentClass, action.title(), id=temp.id))

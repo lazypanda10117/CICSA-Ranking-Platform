@@ -186,7 +186,7 @@ class FleetRaceProcess(CoreDataActionProcess):
         return result_dict
 
     def _add(self, **kwargs):
-        post_dict = dict(self.request.POST)
+        post_dict = self.post_data
 
         event_type = RequestFunctions.getSingleRequestObj(post_dict, 'event_type')
         event_name = RequestFunctions.getSingleRequestObj(post_dict, 'event_name')

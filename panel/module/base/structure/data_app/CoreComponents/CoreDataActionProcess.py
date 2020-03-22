@@ -5,11 +5,13 @@ from misc.CustomFunctions import LogFunctions
 from misc.CustomElements import Dispatcher
 from panel.module.base.structure.data_app.constants import ActionType
 from panel.module.base.structure.data_app.CoreComponents.CoreDataComponentConstructor import CoreDataComponentConstructor
+from panel.module.base.structure.data_app.utils import SecurityUtils
 
 
 class CoreDataActionProcess(CoreDataComponentConstructor):
     def __init__(self, request, app_name, base_class, mutable, guard):
         super().__init__(request, app_name, base_class, mutable, guard)
+        self.post_data = SecurityUtils(self.request).parseRequestPost()
         self.process_dispatcher = self.__setProcessDispatcher()
 
     def __setProcessDispatcher(self):

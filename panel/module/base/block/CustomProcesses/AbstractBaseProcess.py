@@ -8,6 +8,14 @@ class AbstractBaseProcess(ABC):
         self.request = request
         self.raw_param = param
         self.param = self.parseParams(self.raw_param)
+        self.post_data = self.__parseRequestPost(self.request)
+
+    def __parseRequestPost(self, request):
+        EXCLUDED_FIELDS = ['csrfmiddlewaretoken']
+        result = dict(request.POST)
+        for field in EXCLUDED_FIELDS:
+            result.pop(field)
+        return result
 
     def parseMatch(self, pattern):
         match = re.match(pattern, self.raw_param)

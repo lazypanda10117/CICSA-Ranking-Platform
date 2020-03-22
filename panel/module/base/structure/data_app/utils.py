@@ -35,6 +35,18 @@ class QueryTermUtils:
         )
 
 
+class SecurityUtils:
+    def __init__(self, request):
+        self.request = request
+
+    def parseRequestPost(self):
+        EXCLUDED_FIELDS = ['csrfmiddlewaretoken']
+        result = dict(self.request.POST)
+        for field in EXCLUDED_FIELDS:
+            result.pop(field)
+        return result
+
+
 class MiscUtils:
     def __init__(self, request):
         self.request = request

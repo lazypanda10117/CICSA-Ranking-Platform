@@ -19,6 +19,7 @@ def viewDispatch(request, route, param=''):
 
 
 def processDispatch(request, route, param=''):
+    print(request)
     return ManagementRankingView().processDispatch(request, route, param)
 
 

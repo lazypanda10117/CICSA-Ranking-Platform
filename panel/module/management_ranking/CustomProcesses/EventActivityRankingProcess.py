@@ -9,7 +9,7 @@ from panel.module.base.block.CustomProcesses import AbstractBaseProcess
 
 class EventActivityRankingProcess(AbstractBaseProcess):
     def process(self):
-        post_dict = dict(self.request.POST)
+        post_dict = self.post_data
         event_activity_id = int(self.param["id"])
         event_activity_api = EventActivityAPI(self.request)
 
@@ -18,6 +18,7 @@ class EventActivityRankingProcess(AbstractBaseProcess):
         event = EventAPI(self.request).getSelf(id=event_activity_parent_id)
 
         result_dict = {school_id: rank[0] for school_id, rank in post_dict.items()}
+
         event_activity_api.updateEventActivityResult(event_activity_id, result_dict)
         event_activity_api.updateEventActivityState(event_activity_id, 'done')
 
