@@ -25,7 +25,7 @@ class EventUpdateAPI(AbstractCoreAPI, SeasonBasedAPI):
     def regenerateRotation(self):
         rotation = dict()
         permutation = random.sample(range(1, self.event.event_team_number + 1), self.event.event_team_number)
-        event_tags = EventTagAPI(self.request).verifySelf(legacy=False, event_tag_event_id=self.event.id)
+        event_tags = EventTagAPI(self.request).editSelf(legacy=False, event_tag_event_id=self.event.id)
         for boat_shift, tag in enumerate(event_tags):
             teams = TeamAPI(self.request).filterSelf(team_tag_id=tag.id)
             team_sequence = {team.id:
@@ -90,7 +90,7 @@ class EventUpdateAPI(AbstractCoreAPI, SeasonBasedAPI):
 
         if self.event.event_status == Event.EVENT_STATUS_DONE:
             ranking_list = ScoringPageAPI(self.request).buildDataTable(self.event, force_compile=True)['ranking']
-            summaries = SummaryAPI(self.request).verifySelf(legacy=False, summary_event_parent=self.event.id)
+            summaries = SummaryAPI(self.request).editSelf(legacy=False, summary_event_parent=self.event.id)
             for ranking_data in ranking_list:
                 school_id = ranking_data['school_id']
                 score = ranking_data['score']
@@ -140,7 +140,7 @@ class EventUpdateAPI(AbstractCoreAPI, SeasonBasedAPI):
         teams = TeamAPI(self.request).filterSelf(
             team_tag_id__in=[e.id for e in event_tags], team_school__in=school_ids
         )
-        event_activities = EventActivityAPI(self.request).verifySelf(legacy=False, event_activity_event_parent=self.event.id)
+        event_activities = EventActivityAPI(self.request).editSelf(legacy=False, event_activity_event_parent=self.event.id)
         for activity in event_activities:
             ranking = activity.event_activity_result
             # Don't do anything if ranking is empty, because event is in the future
@@ -177,7 +177,7 @@ class EventUpdateAPI(AbstractCoreAPI, SeasonBasedAPI):
         teams = TeamAPI(self.request).filterSelf(
             team_tag_id__in=[e.id for e in event_tags], team_school__in=school_ids
         )
-        event_activities = EventActivityAPI(self.request).verifySelf(legacy=False, event_activity_event_parent=self.event.id)
+        event_activities = EventActivityAPI(self.request).editSelf(legacy=False, event_activity_event_parent=self.event.id)
         if action == AuthenticationActionType.ADD:
             for activity in event_activities:
                 for team in teams:
@@ -202,7 +202,7 @@ class EventUpdateAPI(AbstractCoreAPI, SeasonBasedAPI):
                 return individual_rotation[:-1]
 
         rotation = self.event.event_rotation_detail
-        race_tag = EventActivityAPI(self.request).verifySelf(legacy=False, id=event_activity_id).event_activity_race_tag
+        race_tag = EventActivityAPI(self.request).editSelf(legacy=False, id=event_activity_id).event_activity_race_tag
         team_rotations = rotation[race_tag]
         for team_id, team_rotation in team_rotations.items():
             rotation[race_tag].update(

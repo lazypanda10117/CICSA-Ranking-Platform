@@ -34,7 +34,7 @@ class GeneralModelAPI(AbstractCoreAPI):
         obj.save()
 
     # Prev Conf: might need to change name to editSelf
-    def verifySelf(self, legacy=True, **kwargs):
+    def editSelf(self, legacy=True, **kwargs):
         if legacy:
             result = ModelFunctions.getModelObject(self.base, **kwargs)
         else:

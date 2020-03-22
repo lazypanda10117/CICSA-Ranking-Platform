@@ -17,6 +17,7 @@
         <div class="wrapper">
             <div class="login-form">
                 <form action="login" method="post">
+                    {% csrf_token %}
                     <div class="avatar"><img src="{% static 'img/login/CICSA_Logo.png' %}" style="margin:auto; width: 100%;"></div>
                     <h4 class="modal-title">Admin Login</h4>
                     <div class="form-group">

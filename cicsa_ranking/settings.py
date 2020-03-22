@@ -63,6 +63,13 @@ CORS_ORIGIN_ALLOW_ALL = False
 
 INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
+    'corsheaders',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
     'cicsa_ranking.apps.CicsaRankingConfig',
     'permission.apps.PermissionConfig',
     'panel.apps.PanelConfig',
@@ -72,22 +79,15 @@ INSTALLED_APPS = [
     'panel.module.management_news.apps.PanelManagementNewsConfig',
     'panel.module.management_league.apps.PanelManagementLeagueConfig',
     'client.apps.ClientConfig',
-    'corsheaders',
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
 ]
 
 MIDDLEWARE = [
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',

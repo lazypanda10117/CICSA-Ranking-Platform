@@ -183,7 +183,7 @@ class ImmutableBase(ABC):
     def grabTableData(self, form_path):
         tableHeader = self.getTableHeader()
         tableContent = self.getTableContent(self.getRangeTerms(), **self.getFilterTerms())
-        table = Table(self.base_class, form_path).makeCustomTables(tableHeader, tableContent)
+        table = Table(self.base_class, form_path).buildTable(tableHeader, tableContent)
         return [table]
 
 # Useful Functions

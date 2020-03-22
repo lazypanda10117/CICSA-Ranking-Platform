@@ -1,5 +1,7 @@
 from abc import abstractmethod
 
+from django.views.decorators.csrf import csrf_protect
+
 from api.base import AbstractCoreAPI
 from api.model_api import ConfigAPI
 

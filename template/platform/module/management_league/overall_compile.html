@@ -27,6 +27,7 @@
             </div>
             <hr>
             <form action="{{ page.action_destination }}" id="{{ page.form_id }}" method="post">
+                {% csrf_token %}
                 {% for idx, content in page.contents %}
                     <div class="container-fluid row mt-4 form-group">
                         <div class="col col-lg-1">

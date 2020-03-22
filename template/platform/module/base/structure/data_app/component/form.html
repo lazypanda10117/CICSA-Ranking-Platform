@@ -1,4 +1,5 @@
 <form action="{{ action_destination }}" id="{{ form_id }}" method="post">
+    {% csrf_token %}
     {{ form.as_p }}
     {% if special_context %}
         {% include "platform/module/management_data/component/search_element.html" with special_context=special_context only %}
